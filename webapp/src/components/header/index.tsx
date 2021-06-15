@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
-import { Typography, IconButton, Badge, makeStyles } from '@material-ui/core';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import React, { ReactElement } from 'react';
+import { IconButton, Badge, makeStyles, Link } from '@material-ui/core';
+import { Notifications } from '@material-ui/icons';
+import { NavLink } from 'react-router-dom';
 import { colors, fontFamilies } from '../../theme/theme';
 import User from './user';
 
@@ -20,26 +20,30 @@ const useStyles = makeStyles(() => ({
     justifySelf: 'left',
     fontFamily: fontFamilies.header,
     fontSize: '1.6rem',
-    '& a': {
-      textDecoration: 'none',
-      color: 'white',
-    },
+    textDecoration: 'none',
+    color: 'white',
   },
 }));
 
-const Header: FC = () => {
+const Header = (): ReactElement => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <Typography className={classes.header}>
-        <Link to="/">KomPass 2.0</Link>
-      </Typography>
+      <Link
+        component={NavLink}
+        to="/"
+        color="secondary"
+        variant="subtitle1"
+        className={classes.header}
+      >
+        KomPass 2.0
+      </Link>
       <User firstName="Jonas" lastName="Sjödin" />
 
       <IconButton>
         <Badge badgeContent={4} color="secondary">
-          <NotificationsIcon htmlColor={colors.white} />
+          <Notifications htmlColor={colors.white} />
         </Badge>
       </IconButton>
     </div>

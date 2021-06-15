@@ -1,5 +1,5 @@
 import { createStyles, makeStyles } from '@material-ui/core';
-import { FC } from 'react';
+import { ReactElement } from 'react';
 import { colors } from './theme';
 
 const useStyles = makeStyles(() =>
@@ -17,9 +17,9 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const GlobalStyles: FC = () => {
+const GlobalStyles = (): ReactElement => {
   useStyles();
-  return null;
+  return <></>;
 };
 
 export default GlobalStyles;

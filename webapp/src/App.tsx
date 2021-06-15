@@ -9,8 +9,8 @@ import GlobalStyles from './theme/GlobalStyle';
 
 const App = (): ReactElement => (
   <BrowserRouter>
+    <GlobalStyles />
     <MuiThemeProvider theme={theme}>
-      <GlobalStyles />
       <Header />
       <Router />
       <Footer />

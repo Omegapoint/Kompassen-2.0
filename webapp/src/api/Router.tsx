@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Content from '../components/content';
 
@@ -17,7 +17,7 @@ const routes = [
   },
 ];
 
-const Router: FC = () => (
+const Router = (): ReactElement => (
   <Switch>
     {routes.map((e) => (
       <Route path={e.path} key={e.path}>
