@@ -8,11 +8,8 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import EditIcon from '@material-ui/icons/Edit';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import React, { FC, MouseEvent } from 'react';
+import { Settings, ExitToApp, Edit, ArrowDropDown } from '@material-ui/icons';
+import React, { MouseEvent, ReactElement } from 'react';
 import { colors } from '../../theme/theme';
 
 interface UserProps {
@@ -39,7 +36,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const User: FC<UserProps> = ({ firstName, lastName }: UserProps) => {
+const User = ({ firstName, lastName }: UserProps): ReactElement => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -54,11 +51,10 @@ const User: FC<UserProps> = ({ firstName, lastName }: UserProps) => {
     <>
       <IconButton className={classes.container} onClick={handleClick}>
         <Avatar className={classes.avatar}>{firstName[0] + lastName[0]}</Avatar>
-        <ArrowDropDownIcon htmlColor={colors.white} />
+        <ArrowDropDown htmlColor={colors.white} />
       </IconButton>
       <Menu
         PaperProps={{ className: classes.menupaper }}
-        id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
@@ -66,20 +62,20 @@ const User: FC<UserProps> = ({ firstName, lastName }: UserProps) => {
       >
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <EditIcon fontSize="small" />
+            <Edit fontSize="small" />
           </ListItemIcon>
           <ListItemText>Hantera mina pass</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <SettingsIcon fontSize="small" />
+            <Settings fontSize="small" />
           </ListItemIcon>
           <ListItemText>Inställningar</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <ExitToAppIcon fontSize="small" />
+            <ExitToApp fontSize="small" />
           </ListItemIcon>
           <ListItemText>Logga ut</ListItemText>
         </MenuItem>

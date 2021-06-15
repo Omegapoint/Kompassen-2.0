@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ReactElement } from 'react';
 import { createStyles, makeStyles, Typography } from '@material-ui/core';
 import { padding } from '../../theme/theme';
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const Footer: FC = () => {
+const Footer = (): ReactElement => {
   const classes = useStyles();
 
   return (

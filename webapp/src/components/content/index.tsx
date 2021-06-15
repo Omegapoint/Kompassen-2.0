@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core';
 
 interface ContentProps {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Content: FC<ContentProps> = ({ children }: ContentProps) => {
+const Content = ({ children }: ContentProps): ReactElement => {
   const classes = useStyles();
   return <div className={classes.container}>{children}</div>;
 };
