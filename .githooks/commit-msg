@@ -1,0 +1,126 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+
+if (process.argv[2].match(".git/COMMIT_EDITMSG") == null) {
+  return process.exit(0);
+}
+let txt = "";
+try {
+  txt = fs.readFileSync(process.argv[2], "utf8").trim();
+} catch (e) {
+  console.log("File error");
+  return process.exit(1);
+}
+
+let rows = txt.split("\n");
+
+//Removes all rows with comments from commit message to evaluate
+rows = rows.filter((row) => row.charAt(0) !== "#");
+
+//Rebuilds txt without comments
+txt = "";
+rows.forEach((row, i) => {
+  txt += row;
+  if (i !== rows.length - 1) txt += "\n";
+});
+
+let errorMessage = [];
+
+try {
+  checkEmptyMessage(rows);
+  checkCommitLength(rows);
+  checkLineBreakSeperation(rows);
+  rows.forEach((row, i) => {
+    if (i === 0) {
+      checkSubject(row);
+    } else {
+      checkBodyWidth(row);
+    }
+  });
+  console.log("🌱  Commit message ok");
+  return process.exit(0);
+} catch (e) {
+  printError();
+  fs.writeFileSync(".githooks/.badcommit", txt, "utf8");
+  return process.exit(1);
+}
+
+function printError() {
+  console.log("❗️Invalid commit message:");
+  errorMessage.forEach((line, i) => {
+    if (i < errorMessage.length - 1) console.log("   ├─ " + line);
+    else console.log("   └─ " + line);
+  });
+  console.log("──────────────────────────────────────────────50─┐");
+  console.log(txt);
+  console.log(
+    "──────────────────────────────────────────────────────────────────72─┘\n"
+  );
+}
+
+function checkEmptyMessage(rows) {
+  if (rows.length === 0) {
+    errorMessage.push("Empty commit message");
+    throw BreakException;
+  }
+}
+
+function checkLineBreakSeperation(rows) {
+  if (rows.length > 1 && rows[1] != "") {
+    errorMessage.push("Missing line break between subject and body.");
+    throw BreakException;
+  }
+}
+
+function checkCommitLength(rows) {
+  if (rows.length > 100) {
+    errorMessage.push("Commit message has too many rows (max 100)");
+    throw BreakException;
+  }
+}
+
+function checkSubject(row) {
+  if (row.length > 50) {
+    errorMessage.push("Subject too wide (max 50)");
+    throw BreakException;
+  }
+  let words = row.split(" ");
+  checkSubjectFirstWord(words[0]);
+  checkSubjectSecondWord(words[1]);
+}
+
+function checkSubjectFirstWord(firstWord) {
+  let re = new RegExp(/\[(feat|bugfix|WIP|docs|refactor|update|perf|test)\]/);
+  if (!re.exec(firstWord)) {
+    errorMessage.push("Doesn't start with proper tag, available tags are:");
+    errorMessage.push(
+      "[feat] [bugfix] [WIP] [docs] [refactor] [update] [perf] [test]"
+    );
+    throw BreakException;
+  }
+  if (firstWord.charAt(firstWord.length - 1) !== "]") {
+    errorMessage.push("Make sure to seperate the <tag> and the Subject, e.g:");
+    errorMessage.push("[bugfix] This fixes a bug");
+    errorMessage.push("     ↑");
+    throw BreakException;
+  }
+}
+
+function checkSubjectSecondWord(secondWord) {
+  if (!secondWord) {
+    errorMessage.push("Missing subject description after <tag>");
+    throw BreakException;
+  }
+  if (secondWord.match(new RegExp(/^[A-Z]/)) === null) {
+    errorMessage.push("Subject doesn't start with capital letter");
+    throw BreakException;
+  }
+}
+
+function checkBodyWidth(row) {
+  if (row.length > 72) {
+    errorMessage.push("Body too wide (max 72)");
+    throw BreakException;
+  }
+}
