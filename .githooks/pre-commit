@@ -1,0 +1,14 @@
+#!/bin/bash
+
+modules="webapp"
+
+set -e
+
+for d in $modules ; do
+    (cd "$d" && npm run precommit)
+    code=$?
+    if [ $code -ne 0 ]; then
+        exit $code
+    fi
+done
+
