@@ -1,27 +1,39 @@
-import React, { ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Content from '../components/content';
+import Content from '../components/content/Content';
+import Home from '../section/home/Home';
 
-const routes = [
+export interface AppRoute {
+  name: string;
+  path: string;
+  Component: FC;
+}
+
+export const appRoutes: AppRoute[] = [
   {
     name: 'Anmäl pass',
     path: '/class/create',
+    Component: Home
   },
   {
     name: 'Mina pass',
     path: '/class',
+    Component: Home
   },
   {
-    name: 'Home',
+    name: 'Start',
     path: '/',
-  },
+    Component: Home
+  }
 ];
 
 const Router = (): ReactElement => (
   <Switch>
-    {routes.map((e) => (
+    {appRoutes.map((e) => (
       <Route path={e.path} key={e.path}>
-        <Content>{e.name}</Content>
+        <Content>
+          <e.Component />
+        </Content>
       </Route>
     ))}
   </Switch>
