@@ -1,6 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import { ReactElement } from 'react';
-import { colors } from './theme';
+import { colors } from './Theme';
 
 const useStyles = makeStyles(() =>
   createStyles({

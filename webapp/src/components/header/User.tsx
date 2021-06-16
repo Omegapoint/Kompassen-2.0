@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { Settings, ExitToApp, Edit, ArrowDropDown } from '@material-ui/icons';
 import React, { MouseEvent, ReactElement } from 'react';
-import { colors } from '../../theme/theme';
+import { colors } from '../../theme/Theme';
 
 interface UserProps {
   firstName: string;

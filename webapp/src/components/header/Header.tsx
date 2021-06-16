@@ -2,19 +2,19 @@ import React, { ReactElement } from 'react';
 import { IconButton, Badge, makeStyles, Link } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';
-import { colors, fontFamilies } from '../../theme/theme';
-import User from './user';
+import { colors, constants, fontFamilies, padding } from '../../theme/Theme';
+import User from './User';
 
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr repeat(2, 50px)',
     alignItems: 'center',
-    padding: '0 20px',
+    padding: `0 ${padding.standard}`,
     background: colors.primary,
     justifyItems: 'right',
     gridAutoFlow: 'column',
-    height: '50px',
+    height: constants.headerHeight,
   },
   header: {
     justifySelf: 'left',

@@ -11,7 +11,12 @@ export const fontFamilies = {
   header: 'Roboto Slab',
 };
 
+export const constants = {
+  headerHeight: '50px',
+};
+
 export const padding = {
+  large: '48px',
   medium: '32px',
   standard: '20px',
   small: '15px',
@@ -20,9 +25,10 @@ export const padding = {
 
 export const theme = createMuiTheme({
   overrides: {
-    MuiPaper: {
+    MuiButton: {
       root: {
-        padding: padding.standard,
+        textTransform: 'none',
+        fontWeight: 300,
       },
     },
   },
@@ -47,6 +53,8 @@ export const theme = createMuiTheme({
   typography: {
     h1: {
       fontFamily: fontFamilies.header,
+      fontSize: '1.4rem',
+      color: colors.primary,
     },
     subtitle1: {
       fontSize: '0.9rem',

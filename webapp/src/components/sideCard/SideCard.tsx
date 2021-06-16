@@ -1,18 +1,22 @@
 import { ReactElement, ReactNode } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
-import { colors, padding } from '../../theme/theme';
-import LinkContainer from './LinkContainer';
+import { colors, padding } from '../../theme/Theme';
+import HrefContainer from './HrefContainer';
 
 const useStyles = makeStyles(() => ({
   content: {
     display: 'grid',
     gridGap: padding.minimal,
+    padding: padding.small,
+    '& h6': {
+      lineHeight: 1,
+    },
   },
 }));
 
 interface SideCardProps {
-  link?: string;
-  linkText?: string;
+  href?: string;
+  hrefText?: string;
   title: string;
   children: ReactNode;
   hrefBarColor?: string;
@@ -20,8 +24,8 @@ interface SideCardProps {
 
 const SideCard = ({
   hrefBarColor = colors.primary,
-  link,
-  linkText,
+  href,
+  hrefText,
   title,
   children,
 }: SideCardProps): ReactElement => {
@@ -29,8 +33,8 @@ const SideCard = ({
 
   return (
     <div>
-      {link && linkText && (
-        <LinkContainer link={link} linkText={linkText} linkBarColor={hrefBarColor} />
+      {href && hrefText && (
+        <HrefContainer href={href} hrefText={hrefText} hrefBarColor={hrefBarColor} />
       )}
       <Paper className={classes.content}>
         <Typography variant="h6" color="primary">
