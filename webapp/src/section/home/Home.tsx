@@ -2,6 +2,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import React, { ReactElement, useState } from 'react';
 import SideCard from '../../components/sideCard/SideCard';
 import { colors, padding } from '../../theme/Theme';
+import Forum from '../../components/forum/Forum';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
 
 const useStyles = makeStyles(() => ({
@@ -55,6 +56,7 @@ const Home = (): ReactElement => {
             Publicera ny idé
           </Button>
         )}
+        <Forum bookedBy="Fatima Nouri har ställt upp som passhållare" />
       </div>
       <div className={classes.rightPanel}>
         <SideCard

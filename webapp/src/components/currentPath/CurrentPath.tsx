@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import { NavLink, useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core';
 import { AppRoute, appRoutes } from '../../api/Router';
 
 const sortedRoutes = appRoutes.sort((e, e1) => (e.path.length > e1.path.length ? 1 : -1));
@@ -26,7 +27,19 @@ const findCurrentPaths = (
   return findCurrentPaths(path, routesNotFoundYet, currentFoundRoutes);
 };
 
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'grid',
+    height: '25px',
+    alignItems: 'center',
+    '& *': {
+      lineHeight: '1',
+    },
+  },
+}));
+
 const CurrentPath = (): ReactElement => {
+  const classes = useStyles();
   const location = useLocation();
   const { pathname } = location;
 
@@ -35,7 +48,7 @@ const CurrentPath = (): ReactElement => {
   const currentRoute = foundRoutes[foundRoutes.length - 1];
 
   return (
-    <Breadcrumbs aria-label="breadcrumb">
+    <Breadcrumbs className={classes.container}>
       {parentRoutes.map((e) => (
         <Link variant="subtitle2" key={e.path} component={NavLink} to={e.path} color="inherit">
           {e.name}

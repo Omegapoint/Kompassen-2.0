@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     height: '34px',
   },
   menupaper: {
-    borderRadius: '0px',
+    borderRadius: 0,
   },
 }));
 

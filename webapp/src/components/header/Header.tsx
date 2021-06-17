@@ -30,13 +30,7 @@ const Header = (): ReactElement => {
 
   return (
     <div className={classes.container}>
-      <Link
-        component={NavLink}
-        to="/"
-        color="secondary"
-        variant="subtitle1"
-        className={classes.header}
-      >
+      <Link component={NavLink} to="/" color="secondary" variant="body2" className={classes.header}>
         KomPass 2.0
       </Link>
       <User firstName="Jonas" lastName="Sjödin" />
