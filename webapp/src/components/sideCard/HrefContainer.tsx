@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Link, makeStyles, Paper, Theme } from '@material-ui/core';
-import { padding } from '../../theme/Theme';
-import arrowCircled from '../../assets/arrowCircled.svg';
+import { borderRadius, padding } from '../../theme/Theme';
+import longArrowCircled from '../../assets/longArrowCircled.svg';
 
 interface StyleProps {
   hrefBarColor: string;
@@ -20,7 +20,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     gridAutoFlow: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: '5px 5px 0 0',
+    borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
     padding: `${padding.small} ${padding.small}`,
     background: ({ hrefBarColor }) => hrefBarColor,
   },
@@ -37,7 +37,7 @@ const HrefContainer = ({ href, hrefText, hrefBarColor }: LinkContainerProps): Re
         {hrefText}
       </Link>
       <Link component={NavLink} to={href} className={classes.arrowIcon}>
-        <img alt="arrow circled" src={arrowCircled} width="20px" height="20px" />
+        <img alt="arrow circled" src={longArrowCircled} width="20px" height="20px" />
       </Link>
     </Paper>
   );

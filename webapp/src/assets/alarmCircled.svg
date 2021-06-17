@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+    <g id="Group_1231" transform="translate(-292 -762)">
+        <g id="Icon_ionic-ios-notifications"
+           transform="translate(294.846 763.809)" opacity="0.75">
+            <path id="Path_300"
+                  d="M17.116,31.5a2.975,2.975,0,0,0,3-3h-6A2.972,2.972,0,0,0,17.116,31.5Z"
+                  transform="translate(-2.962 -7.305)" fill="#286166"/>
+            <path id="Path_301"
+                  d="M21.154,18.191c-.721-.995-2-1.547-2-6,0-4.571-1.2-6.559-3-7-.169-.044-1,.186-1,0h0a.9.9,0,0,0-1-1,.9.9,0,0,0-1,1h0c0,.181.169-.044,0,0-1.8.446-4,2.429-4,7,0,4.453-1.279,5-2,6a1.46,1.46,0,0,0,1,2h13C21.917,20.191,21.618,18.828,21.154,18.191Z"
+                  fill="#286166"/>
+        </g>
+        <g id="Ellipse_28" transform="translate(292 762)" fill="none" stroke="#286166"
+           stroke-width="1">
+            <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+            <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+        </g>
+    </g>
+</svg>

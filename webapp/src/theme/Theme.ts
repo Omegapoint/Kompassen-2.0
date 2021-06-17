@@ -4,7 +4,11 @@ export const colors = {
   primary: '#286166',
   white: '#FFFFFF',
   orange: '#E87722',
+  blue: '#003349',
+  grey: '#707070',
+  lightGrey: '#C7C6C5',
   background: '#F5F4F2',
+  lightBlue: '#C9D7D8',
 };
 
 export const fontFamilies = {
@@ -13,6 +17,11 @@ export const fontFamilies = {
 
 export const constants = {
   headerHeight: '50px',
+};
+
+export const borderRadius = {
+  small: '6px',
+  standard: '10px',
 };
 
 export const padding = {
@@ -68,9 +77,21 @@ export const theme = createMuiTheme({
       fontWeight: 400,
       color: colors.primary,
     },
+    h6: {
+      fontSize: '1rem',
+    },
     subtitle1: {
       fontSize: '0.9rem',
       fontWeight: 300,
+      color: colors.grey,
+    },
+    body1: {
+      fontWeight: 300,
+    },
+    body2: {
+      fontWeight: 300,
+      fontStyle: 'italic',
+      color: colors.grey,
     },
   },
 });
