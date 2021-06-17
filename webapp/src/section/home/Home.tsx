@@ -1,7 +1,8 @@
-import { FC } from 'react';
 import { Button, makeStyles, Typography } from '@material-ui/core';
+import React, { ReactElement, useState } from 'react';
 import SideCard from '../../components/sideCard/SideCard';
 import { colors, padding } from '../../theme/Theme';
+import PublishIdea from '../../components/publishIdea/PublishIdea';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -32,16 +33,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Home: FC = () => {
+
+
+const Home = (): ReactElement => {
+  const [active, setActive] = useState(false);
   const classes = useStyles();
 
+  const activateIdea= ()=> {
+    setActive(e => !e)
+  }
   return (
     <div className={classes.container}>
       <Typography variant="h1">Idéer till kompetensdagar</Typography>
       <div className={classes.leftPanel}>
-        <Button className={classes.button} variant="contained" color="primary">
+        {active && <PublishIdea cancel={()=>setActive(false)} />}
+        {!active && <Button onClick={activateIdea} className={classes.button} variant="contained" color="primary">
           Publicera ny idé
-        </Button>
+        </Button>}
       </div>
       <div className={classes.rightPanel}>
         <SideCard

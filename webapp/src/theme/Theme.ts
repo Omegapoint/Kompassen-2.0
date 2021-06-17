@@ -31,6 +31,13 @@ export const theme = createMuiTheme({
         fontWeight: 300,
       },
     },
+    MuiRadio: {
+      colorSecondary: {
+        '&$checked': {
+          color: colors.primary,
+        },
+      },
+    },
   },
   props: {
     MuiPaper: {
@@ -54,6 +61,11 @@ export const theme = createMuiTheme({
     h1: {
       fontFamily: fontFamilies.header,
       fontSize: '1.4rem',
+      color: colors.primary,
+    },
+    h2: {
+      fontSize: '1.2rem',
+      fontWeight: 400,
       color: colors.primary,
     },
     subtitle1: {
