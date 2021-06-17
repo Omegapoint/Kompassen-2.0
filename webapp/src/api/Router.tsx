@@ -13,18 +13,18 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Anmäl pass',
     path: '/class/create',
-    Component: Home
+    Component: Home,
   },
   {
     name: 'Mina pass',
     path: '/class',
-    Component: Home
+    Component: Home,
   },
   {
     name: 'Start',
     path: '/',
-    Component: Home
-  }
+    Component: Home,
+  },
 ];
 
 const Router = (): ReactElement => (
