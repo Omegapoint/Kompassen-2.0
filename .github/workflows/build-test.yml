@@ -1,0 +1,55 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "**"
+      - "!main"
+
+jobs:
+  test_web_app:
+    runs-on: ubuntu-latest
+    name: Test web app
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use caching
+        uses: actions/cache@v2
+        with:
+          path: webapp/node_modules
+          key: webapp-${{ hashFiles('webapp/package-lock.json') }}
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Install dependencies and test code
+        run: |
+          npm install
+          npm run format:check
+          npm run lint:check
+        working-directory: webapp
+
+  test_server:
+    runs-on: ubuntu-latest
+    name: Test server
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use caching
+        uses: actions/cache@v2
+        with:
+          path: server/node_modules
+          key: server-${{ hashFiles('server/package-lock.json') }}
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+
+      - name: Install dependencies and test code
+        run: |
+          npm install
+          npm run format:check
+          npm run lint:check
+        working-directory: server

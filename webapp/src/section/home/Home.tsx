@@ -33,23 +33,28 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
-
 const Home = (): ReactElement => {
   const [active, setActive] = useState(false);
   const classes = useStyles();
 
-  const activateIdea= ()=> {
-    setActive(e => !e)
-  }
+  const activateIdea = () => {
+    setActive((e) => !e);
+  };
   return (
     <div className={classes.container}>
       <Typography variant="h1">Idéer till kompetensdagar</Typography>
       <div className={classes.leftPanel}>
-        {active && <PublishIdea cancel={()=>setActive(false)} />}
-        {!active && <Button onClick={activateIdea} className={classes.button} variant="contained" color="primary">
-          Publicera ny idé
-        </Button>}
+        {active && <PublishIdea cancel={() => setActive(false)} />}
+        {!active && (
+          <Button
+            onClick={activateIdea}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Publicera ny idé
+          </Button>
+        )}
       </div>
       <div className={classes.rightPanel}>
         <SideCard

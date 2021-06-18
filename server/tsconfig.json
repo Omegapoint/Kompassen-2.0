@@ -1,0 +1,23 @@
+{
+  "include": ["**/*"],
+  "exclude": ["node_modules/*"],
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "types": ["node"],
+    "resolveJsonModule": true,
+    "pretty": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "outDir": "./build",
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}
