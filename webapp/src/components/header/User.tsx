@@ -72,7 +72,7 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
           </ListItemIcon>
           <ListItemText>Inställningar</ListItemText>
         </MenuItem>
-        <Divider />
+        <Divider variant="middle" />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ExitToApp fontSize="small" />
