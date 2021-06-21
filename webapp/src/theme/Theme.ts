@@ -8,7 +8,7 @@ export const colors = {
   grey: '#707070',
   lightGrey: '#C7C6C5',
   background: '#F5F4F2',
-  lightBlue: '#C9D7D8',
+  lightBlue: '#E4EBEB',
 };
 
 export const fontFamilies = {
@@ -86,7 +86,7 @@ export const theme = createMuiTheme({
       color: colors.grey,
     },
     body1: {
-      fontWeight: 300,
+      fontWeight: 400,
     },
     body2: {
       fontWeight: 300,
