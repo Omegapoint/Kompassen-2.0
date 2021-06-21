@@ -7,6 +7,7 @@ on:
 
 jobs:
   build_and_deploy_web_app:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Build and deploy web app
     steps:
@@ -23,9 +24,10 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           action: upload
-          app_location: /web
+          app_location: /webapp
 
   build_and_deploy_server:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Build and deploy server
     steps:
