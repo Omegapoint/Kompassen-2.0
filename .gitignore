@@ -3,3 +3,11 @@ node_modules/
 build
 .DS_Store
 .env
+secrets.sh
+
+# Terraform
+terraform.tfstate
+terraform.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+*.auto.tfvars
