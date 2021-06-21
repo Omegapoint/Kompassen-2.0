@@ -1,6 +1,7 @@
 import { useState, ReactElement, useReducer, ChangeEvent, FormEvent } from 'react';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import { EmojiEmotions } from '@material-ui/icons';
+
 import {
   Button,
   createStyles,
@@ -48,7 +49,6 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-
 interface PublishIdeaProps {
   cancel: () => void;
 }
