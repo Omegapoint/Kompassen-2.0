@@ -5,12 +5,53 @@ on:
     branches:
       - main
 
+env:
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  DEPLOY_NAME: kompassen2
+
 jobs:
+  apply_infra:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: hashicorp/setup-terraform@v1
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Initialize terraform
+        run: terraform init
+        working-directory: ./infrastructure/production
+
+      - name: Apply terraform state
+        run: terraform apply --auto-approve
+        working-directory: ./infrastructure/production
+
   build_and_deploy_web_app:
     runs-on: ubuntu-latest
     name: Build and deploy web app
+    needs: apply_infra
     steps:
       - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        id: azure_api_key
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.25.0
+          inlineScript: echo AZURE_API_KEY=$(az rest --method post --url "/subscriptions/${{ secrets.ARM_SUBSCRIPTION_ID }}/resourcegroups/${{ env.DEPLOY_NAME }}/providers/Microsoft.Web/staticSites/${{ env.DEPLOY_NAME }}/listsecrets?api-version=2020-06-01" | jq -r ".properties.apiKey") >> $GITHUB_ENV
 
       - name: Use caching
         uses: actions/cache@v2
@@ -21,15 +62,28 @@ jobs:
       - name: Build and Deploy Web App
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          azure_static_web_apps_api_token: ${{ env.AZURE_API_KEY }}
           action: upload
           app_location: /webapp
 
   build_and_deploy_server:
     runs-on: ubuntu-latest
     name: Build and deploy server
+    needs: apply_infra
     steps:
       - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        id: azure_publish_profile
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.25.0
+          inlineScript: echo AZURE_PUBLISHING_PROFILE=$(az webapp deployment list-publishing-profiles --name=${{ env.DEPLOY_NAME }} --resource-group=${{ env.DEPLOY_NAME }} --xml) >> $GITHUB_ENV
 
       - name: Use caching
         uses: actions/cache@v2
@@ -53,6 +107,6 @@ jobs:
       - name: Deploy to Azure web app
         uses: azure/webapps-deploy@v2
         with:
-          app-name: kompassen2
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-name: ${{ env.DEPLOY_NAME }}
+          publish-profile: ${{ env.AZURE_PUBLISHING_PROFILE }}
           package: server/build
