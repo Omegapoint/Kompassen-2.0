@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - test-merge
+      - new-merge
 
 jobs:
   build_and_deploy_web_app:

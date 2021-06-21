@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "**"
-      - "!test-merge"
+      - "!new-merge"
 
 jobs:
   test_web_app:
