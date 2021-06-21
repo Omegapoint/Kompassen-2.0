@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "**"
-      - "!master"
+      - "!setting-up-cicd"
 
 jobs:
   test_web_app:
@@ -12,6 +12,7 @@ jobs:
     name: Test web app
     steps:
       - uses: actions/checkout@v2
+
       - name: Use caching
         uses: actions/cache@v2
         with:
