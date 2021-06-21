@@ -7,7 +7,6 @@ on:
 
 jobs:
   build_and_deploy_web_app:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Build and deploy web app
     steps:
@@ -27,7 +26,6 @@ jobs:
           app_location: /webapp
 
   build_and_deploy_server:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Build and deploy server
     steps:
@@ -58,3 +56,5 @@ jobs:
           app-name: kompassen2
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: server/build
+
+          
