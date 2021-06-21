@@ -3,39 +3,6 @@ import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 
-interface RowProps {
-  sender: string;
-  message: string;
-  date: Date;
-}
-
-interface StyleProps {
-  position: 'end' | 'start';
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() => ({
-  container: {
-    display: 'grid',
-  },
-  subContainer: {
-    justifySelf: ({ position }) => position,
-    display: 'grid',
-    gridGap: padding.minimal,
-    gridAutoFlow: 'column',
-    alignItems: 'start',
-    maxWidth: '80%',
-    padding: 0,
-  },
-  message: {
-    background: colors.lightBlue,
-    padding: padding.minimal,
-    borderRadius: borderRadius.standard,
-  },
-  date: {
-    alignSelf: 'center',
-  },
-}));
-
 const monthNames = [
   'januari',
   'februari',
@@ -71,20 +38,54 @@ const formatDate = (date: Date): string => {
   return `${date.getDate().toString()} ${monthNames[date.getMonth()]}`;
 };
 
+interface StyleProps {
+  isSender: boolean;
+}
+
+const useStyles = makeStyles<Theme, StyleProps>(() => ({
+  subContainer: {
+    justifySelf: ({ isSender }) => (isSender ? 'end' : 'start'),
+    display: 'grid',
+    gridGap: padding.minimal,
+    gridAutoFlow: 'column',
+    alignItems: 'start',
+    maxWidth: '80%',
+    direction: ({ isSender }) => (isSender ? 'rtl' : 'ltr'),
+    padding: 0,
+  },
+  message: {
+    background: colors.lightBlue,
+    padding: padding.minimal,
+    borderRadius: borderRadius.standard,
+  },
+  date: {
+    alignSelf: 'center',
+  },
+  icon: {
+    padding: 0,
+    width: '36px',
+    height: '36px',
+  },
+}));
+
+interface RowProps {
+  sender: string;
+  message: string;
+  date: Date;
+}
+
 const Row = ({ sender, message, date }: RowProps): ReactElement => {
-  const classes = useStyles({ position: sender === 'jonas' ? 'end' : 'start' });
+  const classes = useStyles({ isSender: sender === 'jonas' });
 
   return (
-    <div className={classes.container}>
-      <div className={classes.subContainer}>
-        <IconButton>
-          <AccountCircle />
-        </IconButton>
-        <Typography className={classes.message}>{message}</Typography>
-        <Typography variant="subtitle1" className={classes.date}>
-          {formatDate(date)}
-        </Typography>
-      </div>
+    <div className={classes.subContainer}>
+      <IconButton className={classes.icon}>
+        <AccountCircle className={classes.icon} />
+      </IconButton>
+      <Typography className={classes.message}>{message}</Typography>
+      <Typography variant="subtitle1" className={classes.date}>
+        {formatDate(date)}
+      </Typography>
     </div>
   );
 };
