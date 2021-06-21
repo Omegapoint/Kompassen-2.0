@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - "**"
-      - "!setting-up-cicd"
+      - "!master"
 
 jobs:
   test_web_app:
