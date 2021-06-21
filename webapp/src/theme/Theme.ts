@@ -9,6 +9,7 @@ export const colors = {
   lightGrey: '#C7C6C5',
   background: '#F5F4F2',
   lightBlue: '#E4EBEB',
+  darkGrey: '#AFAFAF',
 };
 
 export const fontFamilies = {
@@ -45,6 +46,30 @@ export const theme = createMuiTheme({
         '&$checked': {
           color: colors.primary,
         },
+      },
+    },
+    MuiSwitch: {
+      switchBase: {
+        color: colors.darkGrey,
+      },
+      track: {
+        opacity: 0.6,
+        backgroundColor: colors.darkGrey,
+        '$checked$checked + &': {
+          opacity: 0.6,
+          backgroundColor: colors.primary,
+        },
+      },
+      colorSecondary: {
+        // Controls checked color for the thumb
+        '&$checked': {
+          color: colors.primary,
+        },
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: colors.primary,
       },
     },
   },

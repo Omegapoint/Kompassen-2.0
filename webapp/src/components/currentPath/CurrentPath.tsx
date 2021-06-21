@@ -6,7 +6,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import { AppRoute, appRoutes } from '../../api/Router';
 
-const sortedRoutes = appRoutes.sort((e, e1) => (e.path.length > e1.path.length ? 1 : -1));
+const sortedRoutes = [...appRoutes].sort((e, e1) => (e.path.length > e1.path.length ? 1 : -1));
 
 const findCurrentPaths = (
   path: string,
