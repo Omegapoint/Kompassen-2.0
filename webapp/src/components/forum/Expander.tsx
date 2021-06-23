@@ -12,7 +12,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
   createStyles({
     bookedByContainer: {
       gridArea: 'registerButton',
-      gridTemplateColumns: '150px',
+      maxWidth: '190px',
     },
     bookedBy: {
       justifySelf: 'flex-end',
