@@ -7,9 +7,17 @@ export const colors = {
   blue: '#003349',
   grey: '#707070',
   lightGrey: '#C7C6C5',
+  veryLightGrey: '#E1E1E1',
   background: '#F5F4F2',
   lightBlue: '#E4EBEB',
   darkGrey: '#AFAFAF',
+  black: '#000000DE',
+  lightGreen: '#7BAC53',
+  darkOrange: '#E87722',
+  teal: '#6FA5A9',
+  yellow: '#F9BC2E',
+  purple: '#967ECC',
+  darkGreen: '#2B4A4E',
 };
 
 export const fontFamilies = {
@@ -21,6 +29,7 @@ export const constants = {
 };
 
 export const borderRadius = {
+  tiny: '3px',
   small: '6px',
   standard: '10px',
 };
@@ -31,6 +40,7 @@ export const padding = {
   standard: '20px',
   small: '15px',
   minimal: '10px',
+  tiny: '5px',
 };
 
 export const theme = createMuiTheme({
@@ -103,7 +113,7 @@ export const theme = createMuiTheme({
       color: colors.primary,
     },
     h6: {
-      fontSize: '1rem',
+      fontSize: '0.9rem',
     },
     subtitle1: {
       fontSize: '0.9rem',
@@ -111,6 +121,7 @@ export const theme = createMuiTheme({
       color: colors.grey,
     },
     body1: {
+      fontSize: '0.86rem',
       fontWeight: 400,
     },
     body2: {

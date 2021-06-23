@@ -81,7 +81,12 @@ const Discussion = (): ReactElement => {
   return (
     <div className={classes.container}>
       {messages.map((e) => (
-        <Row sender={e.sender} message={e.message} date={e.date} />
+        <Row
+          key={e.sender + e.date.toString()}
+          sender={e.sender}
+          message={e.message}
+          date={e.date}
+        />
       ))}
       <form className={classes.form}>
         <IconButton className={classes.icon}>

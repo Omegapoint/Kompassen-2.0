@@ -7,7 +7,9 @@ import CurrentPath from '../currentPath/CurrentPath';
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
+      display: 'grid',
       padding: padding.standard,
+      justifyContent: 'center',
     },
   })
 );

@@ -4,6 +4,12 @@ import SideCard from '../../components/sideCard/SideCard';
 import { colors, padding } from '../../theme/Theme';
 import Forum from '../../components/forum/Forum';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
+import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
+import QuickGuide from '../../components/quickGuide/QuickGuide';
+import Interested from '../../components/interested/Interested';
+import LatestLectures from '../../components/latestLectures/LatestLectures';
+import WordCloud from '../../components/wordCloud/WordCloud';
+import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -65,22 +71,22 @@ const Home = (): ReactElement => {
           hrefBarColor={colors.orange}
           href="/"
         >
-          <p>missing content</p>
+          <CompetenceDays />
         </SideCard>
         <SideCard title="Mina senaste pass" hrefText="Hantera mina anmälda pass " href="/">
-          <p>missing content</p>
+          <LatestLectures />
         </SideCard>
         <SideCard title="Trendar just nu">
-          <p>missing content</p>
+          <WordCloud />
         </SideCard>
         <SideCard title="Funderar på att hålla i ett pass?">
-          <p>missing content</p>
+          <Interested />
         </SideCard>
         <SideCard title="Snabbguide för KomPass 2.0">
-          <p>missing content</p>
+          <QuickGuide />
         </SideCard>
         <SideCard title="Nuvarande planerare">
-          <p>missing content</p>
+          <CurrentPlanner />
         </SideCard>
       </div>
     </div>

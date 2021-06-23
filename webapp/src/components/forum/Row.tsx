@@ -3,19 +3,7 @@ import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 
-const monthNames = [
-  'januari',
-  'februari',
-  'mars',
-  'april',
-  'maj',
-  'juni',
-  'juli',
-  'augusti',
-  'september',
-  'november',
-  'december',
-];
+const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec'];
 
 const isToday = (date: Date) => {
   const today = new Date();
@@ -28,7 +16,7 @@ const isToday = (date: Date) => {
 
 const padTime = (str: number): string => (str.toString().length === 2 ? str.toString() : `0${str}`);
 
-const formatDate = (date: Date): string => {
+export const formatDate = (date: Date): string => {
   const today = isToday(date);
   if (today) {
     const hours = padTime(date.getHours());
