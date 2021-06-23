@@ -1,11 +1,16 @@
+import { MongoClient, MongoError } from 'mongodb';
 import setupExpress from './handlers/handlers';
-
-const { PORT = '8080' } = process.env;
+import config from './config/config';
 
 (async (): Promise<void> => {
   const app = setupExpress();
-  app.listen({ port: PORT }, () =>
-    // eslint-disable-next-line no-console
-    console.log(`Running at http://localhost:${PORT}`)
-  );
+
+  MongoClient.connect(config.mongo_url, {}, (err: MongoError, client: MongoClient) => {
+    if (err) throw Error(`Failed to connect to the database. ${err.stack}`);
+    app.locals.db = client.db();
+    app.listen({ port: config.port }, () =>
+      // eslint-disable-next-line no-console
+      console.log(`Running at http://localhost:${config.port}`)
+    );
+  });
 })();

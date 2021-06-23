@@ -31,7 +31,10 @@
       "airbnb-typescript/base",
       "prettier",
       "plugin:@typescript-eslint/recommended"
-    ]
+    ],
+    "rules": {
+      "no-underscore-dangle": 0
+    }
   },
   "eslintIgnore": [
     "**/generated/**/*"

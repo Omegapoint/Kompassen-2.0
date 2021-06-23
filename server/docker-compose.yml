@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  mongo:
+    image: mongo:4.4.6-bionic
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodata:/data/db
+volumes:
+  mongodata:
+    external: false
