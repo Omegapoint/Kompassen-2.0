@@ -6,7 +6,7 @@ import Expander, { ExpanderProps } from './Expander';
 import { Lecture } from '../../lib/Types';
 import { useLikeLecture, useUnlikeLecture } from '../../lib/Hooks';
 import LectureContext from './LectureContext';
-import UserContext from '../../UserContext';
+import { useAppSelector } from '../../lib/Lib';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -76,7 +76,7 @@ const formatTags = (tags: string[]) =>
 const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const classes = useStyles({ isExpanded });
   const { lecture, chat } = useContext(LectureContext);
-  const { user } = useContext(UserContext);
+  const user = useAppSelector((state) => state.user);
   const annotation = getAnnotation(lecture);
   const [liked, setLiked] = useState(lecture.likes?.includes(user.id) || false);
 

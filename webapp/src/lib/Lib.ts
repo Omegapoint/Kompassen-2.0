@@ -1,3 +1,5 @@
+import { useSelector, useDispatch, TypedUseSelectorHook } from 'react-redux';
+import { AppDispatch, RootState } from '../reducers';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 type Body = Record<any, any> | Record<any, any>[];
@@ -11,3 +13,6 @@ export const formatDates = (o: Body): any => {
   if (o.updatedAt) r.updatedAt = new Date(Date.parse(r.updatedAt));
   return r;
 };
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>();

@@ -1,9 +1,9 @@
-import { ReactElement, useContext } from 'react';
+import { ReactElement } from 'react';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import { borderRadius, colors, padding } from '../../theme/Theme';
-import UserContext from '../../UserContext';
 import { LectureMessage } from '../../lib/Types';
+import { useAppSelector } from '../../lib/Lib';
 
 const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec'];
 
@@ -64,7 +64,7 @@ interface RowProps {
 }
 
 const Row = ({ message }: RowProps): ReactElement => {
-  const { user } = useContext(UserContext);
+  const user = useAppSelector((state) => state.user);
   const classes = useStyles({ isSender: message.userId === user.id });
 
   return (

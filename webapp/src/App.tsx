@@ -1,18 +1,30 @@
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { Button, createStyles, makeStyles, Paper, Typography } from '@material-ui/core';
-import io, { Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 import GreetingPage from './GreetingPage';
 import Navbar from './components/navbar/Navbar';
 import Body from './components/body/Body';
 import Footer from './components/footer/Footer';
 import useAccessToken from './hooks/UseAccessToken';
-import { useCreateUser, useGetUser } from './lib/Hooks';
+import {
+  useCreateUser,
+  UseFetchResult,
+  useGetUser,
+  useListCategories,
+  useListEvents,
+  useListLocations,
+} from './lib/Hooks';
 import Notifications from './section/settings/Notifications';
 import { padding } from './theme/Theme';
 import BigLoader from './components/loader/BigLoader';
 import LoginPage from './LoginPage';
-import UserContext from './UserContext';
+import { setUser } from './reducers/user/actions';
+import { useAppDispatch, useAppSelector } from './lib/Lib';
+import { setSocket } from './reducers/session/actions';
+import { setCategories } from './reducers/categories/actions';
+import { setLocations } from './reducers/locations/actions';
+import { setEvents } from './reducers/events/actions';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -41,43 +53,73 @@ const defaultNotifications = {
   lectureTaken: true,
 };
 
-const Content = (): ReactElement => {
-  const [getState, getUser] = useGetUser();
-  const [, createUser] = useCreateUser();
-  const { loading, token } = useAccessToken();
-  const [socket, setSocket] = useState<null | Socket>(null);
-  const [notifications, setNotifications] = useState(defaultNotifications);
-  const { inProgress } = useMsal();
-  const classes = useStyles();
+const useFetchDispatch = <Res, Req>(
+  useHook: () => UseFetchResult<Res, Req>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fn: (payload: Res) => any
+) => {
+  const [ret, request] = useHook();
+  const [finished, setFinished] = useState(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (token) {
+    (async () => {
+      const resp = await request();
+      if (!resp.error) {
+        dispatch(fn(resp.data as Res));
+      }
+      setFinished(true);
+    })();
+  }, [dispatch, fn, request]);
+  return { ...ret, finished };
+};
+
+const useInit = () => {
+  const locations = useFetchDispatch(useListLocations, setLocations);
+  const categories = useFetchDispatch(useListCategories, setCategories);
+  const events = useFetchDispatch(useListEvents, setEvents);
+
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.session);
+
+  useEffect(() => {
+    (async () => {
       const sock = io('ws://localhost:8080/', {
         reconnectionDelayMax: 10000,
         auth: { token },
       });
-      setSocket(sock);
-    }
-  }, [token]);
+      dispatch(setSocket(sock));
+    })();
+  }, [dispatch, token]);
+
+  const error = locations.error || categories.error || events.error;
+  const finished = locations.finished && categories.finished && events.finished;
+
+  return { error, loading: !finished };
+};
+
+const Content = (): ReactElement => {
+  const user = useFetchDispatch(useGetUser, setUser);
+  const { loading } = useInit();
+  const [, createUser] = useCreateUser();
+  const [notifications, setNotifications] = useState(defaultNotifications);
+  const { inProgress } = useMsal();
+  const classes = useStyles();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNotifications({ ...notifications, [event.target.name]: event.target.checked });
   };
-
-  useEffect(() => {
-    getUser();
-  }, [getUser]);
 
   const handleSubmit = async () => {
     await createUser({ body: { notifications } });
     window.location.reload();
   };
 
-  if (loading || inProgress !== 'none' || getState.loading) {
+  if (inProgress !== 'none' || loading) {
     return <BigLoader />;
   }
 
-  if (getState.error?.code === 404) {
+  if (user.error?.code === 404) {
     return (
       <GreetingPage>
         <Paper className={classes.paper}>
@@ -92,23 +134,21 @@ const Content = (): ReactElement => {
     );
   }
 
-  if (!getState.data || !socket) {
-    return <BigLoader />;
-  }
-
   return (
-    <UserContext.Provider value={{ user: getState.data, socket }}>
+    <>
       <Navbar />
       <div style={{ display: 'grid', justifyItems: 'center' }}>
         <Body />
       </div>
       <Footer />
-    </UserContext.Provider>
+    </>
   );
 };
 
 const App = (): ReactElement => {
   const isAuthenticated = useIsAuthenticated();
+  const { loading } = useAccessToken(isAuthenticated);
+  const { token } = useAppSelector((state) => state.session);
 
   if (!isAuthenticated) {
     return (
@@ -117,6 +157,11 @@ const App = (): ReactElement => {
       </GreetingPage>
     );
   }
+
+  if (loading || !token) {
+    return <BigLoader />;
+  }
+
   return <Content />;
 };
 

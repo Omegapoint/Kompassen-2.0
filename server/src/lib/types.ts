@@ -82,13 +82,18 @@ export interface NewLecture extends NewLectureIdea {
   maxParticipants: number | null;
   requirements: string | null;
   preparations: string | null;
+  message: string | null;
+}
+
+export interface DLecture extends NewLecture {
+  idea: boolean;
 }
 
 export interface UpdatedLecture extends NewLecture {
   id: string;
 }
 
-export interface DBLecture extends UpdatedLecture, DefaultTime {}
+export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
 
 export interface Lecture extends DBLecture {
   likes: string[];

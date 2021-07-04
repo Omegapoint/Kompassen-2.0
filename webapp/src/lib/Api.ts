@@ -18,6 +18,9 @@ import {
   CategoryStats,
   Category,
   NewLectureIdea,
+  Location,
+  NewLecture,
+  IDParam,
 } from './Types';
 
 const getUrlParams = (url: string, urlParams: Params = {}) =>
@@ -58,8 +61,10 @@ export const updateUser = apiBuilder<User, UpdatedUser>('/user', 'PUT');
 export const listTags = apiBuilder<TagStats[]>('/lecture/tag', 'GET');
 
 export const listCategories = apiBuilder<Category[]>('/category', 'GET');
+export const listLocations = apiBuilder<Location[]>('/location', 'GET');
 
-export const createLectureIdea = apiBuilder<User, NewLectureIdea>('/lecture/idea', 'POST');
+export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture', 'POST');
+export const createLectureIdea = apiBuilder<IDParam, NewLectureIdea>('/lecture/idea', 'POST');
 export const listLectureCategories = apiBuilder<CategoryStats[]>('/lecture/:id/category', 'GET');
 export const listLectures = apiBuilder<Lecture[]>('/lecture', 'GET');
 export const likeLecture = apiBuilder<Lecture[]>('/lecture/:id/like', 'POST');

@@ -1,17 +1,6 @@
 import { Reducer, useCallback, useReducer } from 'react';
 import { APIFunction, RS, RequestInfo, FetchResult, RequestFn } from './Fetch';
 import * as api from './Api';
-import {
-  Lecture,
-  Event,
-  NewUser,
-  TagStats,
-  UpdatedUser,
-  User,
-  CategoryStats,
-  Category,
-  NewLectureIdea,
-} from './Types';
 
 const initialState = {
   loading: true,
@@ -35,7 +24,7 @@ function reducer<Res>(state: RS<Res>, action: ReducerAction<Res>): RS<Res> {
   }
 }
 
-type UseFetchResult<Res, Req = undefined> = [RS<Res>, RequestFn<Req>];
+export type UseFetchResult<Res, Req = undefined> = [RS<Res>, RequestFn<Req, Res>];
 
 export function useFetchLater<Res, Req = undefined>(
   fn: APIFunction<Res, Req>
@@ -48,6 +37,8 @@ export function useFetchLater<Res, Req = undefined>(
       dispatch({ type: 'BEFORE' });
       const data = await fn(payload);
       dispatch({ type: 'AFTER', payload: data });
+
+      return data;
     },
     [fn]
   );
@@ -55,21 +46,25 @@ export function useFetchLater<Res, Req = undefined>(
   return [state, request];
 }
 
-export const useGetUser = (): UseFetchResult<User> => useFetchLater(api.getUser);
-export const useCreateUser = (): UseFetchResult<User, NewUser> => useFetchLater(api.createUser);
-export const useUpdateUser = (): UseFetchResult<User, UpdatedUser> => useFetchLater(api.updateUser);
+export const genUseFetchLater =
+  <Res, Req>(fn: APIFunction<Res, Req>) =>
+  (): UseFetchResult<Res, Req> =>
+    useFetchLater(fn);
 
-export const useListTags = (): UseFetchResult<TagStats[]> => useFetchLater(api.listTags);
+export const useGetUser = genUseFetchLater(api.getUser);
+export const useCreateUser = genUseFetchLater(api.createUser);
+export const useUpdateUser = genUseFetchLater(api.updateUser);
 
-export const useListCategories = (): UseFetchResult<Category[]> =>
-  useFetchLater(api.listCategories);
+export const useListTags = genUseFetchLater(api.listTags);
 
-export const useCreateLectureIdea = (): UseFetchResult<User, NewLectureIdea> =>
-  useFetchLater(api.createLectureIdea);
-export const useListLectureCategories = (): UseFetchResult<CategoryStats[]> =>
-  useFetchLater(api.listLectureCategories);
-export const useLikeLecture = (): UseFetchResult<Lecture[]> => useFetchLater(api.likeLecture);
-export const useUnlikeLecture = (): UseFetchResult<Lecture[]> => useFetchLater(api.unlikeLecture);
-export const useListLectures = (): UseFetchResult<Lecture[]> => useFetchLater(api.listLectures);
+export const useListCategories = genUseFetchLater(api.listCategories);
+export const useListLocations = genUseFetchLater(api.listLocations);
 
-export const useListEvents = (): UseFetchResult<Event[]> => useFetchLater(api.listEvents);
+export const useCreateLecture = genUseFetchLater(api.createLecture);
+export const useCreateLectureIdea = genUseFetchLater(api.createLectureIdea);
+export const useListLectureCategories = genUseFetchLater(api.listLectureCategories);
+export const useLikeLecture = genUseFetchLater(api.likeLecture);
+export const useUnlikeLecture = genUseFetchLater(api.unlikeLecture);
+export const useListLectures = genUseFetchLater(api.listLectures);
+
+export const useListEvents = genUseFetchLater(api.listEvents);

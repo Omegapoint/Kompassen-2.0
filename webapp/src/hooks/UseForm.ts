@@ -1,7 +1,8 @@
 import { useState, useCallback, ChangeEvent } from 'react';
 
 interface FormReturn<T> {
-  handleChange: (e: ChangeEvent) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleChange: (e: ChangeEvent | any) => void;
   values: T;
   updateValues: (e: Record<string, string>) => void;
   deleteValue: (key: string) => void;

@@ -4,9 +4,10 @@ import { Divider, makeStyles, Typography } from '@material-ui/core';
 import { colors, padding } from '../../theme/Theme';
 import { IconType } from '../latestLectures/lecture';
 import ChartIcon from './ChartIcon';
-import { useListCategories, useListLectureCategories } from '../../lib/Hooks';
+import { useListLectureCategories } from '../../lib/Hooks';
 import EventContext from './EventContext';
 import SmallLoader from '../loader/SmallLoader';
+import { useAppSelector } from '../../lib/Lib';
 
 export const iconColor: IconType = {
   cloud: colors.yellow,
@@ -46,14 +47,10 @@ const LectureStats = (): ReactElement => {
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const [lectureCategories, lectureCategoriesRequest] = useListLectureCategories();
   const { event } = useContext(EventContext);
-  const [categories, categoriesRequest] = useListCategories();
-
-  useEffect(() => {
-    categoriesRequest();
-  }, [categoriesRequest]);
+  const categories = useAppSelector((state) => state.categories);
 
   const r = lectureCategories.data?.map((e) => ({
-    title: categories.data?.find((e1) => e1.name === e.category)?.icon,
+    title: categories?.find((e1) => e1.name === e.category)?.icon,
     desc: e.category,
     value: e.count,
     color: iconColor.cloud,

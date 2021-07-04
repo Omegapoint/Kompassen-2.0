@@ -1,4 +1,4 @@
-import { ReactElement, MouseEvent, FormEvent, useContext } from 'react';
+import { ReactElement, MouseEvent, FormEvent } from 'react';
 import { IEmojiData } from 'emoji-picker-react';
 import {
   Button,
@@ -18,7 +18,7 @@ import { borderRadius, colors, padding } from '../../theme/Theme';
 import useForm from '../../hooks/UseForm';
 import TextPanel from '../textPanel/TextPanel';
 import { useCreateLectureIdea } from '../../lib/Hooks';
-import UserContext from '../../UserContext';
+import { useAppSelector } from '../../lib/Lib';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -30,14 +30,13 @@ const useStyles = makeStyles(() =>
     formContainer: {
       display: 'grid',
       gridGap: padding.medium,
-      justifyItems: 'start',
       padding: padding.medium,
       gridTemplateColumns: 'max-content 1fr max-content',
-      gridTemplateAreas: `". header ."
+      gridTemplateAreas: `"header header header"
                           "title title title"
                           "content content content"
                           "tags tags tags"
-                          "desire . ."
+                          "status status status"
                           "cancel . submit"`,
     },
     line: {
@@ -49,6 +48,9 @@ const useStyles = makeStyles(() =>
       gridArea: 'header',
       justifySelf: 'center',
     },
+    radioButtons: {
+      paddingTop: padding.minimal,
+    },
     title: {
       gridArea: 'title',
     },
@@ -59,8 +61,8 @@ const useStyles = makeStyles(() =>
     tags: {
       gridArea: 'tags',
     },
-    desire: {
-      gridArea: 'desire',
+    status: {
+      gridArea: 'status',
     },
     cancel: {
       gridArea: 'cancel',
@@ -77,17 +79,17 @@ interface PublishIdeaProps {
 }
 
 const defaultFormValue = {
-  content: '',
+  description: '',
   title: '',
   tags: '',
-  desire: '',
+  status: 'lecturer_wanted',
 };
 
 const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const [, createLectureIdeaRequest] = useCreateLectureIdea();
-  const { user } = useContext(UserContext);
+  const user = useAppSelector((state) => state.user);
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
@@ -95,9 +97,9 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
     await createLectureIdeaRequest({
       body: {
         title: values.title,
-        description: values.content,
+        description: values.description,
         tags: values.tags.split(' '),
-        lecturer: values.desire === 'önskas' ? user.name : null,
+        lecturer: values.status === 'feedback_wanted' ? user.name : null,
       },
     });
     cancel();
@@ -130,10 +132,10 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               multiline
               rows={3}
               maxRows={5}
-              value={values.content}
+              value={values.description}
               onChange={handleChange}
               required
-              name="content"
+              name="description"
               label="Innehåll"
               variant="outlined"
             />
@@ -149,11 +151,21 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             variant="outlined"
           />
 
-          <FormControl className={classes.desire} component="fieldset">
-            <FormLabel component="legend">Typ av idé</FormLabel>
-            <RadioGroup name="desire" onChange={handleChange}>
-              <FormControlLabel value="sökes" control={<Radio />} label="Passhållare sökes" />
-              <FormControlLabel value="önskas" control={<Radio />} label="Endast feedback önskas" />
+          <FormControl className={classes.status} component="fieldset">
+            <FormLabel className={classes.radioButtons} component="legend">
+              Typ av idé
+            </FormLabel>
+            <RadioGroup name="status" onChange={handleChange} value={values.status}>
+              <FormControlLabel
+                value="lecturer_wanted"
+                control={<Radio />}
+                label="Passhållare sökes"
+              />
+              <FormControlLabel
+                value="feedback_wanted"
+                control={<Radio />}
+                label="Endast feedback önskas"
+              />
             </RadioGroup>
           </FormControl>
 
