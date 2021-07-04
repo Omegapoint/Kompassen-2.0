@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useContext, useEffect, useState } from 'react';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { createStyles, Divider, makeStyles, Paper } from '@material-ui/core';
 import { Socket } from 'socket.io-client';
 import useBoolean from '../../hooks/UseBoolean';
@@ -6,8 +6,7 @@ import BottomContainer from './BottomContainer';
 import TopContainer from './TopContainer';
 import { borderRadius, colors } from '../../theme/Theme';
 import LectureContext from './LectureContext';
-import { formatDates } from '../../lib/Lib';
-import AppContext from '../../UserContext';
+import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture as LectureTP, LectureMessage } from '../../lib/Types';
 
 const useStyles = makeStyles(() =>
@@ -33,17 +32,20 @@ const useLectureWS = (socket: Socket, lectureID: string) => {
   const [chat, setChat] = useState<LectureMessage[]>([]);
 
   useEffect(() => {
-    socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
-      setChat(formatDates(messages));
-    });
-    socket.on(`lectureChat/${lectureID}/message`, (message) => {
-      setChat((m) => [...m, formatDates(message)]);
-    });
-    socket.emit('lectureChat/join', lectureID);
+    if (socket) {
+      socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
+        setChat(formatDates(messages));
+      });
+      socket.on(`lectureChat/${lectureID}/message`, (message) => {
+        setChat((m) => [...m, formatDates(message)]);
+      });
+      socket.emit('lectureChat/join', lectureID);
 
-    return () => {
-      socket.emit('lectureChat/leave', lectureID);
-    };
+      return () => {
+        socket.emit('lectureChat/leave', lectureID);
+      };
+    }
+    return () => {};
   }, [lectureID, socket]);
 
   const sendWSMessage = useCallback(
@@ -55,9 +57,9 @@ const useLectureWS = (socket: Socket, lectureID: string) => {
 };
 
 const Lecture = ({ lecture }: LectureProps): ReactElement => {
-  const { socket } = useContext(AppContext);
   const [isExpanded, expand] = useBoolean();
   const classes = useStyles({ isExpanded });
+  const socket = useAppSelector((state) => state.session.socket);
   const { chat, sendWSMessage } = useLectureWS(socket, lecture.id);
 
   return (

@@ -76,7 +76,7 @@ const Home = (): ReactElement => {
           title="Nästa kompetensdag"
           hrefText="Anmäl pass till kompetensdagar"
           hrefBarColor={colors.orange}
-          href="/"
+          href="/class/create"
         >
           <CompetenceDays />
         </SideCard>

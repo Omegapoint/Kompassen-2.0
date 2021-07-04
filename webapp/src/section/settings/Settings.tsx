@@ -1,10 +1,10 @@
 import { createStyles, makeStyles, Typography, Divider } from '@material-ui/core';
-import { ChangeEvent, ReactElement, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { padding } from '../../theme/Theme';
 import Profile from './Profile';
 import Notifications from './Notifications';
 import { useUpdateUser } from '../../lib/Hooks';
-import UserContext from '../../UserContext';
+import { useAppSelector } from '../../lib/Lib';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -27,9 +27,8 @@ const useStyles = makeStyles(() =>
 
 const Settings = (): ReactElement => {
   const classes = useStyles();
-  const { user } = useContext(UserContext);
+  const user = useAppSelector((state) => state.user);
   const [, updateUserRequest] = useUpdateUser();
-
   const [checked, setChecked] = useState(user.notifications);
 
   useEffect(() => {

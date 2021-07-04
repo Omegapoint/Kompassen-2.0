@@ -18,7 +18,9 @@ export const up = async (knex: Knex): Promise<void> =>
       t.specificType('maxParticipants', 'smallint');
       t.text('requirements');
       t.text('preparations');
+      t.text('message');
       t.specificType('tags', 'text ARRAY');
+      t.boolean('idea').notNullable();
 
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();

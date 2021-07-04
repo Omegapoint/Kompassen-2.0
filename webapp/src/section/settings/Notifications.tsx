@@ -1,5 +1,5 @@
 import { createStyles, FormGroup, makeStyles, Switch, Typography } from '@material-ui/core';
-import { ReactElement, Fragment } from 'react';
+import { ReactElement, Fragment, ChangeEvent } from 'react';
 import { padding } from '../../theme/Theme';
 
 const useStyles = makeStyles(() =>
@@ -22,7 +22,7 @@ interface SwitchType {
 
 interface NotificationProps {
   checked: SwitchType;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface DataType {
@@ -51,7 +51,6 @@ const data: DataType[] = [
 
 const Notifications = ({ checked, handleChange }: NotificationProps): ReactElement => {
   const classes = useStyles();
-
   return (
     <FormGroup className={classes.handleNote}>
       {data.map((e) => (

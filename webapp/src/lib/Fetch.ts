@@ -1,4 +1,5 @@
 import { reviver } from './Types';
+import store from '../reducers';
 
 export type HTTPMethod = 'GET' | 'DELETE' | 'POST' | 'PUT';
 
@@ -19,7 +20,7 @@ export async function fetchJSON<Res>(
   url: string,
   options: RequestInit = {}
 ): Promise<FetchResult<Res>> {
-  const { accessToken } = sessionStorage;
+  const accessToken = store.getState().session.token;
 
   const fetchOptions = {
     ...options,
@@ -51,7 +52,7 @@ export async function fetchJSON<Res>(
   }
 }
 
-export type RequestFn<Req> = (payload?: RequestInfo<Req>) => Promise<void>;
+export type RequestFn<Req, Res> = (payload?: RequestInfo<Req>) => Promise<FetchResult<Res>>;
 
 export interface RS<Res> {
   loading: boolean;

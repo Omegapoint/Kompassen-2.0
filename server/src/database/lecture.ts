@@ -1,13 +1,6 @@
 import db from '../lib/database';
 import { logger } from '../config/config';
-import {
-  CategoryStats,
-  IDParam,
-  Lecture,
-  NewLecture,
-  TagStats,
-  UpdatedLecture,
-} from '../lib/types';
+import { CategoryStats, DLecture, IDParam, Lecture, TagStats, UpdatedLecture } from '../lib/types';
 import { snakeToCamel } from '../lib/lib';
 
 const SELECT_EVENTS = `
@@ -23,6 +16,7 @@ const SELECT_EVENTS = `
            l.requirements,
            l.preparations,
            l.tags,
+           l.idea,
            l.created_at,
            l.updated_at,
            u1.name as created_by,
@@ -61,8 +55,8 @@ const SELECT_EVENT_BY_ID = `
 
 const INSERT_EVENT = `
     INSERT INTO lectures(lecturer, description, location, event_id, duration, title, category, max_participants,
-                         requirements, preparations, tags, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $12)
+                         requirements, preparations, tags, idea, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $13)
     RETURNING id
 `;
 
@@ -96,7 +90,7 @@ interface LecturesDB {
   listTags: () => Promise<TagStats[]>;
   listCategories: (id: string) => Promise<CategoryStats[]>;
   getByID: (id: string) => Promise<Lecture | null>;
-  insert: (lecture: NewLecture, id: string) => Promise<IDParam>;
+  insert: (lecture: DLecture, id: string) => Promise<IDParam>;
   update: (lecture: UpdatedLecture, id: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
@@ -139,6 +133,7 @@ const lecturesDB: LecturesDB = {
       lecture.requirements,
       lecture.preparations,
       lecture.tags,
+      lecture.idea,
       userID,
     ]);
     return rows[0];

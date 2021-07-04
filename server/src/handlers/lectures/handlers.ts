@@ -17,7 +17,7 @@ interface Handlers {
 const lectures: Handlers = {
   async create({ body }, res) {
     const { userId } = res.locals;
-    const item = await lecturesDB.insert(body, userId);
+    const item = await lecturesDB.insert({ ...body, idea: false }, userId);
     res.send(item);
   },
   async createIdea({ body }, res) {
@@ -25,6 +25,7 @@ const lectures: Handlers = {
     const item = await lecturesDB.insert(
       {
         ...body,
+        idea: true,
         location: null,
         eventID: null,
         preparations: null,
@@ -32,6 +33,7 @@ const lectures: Handlers = {
         requirements: null,
         duration: null,
         category: null,
+        message: null,
       },
       userId
     );

@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { ReactComponent as TinyArrow } from '../../assets/tinyArrow.svg';
 import EventContext from './EventContext';
+import { Event } from '../../lib/Types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -35,13 +36,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+export const formatEventTime = (event: Event): string => {
+  const startTime = format(event.startAt, 'dd MMMM HH:mm', { locale: sv });
+  const endTime = format(event.endAt, 'HH:mm', { locale: sv });
+  return `${event.location} ${startTime}-${endTime}`;
+};
+
 const DayPicker = (): ReactElement => {
   const classes = useStyles();
   const { events, ind, setInd } = useContext(EventContext);
 
   const event = events[ind];
-  const start = format(event.startAt, 'dd MMMM HH:mm', { locale: sv });
-  const endTime = format(event.endAt, 'HH:mm', { locale: sv });
 
   const previousEvent = () => setInd((i) => (i > 0 ? i - 1 : i));
   const nextEvent = () => setInd((i) => (i <= events.length - 1 ? i + 1 : i));
@@ -57,7 +62,7 @@ const DayPicker = (): ReactElement => {
       >
         <TinyArrow width={10} height={10} transform="rotate(180)" />
       </Button>
-      <Typography>{`${event.location} ${start}-${endTime}`}</Typography>
+      <Typography>{formatEventTime(event)}</Typography>
       <Button
         color="primary"
         variant="contained"
