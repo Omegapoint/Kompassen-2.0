@@ -1,6 +1,6 @@
 #!/bin/bash
 
-(cd webapp && npm i)
-(cd server && npm i)
+(cd webapp && yarn)
+(cd server && yarn)
 
 echo "🦕 Configs setup correctly"
