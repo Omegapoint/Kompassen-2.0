@@ -50,6 +50,11 @@
     "**/*.snap",
     "**/*.svg"
   ],
+  "resolutions": {
+    "browserslist": "^4.16.5",
+    "css-what": "^5.0.1",
+    "glob-parent": "^5.1.2"
+  },
   "dependencies": {
     "@azure/msal-browser": "^2.15.0",
     "@azure/msal-react": "^1.0.1",
