@@ -6,6 +6,7 @@ services:
       - 27017:27017
     volumes:
       - mongodata:/data/db
+      - ./mongo:/docker-entrypoint-initdb.d
 volumes:
   mongodata:
     external: false

@@ -9,6 +9,18 @@
     "lint:check": "eslint --max-warnings 0 'src/**/*'",
     "start": "react-scripts start"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
@@ -26,11 +38,11 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": "off",
-      "react/require-default-props": "off",
       "arrow-body-style": "warn",
-      "import/order": "warn"
+      "import/order": "warn",
+      "react/prop-types": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/require-default-props": "off"
     }
   },
   "eslintIgnore": [
@@ -39,6 +51,8 @@
     "**/*.svg"
   ],
   "dependencies": {
+    "@azure/msal-browser": "^2.15.0",
+    "@azure/msal-react": "^1.0.1",
     "@fontsource/roboto": "^4.4.5",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
@@ -52,36 +66,24 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.7",
+    "@types/react-dom": "^17.0.8",
     "@types/react-router-dom": "^5.1.7",
-    "@typescript-eslint/eslint-plugin": "^4.27.0",
-    "@typescript-eslint/parser": "^4.27.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.3",
-    "babel-plugin-styled-components": "^1.12.0",
-    "eslint": "^7.28.0",
+    "babel-plugin-styled-components": "^1.13.1",
+    "eslint": "^7.29.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^5.7.2",
+    "eslint-plugin-flowtype": "^5.8.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.3.1",
-    "typescript": "^4.3.2"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.4"
   }
 }

@@ -33,17 +33,24 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-      "no-underscore-dangle": 0
+      "no-underscore-dangle": 0,
+      "import/order": 0
     }
   },
   "eslintIgnore": [
-    "**/generated/**/*"
+    "mongo/**/*"
   ],
   "dependencies": {
+    "@types/jsonwebtoken": "^8.5.2",
+    "@types/uuid": "^8.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "joi": "^17.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.3",
     "mongodb": "^3.6.9",
-    "node-fetch": "^2.6.1"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

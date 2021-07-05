@@ -1,47 +1,67 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import db, { Post } from '../database/database';
+import users from './users';
+import checkSession from '../lib/auth';
+import hasAccess from '../lib/checkAccess';
+import { httpError } from '../lib/lib';
+import config from '../config/config';
 
-const listPosts = async (req: Request, res: Response): Promise<void> => {
-  const resp = await db.listPosts(req.app.locals.db);
-  res.send(resp);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getClaims = async (authStr: string): Promise<any> => {
+  const claims = await checkSession(authStr);
+  if (!claims) {
+    throw Error('Invalid authorization token');
+  }
+  return claims;
 };
 
-const getPost = async (req: Request, res: Response): Promise<void> => {
-  const resp = await db.getPost(req.app.locals.db, req.params.id);
-  res.send(resp);
+const authCheck = async (req: Request, res: Response, next: NextFunction) => {
+  const { authorization } = req.headers;
+  let role = null;
+
+  if (authorization) {
+    const auth = authorization.split(' ');
+    if (auth.length !== 2 || auth[0] !== 'Bearer') {
+      httpError(res, 401, 'Only bearer authorization is supported');
+      return;
+    }
+    const claims = await getClaims(auth[1]);
+    res.locals.userID = claims.oid;
+    role = claims.role || 'admin';
+  }
+
+  const access = hasAccess(req.url, req.method, role);
+  if (!access) {
+    if (access === null) {
+      httpError(res, 403, 'User does not have access to the resource');
+      return;
+    }
+
+    httpError(res, 404, 'Resource not found');
+    return;
+  }
+
+  next();
 };
 
-const deletePost = async (req: Request, res: Response): Promise<void> => {
-  const resp = await db.deletePost(req.app.locals.db, req.params.id);
-  res.send({ ok: resp });
-};
-
-const createPost = async (req: Request<Post>, res: Response): Promise<void> => {
-  req.body.createdAt = new Date();
-  req.body.updatedAt = req.body.createdAt;
-  const quote = req.body;
-  const resp = await db.insertPost(req.app.locals.db, quote);
-  res.send({ ok: resp });
-};
-
-const updatePost = async (req: Request<Post>, res: Response): Promise<void> => {
-  req.body.updatedAt = new Date();
-  const quote = req.body;
-  const resp = await db.updatePost(req.app.locals.db, quote);
-  res.send({ ok: resp });
+const loginInfoHandler = (req: Request, res: Response) => {
+  res.send({
+    clientId: config.oidc.azure.clientID,
+    authority: `https://login.microsoftonline.com/${config.oidc.azure.tenantID}`,
+    redirectUri: config.oidc.azure.redirectUrl,
+  });
 };
 
 const setupExpress = (): Express => {
   const app = express();
   app.use(cors());
   app.use(express.json());
+  app.use(authCheck);
 
-  app.post('/kompassen', createPost);
-  app.put('/kompassen', updatePost);
-  app.get('/kompassen', listPosts);
-  app.get('/kompassen/:id', getPost);
-  app.delete('/kompassen/:id', deletePost);
+  app.get('/login/config', loginInfoHandler);
+
+  app.post('/user', users.create);
+  app.get('/user', users.get);
   return app;
 };
 

@@ -25,12 +25,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = (): ReactElement => {
+const Navbar = (): ReactElement => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
-      <Link component={NavLink} to="/" color="secondary" variant="body2" className={classes.header}>
+      <Link component={NavLink} to="/" color="secondary" variant="body1" className={classes.header}>
         KomPass 2.0
       </Link>
       <User firstName="Jonas" lastName="Sjödin" />
@@ -44,4 +44,4 @@ const Header = (): ReactElement => {
   );
 };
 
-export default Header;
+export default Navbar;
