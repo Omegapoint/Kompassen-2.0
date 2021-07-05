@@ -33,7 +33,7 @@ const Settings = (): ReactElement => {
     responsibleClass: true,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | null>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked({ ...checked, [event.target.name]: event.target.checked });
   };
 

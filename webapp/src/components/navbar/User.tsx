@@ -1,7 +1,9 @@
+import React, { MouseEvent, ReactElement } from 'react';
 import {
   Avatar,
   Divider,
   IconButton,
+  ListItem,
   ListItemIcon,
   ListItemText,
   makeStyles,
@@ -9,7 +11,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { Settings, ExitToApp, Edit, ArrowDropDown } from '@material-ui/icons';
-import React, { MouseEvent, ReactElement } from 'react';
+import { useMsal } from '@azure/msal-react';
 import { colors } from '../../theme/Theme';
 
 interface UserProps {
@@ -39,6 +41,7 @@ const useStyles = makeStyles(() => ({
 const User = ({ firstName, lastName }: UserProps): ReactElement => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { instance } = useMsal();
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,6 +49,13 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logout = () => {
+    instance.logoutPopup({
+      postLogoutRedirectUri: '/',
+      mainWindowRedirectUri: '/',
+    });
   };
   return (
     <>
@@ -77,7 +87,9 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
           <ListItemIcon>
             <ExitToApp fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Logga ut</ListItemText>
+          <ListItem button onClick={logout}>
+            Logga ut
+          </ListItem>
         </MenuItem>
       </Menu>
     </>
