@@ -1,6 +1,9 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, useContext, useEffect, useState } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
+import { differenceInDays, intervalToDuration } from 'date-fns';
 import { borderRadius, colors, padding } from '../../theme/Theme';
+import EventContext from './EventContext';
+import { Event } from '../../lib/Types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -30,14 +33,35 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const data = [
-  { nr: 21, desc: 'dagar' },
-  { nr: 3, desc: 'h' },
-  { nr: 34, desc: 'min' },
-];
+interface Time {
+  days: number;
+  hours: number;
+  minutes: number;
+}
+
+const getTime = (event: Event): Time => {
+  const days = differenceInDays(event.startAt, new Date());
+  const { hours, minutes } = intervalToDuration({ start: event.startAt, end: new Date() });
+  return { days, hours: hours || 0, minutes: minutes || 0 };
+};
 
 const DaysToGo = (): ReactElement => {
   const classes = useStyles();
+  const { events, ind } = useContext(EventContext);
+
+  const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind]));
+
+  useEffect(() => {
+    setDates(getTime(events[ind]));
+    const interval = setInterval(() => setDates(getTime(events[ind])), 5 * 1000);
+    return () => clearInterval(interval);
+  }, [events, ind]);
+
+  const data = [
+    { nr: days, desc: 'dagar' },
+    { nr: hours, desc: 'h' },
+    { nr: minutes, desc: 'min' },
+  ];
 
   return (
     <div className={classes.container}>

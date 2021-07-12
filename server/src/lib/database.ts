@@ -1,14 +1,22 @@
-import { Db, MongoClient } from 'mongodb';
+import { Pool } from 'pg';
 import config from '../config/config';
+import { knexSnakeCaseMappers } from 'objection';
+import Knex from 'knex';
 
-// eslint-disable-next-line import/no-mutable-exports
-export let conn: Db;
+export const knex = Knex({
+  client: 'pg',
+  version: '13.0',
+  connection: config.postgres,
+  pool: {
+    min: 2,
+    max: 7,
+    idleTimeoutMillis: 20 * 1000,
+  },
+  ...knexSnakeCaseMappers(),
+});
 
-export const setupDb = async (): Promise<void> => {
-  try {
-    const client = await MongoClient.connect(config.mongoURL, {});
-    conn = client.db();
-  } catch (err) {
-    throw Error(`Failed to connect to the database. ${err.stack}`);
-  }
-};
+const db = new Pool({
+  connectionString: config.postgresUrl,
+});
+
+export default db;

@@ -1,12 +1,17 @@
 version: '3.7'
 services:
-  mongo:
-    image: mongo:4.4.6-bionic
+  postgres:
+    image: postgres:13.3
+    restart: always
     ports:
-      - 27017:27017
+      - 15432:5432
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: kompassen2
     volumes:
-      - mongodata:/data/db
-      - ./mongo:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+#      - ./postgres:/docker-entrypoint-initdb.d
 volumes:
-  mongodata:
+  pgdata:
     external: false

@@ -1,12 +1,23 @@
-import setupExpress from './handlers/handlers';
+import setupExpress from './handlers/routes';
 import config, { logger } from './config/config';
-import { setupDb } from './lib/database';
+import { Server } from 'socket.io';
+import * as http from 'http';
+import { setupWebSocket } from './socket';
 
 (async (): Promise<void> => {
   const app = setupExpress();
 
-  await setupDb();
-  app.listen({ port: config.port }, () =>
+  const server = http.createServer(app);
+  const io = new Server(server, {
+    cors: {
+      origin: '*', // TODO: ONLY IN DEVELOPMENT
+      methods: ['GET', 'POST'],
+    },
+  });
+
+  setupWebSocket(io);
+
+  server.listen({ port: config.port }, () =>
     logger.info(`Running at http://localhost:${config.port}`)
   );
 })();

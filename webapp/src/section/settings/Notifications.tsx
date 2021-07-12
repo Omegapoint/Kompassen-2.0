@@ -1,5 +1,5 @@
 import { createStyles, FormGroup, makeStyles, Switch, Typography } from '@material-ui/core';
-import React, { ReactElement } from 'react';
+import { ReactElement, Fragment } from 'react';
 import { padding } from '../../theme/Theme';
 
 const useStyles = makeStyles(() =>
@@ -14,10 +14,10 @@ const useStyles = makeStyles(() =>
 );
 
 interface SwitchType {
-  newPosts: boolean;
-  commentedPost: boolean;
-  adminReadPost: boolean;
-  responsibleClass: boolean;
+  newLecture: boolean;
+  newComment: boolean;
+  adminRead: boolean;
+  lectureTaken: boolean;
 }
 
 interface NotificationProps {
@@ -33,19 +33,19 @@ interface DataType {
 const data: DataType[] = [
   {
     title: 'Nytt inlägg i Community',
-    name: 'newPosts',
+    name: 'newLecture',
   },
   {
     title: 'Inlägg jag kommenterat',
-    name: 'commentedPost',
+    name: 'newComment',
   },
   {
     title: 'Admin har läst mitt inlämnade pass',
-    name: 'adminReadPost',
+    name: 'adminRead',
   },
   {
     title: 'Någon har ställt upp som passhållare',
-    name: 'responsibleClass',
+    name: 'lectureTaken',
   },
 ];
 
@@ -55,10 +55,10 @@ const Notifications = ({ checked, handleChange }: NotificationProps): ReactEleme
   return (
     <FormGroup className={classes.handleNote}>
       {data.map((e) => (
-        <>
+        <Fragment key={e.name}>
           <Typography>{e.title}</Typography>
           <Switch checked={checked[e.name]} onChange={handleChange} name={e.name} />
-        </>
+        </Fragment>
       ))}
     </FormGroup>
   );

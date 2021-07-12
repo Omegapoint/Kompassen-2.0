@@ -8,8 +8,10 @@ const useStyles = makeStyles(() =>
   createStyles({
     container: {
       display: 'grid',
+      width: '100%',
       padding: padding.standard,
-      justifyContent: 'center',
+      maxWidth: '1500px',
+      justifySelf: 'center',
     },
   })
 );

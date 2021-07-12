@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { constants } from '../../theme/Theme';
 
@@ -10,7 +10,6 @@ const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
     justifyItems: 'center',
-    maxWidth: '1500px',
     minWidth: '200px',
     minHeight: `calc(100vh - ${constants.headerHeight})`,
     padding: '20px',

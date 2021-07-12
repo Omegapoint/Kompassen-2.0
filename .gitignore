@@ -5,6 +5,10 @@ build
 .env
 secrets.sh
 
+# We are using yarn
+package-lock.json
+yarn-error.log
+
 # Terraform
 terraform.tfstate
 terraform.tfstate.backup

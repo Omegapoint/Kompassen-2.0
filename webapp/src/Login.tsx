@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BrowserAuthOptions, LogLevel } from '@azure/msal-browser';
+import { BrowserAuthOptions } from '@azure/msal-browser';
 import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
 
 export const genMSALConfig = (loginConfig: BrowserAuthOptions): Configuration => ({
@@ -12,14 +12,14 @@ export const genMSALConfig = (loginConfig: BrowserAuthOptions): Configuration =>
   },
   system: {
     loggerOptions: {
-      loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {
-        if (containsPii) return;
-
-        if (level === LogLevel.Error) console.error(message);
-        else if (level === LogLevel.Info) console.info(message);
-        else if (level === LogLevel.Verbose) console.debug(message);
-        else if (level === LogLevel.Warning) console.warn(message);
-      },
+      // loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {
+      //   if (containsPii) return;
+      //
+      //   if (level === LogLevel.Error) console.error(message);
+      //   else if (level === LogLevel.Info) console.info(message);
+      //   else if (level === LogLevel.Verbose) console.debug(message);
+      //   else if (level === LogLevel.Warning) console.warn(message);
+      // },
     },
   },
 });

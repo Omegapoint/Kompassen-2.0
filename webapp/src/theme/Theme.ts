@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 
 export const colors = {
   primary: '#286166',
@@ -43,7 +43,7 @@ export const padding = {
   tiny: '5px',
 };
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   overrides: {
     MuiButton: {
       root: {

@@ -1,10 +1,12 @@
-import React, { ReactElement, useState, Fragment } from 'react';
+import { ReactElement, useState, Fragment, useEffect, useContext } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import { Divider, makeStyles, Typography } from '@material-ui/core';
-import { DataEntry } from 'react-minimal-pie-chart/types/commonTypes';
 import { colors, padding } from '../../theme/Theme';
-import { getIconByKind, IconType, LectureKind } from '../latestLectures/lecture';
+import { IconType } from '../latestLectures/lecture';
 import ChartIcon from './ChartIcon';
+import { useListCategories, useListLectureCategories } from '../../lib/Hooks';
+import EventContext from './EventContext';
+import SmallLoader from '../loader/SmallLoader';
 
 export const iconColor: IconType = {
   cloud: colors.yellow,
@@ -13,21 +15,6 @@ export const iconColor: IconType = {
   sun: colors.lightGreen,
   vcs: colors.purple,
 };
-
-interface DataKind extends DataEntry {
-  title: LectureKind;
-  desc: string;
-}
-
-const data: DataKind[] = [
-  { title: 'cloud', desc: 'Molnbaserat', value: 3, color: iconColor.cloud },
-  { title: 'sun', desc: 'Mjukt spår', value: 2, color: iconColor.sun },
-  { title: 'vcs', desc: 'Versionshantering', value: 2, color: iconColor.vcs },
-  { title: 'shield', desc: 'Säkerhet', value: 1, color: iconColor.shield },
-  { title: 'code', desc: 'Utveckling', value: 0, color: iconColor.code },
-];
-
-const filteredData = data.filter((e) => e.value > 0);
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -52,11 +39,31 @@ const useStyles = makeStyles(() => ({
   line: {},
 }));
 
+const size = 6;
+
 const LectureStats = (): ReactElement => {
   const classes = useStyles();
   const [hovered, setHovered] = useState<number | undefined>(undefined);
+  const [lectureCategories, lectureCategoriesRequest] = useListLectureCategories();
+  const { event } = useContext(EventContext);
+  const [categories, categoriesRequest] = useListCategories();
 
-  const size = 6;
+  useEffect(() => {
+    categoriesRequest();
+  }, [categoriesRequest]);
+
+  const r = lectureCategories.data?.map((e) => ({
+    title: categories.data?.find((e1) => e1.name === e.category)?.icon,
+    desc: e.category,
+    value: e.count,
+    color: iconColor.cloud,
+  }));
+
+  useEffect(() => {
+    lectureCategoriesRequest({ urlParams: { id: event.id } });
+  }, [lectureCategoriesRequest, event.id]);
+
+  if (lectureCategories.loading) return <SmallLoader />;
 
   return (
     <div className={classes.container}>
@@ -66,7 +73,7 @@ const LectureStats = (): ReactElement => {
       </div>
       <div className={classes.subContainer}>
         <PieChart
-          data={filteredData}
+          data={r}
           radius={PieChart.defaultProps.radius - size}
           segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
           segmentsShift={(index) => (index === hovered ? size : 2)}
@@ -84,9 +91,14 @@ const LectureStats = (): ReactElement => {
           )}
         />
         <div className={classes.descContainer}>
-          {data.map((e) => (
+          {r?.map((e) => (
             <Fragment key={e.title}>
-              <img alt="icon" width="12" height="12" src={getIconByKind(e.title)} />
+              <img
+                alt="icon"
+                width="12"
+                height="12"
+                src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
+              />
               <Typography>{e.desc}</Typography>
               <Typography>{e.value}</Typography>
             </Fragment>

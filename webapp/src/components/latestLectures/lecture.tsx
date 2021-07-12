@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { borderRadius, padding } from '../../theme/Theme';
-import { formatDate } from '../forum/Row';
+import { formatDate } from '../lecture/Row';
 import cloud from '../../assets/cloud.svg';
 import code from '../../assets/code.svg';
 import shield from '../../assets/shield.svg';
