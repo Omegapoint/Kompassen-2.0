@@ -1,49 +1,114 @@
-import { ObjectId } from 'mongodb';
-import { filterOutID } from '../lib/lib';
-import { Event } from '../lib/types';
-import { conn } from '../lib/database';
+import db from '../lib/database';
+import { logger } from '../config/config';
+import { IDParam, Event, NewEvent, UpdatedEvent } from '../lib/types';
+import { snakeToCamel } from '../lib/lib';
 
-const collectionName = 'events';
+const BASE_SELECT_EVENTS = `
+    SELECT l.id,
+           l.start_at,
+           l.end_at,
+           l.location,
+           l.created_at,
+           l.updated_at,
+           u1.name as created_by,
+           u2.name as updated_by
+    FROM events l
+             LEFT JOIN users u1 on l.created_by = u1.id
+             LEFT JOIN users u2 on l.updated_by = u2.id
+`;
 
-async function listAll(): Promise<Event[]> {
-  const db = await conn;
-  const collection = db.collection(collectionName);
-  const r = await collection.find();
-  return r.toArray();
+const SELECT_EVENTS = `
+    SELECT l.id,
+           l.start_at,
+           l.end_at,
+           l.location,
+           l.created_at,
+           l.updated_at,
+           u1.name as created_by,
+           u2.name as updated_by
+    FROM events l
+             LEFT JOIN users u1 on l.created_by = u1.id
+             LEFT JOIN users u2 on l.updated_by = u2.id
+    WHERE l.end_at > now()
+`;
+
+const SELECT_EVENT_BY_ID = `
+    ${BASE_SELECT_EVENTS}
+    WHERE l.id = $1
+`;
+
+const INSERT_EVENT = `
+    INSERT INTO events(start_at, end_at, location, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $4)
+    RETURNING id
+`;
+
+const UPDATE_EVENT = `
+    UPDATE events
+    SET start_at   = $1,
+        end_at     = $2,
+        location   = $3,
+        updated_by = $4
+    WHERE id = $5
+    RETURNING id
+`;
+
+const DELETE_EVENT = `
+    DELETE
+    FROM events
+    WHERE id = $1
+    RETURNING id
+`;
+
+interface EventsDB {
+  list: (onlyNew: boolean) => Promise<Event[]>;
+  getByID: (id: string) => Promise<Event | null>;
+  insert: (event: NewEvent, id: string) => Promise<IDParam>;
+  update: (event: UpdatedEvent, id: string) => Promise<IDParam>;
+  delete: (id: string) => Promise<IDParam>;
 }
 
-async function getById(id: string): Promise<Event> {
-  const collection = conn.collection(collectionName);
-  return collection.findOne({ _id: new ObjectId(id) });
-}
+const eventsDB: EventsDB = {
+  async list(onlyNew: boolean) {
+    const filter = onlyNew ? ' ORDER BY start_at' : '';
+    const { rows } = await db.query(SELECT_EVENTS + filter);
+    return snakeToCamel(rows) || [];
+  },
 
-async function insert(event: Event): Promise<Event[]> {
-  const collection = conn.collection(collectionName);
-  const r = await collection.insertOne(event);
-  return r.ops;
-}
+  async getByID(id) {
+    const { rows } = await db.query(SELECT_EVENT_BY_ID, [id]);
+    if (!rows[0]) {
+      logger.error(`could not find event with id = '${id}'`);
+      return null;
+    }
+    return snakeToCamel(rows[0]);
+  },
 
-async function update(event: Event): Promise<number> {
-  const collection = conn.collection(collectionName);
-  const r = await collection.updateOne(
-    { _id: new ObjectId(event._id) },
-    { $set: { ...filterOutID(event) } }
-  );
-  return r.upsertedCount;
-}
+  async insert(event, userID): Promise<IDParam> {
+    const { rows } = await db.query(INSERT_EVENT, [
+      event.startAt,
+      event.endAt,
+      event.location,
+      userID,
+    ]);
+    return rows[0];
+  },
 
-async function deleteById(id: string): Promise<number> {
-  const collection = conn.collection(collectionName);
-  const r = await collection.deleteOne({ _id: new ObjectId(id) });
-  return r.deletedCount || 0;
-}
+  async update(event, userID): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_EVENT, [
+      event.startAt,
+      event.endAt,
+      event.location,
+      userID,
+      event.id,
+    ]);
+    return rows[0];
+  },
 
-const events = {
-  insert,
-  update,
-  deleteById,
-  getById,
-  listAll,
+  async delete(id): Promise<IDParam> {
+    const { rows } = await db.query(DELETE_EVENT, [id]);
+    return rows[0];
+  },
 };
 
-export default events;
+export default eventsDB;

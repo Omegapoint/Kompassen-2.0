@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Content from '../components/content/Content';
 import Home from '../section/home/Home';

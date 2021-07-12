@@ -1,4 +1,5 @@
-import React, { MouseEvent, ReactElement } from 'react';
+import { MouseEvent, ReactElement, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   Avatar,
   Divider,
@@ -40,7 +41,7 @@ const useStyles = makeStyles(() => ({
 
 const User = ({ firstName, lastName }: UserProps): ReactElement => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { instance } = useMsal();
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -80,7 +81,9 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Inställningar</ListItemText>
+          <ListItem component={NavLink} to="/settings">
+            Inställningar
+          </ListItem>
         </MenuItem>
         <Divider variant="middle" />
         <MenuItem onClick={handleClose}>

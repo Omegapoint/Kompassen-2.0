@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-const { MONGO_URL, PORT, OIDC_CLIENT_ID, OIDC_TENANT_ID } = process.env;
+const { POSTGRES_URL, PORT, OIDC_CLIENT_ID, OIDC_TENANT_ID } = process.env;
 
 export const logger = winston.createLogger({
   level: 'info',
@@ -9,7 +9,14 @@ export const logger = winston.createLogger({
 });
 
 const config = {
-  mongoURL: MONGO_URL || 'mongodb://localhost:27017/kompassen2',
+  postgresUrl: POSTGRES_URL || 'postgresql://username:password@localhost:15432/kompassen2',
+  postgres: {
+    host: 'localhost',
+    port: 15432,
+    user: 'username',
+    password: 'password',
+    database: 'kompassen2',
+  },
   port: PORT || '8080',
   oidc: {
     azure: {
@@ -48,6 +55,26 @@ export const authConfig: AuthConfig = {
     {
       path: '/event',
       method: 'POST',
+      roles: ['user'],
+    },
+    {
+      path: '/event',
+      method: 'PUT',
+      roles: ['user'],
+    },
+    {
+      path: '/event',
+      method: 'GET',
+      roles: ['user'],
+    },
+    {
+      path: '/event/:id',
+      method: 'GET',
+      roles: ['user'],
+    },
+    {
+      path: '/event',
+      method: 'DELETE',
       roles: ['user'],
     },
     {

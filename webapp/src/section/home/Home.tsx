@@ -1,8 +1,8 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import React, { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import SideCard from '../../components/sideCard/SideCard';
 import { colors, padding } from '../../theme/Theme';
-import Forum from '../../components/forum/Forum';
+import Lecture from '../../components/lecture/Lecture';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
 import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
 import QuickGuide from '../../components/quickGuide/QuickGuide';
@@ -10,6 +10,7 @@ import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import WordCloud from '../../components/wordCloud/WordCloud';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
+import { useListLectures } from '../../lib/Hooks';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -43,6 +44,11 @@ const useStyles = makeStyles(() => ({
 const Home = (): ReactElement => {
   const [active, setActive] = useState(false);
   const classes = useStyles();
+  const [lectures, listLectures] = useListLectures();
+
+  useEffect(() => {
+    listLectures();
+  }, [listLectures]);
 
   const activateIdea = () => {
     setActive((e) => !e);
@@ -62,7 +68,8 @@ const Home = (): ReactElement => {
             Publicera ny idé
           </Button>
         )}
-        <Forum bookedBy="Fatima Nouri har ställt upp som passhållare" />
+        {lectures.data &&
+          lectures.data.map((lecture) => <Lecture key={lecture.id} lecture={lecture} />)}
       </div>
       <div className={classes.rightPanel}>
         <SideCard

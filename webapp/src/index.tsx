@@ -8,8 +8,8 @@ import { genMSALConfig } from './Login';
 import App from './App';
 import GlobalStyles from './theme/GlobalStyle';
 import { theme } from './theme/Theme';
-import { BASE_HTTP_URL } from './lib/fetch';
-import Loader from './components/loader/Loader';
+import { BASE_HTTP_URL } from './lib/Fetch';
+import BigLoader from './components/loader/BigLoader';
 
 const Index = () => {
   const [loginInfo, setLoginInfo] = useState<null | BrowserAuthOptions>();
@@ -22,7 +22,7 @@ const Index = () => {
     })();
   }, []);
 
-  if (!loginInfo) return <Loader />;
+  if (!loginInfo) return <BigLoader />;
   const msalInstance = new PublicClientApplication(genMSALConfig(loginInfo));
   return (
     <MsalProvider instance={msalInstance}>

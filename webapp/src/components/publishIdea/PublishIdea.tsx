@@ -1,4 +1,4 @@
-import { ReactElement, MouseEvent, FormEvent } from 'react';
+import { ReactElement, MouseEvent, FormEvent, useContext } from 'react';
 import { IEmojiData } from 'emoji-picker-react';
 import {
   Button,
@@ -17,6 +17,8 @@ import {
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import useForm from '../../hooks/UseForm';
 import TextPanel from '../textPanel/TextPanel';
+import { useCreateLectureIdea } from '../../lib/Hooks';
+import UserContext from '../../UserContext';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,7 +37,7 @@ const useStyles = makeStyles(() =>
                           "title title title"
                           "content content content"
                           "tags tags tags"
-                          "location desire ."
+                          "desire . ."
                           "cancel . submit"`,
     },
     line: {
@@ -56,9 +58,6 @@ const useStyles = makeStyles(() =>
     },
     tags: {
       gridArea: 'tags',
-    },
-    location: {
-      gridArea: 'location',
     },
     desire: {
       gridArea: 'desire',
@@ -81,16 +80,27 @@ const defaultFormValue = {
   content: '',
   title: '',
   tags: '',
-  city: '',
   desire: '',
 };
 
 const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
+  const [, createLectureIdeaRequest] = useCreateLectureIdea();
+  const { user } = useContext(UserContext);
 
-  const handleSubmit = (evt: FormEvent) => {
+  const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
+
+    await createLectureIdeaRequest({
+      body: {
+        title: values.title,
+        description: values.content,
+        tags: values.tags.split(' '),
+        lecturer: values.desire === 'önskas' ? user.name : null,
+      },
+    });
+    cancel();
   };
 
   const handleSmiley = (_: MouseEvent, data: IEmojiData) => {
@@ -119,7 +129,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               fullWidth
               multiline
               rows={3}
-              rowsMax={5}
+              maxRows={5}
               value={values.content}
               onChange={handleChange}
               required
@@ -127,7 +137,6 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               label="Innehåll"
               variant="outlined"
             />
-            {/* <TextPanel handleEmojiClick={handleClick}/> */}
             <TextPanel handleEmojiClick={handleSmiley} />
           </div>
 
@@ -140,16 +149,6 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             variant="outlined"
           />
 
-          <FormControl className={classes.location} component="fieldset">
-            <FormLabel required component="legend">
-              Plats
-            </FormLabel>
-            <RadioGroup name="city" onChange={handleChange}>
-              <FormControlLabel value="stockholm" control={<Radio />} label="Stockholm" />
-              <FormControlLabel value="umeå" control={<Radio />} label="Umeå" />
-              <FormControlLabel value="distans" control={<Radio />} label="Distans" />
-            </RadioGroup>
-          </FormControl>
           <FormControl className={classes.desire} component="fieldset">
             <FormLabel component="legend">Typ av idé</FormLabel>
             <RadioGroup name="desire" onChange={handleChange}>

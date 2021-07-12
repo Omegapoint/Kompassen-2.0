@@ -1,8 +1,10 @@
 import { createStyles, makeStyles, Typography, Divider } from '@material-ui/core';
-import React, { ReactElement } from 'react';
+import { ChangeEvent, ReactElement, useContext, useEffect, useState } from 'react';
 import { padding } from '../../theme/Theme';
 import Profile from './Profile';
 import Notifications from './Notifications';
+import { useUpdateUser } from '../../lib/Hooks';
+import UserContext from '../../UserContext';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -25,15 +27,16 @@ const useStyles = makeStyles(() =>
 
 const Settings = (): ReactElement => {
   const classes = useStyles();
+  const { user } = useContext(UserContext);
+  const [, updateUserRequest] = useUpdateUser();
 
-  const [checked, setChecked] = React.useState({
-    newPosts: true,
-    commentedPost: true,
-    adminReadPost: true,
-    responsibleClass: true,
-  });
+  const [checked, setChecked] = useState(user.notifications);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    updateUserRequest({ body: { id: user.id, notifications: checked } });
+  }, [checked, user.id, updateUserRequest]);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked({ ...checked, [event.target.name]: event.target.checked });
   };
 

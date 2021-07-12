@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { IconButton, Badge, makeStyles, Link } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
 import { NavLink } from 'react-router-dom';

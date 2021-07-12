@@ -1,15 +1,18 @@
-import React, { ChangeEvent, ReactElement, useEffect } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
-import { Button, createStyles, makeStyles, Modal, Paper, Typography } from '@material-ui/core';
-import LoginPage from './LoginPage';
+import { Button, createStyles, makeStyles, Paper, Typography } from '@material-ui/core';
+import io, { Socket } from 'socket.io-client';
+import GreetingPage from './GreetingPage';
 import Navbar from './components/navbar/Navbar';
 import Body from './components/body/Body';
 import Footer from './components/footer/Footer';
 import useAccessToken from './hooks/UseAccessToken';
-import { useCreateUser, useGetUser } from './lib/hooks';
+import { useCreateUser, useGetUser } from './lib/Hooks';
 import Notifications from './section/settings/Notifications';
 import { padding } from './theme/Theme';
-import Loader from './components/loader/Loader';
+import BigLoader from './components/loader/BigLoader';
+import LoginPage from './LoginPage';
+import UserContext from './UserContext';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -31,89 +34,89 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const defaultNotifications = {
+  newLecture: true,
+  newComment: true,
+  adminRead: true,
+  lectureTaken: true,
+};
+
 const Content = (): ReactElement => {
   const [getState, getUser] = useGetUser();
   const [, createUser] = useCreateUser();
-  const [open, setOpen] = React.useState(false);
+  const { loading, token } = useAccessToken();
+  const [socket, setSocket] = useState<null | Socket>(null);
+  const [notifications, setNotifications] = useState(defaultNotifications);
+  const { inProgress } = useMsal();
   const classes = useStyles();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    if (token) {
+      const sock = io('ws://localhost:8080/', {
+        reconnectionDelayMax: 10000,
+        auth: { token },
+      });
+      setSocket(sock);
+    }
+  }, [token]);
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNotifications({ ...notifications, [event.target.name]: event.target.checked });
   };
 
   useEffect(() => {
     getUser();
   }, [getUser]);
 
-  useEffect(() => {
-    if (getState.error?.code === 404) {
-      handleOpen();
-    }
-  }, [createUser, getState]);
-
-  const [checked, setChecked] = React.useState({
-    newPosts: true,
-    commentedPost: true,
-    adminReadPost: true,
-    responsibleClass: true,
-  });
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked({ ...checked, [event.target.name]: event.target.checked });
-  };
-
   const handleSubmit = async () => {
-    await createUser({
-      body: {
-        notifications: {
-          newLecture: true,
-          newComment: true,
-          adminRead: true,
-          lectureTaken: true,
-        },
-      },
-    });
+    await createUser({ body: { notifications } });
     window.location.reload();
   };
 
+  if (loading || inProgress !== 'none' || getState.loading) {
+    return <BigLoader />;
+  }
+
+  if (getState.error?.code === 404) {
+    return (
+      <GreetingPage>
+        <Paper className={classes.paper}>
+          <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
+          <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
+          <Notifications handleChange={handleChange} checked={notifications} />
+          <Button color="primary" variant="contained" onClick={handleSubmit}>
+            Spara inställningarna
+          </Button>
+        </Paper>
+      </GreetingPage>
+    );
+  }
+
+  if (!getState.data || !socket) {
+    return <BigLoader />;
+  }
+
   return (
-    <>
+    <UserContext.Provider value={{ user: getState.data, socket }}>
       <Navbar />
-      <Body />
+      <div style={{ display: 'grid', justifyItems: 'center' }}>
+        <Body />
+      </div>
       <Footer />
-      <Modal open={open} onClose={handleClose}>
-        <div className={classes.modal}>
-          <Paper className={classes.paper}>
-            <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
-            <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
-            <Notifications handleChange={handleChange} checked={checked} />
-            <Button color="primary" variant="contained" onClick={handleSubmit}>
-              Spara inställningarna
-            </Button>
-          </Paper>
-        </div>
-      </Modal>
-    </>
+    </UserContext.Provider>
   );
 };
 
 const App = (): ReactElement => {
-  const { loading } = useAccessToken();
   const isAuthenticated = useIsAuthenticated();
-  const { inProgress } = useMsal();
 
   if (!isAuthenticated) {
-    return <LoginPage />;
+    return (
+      <GreetingPage>
+        <LoginPage />
+      </GreetingPage>
+    );
   }
-
-  if (loading || inProgress !== 'none') {
-    return <Loader />;
-  }
-
   return <Content />;
 };
 

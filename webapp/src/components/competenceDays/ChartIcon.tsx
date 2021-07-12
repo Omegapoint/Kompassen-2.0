@@ -1,7 +1,6 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { LabelRenderProps } from 'react-minimal-pie-chart/types/Label';
-import { getIconByKind, LectureKind } from '../latestLectures/lecture';
 import { colors } from '../../theme/Theme';
 import DynamicSvg from '../dynamicSVG/DynamicSVG';
 
@@ -28,7 +27,7 @@ const ChartIcon = ({ dx, dy, x, y, dataEntry, onMouseOver }: ChartIconProps): Re
       onMouseOver={onMouseOver}
       key={dataEntry.title}
       className={classes.container}
-      url={getIconByKind(dataEntry.title as LectureKind)}
+      svg={dataEntry.title as string}
       x={xPos}
       y={yPos}
       dominantBaseline="central"

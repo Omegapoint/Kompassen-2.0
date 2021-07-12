@@ -4,6 +4,7 @@ import { loginRequest } from '../Login';
 
 interface UseAccessToken {
   loading: boolean;
+  token: string;
 }
 
 const useAccessToken = (): UseAccessToken => {
@@ -22,13 +23,13 @@ const useAccessToken = (): UseAccessToken => {
       }
     };
 
-    const timerID = setInterval(getToken, 60 * 1000);
+    const timerID = setInterval(getToken, 10 * 60 * 1000);
     getToken();
 
     return () => clearInterval(timerID);
   }, [accounts, instance]);
 
-  return { loading: !token };
+  return { loading: !token, token };
 };
 
 export default useAccessToken;
