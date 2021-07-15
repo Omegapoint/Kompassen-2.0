@@ -16,12 +16,13 @@ const useStyles = makeStyles(() => ({
 
 interface ChartIconProps extends LabelRenderProps {
   onMouseOver: () => void;
+  one: boolean;
 }
 
-const ChartIcon = ({ dx, dy, x, y, dataEntry, onMouseOver }: ChartIconProps): ReactElement => {
+const ChartIcon = ({ one, dx, dy, x, y, dataEntry, onMouseOver }: ChartIconProps): ReactElement => {
   const classes = useStyles();
   const xPos = x - SIZE / 2 + dx * 1.3;
-  const yPos = y - SIZE / 2 + dy * 1.3;
+  const yPos = y - SIZE / 2 + (one ? 0 : dy * 1.3);
   return (
     <DynamicSvg
       onMouseOver={onMouseOver}

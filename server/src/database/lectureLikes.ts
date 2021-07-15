@@ -23,6 +23,7 @@ interface LectureLikesDB {
 const lectureLikesDB: LectureLikesDB = {
   async insert(msg, userID): Promise<IDParam> {
     const { rows } = await db.query(INSERT_LECTURE_LIKE, [msg.lectureId, userID]);
+
     return rows[0];
   },
   async delete(lectureID, userID): Promise<IDParam> {

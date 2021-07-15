@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
-import { colors, fontFamilies } from '../../theme/Theme';
+import { fontFamilies } from '../../theme/Theme';
 
 interface StyleProps {
   size: number;
@@ -18,23 +18,16 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
   })
 );
 
-const differentColors = [
-  colors.lightGreen,
-  colors.darkOrange,
-  colors.teal,
-  colors.yellow,
-  colors.purple,
-];
-
 interface WordProps {
   name: string;
+  color: string;
   size: number;
 }
 
-const Word = ({ name, size }: WordProps): ReactElement => {
+const Word = ({ color, name, size }: WordProps): ReactElement => {
   const classes = useStyles({
     size,
-    color: differentColors[Math.floor(Math.random() * differentColors.length)],
+    color,
   });
   return <Typography className={classes.container}>{name}</Typography>;
 };

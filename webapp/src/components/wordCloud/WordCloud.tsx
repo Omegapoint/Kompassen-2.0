@@ -1,7 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import { ReactElement, useEffect } from 'react';
 import Word from './Word';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import { useListTags } from '../../lib/Hooks';
 import { TagStats } from '../../lib/Types';
 import SmallLoader from '../loader/SmallLoader';
@@ -18,6 +18,14 @@ const useStyles = makeStyles(() =>
     },
   })
 );
+
+const differentColors = [
+  colors.lightGreen,
+  colors.darkOrange,
+  colors.teal,
+  colors.yellow,
+  colors.purple,
+];
 
 const WordCloud = (): ReactElement => {
   const classes = useStyles();
@@ -40,8 +48,13 @@ const WordCloud = (): ReactElement => {
 
   return (
     <div className={classes.container}>
-      {getTags(listTags.data || []).map((e) => (
-        <Word key={e.tag} name={e.tag} size={e.count} />
+      {getTags(listTags.data || []).map((e, i) => (
+        <Word
+          key={e.tag}
+          color={differentColors[i % differentColors.length]}
+          name={e.tag}
+          size={e.count}
+        />
       ))}
     </div>
   );

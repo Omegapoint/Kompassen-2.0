@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useState } from 'react';
+import { ReactElement, useContext } from 'react';
 import { createStyles, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { ChatBubble, Favorite, FavoriteBorder } from '@material-ui/icons';
 import { colors, padding } from '../../theme/Theme';
@@ -76,22 +76,19 @@ const formatTags = (tags: string[]) =>
 const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const classes = useStyles({ isExpanded });
   const { lecture, chat } = useContext(LectureContext);
-  const user = useAppSelector((state) => state.user);
   const annotation = getAnnotation(lecture);
-  const [liked, setLiked] = useState(lecture.likes?.includes(user.id) || false);
+  const user = useAppSelector((state) => state.user);
 
-  const likes = (lecture.likes?.filter((e) => e !== user.id).length || 0) + (liked ? 1 : 0);
+  const likes = lecture.likes?.length || 0;
 
   const [, likeRequest] = useLikeLecture();
   const [, unlikeRequest] = useUnlikeLecture();
 
   const like = () => {
-    setLiked(true);
     likeRequest({ urlParams: { id: lecture.id } });
   };
 
   const unlike = () => {
-    setLiked(false);
     unlikeRequest({ urlParams: { id: lecture.id } });
   };
   return (
@@ -107,7 +104,7 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
           <Typography color="primary">{chat.length || 0}</Typography>
         </div>
         <div className={classes.iconContainer}>
-          {liked ? (
+          {lecture.likes?.includes(user.id) ? (
             <IconButton className={classes.icon} onClick={unlike}>
               <Favorite className={classes.icon} color="primary" />
             </IconButton>
