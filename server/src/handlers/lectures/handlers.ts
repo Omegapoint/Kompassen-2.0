@@ -1,7 +1,12 @@
 import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
+import { IDParam, Lecture, NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
 import lecturesDB from '../../database/lecture';
+import {
+  onCreatedLectureIdea,
+  onDeleteLectureIdea,
+  onUpdatedLectureIdea,
+} from '../../ws/lectureIdeas';
 
 interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
@@ -37,11 +42,18 @@ const lectures: Handlers = {
       },
       userId
     );
+
+    const lecture = await lecturesDB.getByID(item.id);
+    onCreatedLectureIdea(lecture as Lecture);
+
     res.send(item);
   },
   async update({ body }, res) {
     const { userId } = res.locals;
     const item = await lecturesDB.update(body, userId);
+    const lecture = await lecturesDB.getByID(item.id);
+    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+
     res.send(item);
   },
   async getByID({ params }, res) {
@@ -65,11 +77,14 @@ const lectures: Handlers = {
     res.send(items);
   },
   async delete({ params }, res) {
+    const lecture = await lecturesDB.getByID(params.id);
     const item = await lecturesDB.delete(params.id);
     if (!item) {
       httpError(res, 404, 'Location not found');
       return;
     }
+    if (lecture?.idea) onDeleteLectureIdea(params.id);
+
     res.send(item);
   },
 };

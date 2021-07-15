@@ -49,7 +49,7 @@ const LectureStats = (): ReactElement => {
   const { event } = useContext(EventContext);
   const categories = useAppSelector((state) => state.categories);
 
-  const r = lectureCategories.data?.map((e) => ({
+  const data = lectureCategories.data?.map((e) => ({
     title: categories?.find((e1) => e1.name === e.category)?.icon,
     desc: e.category,
     value: e.count,
@@ -70,7 +70,7 @@ const LectureStats = (): ReactElement => {
       </div>
       <div className={classes.subContainer}>
         <PieChart
-          data={r}
+          data={data}
           radius={PieChart.defaultProps.radius - size}
           segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
           segmentsShift={(index) => (index === hovered ? size : 2)}
@@ -80,6 +80,7 @@ const LectureStats = (): ReactElement => {
           startAngle={-90}
           label={(e) => (
             <ChartIcon
+              one={data?.length === 1}
               key={e.dataEntry.title}
               onMouseOver={() => setHovered(e.dataIndex)}
               // eslint-disable-next-line react/jsx-props-no-spreading
@@ -88,7 +89,7 @@ const LectureStats = (): ReactElement => {
           )}
         />
         <div className={classes.descContainer}>
-          {r?.map((e) => (
+          {data?.map((e) => (
             <Fragment key={e.title}>
               <img
                 alt="icon"

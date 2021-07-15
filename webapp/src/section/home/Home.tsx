@@ -2,7 +2,7 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
 import SideCard from '../../components/sideCard/SideCard';
 import { colors, padding } from '../../theme/Theme';
-import Lecture from '../../components/lecture/Lecture';
+import LectureIdea from '../../components/lecture/Lecture';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
 import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
 import QuickGuide from '../../components/quickGuide/QuickGuide';
@@ -10,7 +10,8 @@ import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import WordCloud from '../../components/wordCloud/WordCloud';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
-import { useListLectures } from '../../lib/Hooks';
+import { formatDates, useAppSelector } from '../../lib/Lib';
+import { Lecture } from '../../lib/Types';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -41,18 +42,46 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const useLectureIdeasWS = () => {
+  const socket = useAppSelector((state) => state.session.socket);
+  const [lectureIdeas, setLectureIdeas] = useState<Lecture[]>([]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('lectureIdeas', (lectures) => {
+        setLectureIdeas(formatDates(lectures));
+      });
+
+      socket.on('lectureIdeas/update', (lecture: Lecture) => {
+        setLectureIdeas((ideas) =>
+          ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
+        );
+      });
+
+      socket.on('lectureIdeas/create', (lecture: Lecture) => {
+        setLectureIdeas((ideas) => [...ideas, formatDates(lecture)]);
+      });
+
+      socket.on('lectureIdeas/delete', (lecture: Lecture) => {
+        setLectureIdeas((ideas) => ideas.filter((e) => e.id !== lecture.id));
+      });
+      socket.emit('lectureIdeas');
+    }
+    return () => {};
+  }, [socket]);
+
+  return lectureIdeas;
+};
+
 const Home = (): ReactElement => {
   const [active, setActive] = useState(false);
   const classes = useStyles();
-  const [lectures, listLectures] = useListLectures();
-
-  useEffect(() => {
-    listLectures();
-  }, [listLectures]);
+  const lectureIdeas = useLectureIdeasWS();
 
   const activateIdea = () => {
     setActive((e) => !e);
   };
+
   return (
     <div className={classes.container}>
       <Typography variant="h1">Idéer till kompetensdagar</Typography>
@@ -68,8 +97,9 @@ const Home = (): ReactElement => {
             Publicera ny idé
           </Button>
         )}
-        {lectures.data &&
-          lectures.data.map((lecture) => <Lecture key={lecture.id} lecture={lecture} />)}
+        {lectureIdeas?.map((lecture) => (
+          <LectureIdea key={lecture.id} lecture={lecture} />
+        ))}
       </div>
       <div className={classes.rightPanel}>
         <SideCard

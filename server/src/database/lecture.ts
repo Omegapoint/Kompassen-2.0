@@ -86,7 +86,7 @@ const DELETE_EVENT = `
 `;
 
 interface LecturesDB {
-  list: () => Promise<Lecture[]>;
+  list: (idea?: boolean) => Promise<Lecture[]>;
   listTags: () => Promise<TagStats[]>;
   listCategories: (id: string) => Promise<CategoryStats[]>;
   getByID: (id: string) => Promise<Lecture | null>;
@@ -96,8 +96,9 @@ interface LecturesDB {
 }
 
 const lecturesDB: LecturesDB = {
-  async list() {
-    const { rows } = await db.query(SELECT_EVENTS);
+  async list(idea = false) {
+    const whereClause = idea ? 'WHERE l.idea = TRUE' : '';
+    const { rows } = await db.query(`${SELECT_EVENTS} ${whereClause} ORDER BY l.updated_at DESC`);
     return snakeToCamel(rows) || [];
   },
 

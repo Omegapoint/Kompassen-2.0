@@ -99,11 +99,10 @@ const useInit = () => {
 };
 
 const Content = (): ReactElement => {
-  const user = useFetchDispatch(useGetUser, setUser);
   const { loading } = useInit();
+  const user = useFetchDispatch(useGetUser, setUser);
   const [, createUser] = useCreateUser();
   const [notifications, setNotifications] = useState(defaultNotifications);
-  const { inProgress } = useMsal();
   const classes = useStyles();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +114,7 @@ const Content = (): ReactElement => {
     window.location.reload();
   };
 
-  if (inProgress !== 'none' || loading) {
+  if (loading) {
     return <BigLoader />;
   }
 
@@ -148,9 +147,10 @@ const Content = (): ReactElement => {
 const App = (): ReactElement => {
   const isAuthenticated = useIsAuthenticated();
   const { loading } = useAccessToken(isAuthenticated);
+  const { inProgress } = useMsal();
   const { token } = useAppSelector((state) => state.session);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && inProgress === 'none') {
     return (
       <GreetingPage>
         <LoginPage />

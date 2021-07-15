@@ -1,6 +1,5 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { createStyles, Divider, makeStyles, Paper } from '@material-ui/core';
-import { Socket } from 'socket.io-client';
 import useBoolean from '../../hooks/UseBoolean';
 import BottomContainer from './BottomContainer';
 import TopContainer from './TopContainer';
@@ -28,7 +27,8 @@ interface LectureProps {
   lecture: LectureTP;
 }
 
-const useLectureWS = (socket: Socket, lectureID: string) => {
+const useLectureWS = (lectureID: string) => {
+  const socket = useAppSelector((state) => state.session.socket);
   const [chat, setChat] = useState<LectureMessage[]>([]);
 
   useEffect(() => {
@@ -59,8 +59,7 @@ const useLectureWS = (socket: Socket, lectureID: string) => {
 const Lecture = ({ lecture }: LectureProps): ReactElement => {
   const [isExpanded, expand] = useBoolean();
   const classes = useStyles({ isExpanded });
-  const socket = useAppSelector((state) => state.session.socket);
-  const { chat, sendWSMessage } = useLectureWS(socket, lecture.id);
+  const { chat, sendWSMessage } = useLectureWS(lecture.id);
 
   return (
     <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
