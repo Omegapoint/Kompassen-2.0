@@ -1,6 +1,7 @@
 import { Reducer, useCallback, useReducer } from 'react';
 import { APIFunction, RS, RequestInfo, FetchResult, RequestFn } from './Fetch';
 import * as api from './Api';
+import UseUnmount from '../hooks/UseUnmount';
 
 const initialState = {
   loading: true,
@@ -32,15 +33,20 @@ export function useFetchLater<Res, Req = undefined>(
   const [state, dispatch] = useReducer<Reducer<RS<Res>, ReducerAction<Res>>>(reducer, {
     ...initialState,
   });
+  const mounted = UseUnmount();
+
   const request = useCallback(
     async (payload?: RequestInfo<Req>) => {
       dispatch({ type: 'BEFORE' });
       const data = await fn(payload);
-      dispatch({ type: 'AFTER', payload: data });
+      if (mounted.current) {
+        dispatch({ type: 'AFTER', payload: data });
+      }
 
       return data;
     },
-    [fn]
+
+    [fn, mounted]
   );
 
   return [state, request];
@@ -60,11 +66,13 @@ export const useListTags = genUseFetchLater(api.listTags);
 export const useListCategories = genUseFetchLater(api.listCategories);
 export const useListLocations = genUseFetchLater(api.listLocations);
 
+export const useUpdateLecture = genUseFetchLater(api.updateLecture);
 export const useCreateLecture = genUseFetchLater(api.createLecture);
 export const useCreateLectureIdea = genUseFetchLater(api.createLectureIdea);
 export const useListLectureCategories = genUseFetchLater(api.listLectureCategories);
 export const useLikeLecture = genUseFetchLater(api.likeLecture);
 export const useUnlikeLecture = genUseFetchLater(api.unlikeLecture);
 export const useListLectures = genUseFetchLater(api.listLectures);
+export const useGetLecture = genUseFetchLater(api.getLecture);
 
 export const useListEvents = genUseFetchLater(api.listEvents);

@@ -76,7 +76,7 @@ const Discussion = (): ReactElement => {
           className={classes.text}
           fullWidth
           multiline
-          rows={1}
+          minRows={1}
           maxRows={5}
           value={values.message}
           onChange={handleChange}

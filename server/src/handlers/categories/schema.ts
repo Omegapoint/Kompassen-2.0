@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { NewCategory, UpdatedCategory } from '../../lib/types';
-import { FILE_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/lib';
+import { FILE_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/constants';
 
 const defaultSchema = {
   name: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN),

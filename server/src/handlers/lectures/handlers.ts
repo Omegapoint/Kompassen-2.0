@@ -7,6 +7,7 @@ import {
   onDeleteLectureIdea,
   onUpdatedLectureIdea,
 } from '../../ws/lectureIdeas';
+import usersDB from '../../database/users';
 
 interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
@@ -50,7 +51,18 @@ const lectures: Handlers = {
   },
   async update({ body }, res) {
     const { userId } = res.locals;
+
+    const currentUser = await usersDB.getByID(userId);
+
+    const currentLecture = await lecturesDB.getByID(body.id);
+
+    if (currentLecture?.lecturer && currentUser?.name !== currentLecture?.lecturer) {
+      httpError(res, 403, 'You cannot edit another lecturers lecture');
+      return;
+    }
+
     const item = await lecturesDB.update(body, userId);
+
     const lecture = await lecturesDB.getByID(item.id);
     if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
 

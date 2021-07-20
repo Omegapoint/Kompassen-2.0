@@ -1,6 +1,8 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import { ReactElement } from 'react';
 import LectureForm from '../../components/lectureForm/LectureForm';
+import FormWrapper from '../../components/formWrapper/FormWrapper';
+import { useGetLecture } from '../../lib/Hooks';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -15,7 +17,9 @@ const Lecture = (): ReactElement => {
 
   return (
     <div className={classes.container}>
-      <LectureForm pageTitle="Anmäl pass till kompetensdag" />
+      <FormWrapper useHook={useGetLecture}>
+        <LectureForm />
+      </FormWrapper>
     </div>
   );
 };
