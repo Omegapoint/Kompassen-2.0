@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
-import { LARGE_STRING_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/lib';
+import { LARGE_STRING_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/constants';
 
 const defaultSchema = {
   title: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),

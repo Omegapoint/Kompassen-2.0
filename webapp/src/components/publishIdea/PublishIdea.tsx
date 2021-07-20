@@ -19,6 +19,8 @@ import useForm from '../../hooks/UseForm';
 import TextPanel from '../textPanel/TextPanel';
 import { useCreateLectureIdea } from '../../lib/Hooks';
 import { useAppSelector } from '../../lib/Lib';
+import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
+import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/constants';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -85,9 +87,33 @@ const defaultFormValue = {
   status: 'lecturer_wanted',
 };
 
+const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
+const tagsText = `Du måste ha minst en tagg`;
+
+const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
+const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
+const invalidTags = (str: string) => str.split(' ').filter((e) => e).length === 0;
+
+type FormValues = typeof defaultFormValue;
+
+const useValidate = (values: FormValues): FormValidation<FormValues> => {
+  const validate = {
+    description: useFormValidation(values.description, descriptionText, invalidLongString),
+    title: useFormValidation(values.title, titleText, invalidShortString),
+    tags: useFormValidation(values.tags, tagsText, invalidTags),
+  };
+
+  return {
+    validate,
+    invalid: formIsInvalid(validate),
+  };
+};
+
 const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
+  const { validate, invalid } = useValidate(values);
   const [, createLectureIdeaRequest] = useCreateLectureIdea();
   const user = useAppSelector((state) => state.user);
 
@@ -98,7 +124,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
       body: {
         title: values.title,
         description: values.description,
-        tags: values.tags.split(' '),
+        tags: values.tags.split(' ').filter((e) => e),
         lecturer: values.status === 'feedback_wanted' ? user.name : null,
       },
     });
@@ -106,7 +132,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   };
 
   const handleSmiley = (_: MouseEvent, data: IEmojiData) => {
-    appendChange('content', data.emoji);
+    appendChange('description', data.emoji);
   };
 
   return (
@@ -118,6 +144,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             Ny idé
           </Typography>
           <TextField
+            {...validate.title}
             className={classes.title}
             fullWidth
             onChange={handleChange}
@@ -128,9 +155,10 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
           />
           <div className={classes.content}>
             <TextField
+              {...validate.description}
               fullWidth
               multiline
-              rows={3}
+              minRows={3}
               maxRows={5}
               value={values.description}
               onChange={handleChange}
@@ -143,6 +171,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
           </div>
 
           <TextField
+            {...validate.tags}
             className={classes.tags}
             fullWidth
             onChange={handleChange}
@@ -175,6 +204,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
           <Button
             className={classes.submit}
             onClick={handleSubmit}
+            disabled={invalid}
             variant="contained"
             color="primary"
           >

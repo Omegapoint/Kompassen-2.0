@@ -3,8 +3,8 @@ import lectureMessagesDB from '../database/lectureMessages';
 import { Socket } from 'socket.io';
 import Joi from 'joi';
 import { NewLectureMessage } from '../lib/types';
-import { LARGE_STRING_LEN, STRING_MIN_LEN } from '../lib/lib';
 import { Join } from './types';
+import { LARGE_STRING_LEN, STRING_MIN_LEN } from '../lib/constants';
 
 const joined: Join = {};
 

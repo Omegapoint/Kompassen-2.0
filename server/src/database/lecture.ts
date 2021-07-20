@@ -154,6 +154,7 @@ const lecturesDB: LecturesDB = {
       lecture.preparations,
       lecture.tags,
       userID,
+      lecture.id,
     ]);
     return rows[0];
   },

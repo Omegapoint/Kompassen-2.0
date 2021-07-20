@@ -7,6 +7,7 @@ import { borderRadius, colors } from '../../theme/Theme';
 import LectureContext from './LectureContext';
 import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture as LectureTP, LectureMessage } from '../../lib/Types';
+import useUnmount from '../../hooks/UseUnmount';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -30,14 +31,19 @@ interface LectureProps {
 const useLectureWS = (lectureID: string) => {
   const socket = useAppSelector((state) => state.session.socket);
   const [chat, setChat] = useState<LectureMessage[]>([]);
+  const mounted = useUnmount();
 
   useEffect(() => {
     if (socket) {
       socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
-        setChat(formatDates(messages));
+        if (mounted.current) {
+          setChat(formatDates(messages));
+        }
       });
       socket.on(`lectureChat/${lectureID}/message`, (message) => {
-        setChat((m) => [...m, formatDates(message)]);
+        if (mounted.current) {
+          setChat((m) => [...m, formatDates(message)]);
+        }
       });
       socket.emit('lectureChat/join', lectureID);
 
@@ -46,7 +52,7 @@ const useLectureWS = (lectureID: string) => {
       };
     }
     return () => {};
-  }, [lectureID, socket]);
+  }, [lectureID, mounted, socket]);
 
   const sendWSMessage = useCallback(
     (message: string) => socket.emit('lectureChat/message', lectureID, message),

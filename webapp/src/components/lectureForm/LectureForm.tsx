@@ -20,7 +20,10 @@ import { borderRadius, colors, padding } from '../../theme/Theme';
 import { useAppSelector } from '../../lib/Lib';
 import { formatEventTime } from '../competenceDays/DayPicker';
 import useForm from '../../hooks/UseForm';
-import { useCreateLecture } from '../../lib/Hooks';
+import { useCreateLecture, useUpdateLecture } from '../../lib/Hooks';
+import { Lecture } from '../../lib/Types';
+import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/constants';
+import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -81,16 +84,88 @@ const useStyles = makeStyles(() =>
 );
 
 interface LectureFormProps {
-  pageTitle: string;
+  data?: Lecture;
 }
 
-const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
+const hoursText = `Timmar måste vara mellan 0-100`;
+const minutesText = `Minuter måste vara mellan 0-59`;
+const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
+const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const maxParticipantsText = `Maxdeltagare måste vara mellan 0-100000 tecken långt`;
+const requirementsText = `Förkunskapskrav måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const preparationsText = `Förberedelser måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const tagsText = `Du måste ha minst en tagg`;
+const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+
+const invalidHours = (str: string) => {
+  const val = parseInt(str, 10);
+  if (Number.isNaN(val)) return true;
+  return val < 0 || val > 100;
+};
+
+const invalidMinutes = (str: string) => {
+  const val = parseInt(str, 10);
+  if (Number.isNaN(val)) return true;
+  return val < 0 || val > 59;
+};
+
+const invalidParticipants = (str: string) => {
+  const val = parseInt(str, 10);
+  if (Number.isNaN(val)) return true;
+  return val < 0 || val > 100000;
+};
+
+const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
+const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
+const invalidTags = (str: string) => str.split(' ').filter((e) => e).length === 0;
+
+interface FormValues {
+  location: string;
+  eventID: string;
+  hours: string;
+  minutes: string;
+  title: string;
+  category: string;
+  lecturer: string;
+  description: string;
+  maxParticipants: string;
+  requirements: string;
+  preparations: string;
+  tags: string;
+  message: string;
+}
+
+const useValidate = (values: FormValues): FormValidation<FormValues> => {
+  const validate = {
+    hours: useFormValidation(values.hours, hoursText, invalidHours),
+    minutes: useFormValidation(values.hours, minutesText, invalidMinutes),
+    title: useFormValidation(values.title, titleText, invalidShortString),
+    description: useFormValidation(values.description, descriptionText, invalidLongString),
+    maxParticipants: useFormValidation(
+      values.maxParticipants,
+      maxParticipantsText,
+      invalidParticipants
+    ),
+    requirements: useFormValidation(values.requirements, requirementsText, invalidLongString),
+    preparations: useFormValidation(values.preparations, preparationsText, invalidLongString),
+    tags: useFormValidation(values.tags, tagsText, invalidTags),
+    message: useFormValidation(values.message, messageText, invalidLongString),
+  };
+
+  return {
+    validate,
+    invalid: formIsInvalid(validate),
+  };
+};
+
+const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
   const categories = useAppSelector((state) => state.categories);
   const user = useAppSelector((state) => state.user);
   const events = useAppSelector((state) => state.events);
   const [, createLectureRequest] = useCreateLecture();
+  const [, updateLectureRequest] = useUpdateLecture();
   const history = useHistory();
 
   const defaultFormValue = {
@@ -98,37 +173,41 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
     eventID: events[0].id,
     hours: '',
     minutes: '',
-    title: '',
+    title: data?.title || '',
     category: categories[0].name,
     lecturer: user.name,
-    description: '',
+    description: data?.description || '',
     maxParticipants: '',
     requirements: '',
     preparations: '',
-    tags: '',
+    tags: data?.tags.reduce((s, e) => `${s} ${e}`, '') || '',
     message: '',
   };
   const { values, handleChange } = useForm(defaultFormValue);
+  const { validate, invalid } = useValidate(values);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    createLectureRequest({
-      body: {
-        title: values.title,
-        description: values.description,
-        lecturer: values.lecturer,
-        tags: values.tags.split(' '),
+  const handleSubmit = (evt: FormEvent) => {
+    evt.preventDefault();
+    const formData = {
+      title: values.title,
+      description: values.description,
+      lecturer: values.lecturer,
+      tags: values.tags.split(' ').filter((e) => e),
 
-        location: values.location,
-        eventID: values.eventID,
-        duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
-        category: values.category,
-        maxParticipants: parseInt(values.maxParticipants, 10),
-        requirements: values.requirements,
-        preparations: values.preparations,
-        message: values.message,
-      },
-    });
+      location: values.location,
+      eventID: values.eventID,
+      duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
+      category: values.category,
+      maxParticipants: parseInt(values.maxParticipants, 10),
+      requirements: values.requirements,
+      preparations: values.preparations,
+      message: values.message,
+    };
+    if (data) {
+      updateLectureRequest({ body: { id: data.id, ...formData } });
+    } else {
+      createLectureRequest({ body: formData });
+    }
     history.push('/');
   };
 
@@ -142,7 +221,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
     <form onSubmit={handleSubmit}>
       <Paper className={classes.formContainer}>
         <Typography className={classes.header} variant="h1">
-          {pageTitle}
+          Anmäl pass till kompetensdag
         </Typography>
 
         <div>
@@ -179,6 +258,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
             </FormLabel>
             <div className={classes.subContainer}>
               <TextField
+                {...validate.hours}
                 className={classes.hours}
                 onChange={handleChange}
                 label="Timmar"
@@ -188,6 +268,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
                 variant="outlined"
               />
               <TextField
+                {...validate.minutes}
                 className={classes.minutes}
                 onChange={checkNumberLimit}
                 value={values.minutes}
@@ -204,9 +285,11 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
           fullWidth
           onChange={handleChange}
           required
+          value={values.title}
           name="title"
           label="Titel"
           variant="outlined"
+          {...validate.title}
         />
         <div>
           <FormLabel className={classes.radioButtons} required component="legend">
@@ -214,7 +297,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
           </FormLabel>
           <RadioGroup name="category" onChange={handleChange} value={values.category}>
             {categories.map((e) => (
-              <FormControlLabel value={e.name} control={<Radio />} label={e.name} />
+              <FormControlLabel key={e.id} value={e.name} control={<Radio />} label={e.name} />
             ))}
           </RadioGroup>
         </div>
@@ -230,18 +313,21 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
         />
 
         <TextField
+          {...validate.description}
           fullWidth
           multiline
-          rows={10}
-          rowsMax={20}
+          minRows={10}
+          maxRows={20}
           onChange={handleChange}
           required
+          value={values.description}
           name="description"
           label="Innehåll"
           variant="outlined"
         />
 
         <TextField
+          {...validate.maxParticipants}
           fullWidth
           onChange={handleChange}
           name="maxParticipants"
@@ -250,6 +336,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
         />
 
         <TextField
+          {...validate.requirements}
           fullWidth
           onChange={handleChange}
           name="requirements"
@@ -258,6 +345,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
         />
 
         <TextField
+          {...validate.preparations}
           fullWidth
           onChange={handleChange}
           name="preparations"
@@ -266,21 +354,24 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
         />
 
         <TextField
+          {...validate.tags}
           fullWidth
           onChange={handleChange}
           name="tags"
           label="Taggar"
           variant="outlined"
+          value={values.tags}
         />
 
         <TextField
+          {...validate.message}
           fullWidth
           onChange={handleChange}
           name="message"
           label="Meddelande till planerare"
           multiline
-          rows={13}
-          rowsMax={5}
+          minRows={13}
+          maxRows={5}
           variant="outlined"
         />
         <div className={classes.buttonRow}>
@@ -290,21 +381,7 @@ const LectureForm = ({ pageTitle }: LectureFormProps): ReactElement => {
             </IconButton>
           </div>
           <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              disabled={
-                !values.location ||
-                !values.eventID ||
-                !values.hours ||
-                !values.minutes ||
-                !values.title ||
-                !values.category ||
-                !values.lecturer ||
-                !values.description
-              }
-              color="primary"
-              onClick={handleSubmit}
-            >
+            <Button variant="contained" disabled={invalid} color="primary" onClick={handleSubmit}>
               Anmäl pass
             </Button>
           </div>

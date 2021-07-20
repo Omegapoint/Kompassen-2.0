@@ -12,6 +12,7 @@ import WordCloud from '../../components/wordCloud/WordCloud';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
+import useUnmount from '../../hooks/UseUnmount';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -45,30 +46,39 @@ const useStyles = makeStyles(() => ({
 const useLectureIdeasWS = () => {
   const socket = useAppSelector((state) => state.session.socket);
   const [lectureIdeas, setLectureIdeas] = useState<Lecture[]>([]);
+  const mounted = useUnmount();
 
   useEffect(() => {
     if (socket) {
       socket.on('lectureIdeas', (lectures) => {
-        setLectureIdeas(formatDates(lectures));
+        if (mounted.current) {
+          setLectureIdeas(formatDates(lectures));
+        }
       });
 
       socket.on('lectureIdeas/update', (lecture: Lecture) => {
-        setLectureIdeas((ideas) =>
-          ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
-        );
+        if (mounted.current) {
+          setLectureIdeas((ideas) =>
+            ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
+          );
+        }
       });
 
       socket.on('lectureIdeas/create', (lecture: Lecture) => {
-        setLectureIdeas((ideas) => [...ideas, formatDates(lecture)]);
+        if (mounted.current) {
+          setLectureIdeas((ideas) => [formatDates(lecture), ...ideas]);
+        }
       });
 
       socket.on('lectureIdeas/delete', (lecture: Lecture) => {
-        setLectureIdeas((ideas) => ideas.filter((e) => e.id !== lecture.id));
+        if (mounted.current) {
+          setLectureIdeas((ideas) => ideas.filter((e) => e.id !== lecture.id));
+        }
       });
       socket.emit('lectureIdeas');
     }
     return () => {};
-  }, [socket]);
+  }, [mounted, socket]);
 
   return lectureIdeas;
 };

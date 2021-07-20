@@ -36,8 +36,11 @@ const useStyles = makeStyles(() => ({
       lineHeight: '1',
     },
   },
-  title: {},
-  line: {},
+  emptyLabel: {
+    display: 'grid',
+    gridColumn: 'span 3',
+    justifyItems: 'center',
+  },
 }));
 
 const size = 6;
@@ -69,39 +72,45 @@ const LectureStats = (): ReactElement => {
         <Divider />
       </div>
       <div className={classes.subContainer}>
-        <PieChart
-          data={data}
-          radius={PieChart.defaultProps.radius - size}
-          segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
-          segmentsShift={(index) => (index === hovered ? size : 2)}
-          animate
-          onMouseOver={(_, index) => setHovered(index)}
-          onMouseOut={() => setHovered(undefined)}
-          startAngle={-90}
-          label={(e) => (
-            <ChartIcon
-              one={data?.length === 1}
-              key={e.dataEntry.title}
-              onMouseOver={() => setHovered(e.dataIndex)}
-              // eslint-disable-next-line react/jsx-props-no-spreading
-              {...e}
+        {data?.length ? (
+          <>
+            <PieChart
+              data={data}
+              radius={PieChart.defaultProps.radius - size}
+              segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
+              segmentsShift={(index) => (index === hovered ? size : 2)}
+              animate
+              onMouseOver={(_, index) => setHovered(index)}
+              onMouseOut={() => setHovered(undefined)}
+              startAngle={-90}
+              label={(e) => (
+                <ChartIcon
+                  one={data?.length === 1}
+                  key={e.dataEntry.title}
+                  onMouseOver={() => setHovered(e.dataIndex)}
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...e}
+                />
+              )}
             />
-          )}
-        />
-        <div className={classes.descContainer}>
-          {data?.map((e) => (
-            <Fragment key={e.title}>
-              <img
-                alt="icon"
-                width="12"
-                height="12"
-                src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
-              />
-              <Typography>{e.desc}</Typography>
-              <Typography>{e.value}</Typography>
-            </Fragment>
-          ))}
-        </div>
+            <div className={classes.descContainer}>
+              {data?.map((e) => (
+                <Fragment key={e.title}>
+                  <img
+                    alt="icon"
+                    width="12"
+                    height="12"
+                    src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
+                  />
+                  <Typography>{e.desc}</Typography>
+                  <Typography>{e.value}</Typography>
+                </Fragment>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Typography className={classes.emptyLabel}>Här var det tomt</Typography>
+        )}
       </div>
     </div>
   );
