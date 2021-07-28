@@ -6,7 +6,11 @@ export interface DefaultTime {
 }
 
 export interface ListEventParams {
-  filter: string;
+  filter: 'new';
+}
+
+export interface ListLecturesParams {
+  mine: 'true';
 }
 
 export interface IDParam {
@@ -59,6 +63,7 @@ export interface Location extends UpdatedLocation, DefaultTime {}
 export interface NewCategory {
   name: string;
   icon: string;
+  color: string;
 }
 
 export interface UpdatedCategory extends NewCategory {
@@ -78,15 +83,18 @@ export interface NewLecture extends NewLectureIdea {
   location: string | null;
   eventID: string | null;
   duration: number | null;
-  category: string | null;
   maxParticipants: number | null;
   requirements: string | null;
   preparations: string | null;
   message: string | null;
+  categoryId: string | null;
+  published: boolean;
 }
 
 export interface DLecture extends NewLecture {
   idea: boolean;
+  lecturerId: string | null;
+  approved: boolean;
 }
 
 export interface UpdatedLecture extends NewLecture {
@@ -95,7 +103,9 @@ export interface UpdatedLecture extends NewLecture {
 
 export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
 
-export interface Lecture extends DBLecture {
+export interface Lecture extends DLecture, DefaultTime {
+  id: string;
+  categoryId: string | null;
   likes: string[];
 }
 
@@ -155,6 +165,15 @@ export interface TagStats {
 }
 
 export interface CategoryStats {
-  category: string;
+  categoryId: string;
   count: number;
+}
+
+export interface IOK {
+  ok: boolean;
+}
+
+export interface Approved {
+  approved: boolean;
+  id: string;
 }

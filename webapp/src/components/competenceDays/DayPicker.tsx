@@ -1,11 +1,11 @@
-import { ReactElement, useContext } from 'react';
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import { sv } from 'date-fns/locale';
 import { format } from 'date-fns';
-import { borderRadius, colors, padding } from '../../theme/Theme';
+import { sv } from 'date-fns/locale';
+import { ReactElement, useContext } from 'react';
 import { ReactComponent as TinyArrow } from '../../assets/tinyArrow.svg';
-import EventContext from './EventContext';
 import { Event } from '../../lib/Types';
+import { borderRadius, colors, padding } from '../../theme/Theme';
+import EventContext from './EventContext';
 
 const useStyles = makeStyles(() => ({
   container: {

@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import { NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/constants';
+import { ListLecturesParams, NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
 
 const defaultSchema = {
   title: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
@@ -12,12 +12,13 @@ const defaultSchema = {
 const other = {
   eventID: Joi.string().uuid(),
   duration: Joi.number().max(1000),
-  category: Joi.string(),
+  categoryId: Joi.string().uuid(),
   maxParticipants: Joi.number().min(0).max(1000),
   location: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
   requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
+  published: Joi.boolean(),
 };
 
 const newIdea = Joi.object<NewLectureIdea>({
@@ -35,6 +36,10 @@ const updateLecture = Joi.object<UpdatedLecture>({
   ...other,
 }).options({ presence: 'required' });
 
-const lectures = { newLecture, updateLecture, newIdea };
+const listLectures = Joi.object<ListLecturesParams>({
+  mine: Joi.string().valid('true', 'false'),
+}).options({ presence: 'required' });
+
+const lectures = { newLecture, updateLecture, newIdea, listLectures };
 
 export default lectures;

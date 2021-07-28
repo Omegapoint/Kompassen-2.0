@@ -1,8 +1,10 @@
 import { FC, ReactElement } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Content from '../components/content/Content';
-import Lecture from '../section/ApplicationLecture/Lecture';
+import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
 import Home from '../section/home/Home';
+import Lecture from '../section/lecture/Lecture';
+import MyLectures from '../section/myLectures/MyLectures';
 import Settings from '../section/settings/Settings';
 
 export interface AppRoute {
@@ -15,18 +17,23 @@ export interface AppRoute {
 export const appRoutes: AppRoute[] = [
   {
     name: 'Anmäl pass',
-    path: '/class/create',
+    path: '/lecture/create',
     Component: Lecture,
   },
   {
     name: 'Anmäl pass',
-    path: '/class/create/:id',
+    path: '/lecture/create/:id',
     Component: Lecture,
   },
   {
+    name: 'Anmäl pass',
+    path: '/lecture/create/:id/confirm',
+    Component: ConfirmLecture,
+  },
+  {
     name: 'Mina pass',
-    path: '/class',
-    Component: Home,
+    path: '/lecture/user',
+    Component: MyLectures,
   },
   {
     name: 'Inställningar',

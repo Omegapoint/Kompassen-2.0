@@ -1,8 +1,8 @@
-import { getClaims } from '../handlers/auth';
 import { Server } from 'socket.io';
-import { setupChat, disconnectUserChat } from './chat';
-import { users } from './types';
+import { getClaims } from '../handlers/auth';
+import { disconnectUserChat, setupChat } from './chat';
 import { setupLectureIdeas } from './lectureIdeas';
+import { users } from './types';
 
 export const setupWebSocket = (io: Server): void => {
   io.use(async (socket, next) => {

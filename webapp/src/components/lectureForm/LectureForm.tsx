@@ -14,22 +14,22 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { ChangeEvent, FormEvent, ReactElement } from 'react';
+import { ChangeEvent, FormEvent, ReactElement, useEffect } from 'react';
+import { useMutation } from 'react-query';
 import { useHistory } from 'react-router-dom';
-import { borderRadius, colors, padding } from '../../theme/Theme';
-import { useAppSelector } from '../../lib/Lib';
-import { formatEventTime } from '../competenceDays/DayPicker';
+import { createLecture, updateLecture } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
-import { useCreateLecture, useUpdateLecture } from '../../lib/Hooks';
-import { Lecture } from '../../lib/Types';
-import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/constants';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
+import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
+import { useAppSelector } from '../../lib/Lib';
+import { Category, Lecture } from '../../lib/Types';
+import { borderRadius, colors, padding } from '../../theme/Theme';
+import { formatEventTime } from '../competenceDays/DayPicker';
 
 const useStyles = makeStyles(() =>
   createStyles({
     formContainer: {
       display: 'grid',
-      width: '100%',
       padding: padding.large,
       justifyItems: 'start',
       rowGap: padding.medium,
@@ -79,6 +79,8 @@ const useStyles = makeStyles(() =>
     },
     buttons: {
       gridArea: 'buttons',
+      display: 'flex',
+      gridGap: padding.standard,
     },
   })
 );
@@ -164,8 +166,8 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const user = useAppSelector((state) => state.user);
   const events = useAppSelector((state) => state.events);
-  const [, createLectureRequest] = useCreateLecture();
-  const [, updateLectureRequest] = useUpdateLecture();
+  const createLectureRequest = useMutation(createLecture);
+  const updateLectureRequest = useMutation(updateLecture);
   const history = useHistory();
 
   const defaultFormValue = {
@@ -186,8 +188,9 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
-  const handleSubmit = (evt: FormEvent) => {
+  const handleSubmit = (evt: FormEvent, published: boolean) => {
     evt.preventDefault();
+    const category = categories.find((e) => e.name === values.category) as Category;
     const formData = {
       title: values.title,
       description: values.description,
@@ -197,19 +200,30 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       location: values.location,
       eventID: values.eventID,
       duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
-      category: values.category,
+      categoryId: category.id,
       maxParticipants: parseInt(values.maxParticipants, 10),
       requirements: values.requirements,
       preparations: values.preparations,
       message: values.message,
     };
     if (data) {
-      updateLectureRequest({ body: { id: data.id, ...formData } });
+      updateLectureRequest.mutate({ id: data.id, published, ...formData });
     } else {
-      createLectureRequest({ body: formData });
+      createLectureRequest.mutate({ ...formData, published });
     }
-    history.push('/');
   };
+
+  useEffect(() => {
+    if (updateLectureRequest.isSuccess) {
+      history.push(`/lecture/create/${updateLectureRequest.data?.id}/confirm`);
+    }
+  }, [history, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
+
+  useEffect(() => {
+    if (createLectureRequest.isSuccess) {
+      history.push(`/lecture/create/${createLectureRequest.data?.id}/confirm`);
+    }
+  }, [history, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 
   const checkNumberLimit = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     if (parseInt(e.target.value, 10) < 60) {
@@ -218,7 +232,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <Paper className={classes.formContainer}>
         <Typography className={classes.header} variant="h1">
           Anmäl pass till kompetensdag
@@ -375,13 +389,27 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
         />
         <div className={classes.buttonRow}>
-          <div>
-            <IconButton className={classes.cancel} color="primary">
-              <Typography>Avbryt</Typography>
-            </IconButton>
-          </div>
+          <IconButton className={classes.cancel} color="primary">
+            <Typography>Avbryt</Typography>
+          </IconButton>
           <div className={classes.buttons}>
-            <Button variant="contained" disabled={invalid} color="primary" onClick={handleSubmit}>
+            {!data?.published && (
+              <Button
+                variant="contained"
+                disabled={invalid}
+                color="primary"
+                onClick={(e) => handleSubmit(e, false)}
+              >
+                Spara utkast
+              </Button>
+            )}
+
+            <Button
+              variant="contained"
+              disabled={invalid}
+              color="primary"
+              onClick={(e) => handleSubmit(e, true)}
+            >
               Anmäl pass
             </Button>
           </div>

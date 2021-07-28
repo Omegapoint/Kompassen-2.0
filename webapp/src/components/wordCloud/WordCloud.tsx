@@ -1,10 +1,10 @@
 import { createStyles, makeStyles } from '@material-ui/core';
-import { ReactElement, useEffect } from 'react';
-import Word from './Word';
-import { colors, padding } from '../../theme/Theme';
-import { useListTags } from '../../lib/Hooks';
+import { ReactElement } from 'react';
+import { useQuery } from 'react-query';
+import { listTags } from '../../api/Api';
 import { TagStats } from '../../lib/Types';
-import SmallLoader from '../loader/SmallLoader';
+import { colors, padding } from '../../theme/Theme';
+import Word from './Word';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,14 +29,10 @@ const differentColors = [
 
 const WordCloud = (): ReactElement => {
   const classes = useStyles();
-  const [listTags, listTagsRequest] = useListTags();
-  useEffect(() => {
-    listTagsRequest();
-  }, [listTagsRequest]);
-
-  if (!listTags.data) return <SmallLoader />;
+  const { data } = useQuery('tags', () => listTags());
 
   const getTags = (tags: TagStats[]) => {
+    if (!tags.length) return [];
     const largest = tags[tags.length - 1].count;
     const smallest = tags[0].count;
 
@@ -48,7 +44,7 @@ const WordCloud = (): ReactElement => {
 
   return (
     <div className={classes.container}>
-      {getTags(listTags.data || []).map((e, i) => (
+      {getTags(data || []).map((e, i) => (
         <Word
           key={e.tag}
           color={differentColors[i % differentColors.length]}

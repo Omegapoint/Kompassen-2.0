@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
+import { ReactElement } from 'react';
 import { fontFamilies } from '../../theme/Theme';
 
 interface StyleProps {

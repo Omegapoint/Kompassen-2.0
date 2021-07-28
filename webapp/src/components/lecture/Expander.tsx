@@ -1,5 +1,5 @@
-import { ReactElement, useContext } from 'react';
 import { Button, createStyles, IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
+import { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import shortArrowCircled from '../../assets/shortArrowCircled.svg';
 import { padding } from '../../theme/Theme';
@@ -55,7 +55,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
       ) : (
         <Button
           component={NavLink}
-          to={`/class/create/${lecture.id}`}
+          to={`/lecture/create/${lecture.id}`}
           className={classes.bookedByContainer}
           variant="contained"
           color="primary"

@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
-import { IconButton, Badge, makeStyles, Link } from '@material-ui/core';
+import { Badge, IconButton, Link, makeStyles } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
+import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { colors, constants, fontFamilies, padding } from '../../theme/Theme';
 import User from './User';

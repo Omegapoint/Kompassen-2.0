@@ -1,12 +1,12 @@
-import { MouseEvent, ReactElement, useContext } from 'react';
 import { Button, IconButton, makeStyles, TextField } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import { IEmojiData } from 'emoji-picker-react';
-import Row from './Row';
+import { MouseEvent, ReactElement, useContext } from 'react';
+import useForm from '../../hooks/UseForm';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import TextPanel from '../textPanel/TextPanel';
-import useForm from '../../hooks/UseForm';
 import LectureContext from './LectureContext';
+import Row from './Row';
 
 const useStyles = makeStyles(() => ({
   container: {

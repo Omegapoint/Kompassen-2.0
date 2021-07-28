@@ -1,10 +1,10 @@
-import { ReactElement, useContext } from 'react';
 import { createStyles, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { ReactElement, useContext } from 'react';
 import alarmCircled from '../../assets/alarmCircled.svg';
-import Discussion from './Discussion';
 import { padding } from '../../theme/Theme';
+import Discussion from './Discussion';
 import LectureContext from './LectureContext';
 
 const useStyles = makeStyles(() =>

@@ -1,5 +1,5 @@
-import { ReactElement, ReactNode } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { ReactElement, ReactNode } from 'react';
 import { colors, padding } from '../../theme/Theme';
 import HrefContainer from './HrefContainer';
 

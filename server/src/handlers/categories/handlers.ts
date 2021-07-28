@@ -1,7 +1,7 @@
-import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, NewCategory, UpdatedCategory } from '../../lib/types';
 import categoriesDB from '../../database/categories';
+import { httpError } from '../../lib/lib';
+import { IDParam, NewCategory, UpdatedCategory } from '../../lib/types';
 
 interface Handlers {
   create: (req: Request<null, null, NewCategory>, res: Response) => Promise<void>;

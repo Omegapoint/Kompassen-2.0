@@ -1,8 +1,8 @@
-import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, Lecture } from '../../lib/types';
-import lectureLikesDB from '../../database/lectureLikes';
 import lecturesDB from '../../database/lecture';
+import lectureLikesDB from '../../database/lectureLikes';
+import { httpError } from '../../lib/lib';
+import { IDParam, Lecture } from '../../lib/types';
 import { onUpdatedLectureIdea } from '../../ws/lectureIdeas';
 
 interface Handlers {

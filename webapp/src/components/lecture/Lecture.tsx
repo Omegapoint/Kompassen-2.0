@@ -1,13 +1,13 @@
-import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { createStyles, Divider, makeStyles, Paper } from '@material-ui/core';
+import { ReactElement, useCallback, useEffect, useState } from 'react';
 import useBoolean from '../../hooks/UseBoolean';
-import BottomContainer from './BottomContainer';
-import TopContainer from './TopContainer';
-import { borderRadius, colors } from '../../theme/Theme';
-import LectureContext from './LectureContext';
+import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture as LectureTP, LectureMessage } from '../../lib/Types';
-import useUnmount from '../../hooks/UseUnmount';
+import { borderRadius, colors } from '../../theme/Theme';
+import BottomContainer from './BottomContainer';
+import LectureContext from './LectureContext';
+import TopContainer from './TopContainer';
 
 const useStyles = makeStyles(() =>
   createStyles({

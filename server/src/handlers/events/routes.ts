@@ -1,6 +1,6 @@
-import schema, { validate } from '../validationSchemas';
 import { Express } from 'express';
 import { admin, locked } from '../auth';
+import schema, { validate } from '../validationSchemas';
 import events from './handlers';
 
 const eventsRoutes = (app: Express): void => {

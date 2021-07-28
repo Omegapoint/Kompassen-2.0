@@ -1,6 +1,6 @@
-import { Actions } from './actions';
 import { User } from '../../lib/Types';
 import { PartialAction } from '../types';
+import { Actions } from './actions';
 
 const initial = {} as User;
 

@@ -1,8 +1,8 @@
-import { EmojiEmotions } from '@material-ui/icons';
 import { IconButton, makeStyles, Popover } from '@material-ui/core';
-import { ReactElement } from 'react';
+import { EmojiEmotions } from '@material-ui/icons';
 import Picker, { IEmojiData } from 'emoji-picker-react';
 import * as React from 'react';
+import { ReactElement } from 'react';
 import useAnchor from '../../hooks/UseAnchor';
 
 interface TextPanelProps {

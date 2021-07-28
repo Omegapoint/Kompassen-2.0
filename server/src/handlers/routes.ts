@@ -1,14 +1,14 @@
-import express, { Express, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import userRoutes from './users/routes';
-import locationRoutes from './locations/routes';
-import loginRoutes from './login/routes';
-import categoriesRoutes from './categories/routes';
-import eventsRoutes from './events/routes';
-import lecturesRoutes from './lectures/routes';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import { logger } from '../config/config';
 import { reviver } from '../lib/types';
+import categoriesRoutes from './categories/routes';
+import eventsRoutes from './events/routes';
 import lectureLikesRoutes from './lectureLikes/routes';
+import lecturesRoutes from './lectures/routes';
+import locationRoutes from './locations/routes';
+import loginRoutes from './login/routes';
+import userRoutes from './users/routes';
 
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
   logger.info(`Incoming request ${req.method} ${req.url}`);

@@ -1,12 +1,13 @@
-import db from '../lib/database';
 import { logger } from '../config/config';
-import { IDParam, Category, NewCategory, UpdatedCategory } from '../lib/types';
+import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { Category, IDParam, NewCategory, UpdatedCategory } from '../lib/types';
 
 const SELECT_CATEGORIES = `
     SELECT l.id,
            l.name,
            l.icon,
+           l.color,
            l.created_at,
            l.updated_at,
            u1.name as created_by,
@@ -22,8 +23,8 @@ const SELECT_CATEGORY_BY_ID = `
 `;
 
 const INSERT_CATEGORY = `
-    INSERT INTO categories(name, icon, created_by, updated_by)
-    VALUES ($1, $2, $3, $3)
+    INSERT INTO categories(name, icon, color, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $4)
     RETURNING id
 `;
 
@@ -31,8 +32,9 @@ const UPDATE_CATEGORY = `
     UPDATE categories
     SET name       = $1,
         icon       = $2,
-        updated_by = $3
-    WHERE id = $4
+        color      = $3,
+        updated_by = $4
+    WHERE id = $5
     RETURNING id
 `;
 
@@ -67,7 +69,12 @@ const categoriesDB: CategoriesDB = {
   },
 
   async insert(category, userID): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_CATEGORY, [category.name, category.icon, userID]);
+    const { rows } = await db.query(INSERT_CATEGORY, [
+      category.name,
+      category.icon,
+      category.color,
+      userID,
+    ]);
     return rows[0];
   },
 
@@ -75,6 +82,7 @@ const categoriesDB: CategoriesDB = {
     const { rows } = await db.query(UPDATE_CATEGORY, [
       category.name,
       category.icon,
+      category.color,
       userID,
       category.id,
     ]);

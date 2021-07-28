@@ -1,11 +1,12 @@
-import schema, { validate } from '../validationSchemas';
 import { Express } from 'express';
 import { admin, locked } from '../auth';
+import schema, { validate } from '../validationSchemas';
 import lectures from './handlers';
 
 const lecturesRoutes = (app: Express): void => {
   app.post('/lecture', admin, validate(schema.lectures.newLecture), lectures.create);
-  app.post('/lecture/idea', admin, validate(schema.lectures.newIdea), lectures.createIdea);
+  app.post('/lecture/approve', admin, validate(schema.lectures.newLecture), lectures.approve);
+  app.post('/lecture/idea', locked, validate(schema.lectures.newIdea), lectures.createIdea);
   app.put('/lecture', admin, validate(schema.lectures.updateLecture), lectures.update);
   app.delete('/lecture/:id', admin, validate(schema.uuidParam, 'params'), lectures.delete);
   app.get('/lecture/tag', locked, lectures.listTags);
@@ -15,7 +16,7 @@ const lecturesRoutes = (app: Express): void => {
     validate(schema.uuidParam, 'params'),
     lectures.listCategories
   );
-  app.get('/lecture', locked, lectures.list);
+  app.get('/lecture', locked, validate(schema.lectures.listLectures, 'query'), lectures.list);
   app.get('/lecture/:id', locked, validate(schema.uuidParam, 'params'), lectures.getByID);
 };
 

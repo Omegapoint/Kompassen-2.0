@@ -1,7 +1,7 @@
+import camelCase from 'camelcase';
 import { Response } from 'express';
 import http from 'http';
 import { logger } from '../config/config';
-import camelCase from 'camelcase';
 
 export const httpError = (res: Response, code: number, error: string, message?: unknown): void => {
   if (message) logger.error(message);

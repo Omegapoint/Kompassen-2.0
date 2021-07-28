@@ -1,6 +1,6 @@
-import schema, { validate } from '../validationSchemas';
 import { Express } from 'express';
 import { admin, locked } from '../auth';
+import schema, { validate } from '../validationSchemas';
 import locations from './handlers';
 
 const locationRoutes = (app: Express): void => {

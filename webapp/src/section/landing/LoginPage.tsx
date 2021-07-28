@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
-import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { useMsal } from '@azure/msal-react';
-import loginBg from './assets/loginBg.svg';
-import { colors, fontFamilies, padding } from './theme/Theme';
-import { loginRequest } from './Login';
+import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
+import { ReactElement } from 'react';
+import { useAzure } from '../../api/Login';
+import loginBg from '../../assets/loginBg.svg';
+import { colors, fontFamilies, padding } from '../../theme/Theme';
 
 interface StyleProps {
   image: string;
@@ -33,6 +33,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
 const LoginPage = (): ReactElement => {
   const { instance } = useMsal();
   const classes = useStyles({ image: loginBg });
+  const { loginRequest } = useAzure();
 
   const login = async () => instance.loginPopup(loginRequest);
 

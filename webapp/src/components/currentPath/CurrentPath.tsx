@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import { ReactElement } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
 import { AppRoute, appRoutes } from '../../router/Router';
 
 const sortedRoutes = [...appRoutes].sort((e, e1) => (e.path.length > e1.path.length ? 1 : -1));

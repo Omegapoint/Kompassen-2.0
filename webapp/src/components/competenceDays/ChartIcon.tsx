@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core';
+import { ReactElement } from 'react';
 import { LabelRenderProps } from 'react-minimal-pie-chart/types/Label';
 import { colors } from '../../theme/Theme';
 import DynamicSvg from '../dynamicSVG/DynamicSVG';

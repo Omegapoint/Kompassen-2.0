@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { Typography } from '@material-ui/core';
+import { ReactElement } from 'react';
 
 const QuickGuide = (): ReactElement => (
   <Typography>

@@ -1,5 +1,5 @@
-import { Action } from '../types';
 import { Location } from '../../lib/Types';
+import { Action } from '../types';
 
 export type Actions = 'SET_LOCATIONS';
 

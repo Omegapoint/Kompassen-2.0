@@ -1,9 +1,9 @@
-import { ReactElement } from 'react';
 import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
-import { borderRadius, colors, padding } from '../../theme/Theme';
-import { LectureMessage } from '../../lib/Types';
+import { ReactElement } from 'react';
 import { useAppSelector } from '../../lib/Lib';
+import { LectureMessage } from '../../lib/Types';
+import { borderRadius, colors, padding } from '../../theme/Theme';
 
 const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec'];
 

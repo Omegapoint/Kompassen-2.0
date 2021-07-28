@@ -1,18 +1,18 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
-import SideCard from '../../components/sideCard/SideCard';
-import { colors, padding } from '../../theme/Theme';
-import LectureIdea from '../../components/lecture/Lecture';
-import PublishIdea from '../../components/publishIdea/PublishIdea';
+import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
-import QuickGuide from '../../components/quickGuide/QuickGuide';
 import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
+import LectureIdea from '../../components/lecture/Lecture';
+import PublishIdea from '../../components/publishIdea/PublishIdea';
+import QuickGuide from '../../components/quickGuide/QuickGuide';
+import SideCard from '../../components/sideCard/SideCard';
 import WordCloud from '../../components/wordCloud/WordCloud';
-import CompetenceDays from '../../components/competenceDays/CompetenceDays';
+import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
-import useUnmount from '../../hooks/UseUnmount';
+import { colors, padding } from '../../theme/Theme';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -116,11 +116,15 @@ const Home = (): ReactElement => {
           title="Nästa kompetensdag"
           hrefText="Anmäl pass till kompetensdagar"
           hrefBarColor={colors.orange}
-          href="/class/create"
+          href="/lecture/create"
         >
           <CompetenceDays />
         </SideCard>
-        <SideCard title="Mina senaste pass" hrefText="Hantera mina anmälda pass " href="/">
+        <SideCard
+          title="Mina senaste pass"
+          hrefText="Hantera mina anmälda pass "
+          href="/lecture/user"
+        >
           <LatestLectures />
         </SideCard>
         <SideCard title="Trendar just nu">

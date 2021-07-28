@@ -1,6 +1,6 @@
 import db from '../lib/database';
-import { IDParam, LectureMessage, NewDBLectureMessage } from '../lib/types';
 import { snakeToCamel } from '../lib/lib';
+import { IDParam, LectureMessage, NewDBLectureMessage } from '../lib/types';
 
 const LIST_LECTURE_MESSAGES = `
     SELECT id, lecture_id, user_id, message, created_at, updated_at

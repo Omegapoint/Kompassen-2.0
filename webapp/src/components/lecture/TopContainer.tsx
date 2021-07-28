@@ -1,12 +1,13 @@
-import { ReactElement, useContext } from 'react';
 import { createStyles, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { ChatBubble, Favorite, FavoriteBorder } from '@material-ui/icons';
+import { ReactElement, useContext } from 'react';
+import { useMutation } from 'react-query';
+import { likeLecture, unlikeLecture } from '../../api/Api';
+import { useAppSelector } from '../../lib/Lib';
+import { Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import Expander, { ExpanderProps } from './Expander';
-import { Lecture } from '../../lib/Types';
-import { useLikeLecture, useUnlikeLecture } from '../../lib/Hooks';
 import LectureContext from './LectureContext';
-import { useAppSelector } from '../../lib/Lib';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -81,15 +82,15 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
 
   const likes = lecture.likes?.length || 0;
 
-  const [, likeRequest] = useLikeLecture();
-  const [, unlikeRequest] = useUnlikeLecture();
+  const likeMutation = useMutation(likeLecture);
+  const unlikeMutation = useMutation(unlikeLecture);
 
   const like = () => {
-    likeRequest({ urlParams: { id: lecture.id } });
+    likeMutation.mutate({ id: lecture.id });
   };
 
   const unlike = () => {
-    unlikeRequest({ urlParams: { id: lecture.id } });
+    unlikeMutation.mutate({ id: lecture.id });
   };
   return (
     <div className={classes.topContainer}>

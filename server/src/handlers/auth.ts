@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import checkSession from '../lib/auth';
 import { NextFunction, Request, Response } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
+import checkSession from '../lib/auth';
 import { httpError } from '../lib/lib';
 
-export const getClaims = async (authStr: string): Promise<any | null> => {
+export const getClaims = async (authStr: string): Promise<JwtPayload | null> => {
   const claims = await checkSession(authStr);
   if (!claims) return null;
   return claims;
@@ -28,21 +28,23 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction, onlyAd
     return;
   }
 
+  const role = claims.roles ? claims.roles[0] : 'Worker';
+
   res.locals.userId = claims.oid;
   res.locals.name = claims.name;
+  res.locals.role = role;
 
-  if (onlyAdmin) {
-    const role = claims.role || 'admin';
-    if (role !== 'admin') {
-      httpError(res, 403, 'User does not have access to the resource');
-      return;
-    }
+  if (onlyAdmin && role !== 'Admin') {
+    httpError(res, 403, 'User does not have access to the resource');
+    return;
   }
   next();
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const locked: any = async (req: Request, res: Response, next: NextFunction) =>
   checkAuth(req, res, next, false);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const admin: any = async (req: Request, res: Response, next: NextFunction) =>
   checkAuth(req, res, next, true);

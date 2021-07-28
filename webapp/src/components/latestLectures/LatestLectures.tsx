@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { makeStyles } from '@material-ui/core';
+import { ReactElement } from 'react';
 import { padding } from '../../theme/Theme';
 import Lecture, { LectureKind } from './lecture';
 

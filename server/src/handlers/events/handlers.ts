@@ -1,7 +1,7 @@
-import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, ListEventParams, NewEvent, UpdatedEvent } from '../../lib/types';
 import eventsDB from '../../database/events';
+import { httpError } from '../../lib/lib';
+import { IDParam, ListEventParams, NewEvent, UpdatedEvent } from '../../lib/types';
 
 interface Handlers {
   create: (req: Request<null, null, NewEvent>, res: Response) => Promise<void>;

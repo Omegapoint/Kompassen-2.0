@@ -1,6 +1,6 @@
-import { Actions } from './actions';
-import { Action } from '../types';
 import { Location } from '../../lib/Types';
+import { Action } from '../types';
+import { Actions } from './actions';
 
 const initial: Location[] = [];
 

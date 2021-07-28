@@ -1,7 +1,7 @@
-import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, NewLocation, UpdatedLocation } from '../../lib/types';
 import locationsDB from '../../database/locations';
+import { httpError } from '../../lib/lib';
+import { IDParam, NewLocation, UpdatedLocation } from '../../lib/types';
 
 interface Handlers {
   create: (req: Request<null, null, NewLocation>, res: Response) => Promise<void>;

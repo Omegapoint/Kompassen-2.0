@@ -1,6 +1,6 @@
-import schema, { validate } from '../validationSchemas';
 import { Express } from 'express';
 import { admin } from '../auth';
+import schema, { validate } from '../validationSchemas';
 import lectureLikes from './handlers';
 
 const lectureLikesRoutes = (app: Express): void => {

@@ -1,7 +1,7 @@
-import db from '../lib/database';
 import { logger } from '../config/config';
-import { IDParam, Location, NewLocation, UpdatedLocation } from '../lib/types';
+import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { IDParam, Location, NewLocation, UpdatedLocation } from '../lib/types';
 
 const SELECT_LOCATIONS = `
     SELECT l.id, l.name, l.created_at, l.updated_at, u1.name as created_by, u2.name as updated_by
