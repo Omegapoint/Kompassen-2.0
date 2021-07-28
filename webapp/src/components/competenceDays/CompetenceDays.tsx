@@ -1,12 +1,13 @@
-import { ReactElement, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-import LectureStats from './LectureStats';
+import { ReactElement, useState } from 'react';
+import { useQuery } from 'react-query';
+import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
-import DaysToGo from './DaysToGo';
-import DayPicker from './DayPicker';
-import { useListEvents } from '../../lib/Hooks';
 import SmallLoader from '../loader/SmallLoader';
+import DayPicker from './DayPicker';
+import DaysToGo from './DaysToGo';
 import EventContext from './EventContext';
+import LectureStats from './LectureStats';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -15,22 +16,19 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+const listNewEvents = () => listEvents({ filter: 'new' });
+
 const CompetenceDays = (): ReactElement => {
   const classes = useStyles();
-  const [eventsState, listEventsRequest] = useListEvents();
+  const { data, isLoading } = useQuery('newEvents', listNewEvents);
+
   const [ind, setInd] = useState(0);
 
-  useEffect(() => {
-    listEventsRequest({ queryParams: { filter: 'new' } });
-  }, [listEventsRequest]);
-
-  if (eventsState.loading || !eventsState.data) return <SmallLoader />;
+  if (isLoading || !data) return <SmallLoader />;
 
   return (
-    <EventContext.Provider
-      value={{ events: eventsState.data, event: eventsState.data[ind], ind, setInd }}
-    >
-      {eventsState.data && (
+    <EventContext.Provider value={{ events: data, event: data[ind], ind, setInd }}>
+      {data && (
         <div className={classes.container}>
           <DayPicker />
           <DaysToGo />

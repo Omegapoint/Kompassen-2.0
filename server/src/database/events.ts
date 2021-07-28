@@ -1,7 +1,7 @@
-import db from '../lib/database';
 import { logger } from '../config/config';
-import { IDParam, Event, NewEvent, UpdatedEvent } from '../lib/types';
+import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { Event, IDParam, NewEvent, UpdatedEvent } from '../lib/types';
 
 const BASE_SELECT_EVENTS = `
     SELECT l.id,

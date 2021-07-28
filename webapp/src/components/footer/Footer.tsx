@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { createStyles, makeStyles, Typography } from '@material-ui/core';
+import { ReactElement } from 'react';
 import { padding } from '../../theme/Theme';
 
 const useStyles = makeStyles(() =>

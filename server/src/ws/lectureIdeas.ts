@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 import lecturesDB from '../database/lecture';
-import { users } from './types';
 import { Lecture } from '../lib/types';
+import { users } from './types';
 
 export const onUpdatedLectureIdea = (lecture: Lecture): void => {
   users.forEach((user) => {

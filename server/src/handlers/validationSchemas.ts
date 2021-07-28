@@ -1,12 +1,12 @@
-import Joi from 'joi';
 import { NextFunction, Request, Response } from 'express';
+import Joi from 'joi';
 import { httpError } from '../lib/lib';
 import { UpdatedEvent } from '../lib/types';
-import events from './events/schema';
-import users from './users/schema';
-import locations from './locations/schema';
 import categories from './categories/schema';
+import events from './events/schema';
 import lectures from './lectures/schema';
+import locations from './locations/schema';
+import users from './users/schema';
 
 type KeyType = 'body' | 'params' | 'query';
 

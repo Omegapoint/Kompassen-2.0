@@ -10,6 +10,7 @@ export const up = async (knex: Knex): Promise<void> =>
 
       t.text('name').notNullable();
       t.text('icon').notNullable();
+      t.text('color').notNullable();
 
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();

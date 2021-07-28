@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { Button, Link, makeStyles, Typography } from '@material-ui/core';
+import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { colors, padding } from '../../theme/Theme';
 

@@ -1,7 +1,7 @@
-import setupExpress from './handlers/routes';
-import config, { logger } from './config/config';
-import { Server } from 'socket.io';
 import * as http from 'http';
+import { Server } from 'socket.io';
+import config, { logger } from './config/config';
+import setupExpress from './handlers/routes';
 import { setupWebSocket } from './ws/socket';
 
 (async (): Promise<void> => {

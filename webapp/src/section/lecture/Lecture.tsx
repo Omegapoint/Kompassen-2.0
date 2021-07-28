@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import { ReactElement } from 'react';
-import LectureForm from '../../components/lectureForm/LectureForm';
+import { getLecture } from '../../api/Api';
 import FormWrapper from '../../components/formWrapper/FormWrapper';
-import { useGetLecture } from '../../lib/Hooks';
+import LectureForm from '../../components/lectureForm/LectureForm';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -17,7 +17,7 @@ const Lecture = (): ReactElement => {
 
   return (
     <div className={classes.container}>
-      <FormWrapper useHook={useGetLecture}>
+      <FormWrapper fn={getLecture} name="lecture">
         <LectureForm />
       </FormWrapper>
     </div>

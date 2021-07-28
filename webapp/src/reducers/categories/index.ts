@@ -1,6 +1,6 @@
-import { Actions } from './actions';
-import { Action } from '../types';
 import { Category } from '../../lib/Types';
+import { Action } from '../types';
+import { Actions } from './actions';
 
 const initial: Category[] = [];
 

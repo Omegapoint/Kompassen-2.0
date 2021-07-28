@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
+import usersDB from '../../database/users';
 import { httpError } from '../../lib/lib';
 import { NewUser, UpdatedUser } from '../../lib/types';
-import usersDB from '../../database/users';
 
 type CreateUserReq = Request<null, null, NewUser>;
 type UpdatedUserReq = Request<null, null, UpdatedUser>;
@@ -38,6 +38,16 @@ const users = {
       return;
     }
     res.send(user);
+  },
+
+  async existsByID(req: GetUserReq, res: Response): Promise<void> {
+    const { userId } = res.locals;
+    const user = await usersDB.getByID(userId);
+    if (!user) {
+      res.send({ ok: false });
+      return;
+    }
+    res.send({ ok: true });
   },
 };
 

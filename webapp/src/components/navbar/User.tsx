@@ -1,5 +1,4 @@
-import { MouseEvent, ReactElement, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useMsal } from '@azure/msal-react';
 import {
   Avatar,
   Divider,
@@ -11,8 +10,10 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
-import { Settings, ExitToApp, Edit, ArrowDropDown } from '@material-ui/icons';
-import { useMsal } from '@azure/msal-react';
+import { ArrowDropDown, Edit, ExitToApp, Settings } from '@material-ui/icons';
+import { MouseEvent, ReactElement, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { useAzure } from '../../api/Login';
 import { colors } from '../../theme/Theme';
 
 interface UserProps {
@@ -43,6 +44,7 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { instance } = useMsal();
+  const { logoutRequest } = useAzure();
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -52,12 +54,8 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
     setAnchorEl(null);
   };
 
-  const logout = () => {
-    instance.logoutPopup({
-      postLogoutRedirectUri: '/',
-      mainWindowRedirectUri: '/',
-    });
-  };
+  const logout = () => instance.logoutPopup(logoutRequest);
+
   return (
     <>
       <IconButton className={classes.container} onClick={handleClick}>

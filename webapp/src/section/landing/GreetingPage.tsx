@@ -1,7 +1,7 @@
-import { ReactElement, ReactNode } from 'react';
 import { makeStyles, Theme, Typography } from '@material-ui/core';
-import loginBg from './assets/loginBg.svg';
-import { fontFamilies } from './theme/Theme';
+import { ReactElement, ReactNode } from 'react';
+import loginBg from '../../assets/loginBg.svg';
+import { fontFamilies } from '../../theme/Theme';
 
 interface StyleProps {
   image: string;

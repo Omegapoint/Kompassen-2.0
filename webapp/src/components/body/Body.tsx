@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { createStyles, makeStyles } from '@material-ui/core';
+import { ReactElement } from 'react';
 import Router from '../../router/Router';
 import { padding } from '../../theme/Theme';
 import CurrentPath from '../currentPath/CurrentPath';

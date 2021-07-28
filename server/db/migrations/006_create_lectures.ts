@@ -1,5 +1,5 @@
-import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 import { Knex } from 'knex';
+import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 
 const table = 'lectures';
 
@@ -9,18 +9,21 @@ export const up = async (knex: Knex): Promise<void> =>
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
 
       t.text('lecturer');
+      t.uuid('lecturer_id');
       t.text('description').notNullable();
       t.text('location');
       t.uuid('eventID');
       t.integer('duration');
       t.text('title').notNullable();
-      t.text('category');
+      t.uuid('category_id').references('categories.id');
       t.specificType('maxParticipants', 'smallint');
       t.text('requirements');
       t.text('preparations');
       t.text('message');
       t.specificType('tags', 'text ARRAY');
       t.boolean('idea').notNullable();
+      t.boolean('published').notNullable();
+      t.boolean('approved').notNullable();
 
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();

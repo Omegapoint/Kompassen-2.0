@@ -1,10 +1,12 @@
-import { createStyles, makeStyles, Typography, Divider } from '@material-ui/core';
+import { createStyles, Divider, makeStyles, Typography } from '@material-ui/core';
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import { padding } from '../../theme/Theme';
-import Profile from './Profile';
-import Notifications from './Notifications';
-import { useUpdateUser } from '../../lib/Hooks';
+import { useMutation } from 'react-query';
+import { updateUser } from '../../api/Api';
+import useInvalidateOnSuccess from '../../hooks/UseInvalidateOnSuccess';
 import { useAppSelector } from '../../lib/Lib';
+import { padding } from '../../theme/Theme';
+import Notifications from './Notifications';
+import Profile from './Profile';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -28,12 +30,14 @@ const useStyles = makeStyles(() =>
 const Settings = (): ReactElement => {
   const classes = useStyles();
   const user = useAppSelector((state) => state.user);
-  const [, updateUserRequest] = useUpdateUser();
+  const { mutate, isSuccess } = useMutation(updateUser);
+  useInvalidateOnSuccess(isSuccess, 'user');
+
   const [checked, setChecked] = useState(user.notifications);
 
   useEffect(() => {
-    updateUserRequest({ body: { id: user.id, notifications: checked } });
-  }, [checked, user.id, updateUserRequest]);
+    mutate({ id: user.id, notifications: checked });
+  }, [checked, user.id, mutate]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked({ ...checked, [event.target.name]: event.target.checked });

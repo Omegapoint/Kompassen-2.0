@@ -1,7 +1,7 @@
-import db from '../lib/database';
 import { logger } from '../config/config';
-import { User, IDParam, NewUser, UpdatedUser } from '../lib/types';
+import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { IDParam, NewUser, UpdatedUser, User } from '../lib/types';
 
 const SELECT_USER_BY_ID = `
     SELECT id, name, notifications, created_at, updated_at

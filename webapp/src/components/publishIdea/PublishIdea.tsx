@@ -1,5 +1,3 @@
-import { ReactElement, MouseEvent, FormEvent } from 'react';
-import { IEmojiData } from 'emoji-picker-react';
 import {
   Button,
   createStyles,
@@ -14,13 +12,16 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { borderRadius, colors, padding } from '../../theme/Theme';
+import { IEmojiData } from 'emoji-picker-react';
+import { FormEvent, MouseEvent, ReactElement } from 'react';
+import { useMutation } from 'react-query';
+import { createLectureIdea } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
-import TextPanel from '../textPanel/TextPanel';
-import { useCreateLectureIdea } from '../../lib/Hooks';
-import { useAppSelector } from '../../lib/Lib';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
-import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/constants';
+import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
+import { useAppSelector } from '../../lib/Lib';
+import { borderRadius, colors, padding } from '../../theme/Theme';
+import TextPanel from '../textPanel/TextPanel';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -114,19 +115,17 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
-  const [, createLectureIdeaRequest] = useCreateLectureIdea();
+  const { mutateAsync } = useMutation(createLectureIdea);
   const user = useAppSelector((state) => state.user);
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
 
-    await createLectureIdeaRequest({
-      body: {
-        title: values.title,
-        description: values.description,
-        tags: values.tags.split(' ').filter((e) => e),
-        lecturer: values.status === 'feedback_wanted' ? user.name : null,
-      },
+    await mutateAsync({
+      title: values.title,
+      description: values.description,
+      tags: values.tags.split(' ').filter((e) => e),
+      lecturer: values.status === 'feedback_wanted' ? user.name : null,
     });
     cancel();
   };

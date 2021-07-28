@@ -1,9 +1,9 @@
-import { ReactElement, useContext, useEffect, useState } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 import { differenceInDays, intervalToDuration } from 'date-fns';
+import { ReactElement, useContext, useEffect, useState } from 'react';
+import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
-import { Event } from '../../lib/Types';
 
 const useStyles = makeStyles(() => ({
   container: {

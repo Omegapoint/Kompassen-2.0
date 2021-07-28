@@ -1,5 +1,5 @@
-import { ReactElement } from 'react';
 import { CircularProgress, createStyles, makeStyles } from '@material-ui/core';
+import { ReactElement } from 'react';
 
 const useStyles = makeStyles(() =>
   createStyles({

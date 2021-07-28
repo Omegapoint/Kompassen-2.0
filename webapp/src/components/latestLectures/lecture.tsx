@@ -1,12 +1,12 @@
-import { ReactElement } from 'react';
 import { makeStyles, Paper, Typography } from '@material-ui/core';
-import { borderRadius, padding } from '../../theme/Theme';
-import { formatDate } from '../lecture/Row';
+import { ReactElement } from 'react';
 import cloud from '../../assets/cloud.svg';
 import code from '../../assets/code.svg';
 import shield from '../../assets/shield.svg';
 import sun from '../../assets/sun.svg';
 import vcs from '../../assets/vcs.svg';
+import { borderRadius, padding } from '../../theme/Theme';
+import { formatDate } from '../lecture/Row';
 
 export type LectureKind = 'cloud' | 'sun' | 'shield' | 'code' | 'vcs';
 

@@ -1,5 +1,5 @@
-import { Actions, SessionState } from './actions';
 import { PartialAction } from '../types';
+import { Actions, SessionState } from './actions';
 
 const initial = {} as SessionState;
 

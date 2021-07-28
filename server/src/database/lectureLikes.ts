@@ -1,5 +1,5 @@
-import { IDParam, NewLectureLike } from '../lib/types';
 import db from '../lib/database';
+import { IDParam, NewLectureLike } from '../lib/types';
 
 const INSERT_LECTURE_LIKE = `
     INSERT INTO lecture_likes(lecture_id, user_id)

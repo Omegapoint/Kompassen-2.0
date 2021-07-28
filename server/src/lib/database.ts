@@ -1,7 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
+import Knex from 'knex';
+import { knexSnakeCaseMappers } from 'objection';
 import { Pool } from 'pg';
 import config from '../config/config';
-import { knexSnakeCaseMappers } from 'objection';
-import Knex from 'knex';
 
 export const knex = Knex({
   client: 'pg',

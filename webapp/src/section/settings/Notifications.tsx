@@ -1,5 +1,5 @@
 import { createStyles, FormGroup, makeStyles, Switch, Typography } from '@material-ui/core';
-import { ReactElement, Fragment, ChangeEvent } from 'react';
+import { ChangeEvent, Fragment, ReactElement } from 'react';
 import { padding } from '../../theme/Theme';
 
 const useStyles = makeStyles(() =>

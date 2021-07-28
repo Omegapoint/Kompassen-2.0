@@ -1,5 +1,5 @@
-import { ReactElement, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core';
+import { ReactElement, ReactNode } from 'react';
 import { constants } from '../../theme/Theme';
 
 interface ContentProps {
@@ -10,9 +10,14 @@ const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
     justifyItems: 'center',
+    alignContent: 'start',
+
     minWidth: '200px',
     minHeight: `calc(100vh - ${constants.headerHeight})`,
     padding: '20px',
+    '& > div': {
+      width: '100%',
+    },
   },
 }));
 

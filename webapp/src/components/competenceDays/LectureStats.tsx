@@ -1,13 +1,14 @@
-import { ReactElement, useState, Fragment, useEffect, useContext } from 'react';
-import { PieChart } from 'react-minimal-pie-chart';
 import { Divider, makeStyles, Typography } from '@material-ui/core';
+import { Fragment, ReactElement, useContext, useState } from 'react';
+import { PieChart } from 'react-minimal-pie-chart';
+import { useQuery } from 'react-query';
+import { listLectureCategories } from '../../api/Api';
+import { useAppSelector } from '../../lib/Lib';
 import { colors, padding } from '../../theme/Theme';
 import { IconType } from '../latestLectures/lecture';
-import ChartIcon from './ChartIcon';
-import { useListLectureCategories } from '../../lib/Hooks';
-import EventContext from './EventContext';
 import SmallLoader from '../loader/SmallLoader';
-import { useAppSelector } from '../../lib/Lib';
+import ChartIcon from './ChartIcon';
+import EventContext from './EventContext';
 
 export const iconColor: IconType = {
   cloud: colors.yellow,
@@ -48,22 +49,24 @@ const size = 6;
 const LectureStats = (): ReactElement => {
   const classes = useStyles();
   const [hovered, setHovered] = useState<number | undefined>(undefined);
-  const [lectureCategories, lectureCategoriesRequest] = useListLectureCategories();
   const { event } = useContext(EventContext);
+  const { data, isLoading } = useQuery('lectureCategories', () =>
+    listLectureCategories({ id: event.id })
+  );
   const categories = useAppSelector((state) => state.categories);
 
-  const data = lectureCategories.data?.map((e) => ({
-    title: categories?.find((e1) => e1.name === e.category)?.icon,
-    desc: e.category,
-    value: e.count,
-    color: iconColor.cloud,
-  }));
+  const mapped = data?.map((e) => {
+    const category = categories?.find((e1) => e1.id === e.categoryId);
 
-  useEffect(() => {
-    lectureCategoriesRequest({ urlParams: { id: event.id } });
-  }, [lectureCategoriesRequest, event.id]);
+    return {
+      title: category?.icon,
+      desc: category?.name,
+      value: e.count,
+      color: category?.color || '',
+    };
+  });
 
-  if (lectureCategories.loading) return <SmallLoader />;
+  if (isLoading) return <SmallLoader />;
 
   return (
     <div className={classes.container}>
@@ -72,10 +75,10 @@ const LectureStats = (): ReactElement => {
         <Divider />
       </div>
       <div className={classes.subContainer}>
-        {data?.length ? (
+        {mapped?.length ? (
           <>
             <PieChart
-              data={data}
+              data={mapped}
               radius={PieChart.defaultProps.radius - size}
               segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
               segmentsShift={(index) => (index === hovered ? size : 2)}
@@ -85,7 +88,7 @@ const LectureStats = (): ReactElement => {
               startAngle={-90}
               label={(e) => (
                 <ChartIcon
-                  one={data?.length === 1}
+                  one={mapped?.length === 1}
                   key={e.dataEntry.title}
                   onMouseOver={() => setHovered(e.dataIndex)}
                   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -94,7 +97,7 @@ const LectureStats = (): ReactElement => {
               )}
             />
             <div className={classes.descContainer}>
-              {data?.map((e) => (
+              {mapped?.map((e) => (
                 <Fragment key={e.title}>
                   <img
                     alt="icon"

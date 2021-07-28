@@ -1,8 +1,8 @@
+import { Link, makeStyles, Paper, Theme } from '@material-ui/core';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Link, makeStyles, Paper, Theme } from '@material-ui/core';
-import { borderRadius, padding } from '../../theme/Theme';
 import longArrowCircled from '../../assets/longArrowCircled.svg';
+import { borderRadius, padding } from '../../theme/Theme';
 
 interface StyleProps {
   hrefBarColor: string;

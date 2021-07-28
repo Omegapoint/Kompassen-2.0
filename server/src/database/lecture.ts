@@ -1,7 +1,7 @@
-import db from '../lib/database';
 import { logger } from '../config/config';
-import { CategoryStats, DLecture, IDParam, Lecture, TagStats, UpdatedLecture } from '../lib/types';
+import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { CategoryStats, DLecture, IDParam, Lecture, TagStats, UpdatedLecture } from '../lib/types';
 
 const SELECT_EVENTS = `
     SELECT l.id,
@@ -11,7 +11,6 @@ const SELECT_EVENTS = `
            l.event_id,
            l.duration,
            l.title,
-           l.category,
            l.max_participants,
            l.requirements,
            l.preparations,
@@ -19,9 +18,12 @@ const SELECT_EVENTS = `
            l.idea,
            l.created_at,
            l.updated_at,
+           l.approved,
+           l.published,
            u1.name as created_by,
            u2.name as updated_by,
-           (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id)
+           (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
+           l.category_id
     FROM lectures l
              LEFT JOIN users u1 on l.created_by = u1.id
              LEFT JOIN users u2 on l.updated_by = u2.id
@@ -40,10 +42,10 @@ const SELECT_TAGS = `
 const SELECT_CATEGORY = `
     SELECT json_agg(t)
     FROM (
-             SELECT category, count(*) as count
+             SELECT category_id, count(*) as count
              FROM lectures
              WHERE event_id = $1
-             GROUP BY category
+             GROUP BY category_id
              ORDER BY count
          ) t
 `;
@@ -54,9 +56,10 @@ const SELECT_EVENT_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO lectures(lecturer, description, location, event_id, duration, title, category, max_participants,
-                         requirements, preparations, tags, idea, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $13)
+    INSERT INTO lectures(lecturer, lecturer_id, description, location, event_id, duration, title, category_id,
+                         max_participants,
+                         requirements, preparations, tags, idea, approved, published, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $16)
     RETURNING id
 `;
 
@@ -68,13 +71,21 @@ const UPDATE_EVENT = `
         event_id         = $4,
         duration         = $5,
         title            = $6,
-        category         = $7,
+        category_id      = $7,
         max_participants = $8,
         requirements     = $9,
         preparations     = $10,
         tags             = $11,
-        updated_by       = $12
-    WHERE id = $13
+        published        = $12,
+        updated_by       = $13
+    WHERE id = $14
+    RETURNING id
+`;
+
+const APPROVE_EVENT = `
+    UPDATE lectures
+    SET approved = $1
+    WHERE id = $2
     RETURNING id
 `;
 
@@ -86,19 +97,25 @@ const DELETE_EVENT = `
 `;
 
 interface LecturesDB {
-  list: (idea?: boolean) => Promise<Lecture[]>;
+  list: (idea?: boolean, userID?: string) => Promise<Lecture[]>;
   listTags: () => Promise<TagStats[]>;
   listCategories: (id: string) => Promise<CategoryStats[]>;
   getByID: (id: string) => Promise<Lecture | null>;
   insert: (lecture: DLecture, id: string) => Promise<IDParam>;
   update: (lecture: UpdatedLecture, id: string) => Promise<IDParam>;
+  approve: (approved: boolean, id: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
 
 const lecturesDB: LecturesDB = {
-  async list(idea = false) {
+  async list(idea = false, userID) {
     const whereClause = idea ? 'WHERE l.idea = TRUE' : '';
-    const { rows } = await db.query(`${SELECT_EVENTS} ${whereClause} ORDER BY l.updated_at DESC`);
+    const userClause = userID ? 'WHERE l.lecturer_id = $1' : '';
+    const { rows } = await db.query(
+      `${SELECT_EVENTS} ${whereClause} ${userClause} ORDER BY l.updated_at DESC`,
+      [userID].filter((e) => e)
+    );
+
     return snakeToCamel(rows) || [];
   },
 
@@ -124,17 +141,20 @@ const lecturesDB: LecturesDB = {
   async insert(lecture, userID): Promise<IDParam> {
     const { rows } = await db.query(INSERT_EVENT, [
       lecture.lecturer,
+      userID,
       lecture.description,
       lecture.location,
       lecture.eventID,
       lecture.duration,
       lecture.title,
-      lecture.category,
+      lecture.categoryId,
       lecture.maxParticipants,
       lecture.requirements,
       lecture.preparations,
       lecture.tags,
       lecture.idea,
+      false,
+      lecture.published,
       userID,
     ]);
     return rows[0];
@@ -148,14 +168,20 @@ const lecturesDB: LecturesDB = {
       lecture.eventID,
       lecture.duration,
       lecture.title,
-      lecture.category,
+      lecture.categoryId,
       lecture.maxParticipants,
       lecture.requirements,
       lecture.preparations,
       lecture.tags,
+      lecture.published,
       userID,
       lecture.id,
     ]);
+    return rows[0];
+  },
+
+  async approve(approved, id): Promise<IDParam> {
+    const { rows } = await db.query(APPROVE_EVENT, [approved, id]);
     return rows[0];
   },
 

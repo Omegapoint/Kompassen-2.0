@@ -1,20 +1,29 @@
-import { httpError } from '../../lib/lib';
 import { Request, Response } from 'express';
-import { IDParam, Lecture, NewLecture, NewLectureIdea, UpdatedLecture } from '../../lib/types';
 import lecturesDB from '../../database/lecture';
+import usersDB from '../../database/users';
+import { httpError } from '../../lib/lib';
+import {
+  Approved,
+  IDParam,
+  Lecture,
+  ListLecturesParams,
+  NewLecture,
+  NewLectureIdea,
+  UpdatedLecture,
+} from '../../lib/types';
 import {
   onCreatedLectureIdea,
   onDeleteLectureIdea,
   onUpdatedLectureIdea,
 } from '../../ws/lectureIdeas';
-import usersDB from '../../database/users';
 
 interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
   createIdea: (req: Request<null, null, NewLectureIdea>, res: Response) => Promise<void>;
   update: (req: Request<null, null, UpdatedLecture>, res: Response) => Promise<void>;
+  approve: (req: Request<null, null, Approved>, res: Response) => Promise<void>;
   getByID: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
-  list: (req: Request<null, null, null>, res: Response) => Promise<void>;
+  list: (req: Request<null, ListLecturesParams, null>, res: Response) => Promise<void>;
   listTags: (req: Request<null, null, null>, res: Response) => Promise<void>;
   listCategories: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
   delete: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
@@ -23,14 +32,19 @@ interface Handlers {
 const lectures: Handlers = {
   async create({ body }, res) {
     const { userId } = res.locals;
-    const item = await lecturesDB.insert({ ...body, idea: false }, userId);
+    const item = await lecturesDB.insert(
+      { ...body, lecturerId: userId, approved: false, idea: false },
+      userId
+    );
     res.send(item);
   },
   async createIdea({ body }, res) {
     const { userId } = res.locals;
+    const lecturerId = body.lecturer ? userId : null;
     const item = await lecturesDB.insert(
       {
         ...body,
+        lecturerId,
         idea: true,
         location: null,
         eventID: null,
@@ -38,8 +52,10 @@ const lectures: Handlers = {
         maxParticipants: null,
         requirements: null,
         duration: null,
-        category: null,
+        categoryId: null,
         message: null,
+        approved: false,
+        published: false,
       },
       userId
     );
@@ -68,6 +84,14 @@ const lectures: Handlers = {
 
     res.send(item);
   },
+  async approve({ body }, res) {
+    const item = await lecturesDB.approve(body.approved, body.id);
+
+    const lecture = await lecturesDB.getByID(item.id);
+    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+
+    res.send(item);
+  },
   async getByID({ params }, res) {
     const item = await lecturesDB.getByID(params.id);
     if (!item) {
@@ -77,7 +101,9 @@ const lectures: Handlers = {
     res.send(item);
   },
   async list(req, res) {
-    const items = await lecturesDB.list();
+    const { userId } = res.locals;
+    const mine = req.query.mine === 'true';
+    const items = await lecturesDB.list(false, mine ? userId : null);
     res.send(items);
   },
   async listTags(req, res) {

@@ -1,10 +1,10 @@
+import Joi from 'joi';
+import { Socket } from 'socket.io';
 import { logger } from '../config/config';
 import lectureMessagesDB from '../database/lectureMessages';
-import { Socket } from 'socket.io';
-import Joi from 'joi';
+import { LARGE_STRING_LEN, STRING_MIN_LEN } from '../lib/constants';
 import { NewLectureMessage } from '../lib/types';
 import { Join } from './types';
-import { LARGE_STRING_LEN, STRING_MIN_LEN } from '../lib/constants';
 
 const joined: Join = {};
 

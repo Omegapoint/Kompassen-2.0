@@ -1,6 +1,9 @@
-/* eslint-disable no-console */
 import { BrowserAuthOptions } from '@azure/msal-browser';
 import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
+import { EndSessionPopupRequest } from '@azure/msal-browser/dist/request/EndSessionPopupRequest';
+import { PopupRequest } from '@azure/msal-browser/dist/request/PopupRequest';
+import { useState } from 'react';
+import { useAppSelector } from '../lib/Lib';
 
 export const genMSALConfig = (loginConfig: BrowserAuthOptions): Configuration => ({
   auth: {
@@ -24,11 +27,18 @@ export const genMSALConfig = (loginConfig: BrowserAuthOptions): Configuration =>
   },
 });
 
-// export const scopes = ['User.Read'];
-export const scopes = ['956aafda-ca44-49fd-8de7-144b7ed08054/.default'];
+interface IUseAzure {
+  scopes: string[];
+  loginRequest: PopupRequest;
+  logoutRequest: EndSessionPopupRequest;
+}
 
-export const loginRequest = {
-  scopes,
+export const useAzure = (): IUseAzure => {
+  const loginInfo = useAppSelector((state) => state.loginInfo);
+  const [scopes] = useState([`${loginInfo.clientId}/.default`]);
+  const [loginRequest] = useState({ scopes });
+  const [logoutRequest] = useState({ postLogoutRedirectUri: '/', mainWindowRedirectUri: '/' });
+  return { scopes, loginRequest, logoutRequest };
 };
 
 export const graphConfig = {
@@ -46,7 +56,10 @@ export async function callMsGraph(accessToken: string): Promise<Response> {
     headers,
   };
 
-  return fetch(graphConfig.graphMeEndpoint, options)
-    .then((response) => response.json())
-    .catch((error) => console.log(error));
+  return (
+    fetch(graphConfig.graphMeEndpoint, options)
+      .then((response) => response.json())
+      // eslint-disable-next-line no-console
+      .catch((error) => console.log(error))
+  );
 }

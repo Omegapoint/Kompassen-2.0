@@ -15,6 +15,7 @@ export const colors = {
   lightGreen: '#7BAC53',
   darkOrange: '#E87722',
   teal: '#6FA5A9',
+  darkTeal: '#406676',
   yellow: '#F9BC2E',
   purple: '#967ECC',
   darkGreen: '#2B4A4E',
@@ -111,6 +112,10 @@ export const theme = createTheme({
       fontSize: '1.2rem',
       fontWeight: 400,
       color: colors.primary,
+    },
+    h5: {
+      fontSize: '1.1rem',
+      fontWeight: 500,
     },
     h6: {
       fontSize: '0.9rem',
