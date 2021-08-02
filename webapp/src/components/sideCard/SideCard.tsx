@@ -17,8 +17,8 @@ const useStyles = makeStyles(() => ({
 interface SideCardProps {
   href?: string;
   hrefText?: string;
-  title: string;
-  children: ReactNode;
+  title?: string;
+  children?: ReactNode;
   hrefBarColor?: string;
 }
 
@@ -36,12 +36,14 @@ const SideCard = ({
       {href && hrefText && (
         <HrefContainer href={href} hrefText={hrefText} hrefBarColor={hrefBarColor} />
       )}
-      <Paper className={classes.content}>
-        <Typography variant="h6" color="primary">
-          {title}
-        </Typography>
-        {children}
-      </Paper>
+      {title && (
+        <Paper className={classes.content}>
+          <Typography variant="h6" color="primary">
+            {title}
+          </Typography>
+          {children}
+        </Paper>
+      )}
     </div>
   );
 };

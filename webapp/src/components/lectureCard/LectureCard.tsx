@@ -66,7 +66,7 @@ interface LectureCardProps {
 
 const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
-  const category = categories.find((e) => e.id === lecture.categoryId);
+  const category = categories.find((e) => e.id === lecture.categoryID);
   const classes = useStyles({ categoryColor: category?.color });
   const locations = useAppSelector((state) => state.locations);
   const location = locations.find((e) => e.id === lecture.locationID)?.name;

@@ -1,19 +1,15 @@
 import { Knex } from 'knex';
 import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 
-const table = 'events';
+const table = 'rooms';
 
 export const up = async (knex: Knex): Promise<void> =>
   knex.schema
     .createTable(table, (t) => {
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
 
-      t.timestamp('startAt').notNullable();
-      t.timestamp('endAt').notNullable();
-
-      t.timestamps(true, true);
-      t.uuid('createdBy').notNullable();
-      t.uuid('updatedBy').notNullable();
+      t.uuid('event_id').notNullable().references('events.id').onDelete('CASCADE');
+      t.text('name').notNullable();
     })
     .then(() => knex.raw(onUpdateTrigger(table)));
 

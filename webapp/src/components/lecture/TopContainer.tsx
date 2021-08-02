@@ -19,7 +19,6 @@ const useStyles = makeStyles(() =>
                           "content content content"
                           "tags registerButton registerButton"
                           "expandButtonContainer expandButtonContainer expandButtonContainer"`,
-      padding: padding.small,
       gridGap: `${padding.minimal} 0`,
       position: 'relative',
     },

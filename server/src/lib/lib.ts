@@ -18,12 +18,15 @@ export function snakeToCamel<T, Y>(o: T): Y {
 
   if (Object.getPrototypeOf(o) === Object.prototype) {
     return Object.entries(o).reduce((s, [k, v]) => {
-      const key = camelCase(k);
+      let newKey = camelCase(k);
+      if (k.endsWith('_id')) {
+        newKey = `${newKey.slice(0, newKey.length - 2)}ID`;
+      }
       if (Array.isArray(v)) {
-        return { ...s, [key]: v.map(snakeToCamel) };
+        return { ...s, [newKey]: v.map(snakeToCamel) };
       }
 
-      return { ...s, [key]: snakeToCamel(v) };
+      return { ...s, [newKey]: snakeToCamel(v) };
     }, {}) as Y;
   }
 

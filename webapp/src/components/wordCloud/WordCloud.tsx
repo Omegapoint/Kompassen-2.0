@@ -21,7 +21,7 @@ const useStyles = makeStyles(() =>
 
 const differentColors = [
   colors.lightGreen,
-  colors.darkOrange,
+  colors.orange,
   colors.teal,
   colors.yellow,
   colors.purple,

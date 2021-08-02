@@ -13,7 +13,7 @@ import EventContext from './EventContext';
 export const iconColor: IconType = {
   cloud: colors.yellow,
   code: colors.teal,
-  shield: colors.darkOrange,
+  shield: colors.orange,
   sun: colors.lightGreen,
   vcs: colors.purple,
 };
@@ -54,9 +54,8 @@ const LectureStats = (): ReactElement => {
     listLectureCategories({ id: event.id })
   );
   const categories = useAppSelector((state) => state.categories);
-
   const mapped = data?.map((e) => {
-    const category = categories?.find((e1) => e1.id === e.categoryId);
+    const category = categories?.find((e1) => e1.id === e.categoryID);
 
     return {
       title: category?.icon,

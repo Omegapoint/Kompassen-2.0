@@ -4,12 +4,15 @@ interface FormReturn<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleChange: (e: ChangeEvent | any) => void;
   values: T;
-  updateValues: (e: Record<string, string>) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateValues: (e: Record<string, any>) => void;
   deleteValue: (key: string) => void;
   appendChange: (name: string, value: string) => void;
+  resetValues: (obj: T) => void;
 }
 
-function useForm<T extends Record<string, string>>(initialState: T): FormReturn<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function useForm<T extends Record<string, any>>(initialState: T): FormReturn<T> {
   const [values, setValues] = useState(initialState || {});
 
   const updateValues = useCallback((newVal) => {
@@ -35,12 +38,17 @@ function useForm<T extends Record<string, string>>(initialState: T): FormReturn<
     setValues((v) => ({ ...v, [name]: v[name] + value }));
   }, []);
 
+  const resetValues = useCallback((obj = {}) => {
+    setValues(obj);
+  }, []);
+
   return {
     handleChange,
     values,
     updateValues,
     deleteValue,
     appendChange,
+    resetValues,
   };
 }
 

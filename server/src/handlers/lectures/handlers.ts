@@ -30,20 +30,20 @@ interface Handlers {
 
 const lectures: Handlers = {
   async create({ body }, res) {
-    const { userId } = res.locals;
+    const { userID } = res.locals;
     const item = await lecturesDB.insert(
-      { ...body, lecturerId: userId, approved: false, idea: false },
-      userId
+      { ...body, lecturerID: userID, approved: false, idea: false },
+      userID
     );
     res.send(item);
   },
   async createIdea({ body }, res) {
-    const { userId } = res.locals;
-    const lecturerId = body.lecturer ? userId : null;
+    const { userID } = res.locals;
+    const lecturerID = body.lecturer ? userID : null;
     const item = await lecturesDB.insert(
       {
         ...body,
-        lecturerId,
+        lecturerID,
         idea: true,
         locationID: null,
         eventID: null,
@@ -51,12 +51,12 @@ const lectures: Handlers = {
         maxParticipants: null,
         requirements: null,
         duration: null,
-        categoryId: null,
+        categoryID: null,
         message: null,
         approved: false,
         published: false,
       },
-      userId
+      userID
     );
 
     const lecture = await lecturesDB.getByID(item.id);
@@ -65,16 +65,16 @@ const lectures: Handlers = {
     res.send(item);
   },
   async update({ body }, res) {
-    const { userId } = res.locals;
+    const { userID } = res.locals;
 
     const currentLecture = await lecturesDB.getByID(body.id);
 
-    if (currentLecture?.lecturerId && userId !== currentLecture?.lecturerId) {
+    if (currentLecture?.lecturerID && userID !== currentLecture?.lecturerID) {
       httpError(res, 403, 'You cannot edit another lecturers lecture');
       return;
     }
 
-    const item = await lecturesDB.update(body, userId);
+    const item = await lecturesDB.update(body, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
     if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
@@ -98,9 +98,9 @@ const lectures: Handlers = {
     res.send(item);
   },
   async list(req, res) {
-    const { userId } = res.locals;
+    const { userID } = res.locals;
     const mine = req.query.mine === 'true';
-    const items = await lecturesDB.list(false, mine ? userId : null);
+    const items = await lecturesDB.list(false, mine ? userID : null);
     res.send(items);
   },
   async listTags(req, res) {

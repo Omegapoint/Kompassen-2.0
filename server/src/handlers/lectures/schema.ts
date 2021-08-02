@@ -12,9 +12,9 @@ const defaultSchema = {
 const other = {
   eventID: Joi.string().uuid(),
   duration: Joi.number().max(1000),
-  categoryId: Joi.string().uuid(),
+  categoryID: Joi.string().uuid(),
   maxParticipants: Joi.number().min(0).max(1000),
-  locationId: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
+  locationID: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
   requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
@@ -38,7 +38,7 @@ const updateLecture = Joi.object<UpdatedLecture>({
 
 const listLectures = Joi.object<ListLecturesParams>({
   mine: Joi.string().valid('true', 'false'),
-}).options({ presence: 'required' });
+});
 
 const lectures = { newLecture, updateLecture, newIdea, listLectures };
 

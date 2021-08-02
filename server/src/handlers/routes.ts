@@ -8,6 +8,7 @@ import lectureLikesRoutes from './lectureLikes/routes';
 import lecturesRoutes from './lectures/routes';
 import locationRoutes from './locations/routes';
 import loginRoutes from './login/routes';
+import organisationRoutes from './organisations/routes';
 import userRoutes from './users/routes';
 
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -26,6 +27,7 @@ const setupExpress = (): Express => {
     eventsRoutes,
     lecturesRoutes,
     locationRoutes,
+    organisationRoutes,
     loginRoutes,
     userRoutes,
     lectureLikesRoutes,

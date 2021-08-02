@@ -10,7 +10,7 @@ import QuickGuide from '../../components/quickGuide/QuickGuide';
 import SideCard from '../../components/sideCard/SideCard';
 import WordCloud from '../../components/wordCloud/WordCloud';
 import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, useAppSelector } from '../../lib/Lib';
+import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 
@@ -112,6 +112,10 @@ const Home = (): ReactElement => {
         ))}
       </div>
       <div className={classes.rightPanel}>
+        {isAdmin() && (
+          <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
+        )}
+
         <SideCard
           title="Nästa kompetensdag"
           hrefText="Anmäl pass till kompetensdagar"

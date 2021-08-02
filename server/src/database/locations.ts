@@ -15,7 +15,7 @@ const SELECT_LOCATIONS = `
 
 const SELECT_LOCATION_BY_ID = `
     ${SELECT_LOCATIONS}
-    WHERE l.id = $1
+    WHERE id = $1
 `;
 
 const INSERT_LOCATION = `

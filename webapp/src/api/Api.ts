@@ -8,10 +8,13 @@ import {
   ListEventParams,
   ListLecturesParams,
   Location,
+  NewEvent,
   NewLecture,
   NewLectureIdea,
   NewUser,
+  Organisation,
   TagStats,
+  UpdatedEvent,
   UpdatedLecture,
   UpdatedUser,
   User,
@@ -88,6 +91,11 @@ export const listTags = apiBuilder<TagStats[]>('/lecture/tag').get;
 
 export const listCategories = apiBuilder<Category[]>('/category').get;
 export const listLocations = apiBuilder<Location[]>('/location').get;
+export const listOrganisations = apiBuilder<Organisation[]>('/organisation').get;
+export const listEventLectures = apiURLParamsBuilder<Lecture[], IDParam>('/event/:id/lecture').get;
+export const createEvent = apiBuilder<IDParam, NewEvent>('/event').post;
+export const updateEvent = apiBuilder<IDParam, UpdatedEvent>('/event').put;
+export const deleteEvent = apiURLParamsBuilder<IDParam, IDParam>('/event/:id').delete;
 
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;

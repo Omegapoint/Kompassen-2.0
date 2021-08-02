@@ -72,8 +72,8 @@ interface RowProps {
 
 const Row = ({ message }: RowProps): ReactElement => {
   const user = useAppSelector((state) => state.user);
-  const classes = useStyles({ isSender: message.userId === user.id });
-  const { initials, name } = useAzureUser(message.userId);
+  const classes = useStyles({ isSender: message.userID === user.id });
+  const { initials, name } = useAzureUser(message.userID);
 
   return (
     <div className={classes.subContainer}>
