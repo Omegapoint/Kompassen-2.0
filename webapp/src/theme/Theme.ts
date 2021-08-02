@@ -83,6 +83,11 @@ export const theme = createTheme({
         backgroundColor: colors.primary,
       },
     },
+    MuiListItemIcon: {
+      root: {
+        alignItems: 'center',
+      },
+    },
   },
   props: {
     MuiPaper: {

@@ -5,7 +5,6 @@ import {
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemText,
   makeStyles,
   Menu,
   MenuItem,
@@ -37,6 +36,9 @@ const useStyles = makeStyles(() => ({
   },
   menupaper: {
     borderRadius: 0,
+  },
+  link: {
+    color: colors.black,
   },
 }));
 
@@ -72,25 +74,27 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Edit fontSize="small" />
+            <ListItem className={classes.link} component={NavLink} to="/lecture/user">
+              Hantera mina pass
+            </ListItem>
           </ListItemIcon>
-          <ListItemText>Hantera mina pass</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />
+            <ListItem className={classes.link} component={NavLink} to="/settings">
+              Inställningar
+            </ListItem>
           </ListItemIcon>
-          <ListItem component={NavLink} to="/settings">
-            Inställningar
-          </ListItem>
         </MenuItem>
-        <Divider variant="middle" />
+        <Divider />
         <MenuItem onClick={handleClose}>
-          <ListItemIcon>
+          <ListItemIcon className={classes.link}>
             <ExitToApp fontSize="small" />
+            <ListItem button onClick={logout}>
+              Logga ut
+            </ListItem>
           </ListItemIcon>
-          <ListItem button onClick={logout}>
-            Logga ut
-          </ListItem>
         </MenuItem>
       </Menu>
     </>
