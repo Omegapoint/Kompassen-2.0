@@ -6,6 +6,7 @@ import categories from './categories/schema';
 import events from './events/schema';
 import lectures from './lectures/schema';
 import locations from './locations/schema';
+import organisations from './organisations/schema';
 import users from './users/schema';
 
 type KeyType = 'body' | 'params' | 'query';
@@ -29,6 +30,7 @@ const uuidParam = Joi.object<UpdatedEvent>({
 }).options({ presence: 'required' });
 
 const schema = {
+  organisations,
   events,
   users,
   locations,

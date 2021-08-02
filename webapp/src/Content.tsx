@@ -2,28 +2,19 @@ import { Button, createStyles, makeStyles, Paper, Typography } from '@material-u
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import io from 'socket.io-client';
-import {
-  createUser,
-  getUser,
-  listCategories,
-  listEvents,
-  listLocations,
-  userExists,
-} from './api/Api';
+import { createUser, getUser, userExists } from './api/Api';
 import { BASE_WS_URL } from './api/Fetch';
 import Body from './components/body/Body';
 import Footer from './components/footer/Footer';
 import BigLoader from './components/loader/BigLoader';
 import Navbar from './components/navbar/Navbar';
 import { useAppDispatch, useAppSelector } from './lib/Lib';
-import { setCategories } from './reducers/categories/actions';
-import { setEvents } from './reducers/events/actions';
-import { setLocations } from './reducers/locations/actions';
 import { setSocket } from './reducers/session/actions';
 import { setUser } from './reducers/user/actions';
 import GreetingPage from './section/landing/GreetingPage';
 import Notifications from './section/settings/Notifications';
 import { padding } from './theme/Theme';
+import { useCategoriesWS, useEventsWS, useLocationsWS, useOrganisationsWS } from './ws/ReduxWS';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -73,10 +64,11 @@ function useFetchDispatch<Res>(
 }
 
 const useInit = () => {
+  const categoriesReady = useCategoriesWS();
+  const eventsReady = useEventsWS();
+  const locationsReady = useLocationsWS();
+  const organisationsReady = useOrganisationsWS();
   const user = useFetchDispatch('user', getUser, setUser);
-  const locations = useFetchDispatch('locations', listLocations, setLocations);
-  const categories = useFetchDispatch('categories', listCategories, setCategories);
-  const events = useFetchDispatch('events', () => listEvents(), setEvents);
 
   const dispatch = useAppDispatch();
   const { apiToken } = useAppSelector((state) => state.session);
@@ -91,9 +83,9 @@ const useInit = () => {
     })();
   }, [dispatch, apiToken]);
 
-  const error = user.error || locations.error || categories.error || events.error;
-  const finished = user.finished && locations.finished && categories.finished && events.finished;
-  return { error, loading: !finished };
+  const finished =
+    user.finished && locationsReady && categoriesReady && eventsReady && organisationsReady;
+  return { error: user.error, loading: !finished };
 };
 
 const Content = (): ReactElement => {

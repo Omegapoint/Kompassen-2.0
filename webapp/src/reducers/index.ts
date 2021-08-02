@@ -3,6 +3,7 @@ import categories from './categories';
 import events from './events';
 import locations from './locations';
 import loginInfo from './loginInfo';
+import organisations from './organisations';
 import session from './session';
 import user from './user';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   session,
   locations,
   categories,
+  organisations,
   events,
   loginInfo,
 });

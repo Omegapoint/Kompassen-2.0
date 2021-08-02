@@ -30,7 +30,7 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction, onlyAd
 
   const role = claims.roles ? claims.roles[0] : 'Worker';
 
-  res.locals.userId = claims.oid;
+  res.locals.userID = claims.oid;
   res.locals.role = role;
 
   if (onlyAdmin && role !== 'Admin') {

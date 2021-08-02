@@ -13,12 +13,12 @@ export const colors = {
   darkGrey: '#AFAFAF',
   black: '#000000DE',
   lightGreen: '#7BAC53',
-  darkOrange: '#E87722',
   teal: '#6FA5A9',
   darkTeal: '#406676',
   yellow: '#F9BC2E',
   purple: '#967ECC',
   darkGreen: '#2B4A4E',
+  red: '#C16060',
 };
 
 export const fontFamilies = {
@@ -36,6 +36,7 @@ export const borderRadius = {
 };
 
 export const padding = {
+  xlarge: '96px',
   large: '48px',
   medium: '32px',
   standard: '20px',
@@ -95,6 +96,9 @@ export const theme = createTheme({
     },
     MuiLink: {
       underline: 'none',
+    },
+    MuiList: {
+      disablePadding: true,
     },
   },
   palette: {

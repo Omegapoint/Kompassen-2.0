@@ -7,6 +7,7 @@ import {
   setAPIToken as setAPITokenRedux,
   setAzureUser,
   setGraphToken as setGraphTokenRedux,
+  setRole,
 } from '../reducers/session/actions';
 
 interface UseAccessToken {
@@ -29,6 +30,10 @@ const useAccessToken = (isAuthenticated: boolean): UseAccessToken => {
           const resp = await instance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
           dispatch(setAPITokenRedux(resp.accessToken));
           setAPIToken(resp.accessToken);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const claims = resp.idTokenClaims as any;
+          const role = claims.roles ? claims.roles[0] : 'Worker';
+          dispatch(setRole(role));
         }
       };
 

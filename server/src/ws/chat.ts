@@ -17,14 +17,14 @@ const newMessage = Joi.object<NewLectureMessage>({
 }).options({ presence: 'required' });
 
 export const setupChat = (socket: Socket, userID: string): void => {
-  socket.on('lectureChat/message', async (lectureId, message) => {
+  socket.on('lectureChat/message', async (lectureID, message) => {
     const { error } = newMessage.validate({ message });
     if (error) {
       logger.error('invalid message');
       return;
     }
-    const resp = await lectureMessagesDB.insert({ lectureId, message }, userID);
-    joined[lectureId].forEach((e) => e.socket.emit(`lectureChat/${lectureId}/message`, resp));
+    const resp = await lectureMessagesDB.insert({ lectureID, message }, userID);
+    joined[lectureID].forEach((e) => e.socket.emit(`lectureChat/${lectureID}/message`, resp));
   });
 
   // for a new user joining the room

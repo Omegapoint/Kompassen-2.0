@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import locationsDB from '../../database/locations';
 import { httpError } from '../../lib/lib';
 import { IDParam, NewLocation, UpdatedLocation } from '../../lib/types';
+import { locationsWS } from '../../ws/defaultWS';
 
 interface Handlers {
   create: (req: Request<null, null, NewLocation>, res: Response) => Promise<void>;
@@ -13,13 +14,23 @@ interface Handlers {
 
 const locations: Handlers = {
   async create({ body }, res) {
-    const { userId } = res.locals;
-    const item = await locationsDB.insert(body, userId);
+    const { userID } = res.locals;
+    const item = await locationsDB.insert(body, userID);
+
+    const location = await locationsDB.getByID(item.id);
+    if (location) {
+      locationsWS.onCreated(location);
+    }
     res.send(item);
   },
   async update({ body }, res) {
-    const { userId } = res.locals;
-    const item = await locationsDB.update(body, userId);
+    const { userID } = res.locals;
+    const item = await locationsDB.update(body, userID);
+
+    const location = await locationsDB.getByID(item.id);
+    if (location) {
+      locationsWS.onUpdated(location);
+    }
     res.send(item);
   },
   async getByID({ params }, res) {
@@ -40,6 +51,8 @@ const locations: Handlers = {
       httpError(res, 404, 'Location not found');
       return;
     }
+
+    locationsWS.onDelete({ id: params.id });
     res.send(item);
   },
 };

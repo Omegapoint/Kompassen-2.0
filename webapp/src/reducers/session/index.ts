@@ -12,6 +12,7 @@ function session(
     case 'SET_API_TOKEN':
     case 'SET_AZURE_USER':
     case 'SET_GRAPH_TOKEN':
+    case 'SET_ROLE':
       return {
         ...state,
         ...action.payload,

@@ -12,15 +12,15 @@ interface Handlers {
 
 const lectureLikes: Handlers = {
   async create({ params }, res) {
-    const { userId } = res.locals;
-    const item = await lectureLikesDB.insert({ lectureId: params.id }, userId);
+    const { userID } = res.locals;
+    const item = await lectureLikesDB.insert({ lectureID: params.id }, userID);
     const lecture = await lecturesDB.getByID(params.id);
     if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
     res.send(item);
   },
   async delete({ params }, res) {
-    const { userId } = res.locals;
-    const item = await lectureLikesDB.delete(params.id, userId);
+    const { userID } = res.locals;
+    const item = await lectureLikesDB.delete(params.id, userID);
     if (!item) {
       httpError(res, 404, 'Lecture not found');
       return;

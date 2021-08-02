@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import categoriesDB from '../../database/categories';
 import { httpError } from '../../lib/lib';
 import { IDParam, NewCategory, UpdatedCategory } from '../../lib/types';
+import { categoriesWS } from '../../ws/defaultWS';
 
 interface Handlers {
   create: (req: Request<null, null, NewCategory>, res: Response) => Promise<void>;
@@ -13,13 +14,23 @@ interface Handlers {
 
 const categories: Handlers = {
   async create({ body }, res) {
-    const { userId } = res.locals;
-    const item = await categoriesDB.insert(body, userId);
+    const { userID } = res.locals;
+    const item = await categoriesDB.insert(body, userID);
+
+    const category = await categoriesDB.getByID(item.id);
+    if (category) {
+      categoriesWS.onCreated(category);
+    }
     res.send(item);
   },
   async update({ body }, res) {
-    const { userId } = res.locals;
-    const item = await categoriesDB.update(body, userId);
+    const { userID } = res.locals;
+    const item = await categoriesDB.update(body, userID);
+
+    const category = await categoriesDB.getByID(item.id);
+    if (category) {
+      categoriesWS.onUpdated(category);
+    }
     res.send(item);
   },
   async getByID({ params }, res) {
@@ -40,6 +51,8 @@ const categories: Handlers = {
       httpError(res, 404, 'Category not found');
       return;
     }
+
+    categoriesWS.onDelete({ id: params.id });
     res.send(item);
   },
 };

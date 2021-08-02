@@ -17,16 +17,38 @@ export interface IDParam {
   id: string;
 }
 
-export interface NewEvent {
+export interface BaseEvent {
+  organisationID: string;
   startAt: Date;
   endAt: Date;
+  comment: string;
+}
+
+export interface NewEvent extends BaseEvent {
+  rooms: string[];
 }
 
 export interface UpdatedEvent extends NewEvent {
   id: string;
 }
 
-export interface Event extends UpdatedEvent, DefaultTime {}
+export interface DBEvent extends BaseEvent, DefaultTime {
+  id: string;
+}
+
+export interface Event extends BaseEvent, DefaultTime {
+  id: string;
+  rooms: Room[];
+}
+
+export interface UpdatedRoom {
+  id: string;
+  name: string;
+}
+
+export interface Room extends UpdatedRoom {
+  eventID: string;
+}
 
 export interface Notifications {
   newLecture: boolean;
@@ -35,49 +57,81 @@ export interface Notifications {
   lectureTaken: boolean;
 }
 
-export interface NewUser {
+// User
+interface BaseUser {
   notifications: Notifications;
 }
 
-export interface UpdatedUser extends NewUser {
+export type NewUser = BaseUser;
+
+export interface UpdatedUser extends BaseUser {
   id: string;
 }
 
-export interface User extends UpdatedUser {
+export interface User extends BaseUser {
+  id: string;
   createdAt: Date;
   updatedAt: Date | null;
 }
 
-export interface NewLocation {
+// Location
+interface BaseLocation {
   name: string;
 }
 
-export interface UpdatedLocation extends NewLocation {
+export type NewLocation = BaseLocation;
+
+export interface UpdatedLocation extends BaseLocation {
   id: string;
 }
 
-export interface Location extends UpdatedLocation, DefaultTime {}
+export interface Location extends BaseLocation, DefaultTime {
+  id: string;
+}
 
-export interface NewCategory {
+// Organisation
+interface BaseOrganisation {
+  name: string;
+}
+
+export type NewOrganisation = BaseOrganisation;
+
+export interface UpdatedOrganisation extends BaseOrganisation {
+  id: string;
+}
+
+export interface Organisation extends BaseOrganisation, DefaultTime {
+  id: string;
+}
+
+// Category
+interface BaseCategory {
   name: string;
   icon: string;
   color: string;
 }
 
-export interface UpdatedCategory extends NewCategory {
+export type NewCategory = BaseCategory;
+
+export interface UpdatedCategory extends BaseCategory {
   id: string;
 }
 
-export interface Category extends UpdatedCategory, DefaultTime {}
+export interface Category extends BaseCategory, DefaultTime {
+  id: string;
+}
 
-export interface NewLectureIdea {
+// Lectures
+interface BaseLectureIdea {
   title: string;
   description: string;
   lecturer: string | null;
   tags: string[];
 }
 
-export interface NewLecture extends NewLectureIdea {
+export type NewLectureIdea = BaseLectureIdea;
+
+export interface NewLecture extends BaseLectureIdea {
   locationID: string | null;
   eventID: string | null;
   duration: number | null;
@@ -85,13 +139,13 @@ export interface NewLecture extends NewLectureIdea {
   requirements: string | null;
   preparations: string | null;
   message: string | null;
-  categoryId: string | null;
+  categoryID: string | null;
   published: boolean;
 }
 
 export interface DLecture extends NewLecture {
   idea: boolean;
-  lecturerId: string | null;
+  lecturerID: string | null;
   approved: boolean;
 }
 
@@ -103,16 +157,19 @@ export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
 
 export interface Lecture extends DLecture, DefaultTime {
   id: string;
-  categoryId: string | null;
+  categoryID: string | null;
   likes: string[];
 }
 
-export interface NewLectureLike {
-  lectureId: string;
+// LectureLike
+interface BaseLectureLike {
+  lectureID: string;
 }
 
-export interface NewDBLectureLike extends NewLectureLike {
-  userId: string;
+export type NewLectureLike = BaseLectureLike;
+
+export interface NewDBLectureLike extends BaseLectureLike {
+  userID: string;
 }
 
 export interface LectureLike extends NewDBLectureLike, IDParam {
@@ -124,13 +181,13 @@ export interface NewLectureMessage {
 }
 
 export interface NewDBLectureMessage extends NewLectureMessage {
-  lectureId: string;
+  lectureID: string;
 }
 
 export interface UpdatedLectureMessage extends NewLectureMessage {
   id: string;
-  lectureId: string;
-  userId: string;
+  lectureID: string;
+  userID: string;
 }
 
 export interface DBLectureMessage extends UpdatedLectureMessage {
@@ -153,17 +210,13 @@ export const reviver = (key: string, value: unknown): unknown => {
   return value;
 };
 
-export interface Count {
-  count: number;
-}
-
 export interface TagStats {
   tag: string;
   count: number;
 }
 
 export interface CategoryStats {
-  categoryId: string;
+  categoryID: string;
   count: number;
 }
 

@@ -3,9 +3,10 @@ import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
 import { CategoryStats, DLecture, IDParam, Lecture, TagStats, UpdatedLecture } from '../lib/types';
 
-const SELECT_EVENTS = `
+export const SELECT_LECTURES = `
     SELECT l.id,
            l.lecturer,
+           l.lecturer_id,
            l.description,
            l.location_id,
            l.event_id,
@@ -25,6 +26,11 @@ const SELECT_EVENTS = `
            (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
            l.category_id
     FROM lectures l
+`;
+
+const SELECT_EVENT_LECTURES = `
+    ${SELECT_LECTURES}
+    WHERE event_id = $1
 `;
 
 const SELECT_TAGS = `
@@ -48,8 +54,8 @@ const SELECT_CATEGORY = `
          ) t
 `;
 
-const SELECT_EVENT_BY_ID = `
-    ${SELECT_EVENTS}
+const SELECT_LECTURE_BY_ID = `
+    ${SELECT_LECTURES}
     WHERE l.id = $1
 `;
 
@@ -98,6 +104,7 @@ interface LecturesDB {
   list: (idea?: boolean, userID?: string) => Promise<Lecture[]>;
   listTags: () => Promise<TagStats[]>;
   listCategories: (id: string) => Promise<CategoryStats[]>;
+  listEventLectures: (id: string) => Promise<Lecture[]>;
   getByID: (id: string) => Promise<Lecture | null>;
   insert: (lecture: DLecture, id: string) => Promise<IDParam>;
   update: (lecture: UpdatedLecture, id: string) => Promise<IDParam>;
@@ -110,9 +117,15 @@ const lecturesDB: LecturesDB = {
     const whereClause = idea ? 'WHERE l.idea = TRUE' : '';
     const userClause = userID ? 'WHERE l.lecturer_id = $1' : '';
     const { rows } = await db.query(
-      `${SELECT_EVENTS} ${whereClause} ${userClause} ORDER BY l.updated_at DESC`,
+      `${SELECT_LECTURES} ${whereClause} ${userClause} ORDER BY l.updated_at DESC`,
       [userID].filter((e) => e)
     );
+
+    return snakeToCamel(rows) || [];
+  },
+
+  async listEventLectures(id) {
+    const { rows } = await db.query(SELECT_EVENT_LECTURES, [id]);
 
     return snakeToCamel(rows) || [];
   },
@@ -128,7 +141,7 @@ const lecturesDB: LecturesDB = {
   },
 
   async getByID(id) {
-    const { rows } = await db.query(SELECT_EVENT_BY_ID, [id]);
+    const { rows } = await db.query(SELECT_LECTURE_BY_ID, [id]);
     if (!rows[0]) {
       logger.error(`could not find lecture with id = '${id}'`);
       return null;
@@ -145,7 +158,7 @@ const lecturesDB: LecturesDB = {
       lecture.eventID,
       lecture.duration,
       lecture.title,
-      lecture.categoryId,
+      lecture.categoryID,
       lecture.maxParticipants,
       lecture.requirements,
       lecture.preparations,
@@ -166,7 +179,7 @@ const lecturesDB: LecturesDB = {
       lecture.eventID,
       lecture.duration,
       lecture.title,
-      lecture.categoryId,
+      lecture.categoryID,
       lecture.maxParticipants,
       lecture.requirements,
       lecture.preparations,

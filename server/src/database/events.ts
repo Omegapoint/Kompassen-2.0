@@ -1,22 +1,27 @@
 import { logger } from '../config/config';
 import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
-import { Event, IDParam, NewEvent, UpdatedEvent } from '../lib/types';
+import { Event, IDParam, NewEvent, Room, UpdatedEvent } from '../lib/types';
 
 const BASE_SELECT_EVENTS = `
     SELECT id,
+           organisation_id,
            start_at,
            end_at,
+           comment,
            created_at,
            created_by,
            updated_at,
-           updated_by
-    FROM events
-`;
-
-const SELECT_FUTURE_EVENTS = `
-    ${BASE_SELECT_EVENTS}
-    WHERE end_at > now()
+           updated_by,
+           (SELECT json_agg(t)
+            FROM (
+                     SELECT id,
+                            name,
+                            event_id
+                     FROM rooms
+                     WHERE event_id = e.id
+                 ) t) as rooms
+    FROM events e
 `;
 
 const SELECT_EVENT_BY_ID = `
@@ -25,17 +30,39 @@ const SELECT_EVENT_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO events(start_at, end_at, created_by, updated_by)
-    VALUES ($1, $2, $3, $3)
+    INSERT INTO events(organisation_id, start_at, end_at, comment, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $5)
     RETURNING id
+`;
+
+const INSERT_ROOM = `
+    INSERT INTO rooms(name, event_id)
+    VALUES ($1, $2)
+    RETURNING id
+`;
+
+const SELECT_ROOM = `
+    SELECT id,
+           name,
+           event_id
+    FROM rooms
+    WHERE event_id = $1
+`;
+
+const DELETE_ROOM = `
+    DELETE
+    FROM rooms
+    WHERE id = $1
 `;
 
 const UPDATE_EVENT = `
     UPDATE events
-    SET start_at   = $1,
-        end_at     = $2,
-        updated_by = $4
-    WHERE id = $5
+    SET organisation_id = $1,
+        start_at        = $2,
+        end_at          = $3,
+        comment         = $4,
+        updated_by      = $5
+    WHERE id = $6
     RETURNING id
 `;
 
@@ -47,7 +74,7 @@ const DELETE_EVENT = `
 `;
 
 interface EventsDB {
-  list: (onlyNew: boolean) => Promise<Event[]>;
+  list: (onlyNew?: boolean) => Promise<Event[]>;
   getByID: (id: string) => Promise<Event | null>;
   insert: (event: NewEvent, id: string) => Promise<IDParam>;
   update: (event: UpdatedEvent, id: string) => Promise<IDParam>;
@@ -55,9 +82,9 @@ interface EventsDB {
 }
 
 const eventsDB: EventsDB = {
-  async list(onlyNew: boolean) {
-    const filter = onlyNew ? ' ORDER BY start_at' : '';
-    const { rows } = await db.query(SELECT_FUTURE_EVENTS + filter);
+  async list(onlyNew?: boolean) {
+    const filter = onlyNew ? 'WHERE end_at > now()' : '';
+    const { rows } = await db.query(`${BASE_SELECT_EVENTS} ${filter} ORDER BY start_at`);
     return snakeToCamel(rows) || [];
   },
 
@@ -71,12 +98,39 @@ const eventsDB: EventsDB = {
   },
 
   async insert(event, userID): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_EVENT, [event.startAt, event.endAt, userID]);
-    return rows[0];
+    const created = await db.query(INSERT_EVENT, [
+      event.organisationID,
+      event.startAt,
+      event.endAt,
+      event.comment,
+      userID,
+    ]);
+    await Promise.all(event.rooms.map((e) => db.query(INSERT_ROOM, [e, created.rows[0].id])));
+
+    return created.rows[0];
   },
 
   async update(event, userID): Promise<IDParam> {
-    const { rows } = await db.query(UPDATE_EVENT, [event.startAt, event.endAt, userID, event.id]);
+    const { rows } = await db.query(UPDATE_EVENT, [
+      event.organisationID,
+      event.startAt,
+      event.endAt,
+      event.comment,
+      userID,
+      event.id,
+    ]);
+
+    const rooms = await db.query<Room>(SELECT_ROOM, [event.id]);
+
+    const oldRooms = rooms.rows;
+    const newRoomNames = event.rooms;
+
+    const onlyInOldRooms = oldRooms.filter((x) => !newRoomNames.includes(x.name));
+    const onlyInNewRooms = newRoomNames.filter((x) => !oldRooms.find((y) => y.name === x));
+
+    await Promise.all(onlyInOldRooms.map((e) => db.query<Room>(DELETE_ROOM, [e.id])));
+    await Promise.all(onlyInNewRooms.map((e) => db.query<Room>(INSERT_ROOM, [e, event.id])));
+
     return rows[0];
   },
 

@@ -30,4 +30,3 @@ The `production` directory sets up the production infrastructure which consists 
 
 ## User assignment
 In the Azure console, roles are assigned to users under `Azure Active Directory / Enterprise applications`. The find your application and assign the role under `Users and Groups`.
-  

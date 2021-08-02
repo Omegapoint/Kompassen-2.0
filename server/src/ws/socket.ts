@@ -1,6 +1,7 @@
 import { Server } from 'socket.io';
 import { getClaims } from '../handlers/auth';
 import { disconnectUserChat, setupChat } from './chat';
+import { categoriesWS, eventsWS, locationsWS, organisationsWS } from './defaultWS';
 import { setupLectureIdeas } from './lectureIdeas';
 import { users } from './types';
 
@@ -26,6 +27,10 @@ export const setupWebSocket = (io: Server): void => {
 
     setupChat(socket, userID);
     setupLectureIdeas(socket);
+    categoriesWS.setup(socket);
+    eventsWS.setup(socket);
+    locationsWS.setup(socket);
+    organisationsWS.setup(socket);
 
     socket.on('disconnect', () => {
       const ind = users.findIndex((e) => e.socket !== socket);

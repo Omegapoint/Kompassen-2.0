@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
 import { ReactComponent as TinyArrow } from '../../assets/tinyArrow.svg';
+import { useAppSelector } from '../../lib/Lib';
 import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
@@ -37,7 +38,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const formatEventTime = (event: Event): string => {
-  const startTime = format(event.startAt, 'dd MMMM HH:mm', { locale: sv });
+  const startTime = format(event.startAt, 'dd MMM HH:mm', { locale: sv });
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   return `${startTime}-${endTime}`;
 };
@@ -45,8 +46,10 @@ export const formatEventTime = (event: Event): string => {
 const DayPicker = (): ReactElement => {
   const classes = useStyles();
   const { events, ind, setInd } = useContext(EventContext);
+  const organisations = useAppSelector((state) => state.organisations);
 
   const event = events[ind];
+  const organisation = organisations.find((e) => e.id === event.organisationID)?.name;
 
   const previousEvent = () => setInd((i) => (i > 0 ? i - 1 : i));
   const nextEvent = () => setInd((i) => (i <= events.length - 1 ? i + 1 : i));
@@ -62,7 +65,7 @@ const DayPicker = (): ReactElement => {
       >
         <TinyArrow width={10} height={10} transform="rotate(180)" />
       </Button>
-      <Typography>{formatEventTime(event)}</Typography>
+      <Typography>{`${organisation} ${formatEventTime(event)}`}</Typography>
       <Button
         color="primary"
         variant="contained"

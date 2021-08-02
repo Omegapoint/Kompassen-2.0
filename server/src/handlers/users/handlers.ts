@@ -9,9 +9,9 @@ type GetUserReq = Request<null, null, null>;
 
 const users = {
   async createUser({ body }: CreateUserReq, res: Response): Promise<void> {
-    const { userId } = res.locals;
+    const { userID } = res.locals;
     try {
-      const user = await usersDB.insert(body, userId);
+      const user = await usersDB.insert(body, userID);
 
       res.send(user);
     } catch (e) {
@@ -20,9 +20,9 @@ const users = {
   },
 
   async updateUser({ body }: UpdatedUserReq, res: Response): Promise<void> {
-    const { userId } = res.locals;
+    const { userID } = res.locals;
     try {
-      const user = await usersDB.update(body, userId);
+      const user = await usersDB.update(body, userID);
 
       res.send(user);
     } catch (e) {
@@ -31,8 +31,8 @@ const users = {
   },
 
   async getUser(req: GetUserReq, res: Response): Promise<void> {
-    const { userId } = res.locals;
-    const user = await usersDB.getByID(userId);
+    const { userID } = res.locals;
+    const user = await usersDB.getByID(userID);
     if (!user) {
       httpError(res, 404, 'User not found');
       return;
@@ -41,8 +41,8 @@ const users = {
   },
 
   async existsByID(req: GetUserReq, res: Response): Promise<void> {
-    const { userId } = res.locals;
-    const user = await usersDB.getByID(userId);
+    const { userID } = res.locals;
+    const user = await usersDB.getByID(userID);
     if (!user) {
       res.send({ ok: false });
       return;

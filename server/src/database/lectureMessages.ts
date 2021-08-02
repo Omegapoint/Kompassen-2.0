@@ -26,7 +26,7 @@ const lectureMessagesDB: LectureMessagesDB = {
     return snakeToCamel(rows) || [];
   },
   async insert(msg, userID): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_LECTURE_MESSAGE, [msg.lectureId, userID, msg.message]);
+    const { rows } = await db.query(INSERT_LECTURE_MESSAGE, [msg.lectureID, userID, msg.message]);
     return snakeToCamel(rows[0]);
   },
 };
