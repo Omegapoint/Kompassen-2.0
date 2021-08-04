@@ -7,7 +7,6 @@ const BASE_SELECT_EVENTS = `
     SELECT l.id,
            l.start_at,
            l.end_at,
-           l.location,
            l.created_at,
            l.updated_at,
            u1.name as created_by,
@@ -21,7 +20,6 @@ const SELECT_EVENTS = `
     SELECT l.id,
            l.start_at,
            l.end_at,
-           l.location,
            l.created_at,
            l.updated_at,
            u1.name as created_by,
@@ -38,8 +36,8 @@ const SELECT_EVENT_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO events(start_at, end_at, location, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $4)
+    INSERT INTO events(start_at, end_at, created_by, updated_by)
+    VALUES ($1, $2, $3, $3)
     RETURNING id
 `;
 
@@ -47,7 +45,6 @@ const UPDATE_EVENT = `
     UPDATE events
     SET start_at   = $1,
         end_at     = $2,
-        location   = $3,
         updated_by = $4
     WHERE id = $5
     RETURNING id
@@ -85,23 +82,12 @@ const eventsDB: EventsDB = {
   },
 
   async insert(event, userID): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_EVENT, [
-      event.startAt,
-      event.endAt,
-      event.location,
-      userID,
-    ]);
+    const { rows } = await db.query(INSERT_EVENT, [event.startAt, event.endAt, userID]);
     return rows[0];
   },
 
   async update(event, userID): Promise<IDParam> {
-    const { rows } = await db.query(UPDATE_EVENT, [
-      event.startAt,
-      event.endAt,
-      event.location,
-      userID,
-      event.id,
-    ]);
+    const { rows } = await db.query(UPDATE_EVENT, [event.startAt, event.endAt, userID, event.id]);
     return rows[0];
   },
 

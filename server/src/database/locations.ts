@@ -30,8 +30,8 @@ const UPDATE_LOCATION = `
 `;
 
 const DELETE_LOCATION = `
-    DELETE
-    FROM locations
+    UPDATE locations
+    SET archived = true
     WHERE id = $1
     RETURNING id
 `;

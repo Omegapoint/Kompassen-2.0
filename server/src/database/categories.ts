@@ -39,8 +39,8 @@ const UPDATE_CATEGORY = `
 `;
 
 const DELETE_CATEGORY = `
-    DELETE
-    FROM categories
+    UPDATE categories
+    SET archived = true
     WHERE id = $1
     RETURNING id
 `;

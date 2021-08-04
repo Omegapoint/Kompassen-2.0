@@ -79,6 +79,8 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const { lecture, chat } = useContext(LectureContext);
   const annotation = getAnnotation(lecture);
   const user = useAppSelector((state) => state.user);
+  const locations = useAppSelector((state) => state.locations);
+  const location = locations.find((e) => e.id === lecture.locationID)?.name as string;
 
   const likes = lecture.likes?.length || 0;
 
@@ -95,7 +97,7 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   return (
     <div className={classes.topContainer}>
       <Typography className={classes.infoBar} variant="subtitle1">
-        {formatInfoBar(lecture.location, annotation)}
+        {formatInfoBar(location, annotation)}
       </Typography>
       <div className={classes.icons}>
         <div className={classes.iconContainer}>

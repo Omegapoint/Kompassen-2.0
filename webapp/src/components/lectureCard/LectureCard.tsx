@@ -68,6 +68,8 @@ const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryId);
   const classes = useStyles({ categoryColor: category?.color });
+  const locations = useAppSelector((state) => state.locations);
+  const location = locations.find((e) => e.id === lecture.locationID)?.name;
 
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
@@ -86,7 +88,7 @@ const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
     <div className={classes.container}>
       <div className={classes.header}>
         <Typography>7 maj</Typography>
-        <Typography>{lecture.location}</Typography>
+        <Typography>{location}</Typography>
         <Typography>{category?.name}</Typography>
       </div>
       <Paper className={classes.paper}>

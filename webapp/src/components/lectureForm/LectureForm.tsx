@@ -122,7 +122,7 @@ const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_
 const invalidTags = (str: string) => str.split(' ').filter((e) => e).length === 0;
 
 interface FormValues {
-  location: string;
+  locationID: string;
   eventID: string;
   hours: string;
   minutes: string;
@@ -171,7 +171,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const history = useHistory();
 
   const defaultFormValue = {
-    location: locations[0].name,
+    locationID: locations[0].id,
     eventID: events[0].id,
     hours: '',
     minutes: '',
@@ -197,7 +197,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       lecturer: values.lecturer,
       tags: values.tags.split(' ').filter((e) => e),
 
-      location: values.location,
+      locationID: values.locationID,
       eventID: values.eventID,
       duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
       categoryId: category.id,
@@ -242,7 +242,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           <FormLabel className={classes.radioButtons} required component="legend">
             Plats
           </FormLabel>
-          <RadioGroup name="location" onChange={handleChange} value={values.location}>
+          <RadioGroup name="locationID" onChange={handleChange} value={values.locationID}>
             {locations.map((e) => (
               <FormControlLabel key={e.name} value={e.name} control={<Radio />} label={e.name} />
             ))}

@@ -14,7 +14,7 @@ const other = {
   duration: Joi.number().max(1000),
   categoryId: Joi.string().uuid(),
   maxParticipants: Joi.number().min(0).max(1000),
-  location: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
+  locationId: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
   requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),

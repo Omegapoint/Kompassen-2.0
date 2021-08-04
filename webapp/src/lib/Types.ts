@@ -20,7 +20,6 @@ export interface IDParam {
 export interface NewEvent {
   startAt: Date;
   endAt: Date;
-  location: string;
 }
 
 export interface UpdatedEvent extends NewEvent {
@@ -80,7 +79,7 @@ export interface NewLectureIdea {
 }
 
 export interface NewLecture extends NewLectureIdea {
-  location: string | null;
+  locationID: string | null;
   eventID: string | null;
   duration: number | null;
   maxParticipants: number | null;

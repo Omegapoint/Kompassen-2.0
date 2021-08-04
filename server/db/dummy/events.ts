@@ -18,7 +18,6 @@ const events: Event[] = [
     createdBy: users[0].id,
     updatedAt: date,
     updatedBy: users[0].id,
-    location: 'Umeå',
   },
   {
     id: '51914a7a-522c-422b-a3c0-0b65594d70af',
@@ -28,7 +27,6 @@ const events: Event[] = [
     createdBy: users[1].id,
     updatedAt: date,
     updatedBy: users[1].id,
-    location: 'Stockholm',
   },
   {
     id: 'faf29b61-6272-46c2-afa6-1f110b91b40f',
@@ -38,7 +36,6 @@ const events: Event[] = [
     createdBy: users[0].id,
     updatedAt: date,
     updatedBy: users[0].id,
-    location: 'Umeå',
   },
 ];
 

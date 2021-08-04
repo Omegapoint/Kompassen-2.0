@@ -7,7 +7,7 @@ const SELECT_EVENTS = `
     SELECT l.id,
            l.lecturer,
            l.description,
-           l.location,
+           l.location_id,
            l.event_id,
            l.duration,
            l.title,
@@ -56,7 +56,7 @@ const SELECT_EVENT_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO lectures(lecturer, lecturer_id, description, location, event_id, duration, title, category_id,
+    INSERT INTO lectures(lecturer, lecturer_id, description, location_id, event_id, duration, title, category_id,
                          max_participants,
                          requirements, preparations, tags, idea, approved, published, created_by, updated_by)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $16)
@@ -67,7 +67,7 @@ const UPDATE_EVENT = `
     UPDATE lectures
     SET lecturer         = $1,
         description      = $2,
-        location         = $3,
+        location_id      = $3,
         event_id         = $4,
         duration         = $5,
         title            = $6,
@@ -143,7 +143,7 @@ const lecturesDB: LecturesDB = {
       lecture.lecturer,
       userID,
       lecture.description,
-      lecture.location,
+      lecture.locationID,
       lecture.eventID,
       lecture.duration,
       lecture.title,
@@ -164,7 +164,7 @@ const lecturesDB: LecturesDB = {
     const { rows } = await db.query(UPDATE_EVENT, [
       lecture.lecturer,
       lecture.description,
-      lecture.location,
+      lecture.locationID,
       lecture.eventID,
       lecture.duration,
       lecture.title,
