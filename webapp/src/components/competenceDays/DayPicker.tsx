@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
 export const formatEventTime = (event: Event): string => {
   const startTime = format(event.startAt, 'dd MMMM HH:mm', { locale: sv });
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
-  return `${event.location} ${startTime}-${endTime}`;
+  return `${startTime}-${endTime}`;
 };
 
 const DayPicker = (): ReactElement => {

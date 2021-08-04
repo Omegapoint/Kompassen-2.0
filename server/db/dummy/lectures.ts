@@ -1,8 +1,8 @@
 import { DBLecture } from '../../src/lib/types';
-import users from './users';
-import events from './events';
 import categories from './categories';
+import events from './events';
 import locations from './locations';
+import users from './users';
 
 const date = new Date();
 
@@ -13,7 +13,7 @@ const lectures: DBLecture[] = [
     description: 'Vi tänker gå igenom lite grejer runt azure med en pecha kucha kanske.',
     lecturer: null,
     lecturerId: null,
-    location: locations[0].name,
+    locationID: locations[0].id,
     eventID: null,
     duration: null,
     categoryId: categories[0].id,
@@ -36,7 +36,7 @@ const lectures: DBLecture[] = [
     description: 'Vi löser den stora frågan, är elixir världens bästa programspråk?',
     lecturer: users[2].name,
     lecturerId: users[2].id,
-    location: locations[0].name,
+    locationID: locations[0].id,
     eventID: events[1].id,
     duration: 3600,
     categoryId: categories[0].id,

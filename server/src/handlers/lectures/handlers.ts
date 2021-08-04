@@ -46,7 +46,7 @@ const lectures: Handlers = {
         ...body,
         lecturerId,
         idea: true,
-        location: null,
+        locationID: null,
         eventID: null,
         preparations: null,
         maxParticipants: null,

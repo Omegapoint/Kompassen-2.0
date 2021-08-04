@@ -1,5 +1,5 @@
-import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 import { Knex } from 'knex';
+import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 
 const table = 'locations';
 
@@ -10,6 +10,7 @@ export const up = async (knex: Knex): Promise<void> =>
 
       t.text('name').notNullable();
 
+      t.boolean('archived').notNullable().defaultTo(false);
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();
       t.uuid('updatedBy').notNullable();

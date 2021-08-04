@@ -1,5 +1,5 @@
-import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 import { Knex } from 'knex';
+import { GENERATE_UUID, onUpdateTrigger } from '../utils';
 
 const table = 'events';
 
@@ -8,7 +8,6 @@ export const up = async (knex: Knex): Promise<void> =>
     .createTable(table, (t) => {
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
 
-      t.text('location').notNullable();
       t.timestamp('startAt').notNullable();
       t.timestamp('endAt').notNullable();
 
