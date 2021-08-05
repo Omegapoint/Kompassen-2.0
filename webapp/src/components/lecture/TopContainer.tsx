@@ -58,11 +58,8 @@ const useStyles = makeStyles(() =>
   })
 );
 
-const getAnnotation = (lecture: Lecture): string | undefined => {
-  if (lecture.lecturer === null) return 'Söker passhållare';
-  if (lecture.createdBy === lecture.lecturer) return 'Feedback önskas';
-  return undefined;
-};
+const getAnnotation = (lecture: Lecture): string | undefined =>
+  lecture.lecturer === null ? 'Söker passhållare' : 'Feedback önskas';
 
 const formatInfoBar = (location?: string | null, annotation?: string | null) =>
   [location, annotation].filter((e) => e).join(' • ');

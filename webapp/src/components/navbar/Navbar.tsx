@@ -33,7 +33,7 @@ const Navbar = (): ReactElement => {
       <Link component={NavLink} to="/" color="secondary" variant="body1" className={classes.header}>
         KomPass 2.0
       </Link>
-      <User firstName="Jonas" lastName="Sjödin" />
+      <User />
 
       <IconButton>
         <Badge badgeContent={4} color="secondary">

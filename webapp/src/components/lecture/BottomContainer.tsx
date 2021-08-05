@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
 import alarmCircled from '../../assets/alarmCircled.svg';
+import useAzureUser from '../../hooks/UseAzureUser';
 import { padding } from '../../theme/Theme';
 import Discussion from './Discussion';
 import LectureContext from './LectureContext';
@@ -42,8 +43,8 @@ const formatTime = (d: Date): string => {
 const BottomContainer = (): ReactElement => {
   const { lecture } = useContext(LectureContext);
   const classes = useStyles();
-
   const date = formatTime(lecture.createdAt);
+  const { name } = useAzureUser(lecture.createdBy);
 
   return (
     <div className={classes.container}>
@@ -54,7 +55,7 @@ const BottomContainer = (): ReactElement => {
         <img className={classes.icon} alt="arrow circled" src={alarmCircled} />
       </IconButton>
       <Typography className={classes.info} variant="subtitle1">
-        {`Publicerat av ${lecture.createdBy} ${date}`}
+        {`Publicerat av ${name} ${date}`}
       </Typography>
       <Discussion />
     </div>

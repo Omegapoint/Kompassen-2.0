@@ -1,6 +1,6 @@
-import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
+import { Avatar, IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { ReactElement } from 'react';
+import useAzureUser from '../../hooks/UseAzureUser';
 import { useAppSelector } from '../../lib/Lib';
 import { LectureMessage } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
@@ -57,6 +57,13 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     width: '36px',
     height: '36px',
   },
+  avatar: {
+    backgroundColor: colors.grey,
+    color: colors.white,
+    fontSize: '1rem',
+    width: '34px',
+    height: '34px',
+  },
 }));
 
 interface RowProps {
@@ -66,13 +73,17 @@ interface RowProps {
 const Row = ({ message }: RowProps): ReactElement => {
   const user = useAppSelector((state) => state.user);
   const classes = useStyles({ isSender: message.userId === user.id });
+  const { initials, name } = useAzureUser(message.userId);
 
   return (
     <div className={classes.subContainer}>
       <IconButton className={classes.icon}>
-        <AccountCircle className={classes.icon} />
+        <Avatar className={classes.avatar}>{initials}</Avatar>
       </IconButton>
-      <Typography className={classes.message}>{message.message}</Typography>
+      <div>
+        <Typography variant="subtitle1">{name}</Typography>
+        <Typography className={classes.message}>{message.message}</Typography>
+      </div>
       <Typography variant="subtitle1" className={classes.date}>
         {formatDate(message.createdAt)}
       </Typography>

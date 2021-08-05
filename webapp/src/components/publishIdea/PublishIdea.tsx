@@ -116,7 +116,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
   const { mutateAsync } = useMutation(createLectureIdea);
-  const user = useAppSelector((state) => state.user);
+  const { azureUser } = useAppSelector((state) => state.session);
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
@@ -125,7 +125,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
       title: values.title,
       description: values.description,
       tags: values.tags.split(' ').filter((e) => e),
-      lecturer: values.status === 'feedback_wanted' ? user.name : null,
+      lecturer: values.status === 'feedback_wanted' ? azureUser.displayName : null,
     });
     cancel();
   };

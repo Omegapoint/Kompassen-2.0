@@ -79,17 +79,17 @@ const useInit = () => {
   const events = useFetchDispatch('events', () => listEvents(), setEvents);
 
   const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.session);
+  const { apiToken } = useAppSelector((state) => state.session);
 
   useEffect(() => {
     (async () => {
       const sock = io(BASE_WS_URL, {
         reconnectionDelayMax: 10000,
-        auth: { token },
+        auth: { token: apiToken },
       });
       dispatch(setSocket(sock));
     })();
-  }, [dispatch, token]);
+  }, [dispatch, apiToken]);
 
   const error = user.error || locations.error || categories.error || events.error;
   const finished = user.finished && locations.finished && categories.finished && events.finished;

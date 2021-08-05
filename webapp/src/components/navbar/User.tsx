@@ -13,12 +13,8 @@ import { ArrowDropDown, Edit, ExitToApp, Settings } from '@material-ui/icons';
 import { MouseEvent, ReactElement, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAzure } from '../../api/Login';
+import { useAppSelector } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
-
-interface UserProps {
-  firstName: string;
-  lastName: string;
-}
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -42,11 +38,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const User = ({ firstName, lastName }: UserProps): ReactElement => {
+const User = (): ReactElement => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { instance } = useMsal();
   const { logoutRequest } = useAzure();
+  const { azureUser } = useAppSelector((state) => state.session);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,7 +58,7 @@ const User = ({ firstName, lastName }: UserProps): ReactElement => {
   return (
     <>
       <IconButton className={classes.container} onClick={handleClick}>
-        <Avatar className={classes.avatar}>{firstName[0] + lastName[0]}</Avatar>
+        <Avatar className={classes.avatar}>{azureUser.givenName[0] + azureUser.surname[0]}</Avatar>
         <ArrowDropDown htmlColor={colors.white} />
       </IconButton>
       <Menu

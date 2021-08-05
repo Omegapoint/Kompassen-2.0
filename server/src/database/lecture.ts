@@ -17,16 +17,14 @@ const SELECT_EVENTS = `
            l.tags,
            l.idea,
            l.created_at,
+           l.created_by,
            l.updated_at,
+           l.updated_by,
            l.approved,
            l.published,
-           u1.name as created_by,
-           u2.name as updated_by,
            (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
            l.category_id
     FROM lectures l
-             LEFT JOIN users u1 on l.created_by = u1.id
-             LEFT JOIN users u2 on l.updated_by = u2.id
 `;
 
 const SELECT_TAGS = `

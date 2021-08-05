@@ -4,35 +4,24 @@ import { snakeToCamel } from '../lib/lib';
 import { Event, IDParam, NewEvent, UpdatedEvent } from '../lib/types';
 
 const BASE_SELECT_EVENTS = `
-    SELECT l.id,
-           l.start_at,
-           l.end_at,
-           l.created_at,
-           l.updated_at,
-           u1.name as created_by,
-           u2.name as updated_by
-    FROM events l
-             LEFT JOIN users u1 on l.created_by = u1.id
-             LEFT JOIN users u2 on l.updated_by = u2.id
+    SELECT id,
+           start_at,
+           end_at,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by
+    FROM events
 `;
 
-const SELECT_EVENTS = `
-    SELECT l.id,
-           l.start_at,
-           l.end_at,
-           l.created_at,
-           l.updated_at,
-           u1.name as created_by,
-           u2.name as updated_by
-    FROM events l
-             LEFT JOIN users u1 on l.created_by = u1.id
-             LEFT JOIN users u2 on l.updated_by = u2.id
-    WHERE l.end_at > now()
+const SELECT_FUTURE_EVENTS = `
+    ${BASE_SELECT_EVENTS}
+    WHERE end_at > now()
 `;
 
 const SELECT_EVENT_BY_ID = `
     ${BASE_SELECT_EVENTS}
-    WHERE l.id = $1
+    WHERE id = $1
 `;
 
 const INSERT_EVENT = `
@@ -68,7 +57,7 @@ interface EventsDB {
 const eventsDB: EventsDB = {
   async list(onlyNew: boolean) {
     const filter = onlyNew ? ' ORDER BY start_at' : '';
-    const { rows } = await db.query(SELECT_EVENTS + filter);
+    const { rows } = await db.query(SELECT_FUTURE_EVENTS + filter);
     return snakeToCamel(rows) || [];
   },
 

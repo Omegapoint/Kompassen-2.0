@@ -1,11 +1,29 @@
 import { Socket } from 'socket.io-client';
 import { PartialAction } from '../types';
 
-export type Actions = 'SET_SOCKET' | 'SET_TOKEN';
+export type Actions = 'SET_SOCKET' | 'SET_AZURE_USER' | 'SET_API_TOKEN' | 'SET_GRAPH_TOKEN';
+
+export interface AzureUser {
+  '@odata.context': string;
+  '@odata.id': string;
+  businessPhones: string[];
+  displayName: string;
+  givenName: string;
+  jobTitle: string;
+  mail: string;
+  mobilePhone: string;
+  officeLocation: string;
+  preferredLanguage: string;
+  surname: string;
+  userPrincipalName: string;
+  id: string;
+}
 
 export interface SessionState {
   socket: Socket;
-  token: string;
+  apiToken: string;
+  graphToken: string;
+  azureUser: AzureUser;
 }
 
 export const setSocket = (socket: Socket): PartialAction<Actions, SessionState> => ({
@@ -13,7 +31,17 @@ export const setSocket = (socket: Socket): PartialAction<Actions, SessionState> 
   payload: { socket },
 });
 
-export const setToken = (token: string): PartialAction<Actions, SessionState> => ({
-  type: 'SET_TOKEN',
-  payload: { token },
+export const setAzureUser = (azureUser: AzureUser): PartialAction<Actions, SessionState> => ({
+  type: 'SET_AZURE_USER',
+  payload: { azureUser },
+});
+
+export const setAPIToken = (apiToken: string): PartialAction<Actions, SessionState> => ({
+  type: 'SET_API_TOKEN',
+  payload: { apiToken },
+});
+
+export const setGraphToken = (graphToken: string): PartialAction<Actions, SessionState> => ({
+  type: 'SET_GRAPH_TOKEN',
+  payload: { graphToken },
 });
