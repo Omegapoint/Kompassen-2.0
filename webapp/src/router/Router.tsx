@@ -1,10 +1,11 @@
 import { FC, ReactElement } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Content from '../components/content/Content';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
 import Home from '../section/home/Home';
 import Lecture from '../section/lecture/Lecture';
 import MyLectures from '../section/myLectures/MyLectures';
+import PageNotFound from '../section/pageNotFound/PageNotFound';
 import Settings from '../section/settings/Settings';
 
 export interface AppRoute {
@@ -45,6 +46,11 @@ export const appRoutes: AppRoute[] = [
     path: '/',
     Component: Home,
   },
+  {
+    name: '404',
+    path: '/404',
+    Component: PageNotFound,
+  },
 ];
 
 const Router = (): ReactElement => (
@@ -56,6 +62,10 @@ const Router = (): ReactElement => (
         </Content>
       </Route>
     ))}
+    <Content>
+      <Route path="/404" component={PageNotFound} />
+      <Redirect to="/404" />
+    </Content>
   </Switch>
 );
 

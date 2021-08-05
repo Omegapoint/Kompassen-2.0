@@ -51,7 +51,7 @@ const defaultFormValue = {
 };
 
 const Discussion = (): ReactElement => {
-  const classes = useStyles({ name: 'jonas' });
+  const classes = useStyles();
   const { chat, sendWSMessage } = useContext(LectureContext);
   const { values, handleChange, appendChange, updateValues } = useForm(defaultFormValue);
 
