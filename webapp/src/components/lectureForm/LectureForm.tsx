@@ -215,13 +215,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
 
   useEffect(() => {
     if (updateLectureRequest.isSuccess) {
-      history.push(`/lecture/create/${updateLectureRequest.data?.id}/confirm`);
+      history.push(`/lecture/${updateLectureRequest.data?.id}/confirm`);
     }
   }, [history, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
 
   useEffect(() => {
     if (createLectureRequest.isSuccess) {
-      history.push(`/lecture/create/${createLectureRequest.data?.id}/confirm`);
+      history.push(`/lecture/${createLectureRequest.data?.id}/confirm`);
     }
   }, [history, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 

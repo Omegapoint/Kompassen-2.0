@@ -55,7 +55,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
       ) : (
         <Button
           component={NavLink}
-          to={`/lecture/create/${lecture.id}`}
+          to={`/lecture/edit/${lecture.id}`}
           className={classes.bookedByContainer}
           variant="contained"
           color="primary"
