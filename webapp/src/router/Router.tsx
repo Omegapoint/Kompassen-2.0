@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Content from '../components/content/Content';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
 import Home from '../section/home/Home';
@@ -23,12 +23,12 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Anmäl pass',
-    path: '/lecture/create/:id',
+    path: '/lecture/edit/:id',
     Component: Lecture,
   },
   {
     name: 'Anmäl pass',
-    path: '/lecture/create/:id/confirm',
+    path: '/lecture/:id/confirm',
     Component: ConfirmLecture,
   },
   {
@@ -46,11 +46,6 @@ export const appRoutes: AppRoute[] = [
     path: '/',
     Component: Home,
   },
-  {
-    name: '404',
-    path: '/404',
-    Component: PageNotFound,
-  },
 ];
 
 const Router = (): ReactElement => (
@@ -63,8 +58,7 @@ const Router = (): ReactElement => (
       </Route>
     ))}
     <Content>
-      <Route path="/404" component={PageNotFound} />
-      <Redirect to="/404" />
+      <Route path="/" component={PageNotFound} />
     </Content>
   </Switch>
 );
