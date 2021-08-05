@@ -9,7 +9,9 @@ function session(
 ): SessionState {
   switch (action.type) {
     case 'SET_SOCKET':
-    case 'SET_TOKEN':
+    case 'SET_API_TOKEN':
+    case 'SET_AZURE_USER':
+    case 'SET_GRAPH_TOKEN':
       return {
         ...state,
         ...action.payload,

@@ -4,29 +4,28 @@ import { snakeToCamel } from '../lib/lib';
 import { IDParam, NewUser, UpdatedUser, User } from '../lib/types';
 
 const SELECT_USER_BY_ID = `
-    SELECT id, name, notifications, created_at, updated_at
+    SELECT id, notifications, created_at, updated_at
     FROM users
     WHERE id = $1
 `;
 
 const INSERT_USER = `
-    INSERT INTO users(id, name, notifications)
-    VALUES ($1, $2, $3)
+    INSERT INTO users(id, notifications)
+    VALUES ($1, $2)
     RETURNING id
 `;
 
 const UPDATE_USER = `
     UPDATE users
-    SET name          = $1,
-        notifications = $2
-    WHERE id = $3
+    SET notifications = $1
+    WHERE id = $2
     RETURNING id
 `;
 
 interface UserDB {
   getByID: (id: string) => Promise<User | null>;
-  insert: (user: NewUser, id: string, name: string) => Promise<IDParam>;
-  update: (user: UpdatedUser, id: string, name: string) => Promise<IDParam>;
+  insert: (user: NewUser, id: string) => Promise<IDParam>;
+  update: (user: UpdatedUser, id: string) => Promise<IDParam>;
 }
 
 const usersDB: UserDB = {
@@ -39,13 +38,13 @@ const usersDB: UserDB = {
     return snakeToCamel(rows[0]);
   },
 
-  async insert(user, id, name): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_USER, [id, name, user.notifications]);
+  async insert(user, id): Promise<IDParam> {
+    const { rows } = await db.query(INSERT_USER, [id, user.notifications]);
     return rows[0];
   },
 
-  async update(user, id, name): Promise<IDParam> {
-    const { rows } = await db.query(UPDATE_USER, [name, user.notifications, id]);
+  async update(user, id): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_USER, [user.notifications, id]);
     return rows[0];
   },
 };

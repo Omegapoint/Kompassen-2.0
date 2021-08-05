@@ -11,7 +11,7 @@ class FetchError extends Error {
 }
 
 export async function fetchJSON<Res>(url: string, options: RequestInit = {}): Promise<Res> {
-  const accessToken = store.getState().session.token;
+  const accessToken = store.getState().session.apiToken;
 
   const fetchOptions = {
     ...options,

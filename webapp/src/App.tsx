@@ -11,7 +11,7 @@ const App = (): ReactElement => {
   const isAuthenticated = useIsAuthenticated();
   const { loading } = useAccessToken(isAuthenticated);
   const { inProgress } = useMsal();
-  const { token } = useAppSelector((state) => state.session);
+  const { apiToken } = useAppSelector((state) => state.session);
 
   if (!isAuthenticated && inProgress === 'none') {
     return (
@@ -21,7 +21,7 @@ const App = (): ReactElement => {
     );
   }
 
-  if (loading || !token) {
+  if (loading || !apiToken) {
     return <BigLoader />;
   }
 

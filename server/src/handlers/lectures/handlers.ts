@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
-import usersDB from '../../database/users';
 import { httpError } from '../../lib/lib';
 import {
   Approved,
@@ -68,11 +67,9 @@ const lectures: Handlers = {
   async update({ body }, res) {
     const { userId } = res.locals;
 
-    const currentUser = await usersDB.getByID(userId);
-
     const currentLecture = await lecturesDB.getByID(body.id);
 
-    if (currentLecture?.lecturer && currentUser?.name !== currentLecture?.lecturer) {
+    if (currentLecture?.lecturerId && userId !== currentLecture?.lecturerId) {
       httpError(res, 403, 'You cannot edit another lecturers lecture');
       return;
     }

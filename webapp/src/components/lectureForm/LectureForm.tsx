@@ -164,7 +164,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
   const categories = useAppSelector((state) => state.categories);
-  const user = useAppSelector((state) => state.user);
+  const { azureUser } = useAppSelector((state) => state.session);
   const events = useAppSelector((state) => state.events);
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
@@ -177,7 +177,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     minutes: '',
     title: data?.title || '',
     category: categories[0].name,
-    lecturer: user.name,
+    lecturer: azureUser.displayName,
     description: data?.description || '',
     maxParticipants: '',
     requirements: '',

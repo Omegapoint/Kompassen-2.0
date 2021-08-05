@@ -9,9 +9,9 @@ type GetUserReq = Request<null, null, null>;
 
 const users = {
   async createUser({ body }: CreateUserReq, res: Response): Promise<void> {
-    const { userId, name } = res.locals;
+    const { userId } = res.locals;
     try {
-      const user = await usersDB.insert(body, userId, name);
+      const user = await usersDB.insert(body, userId);
 
       res.send(user);
     } catch (e) {
@@ -20,9 +20,9 @@ const users = {
   },
 
   async updateUser({ body }: UpdatedUserReq, res: Response): Promise<void> {
-    const { userId, name } = res.locals;
+    const { userId } = res.locals;
     try {
-      const user = await usersDB.update(body, userId, name);
+      const user = await usersDB.update(body, userId);
 
       res.send(user);
     } catch (e) {

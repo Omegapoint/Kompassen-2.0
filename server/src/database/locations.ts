@@ -4,10 +4,13 @@ import { snakeToCamel } from '../lib/lib';
 import { IDParam, Location, NewLocation, UpdatedLocation } from '../lib/types';
 
 const SELECT_LOCATIONS = `
-    SELECT l.id, l.name, l.created_at, l.updated_at, u1.name as created_by, u2.name as updated_by
-    FROM locations l
-             LEFT JOIN users u1 on l.created_by = u1.id
-             LEFT JOIN users u2 on l.updated_by = u2.id
+    SELECT id,
+           name,
+           created_at,
+           created_by,
+           updated_at,
+           updated_by
+    FROM locations
 `;
 
 const SELECT_LOCATION_BY_ID = `

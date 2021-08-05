@@ -44,7 +44,6 @@ export interface UpdatedUser extends NewUser {
 }
 
 export interface User extends UpdatedUser {
-  name: string;
   createdAt: Date;
   updatedAt: Date | null;
 }
