@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { APIFunction } from '../../api/Fetch';
 import { IDParam } from '../../lib/Types';
+import PageNotFound from '../../section/pageNotFound/PageNotFound';
 import BigLoader from '../loader/BigLoader';
 
 interface FormWrapperProps {
@@ -14,9 +15,13 @@ interface FormWrapperProps {
 
 const FormWrapper = ({ children, name, fn }: FormWrapperProps): ReactElement => {
   const { id } = useParams<Partial<IDParam>>();
-  const { isLoading, data } = useQuery(`${name}-${id}`, () => fn({ id }), { enabled: !!id });
-  if (isLoading && id) return <BigLoader />;
+  const { isLoading, data, error } = useQuery(`${name}-${id}`, () => fn({ id }), { enabled: !!id });
 
+  if (error) {
+    return <PageNotFound />;
+  }
+
+  if (isLoading && id) return <BigLoader />;
   return cloneElement(children, data ? { data } : {});
 };
 
