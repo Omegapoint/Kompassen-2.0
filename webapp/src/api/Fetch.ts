@@ -1,8 +1,10 @@
 import { reviver } from '../lib/Types';
 import store from '../reducers';
 
-export const BASE_HTTP_URL = 'http://localhost:8080' || window.location.origin;
-export const BASE_WS_URL = BASE_HTTP_URL.replace('http', 'ws');
+export const BASE_HTTP_URL = `${window.location.origin}/api`;
+export const BASE_WS_URL = (
+  window.location.hostname === 'localhost' ? 'http://localhost:8080' : window.location.origin
+).replace('http', 'ws');
 
 class FetchError extends Error {
   constructor(public res: Response, message?: string) {

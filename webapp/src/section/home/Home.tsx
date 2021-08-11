@@ -9,6 +9,7 @@ import PublishIdea from '../../components/publishIdea/PublishIdea';
 import QuickGuide from '../../components/quickGuide/QuickGuide';
 import SideCard from '../../components/sideCard/SideCard';
 import WordCloud from '../../components/wordCloud/WordCloud';
+import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
@@ -84,26 +85,17 @@ const useLectureIdeasWS = () => {
 };
 
 const Home = (): ReactElement => {
-  const [active, setActive] = useState(false);
+  const [active, { off, on }] = useBoolean();
   const classes = useStyles();
   const lectureIdeas = useLectureIdeasWS();
-
-  const activateIdea = () => {
-    setActive((e) => !e);
-  };
 
   return (
     <div className={classes.container}>
       <Typography variant="h1">Idéer till kompetensdagar</Typography>
       <div className={classes.leftPanel}>
-        {active && <PublishIdea cancel={() => setActive(false)} />}
+        {active && <PublishIdea cancel={off} />}
         {!active && (
-          <Button
-            onClick={activateIdea}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-          >
+          <Button onClick={on} className={classes.button} variant="contained" color="primary">
             Publicera ny idé
           </Button>
         )}

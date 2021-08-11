@@ -50,9 +50,10 @@ const LectureStats = (): ReactElement => {
   const classes = useStyles();
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const { event } = useContext(EventContext);
-  const { data, isLoading } = useQuery('lectureCategories', () =>
+  const { data, isLoading } = useQuery(`lectureCategories-${event.id}`, () =>
     listLectureCategories({ id: event.id })
   );
+
   const categories = useAppSelector((state) => state.categories);
   const mapped = data?.map((e) => {
     const category = categories?.find((e1) => e1.id === e.categoryID);
@@ -65,55 +66,57 @@ const LectureStats = (): ReactElement => {
     };
   });
 
-  if (isLoading) return <SmallLoader />;
-
   return (
     <div className={classes.container}>
       <div>
         <Typography color="primary">Inskickade Pass</Typography>
         <Divider />
       </div>
-      <div className={classes.subContainer}>
-        {mapped?.length ? (
-          <>
-            <PieChart
-              data={mapped}
-              radius={PieChart.defaultProps.radius - size}
-              segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
-              segmentsShift={(index) => (index === hovered ? size : 2)}
-              animate
-              onMouseOver={(_, index) => setHovered(index)}
-              onMouseOut={() => setHovered(undefined)}
-              startAngle={-90}
-              label={(e) => (
-                <ChartIcon
-                  one={mapped?.length === 1}
-                  key={e.dataEntry.title}
-                  onMouseOver={() => setHovered(e.dataIndex)}
-                  // eslint-disable-next-line react/jsx-props-no-spreading
-                  {...e}
-                />
-              )}
-            />
-            <div className={classes.descContainer}>
-              {mapped?.map((e) => (
-                <Fragment key={e.title}>
-                  <img
-                    alt="icon"
-                    width="12"
-                    height="12"
-                    src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
+      {isLoading ? (
+        <SmallLoader />
+      ) : (
+        <div className={classes.subContainer}>
+          {mapped?.length ? (
+            <>
+              <PieChart
+                data={mapped}
+                radius={PieChart.defaultProps.radius - size}
+                segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
+                segmentsShift={(index) => (index === hovered ? size : 2)}
+                animate
+                onMouseOver={(_, index) => setHovered(index)}
+                onMouseOut={() => setHovered(undefined)}
+                startAngle={-90}
+                label={(e) => (
+                  <ChartIcon
+                    one={mapped?.length === 1}
+                    key={e.dataEntry.title}
+                    onMouseOver={() => setHovered(e.dataIndex)}
+                    // eslint-disable-next-line react/jsx-props-no-spreading
+                    {...e}
                   />
-                  <Typography>{e.desc}</Typography>
-                  <Typography>{e.value}</Typography>
-                </Fragment>
-              ))}
-            </div>
-          </>
-        ) : (
-          <Typography className={classes.emptyLabel}>Här var det tomt</Typography>
-        )}
-      </div>
+                )}
+              />
+              <div className={classes.descContainer}>
+                {mapped?.map((e) => (
+                  <Fragment key={e.title}>
+                    <img
+                      alt="icon"
+                      width="12"
+                      height="12"
+                      src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
+                    />
+                    <Typography>{e.desc}</Typography>
+                    <Typography>{e.value}</Typography>
+                  </Fragment>
+                ))}
+              </div>
+            </>
+          ) : (
+            <Typography className={classes.emptyLabel}>Här var det tomt</Typography>
+          )}
+        </div>
+      )}
     </div>
   );
 };

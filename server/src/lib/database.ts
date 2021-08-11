@@ -1,24 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
-import Knex from 'knex';
-import { knexSnakeCaseMappers } from 'objection';
 import { Pool } from 'pg';
 import config from '../config/config';
 
-export const knex = Knex({
-  client: 'pg',
-  version: '13.0',
-  connection: config.postgres,
-  pool: {
-    min: 2,
-    max: 7,
-    idleTimeoutMillis: 20 * 1000,
-  },
-  ...knexSnakeCaseMappers(),
+const db = new Pool({
+  ...config.postgres,
 });
 
-const db = new Pool({
-  connectionString: config.postgresUrl,
-});
+db.connect();
 
 export default db;
