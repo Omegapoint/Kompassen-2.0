@@ -49,7 +49,8 @@
   "eslintIgnore": [
     "**/*.json",
     "**/*.snap",
-    "**/*.svg"
+    "**/*.svg",
+    "src/setupProxy.js"
   ],
   "resolutions": {
     "browserslist": "^4.16.5",
@@ -66,6 +67,7 @@
     "@material-ui/pickers": "^3.3.10",
     "date-fns": "^2.23.0",
     "emoji-picker-react": "^3.4.8",
+    "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-minimal-pie-chart": "^8.2.0",

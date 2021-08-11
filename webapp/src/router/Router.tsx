@@ -18,6 +18,13 @@ export interface AppRoute {
   admin?: boolean;
 }
 
+export const notFound: AppRoute = {
+  name: 'Sidan kunde inte hittas',
+  path: '/',
+  Component: PageNotFound,
+  notExact: true,
+};
+
 export const appRoutes: AppRoute[] = [
   {
     name: 'Anmäl pass',
@@ -25,12 +32,12 @@ export const appRoutes: AppRoute[] = [
     Component: Lecture,
   },
   {
-    name: 'Anmäl pass',
+    name: 'Redigera pass',
     path: '/lecture/edit/:id',
     Component: Lecture,
   },
   {
-    name: 'Anmäl pass',
+    name: 'Passbekräftelse',
     path: '/lecture/:id/confirm',
     Component: ConfirmLecture,
   },
@@ -55,41 +62,21 @@ export const appRoutes: AppRoute[] = [
     path: '/',
     Component: Home,
   },
-  {
-    name: 'Not Found',
-    path: '/',
-    Component: PageNotFound,
-    notExact: true,
-  },
+  notFound,
 ];
 
 const Router = (): ReactElement => (
   <Switch>
-    {appRoutes.map((e) =>
-      e.admin && !isAdmin() ? (
-        <></>
-      ) : (
-        <Route path={e.path} key={e.path + e.name} exact={!e.notExact}>
+    {appRoutes
+      .filter((route) => (route.admin && isAdmin()) || !route.admin)
+      .map((route) => (
+        <Route path={route.path} key={route.path + route.name} exact={!route.notExact}>
           <Content>
-            <e.Component />
+            <route.Component />
           </Content>
         </Route>
-      )
-    )}
+      ))}
   </Switch>
 );
-
-// <<<<<<< HEAD
-//   {appRoutes.map((e) => (
-//     <Route path={e.path} key={e.path} exact={!e.notExact}>
-//       <Content>
-//         <e.Component />
-//       </Content>
-//     </Route>
-//   ))}
-// <Content>
-// <Route path="/" component={PageNotFound} />
-// </Content>
-// =======
 
 export default Router;

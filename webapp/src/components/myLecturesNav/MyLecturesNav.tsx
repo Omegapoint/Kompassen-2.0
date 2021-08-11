@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export type INavItemKind = 'future' | 'notPublished' | 'past';
+export type INavItemKind = 'future' | 'draft' | 'past';
 
 interface INavItem {
   name: INavItemKind;
@@ -19,7 +19,7 @@ interface INavItem {
 }
 
 export interface ILectureItems {
-  notPublished: Lecture[];
+  draft: Lecture[];
   future: Lecture[];
   past: Lecture[];
 }
@@ -35,7 +35,7 @@ const MyLecturesNav = ({ active, setActive, items }: IMyLecturesNav): ReactEleme
 
   const navItems: INavItem[] = [
     { name: 'future', title: 'Kommande' },
-    { name: 'notPublished', title: 'Utkast' },
+    { name: 'draft', title: 'Utkast' },
     { name: 'past', title: 'Genomförda' },
   ];
 

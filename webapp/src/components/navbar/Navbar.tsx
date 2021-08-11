@@ -36,7 +36,7 @@ const Navbar = (): ReactElement => {
       <User />
 
       <IconButton>
-        <Badge badgeContent={4} color="secondary">
+        <Badge badgeContent={0} color="secondary">
           <Notifications htmlColor={colors.white} />
         </Badge>
       </IconButton>

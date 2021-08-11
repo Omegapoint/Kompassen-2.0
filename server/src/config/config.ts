@@ -1,6 +1,17 @@
 import winston from 'winston';
 
-const { POSTGRES_URL, PORT, OIDC_CLIENT_ID, OIDC_TENANT_ID } = process.env;
+const {
+  PG_USERNAME,
+  PG_PASSWORD,
+  PG_HOST,
+  PG_PORT,
+  PG_DATABASE,
+  PG_SSL,
+  PORT,
+  OIDC_CLIENT_ID,
+  OIDC_TENANT_ID,
+  OIDC_REDIRECT_URL,
+} = process.env;
 
 export const logger = winston.createLogger({
   level: 'info',
@@ -9,80 +20,22 @@ export const logger = winston.createLogger({
 });
 
 const config = {
-  postgresUrl: POSTGRES_URL || 'postgresql://username:password@localhost:15432/kompassen2',
   postgres: {
-    host: 'localhost',
-    port: 15432,
-    user: 'username',
-    password: 'password',
-    database: 'kompassen2',
+    user: PG_USERNAME || 'username',
+    password: PG_PASSWORD || 'password',
+    host: PG_HOST || 'localhost',
+    port: parseInt(PG_PORT || '0', 10) || 15432,
+    database: PG_DATABASE || 'kompassen2',
+    ssl: !!parseInt(PG_SSL || '0', 10),
   },
   port: PORT || '8080',
   oidc: {
     azure: {
       clientID: OIDC_CLIENT_ID || 'bcc1714d-6fcc-458b-b94e-7f7ea69c798a',
       tenantID: OIDC_TENANT_ID || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
-      redirectUrl: 'http://localhost:3000/',
+      redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
     },
   },
-};
-
-export interface AuthPath {
-  path: string;
-  method: 'POST' | 'PUT' | 'GET' | 'DELETE' | 'OPTIONS';
-  roles?: string[];
-  open?: boolean;
-}
-
-export interface AuthConfig {
-  all?: string;
-  endpoints: AuthPath[];
-}
-
-export const authConfig: AuthConfig = {
-  all: 'admin',
-  endpoints: [
-    {
-      path: '/user',
-      method: 'POST',
-      roles: ['user'],
-    },
-    {
-      path: '/user',
-      method: 'GET',
-      roles: ['user'],
-    },
-    {
-      path: '/event',
-      method: 'POST',
-      roles: ['user'],
-    },
-    {
-      path: '/event',
-      method: 'PUT',
-      roles: ['user'],
-    },
-    {
-      path: '/event',
-      method: 'GET',
-      roles: ['user'],
-    },
-    {
-      path: '/event/:id',
-      method: 'GET',
-      roles: ['user'],
-    },
-    {
-      path: '/event',
-      method: 'DELETE',
-      roles: ['user'],
-    },
-    {
-      path: '/login/config',
-      method: 'GET',
-      open: true,
-    },
-  ],
 };
 
 export default config;
