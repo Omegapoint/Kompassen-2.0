@@ -12,7 +12,7 @@ export const up = async (knex: Knex): Promise<void> =>
       t.uuid('lecturer_id');
       t.text('description').notNullable();
       t.uuid('location_id').notNullable().references('locations.id');
-      t.uuid('eventID').references('events.id');
+      t.uuid('event_id').references('events.id');
       t.integer('duration');
       t.text('title').notNullable();
       t.uuid('category_id').references('categories.id');

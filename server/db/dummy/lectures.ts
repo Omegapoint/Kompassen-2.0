@@ -5,6 +5,7 @@ import locations from './locations';
 import users from './users';
 
 const date = new Date();
+const diffDate = new Date(date.getTime() + 30*60000)
 
 const lectures: DBLecture[] = [
   {
@@ -46,7 +47,7 @@ const lectures: DBLecture[] = [
     message: null,
     tags: ['cloud'],
     idea: true,
-    createdAt: date,
+    createdAt: diffDate,
     createdBy: users[0].id,
     updatedAt: date,
     updatedBy: users[0].id,
