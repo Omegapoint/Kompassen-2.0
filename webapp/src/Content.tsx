@@ -85,6 +85,7 @@ const useInit = () => {
 
   const finished =
     user.finished && locationsReady && categoriesReady && eventsReady && organisationsReady;
+
   return { error: user.error, loading: !finished };
 };
 
@@ -142,6 +143,7 @@ const ContentWrapper = (): ReactElement => {
       </GreetingPage>
     );
   }
+
   return <Content />;
 };
 

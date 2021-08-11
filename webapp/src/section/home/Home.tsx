@@ -2,9 +2,9 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
+import Filter from '../../components/filter/Filter';
 import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
-import LectureIdea from '../../components/lecture/Lecture';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
 import QuickGuide from '../../components/quickGuide/QuickGuide';
 import SideCard from '../../components/sideCard/SideCard';
@@ -107,9 +107,7 @@ const Home = (): ReactElement => {
             Publicera ny idé
           </Button>
         )}
-        {lectureIdeas?.map((lecture) => (
-          <LectureIdea key={lecture.id} lecture={lecture} />
-        ))}
+        <Filter lectures={lectureIdeas} />
       </div>
       <div className={classes.rightPanel}>
         {isAdmin() && (
