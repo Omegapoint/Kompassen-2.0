@@ -1,10 +1,22 @@
-import { createStyles, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import {
+  createStyles,
+  IconButton,
+  Link,
+  makeStyles,
+  Paper,
+  Theme,
+  Typography,
+} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Fragment, ReactElement } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
+import { formatDayTime } from '../competenceDays/DayPicker';
 
 interface StyleProps {
   categoryColor?: string;
@@ -46,6 +58,12 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
         padding: `3px ${padding.medium}`,
       },
     },
+    row: {
+      display: 'grid',
+      gridAutoFlow: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
     table: {
       display: 'grid',
       gridTemplateColumns: 'max-content 1fr max-content',
@@ -70,10 +88,12 @@ const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
   const classes = useStyles({ categoryColor: category?.color });
   const locations = useAppSelector((state) => state.locations);
   const location = locations.find((e) => e.id === lecture.locationID)?.name;
+  const events = useAppSelector((state) => state.events);
+  const eventDay = events.find((e) => e.id === lecture.eventID);
 
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
-    { name: 'Längd', value: '60 minuter' },
+    { name: 'Längd', value: lecture.duration?.toString().concat(' ', 'minuter') },
     { name: 'Max antal', value: lecture.maxParticipants },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Beskrivning', value: lecture.description },
@@ -83,16 +103,27 @@ const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
   ];
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
-
   return (
     <div className={classes.container}>
       <div className={classes.header}>
-        <Typography>7 maj</Typography>
+        {eventDay !== undefined && <Typography>{formatDayTime(eventDay)}</Typography>}
         <Typography>{location}</Typography>
         <Typography>{category?.name}</Typography>
       </div>
       <Paper className={classes.paper}>
-        <Typography variant="h5">Agil Filosofi</Typography>
+        <div className={classes.row}>
+          <Typography variant="h5">Agil Filosofi</Typography>
+          <div>
+            <IconButton>
+              <Link component={NavLink} to={`/lecture/edit/${lecture.id}`}>
+                <EditIcon />
+              </Link>
+            </IconButton>
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </div>
+        </div>
         <Typography
           className={classes.registeredBy}
         >{`Anmäld av ${lecture.lecturer} den ${time}`}</Typography>
