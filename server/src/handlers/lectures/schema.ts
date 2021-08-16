@@ -10,7 +10,7 @@ const defaultSchema = {
 };
 
 const other = {
-  eventId: Joi.string().uuid(),
+  eventID: Joi.string().uuid(),
   duration: Joi.number().max(1000),
   categoryID: Joi.string().uuid(),
   maxParticipants: Joi.number().min(0).max(1000),

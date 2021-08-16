@@ -28,12 +28,11 @@ const useMyLectures = (data?: Lecture[]) => {
       const r = events.find((e1) => id === e1.id);
       return r ? cond(r.endAt) : undefined;
     };
-
     if (data) {
       setItems({
         notPublished: data.filter((e) => !e.published),
-        future: data.filter((e) => findEvent(e.id, (d) => d > new Date())),
-        past: data.filter((e) => findEvent(e.id, (d) => d < new Date())),
+        future: data.filter((e) => findEvent(e.eventID, (d) => d > new Date())),
+        past: data.filter((e) => findEvent(e.eventID, (d) => d < new Date())),
       });
     }
   }, [data, events]);

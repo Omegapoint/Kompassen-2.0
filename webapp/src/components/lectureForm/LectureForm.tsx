@@ -171,19 +171,20 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const history = useHistory();
 
   const defaultFormValue = {
-    locationID: locations[0].id,
-    eventID: events[0].id,
-    hours: '',
-    minutes: '',
+    locationID:
+      locations.find((location) => location.id === data?.locationID)?.id || locations[0].id,
+    eventID: events.find((event) => event.id === data?.eventID)?.id || events[0].id,
+    hours: data?.duration ? Math.floor(data.duration / 60).toString() : '',
+    minutes: data?.duration ? (data.duration % 60).toString() : '',
     title: data?.title || '',
-    category: categories[0].name,
+    category: categories.find((cath) => cath.id === data?.categoryID)?.name || categories[0].name,
     lecturer: azureUser.displayName,
     description: data?.description || '',
-    maxParticipants: '',
-    requirements: '',
-    preparations: '',
+    maxParticipants: data?.maxParticipants?.toString() || '',
+    requirements: data?.requirements || '',
+    preparations: data?.preparations || '',
     tags: data?.tags.reduce((s, e) => `${s} ${e}`, '') || '',
-    message: '',
+    message: data?.message || '',
   };
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
@@ -196,7 +197,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       description: values.description,
       lecturer: values.lecturer,
       tags: values.tags.split(' ').filter((e) => e),
-
       locationID: values.locationID,
       eventID: values.eventID,
       duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
@@ -237,14 +237,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
         <Typography className={classes.header} variant="h1">
           Anmäl pass till kompetensdag
         </Typography>
-
         <div>
           <FormLabel className={classes.radioButtons} required component="legend">
             Plats
           </FormLabel>
           <RadioGroup name="locationID" onChange={handleChange} value={values.locationID}>
             {locations.map((e) => (
-              <FormControlLabel key={e.name} value={e.name} control={<Radio />} label={e.name} />
+              <FormControlLabel key={e.name} value={e.id} control={<Radio />} label={e.name} />
             ))}
           </RadioGroup>
         </div>
@@ -275,6 +274,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
                 {...validate.hours}
                 className={classes.hours}
                 onChange={handleChange}
+                value={values.hours}
                 label="Timmar"
                 name="hours"
                 type="number"
@@ -347,6 +347,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           name="maxParticipants"
           label="Max antal deltagare"
           variant="outlined"
+          value={values.maxParticipants}
         />
 
         <TextField
@@ -356,6 +357,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           name="requirements"
           label="Förkunskapskrav"
           variant="outlined"
+          value={values.requirements}
         />
 
         <TextField
@@ -365,6 +367,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           name="preparations"
           label="Förberedelser"
           variant="outlined"
+          value={values.preparations}
         />
 
         <TextField
@@ -387,6 +390,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           minRows={13}
           maxRows={5}
           variant="outlined"
+          value={values.message}
         />
         <div className={classes.buttonRow}>
           <IconButton className={classes.cancel} color="primary">

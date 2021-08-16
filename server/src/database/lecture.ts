@@ -16,6 +16,7 @@ export const SELECT_LECTURES = `
            l.requirements,
            l.preparations,
            l.tags,
+           l.message,
            l.idea,
            l.created_at,
            l.created_by,
@@ -62,8 +63,8 @@ const SELECT_LECTURE_BY_ID = `
 const INSERT_EVENT = `
     INSERT INTO lectures(lecturer, lecturer_id, description, location_id, event_id, duration, title, category_id,
                          max_participants,
-                         requirements, preparations, tags, idea, approved, published, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $16)
+                         requirements, preparations, tags, message, idea, approved, published, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $17)
     RETURNING id
 `;
 
@@ -80,9 +81,10 @@ const UPDATE_EVENT = `
         requirements     = $9,
         preparations     = $10,
         tags             = $11,
-        published        = $12,
-        updated_by       = $13
-    WHERE id = $14
+        message          = $12,
+        published        = $13,
+        updated_by       = $14
+    WHERE id = $15
     RETURNING id
 `;
 
@@ -163,6 +165,7 @@ const lecturesDB: LecturesDB = {
       lecture.requirements,
       lecture.preparations,
       lecture.tags,
+      lecture.message,
       lecture.idea,
       false,
       lecture.published,
@@ -184,6 +187,7 @@ const lecturesDB: LecturesDB = {
       lecture.requirements,
       lecture.preparations,
       lecture.tags,
+      lecture.message,
       lecture.published,
       userID,
       lecture.id,
