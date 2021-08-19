@@ -26,7 +26,7 @@ const buttonClick = '"Hantera mina anmälda pass"';
 
 const ConfirmLecture = (): ReactElement => {
   const classes = useStyles();
-  const { id } = useParams<Partial<IDParam>>();
+  const { id } = useParams<IDParam>();
   const { data, isLoading } = useQuery(`lecture-${id}`, () =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     getLecture({ id: id! })
@@ -58,7 +58,7 @@ const ConfirmLecture = (): ReactElement => {
           Skicka in ett till pass!
         </Link>
       </Typography>
-      <LectureCard lecture={data} />
+      <LectureCard lecture={data} editIcon={false} deleteIcon={false} />
     </div>
   );
 };

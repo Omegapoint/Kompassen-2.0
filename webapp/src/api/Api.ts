@@ -99,6 +99,7 @@ export const deleteEvent = apiURLParamsBuilder<IDParam, IDParam>('/event/:id').d
 
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
+export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;
 export const createLectureIdea = apiBuilder<IDParam, NewLectureIdea>('/lecture/idea').post;
 export const listLectureCategories = apiURLParamsBuilder<CategoryStats[], IDParam>(
   '/lecture/:id/category'
