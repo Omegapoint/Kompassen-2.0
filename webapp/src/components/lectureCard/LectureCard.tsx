@@ -80,9 +80,17 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
 
 interface LectureCardProps {
   lecture: Lecture;
+  handleDelete?: () => Promise<void>;
+  editIcon: boolean;
+  deleteIcon: boolean;
 }
 
-const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
+const LectureCard = ({
+  lecture,
+  handleDelete,
+  editIcon,
+  deleteIcon,
+}: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
   const classes = useStyles({ categoryColor: category?.color });
@@ -114,14 +122,22 @@ const LectureCard = ({ lecture }: LectureCardProps): ReactElement => {
         <div className={classes.row}>
           <Typography variant="h5">Agil Filosofi</Typography>
           <div>
-            <IconButton>
-              <Link component={NavLink} to={`/lecture/edit/${lecture.id}`}>
-                <EditIcon />
-              </Link>
-            </IconButton>
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
+            {editIcon && (
+              <IconButton>
+                <Link
+                  className={classes.removeLinkPadding}
+                  component={NavLink}
+                  to={`/lecture/edit/${lecture.id}`}
+                >
+                  <EditIcon />
+                </Link>
+              </IconButton>
+            )}
+            {deleteIcon && (
+              <IconButton onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+            )}
           </div>
         </div>
         <Typography

@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
-import { listLectures } from '../../api/Api';
+import { useMutation, useQuery } from 'react-query';
+import { deleteLecture, listLectures } from '../../api/Api';
 import LectureCard from '../../components/lectureCard/LectureCard';
 import BigLoader from '../../components/loader/BigLoader';
 import MyLecturesNav, {
@@ -42,20 +42,40 @@ const useMyLectures = (data?: Lecture[]) => {
 
 const MyLectures = (): ReactElement => {
   const classes = useStyles();
+  const [forceUpdate, setForceUpdate] = useState('');
   const [active, setActive] = useState<INavItemKind>('future');
-  const { data, isLoading } = useQuery('listMyLectures', () => listLectures({ mine: 'true' }));
+  const { data, isLoading, refetch } = useQuery(`listMyLectures-${forceUpdate}`, () =>
+    listLectures({ mine: 'true' })
+  );
+  const deleteLectureRequest = useMutation(deleteLecture);
+
+  const handleDelete = async (cardID: string) => {
+    await deleteLectureRequest.mutateAsync({ id: cardID });
+    setForceUpdate(cardID);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [forceUpdate, refetch]);
 
   const items = useMyLectures(data);
 
   if (isLoading || !items) return <BigLoader />;
-
   const currentItems = items[active];
 
   return (
     <div className={classes.container}>
       <MyLecturesNav active={active} setActive={setActive} items={items} />
       {currentItems.map((e) => (
-        <LectureCard key={e.id} lecture={e} />
+        <LectureCard
+          key={e.id}
+          lecture={e}
+          editIcon={active !== 'past'}
+          deleteIcon
+          handleDelete={async () => {
+            handleDelete(e.id);
+          }}
+        />
       ))}
     </div>
   );

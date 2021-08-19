@@ -11,7 +11,7 @@ export const up = async (knex: Knex): Promise<void> =>
       t.text('lecturer');
       t.uuid('lecturer_id');
       t.text('description').notNullable();
-      t.uuid('location_id').notNullable().references('locations.id');
+      t.uuid('location_id').references('locations.id');
       t.uuid('event_id').references('events.id');
       t.integer('duration');
       t.text('title').notNullable();

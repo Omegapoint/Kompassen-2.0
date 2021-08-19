@@ -15,7 +15,7 @@ const lectureMessages: DBLectureMessage[] = [
     id: '75ef2c0f-c216-47ae-b11e-2db02d08fb2a',
     lectureID: lectures[0].id,
     userID: users[1].id,
-    message: 'Nja, jag gillar inte det här 😖',
+    message: 'Oh, går det att göra WS där man bygger upp något?',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
