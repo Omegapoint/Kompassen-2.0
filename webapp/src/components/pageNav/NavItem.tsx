@@ -15,6 +15,10 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     alignItems: 'normal',
     gridGap: padding.standard,
   },
+  text: {
+    padding: `0 ${padding.standard}`,
+  },
+
   bar: {
     display: 'grid',
     background: colors.primary,
@@ -26,16 +30,17 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
 interface NavItemProps {
   active: boolean;
   title: string;
-  nrOfItems: number;
   handleClick: () => void;
 }
 
-const NavItem = ({ active, title, nrOfItems, handleClick }: NavItemProps): ReactElement => {
+const NavItem = ({ active, title, handleClick }: NavItemProps): ReactElement => {
   const classes = useStyles({ active });
 
   return (
     <ButtonBase className={classes.navItem} onClick={handleClick}>
-      <Typography variant="h2">{`${title} (${nrOfItems})`}</Typography>
+      <Typography className={classes.text} variant="h2">
+        {title}
+      </Typography>
       <div className={classes.bar} />
     </ButtonBase>
   );

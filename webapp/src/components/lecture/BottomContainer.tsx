@@ -36,7 +36,7 @@ const useStyles = makeStyles(() =>
 
 const formatTime = (d: Date): string => {
   const date = format(d, 'dd MMMM', { locale: sv });
-  const time = format(d, 'HH:MM', { locale: sv });
+  const time = format(d, 'HH:mm', { locale: sv });
   return `${date} kl. ${time}`;
 };
 

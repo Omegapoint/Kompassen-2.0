@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { getLecture } from '../../api/Api';
-import LectureCard from '../../components/lectureCard/LectureCard';
+import LectureView from '../../components/lectureView/LectureView';
 import BigLoader from '../../components/loader/BigLoader';
 import { IDParam } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
@@ -58,7 +58,7 @@ const ConfirmLecture = (): ReactElement => {
           Skicka in ett till pass!
         </Link>
       </Typography>
-      <LectureCard lecture={data} editIcon={false} deleteIcon={false} />
+      <LectureView lecture={data} editIcon={false} deleteIcon={false} />
     </div>
   );
 };

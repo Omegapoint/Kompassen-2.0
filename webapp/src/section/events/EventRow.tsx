@@ -1,8 +1,9 @@
-import { createStyles, makeStyles, Typography } from '@material-ui/core';
+import { createStyles, Link, makeStyles, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
+import { NavLink } from 'react-router-dom';
 import { listEventLectures } from '../../api/Api';
 import RowPaper from '../../components/rowPaper/RowPaper';
 import { useAppSelector } from '../../lib/Lib';
@@ -35,6 +36,9 @@ const useStyles = makeStyles(() =>
     menupaper: {
       borderRadius: 0,
     },
+    link: {
+      color: colors.black,
+    },
   })
 );
 
@@ -64,8 +68,12 @@ const EventRow = ({
 
   return (
     <RowPaper color={color} className={classes.container}>
-      <Typography>{organisation}</Typography>
-      <Typography>{time}</Typography>
+      <Link component={NavLink} to={`/events/${event.id}`} variant="body1" className={classes.link}>
+        {organisation}
+      </Link>
+      <Link component={NavLink} to={`/events/${event.id}`} variant="body1" className={classes.link}>
+        {time}
+      </Link>
       <div className={classes.cell}>
         {showStats && <Typography className={classes.ringNumber}>{draft}</Typography>}
       </div>

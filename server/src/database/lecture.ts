@@ -61,7 +61,7 @@ const SELECT_LECTURE_BY_ID = `
     WHERE l.id = $1
 `;
 
-const INSERT_EVENT = `
+const INSERT_LECTURE = `
     INSERT INTO lectures(lecturer, lecturer_id, description, location_id, remote, event_id, duration, title,
                          category_id, max_participants, requirements, preparations, tags, message, idea, approved,
                          draft, created_by, updated_by)
@@ -154,7 +154,7 @@ const lecturesDB: LecturesDB = {
   },
 
   async insert(lecture, userID): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_EVENT, [
+    const { rows } = await db.query(INSERT_LECTURE, [
       lecture.lecturer,
       userID,
       lecture.description,
@@ -170,7 +170,7 @@ const lecturesDB: LecturesDB = {
       lecture.tags,
       lecture.message,
       lecture.idea,
-      false,
+      lecture.approved,
       lecture.draft,
       userID,
     ]);

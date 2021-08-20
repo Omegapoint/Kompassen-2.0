@@ -4,7 +4,7 @@ import { ListEventParams, NewEvent, UpdatedEvent } from '../../lib/types';
 const defaultSchema = {
   comment: Joi.string(),
   organisationID: Joi.string().uuid(),
-  rooms: Joi.array().items(Joi.string().required()).required().unique(),
+  rooms: Joi.array().items(Joi.string()).required().unique(),
   startAt: Joi.date(),
   endAt: Joi.date().greater(Joi.ref('startAt')),
 };

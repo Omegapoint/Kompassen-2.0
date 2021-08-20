@@ -5,7 +5,7 @@ import lectures from './handlers';
 
 const lecturesRoutes = (app: Express): void => {
   app.post('/lecture', admin, validate(schema.lectures.newLecture), lectures.create);
-  app.post('/lecture/approve', admin, validate(schema.lectures.newLecture), lectures.approve);
+  app.post('/lecture/approve', admin, validate(schema.lectures.approve), lectures.approve);
   app.post('/lecture/idea', locked, validate(schema.lectures.newIdea), lectures.createIdea);
   app.put('/lecture', admin, validate(schema.lectures.updateLecture), lectures.update);
   app.delete('/lecture/:id', admin, validate(schema.uuidParam, 'params'), lectures.delete);

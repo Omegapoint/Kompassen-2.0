@@ -6,7 +6,7 @@ export interface UserSession {
 }
 
 export interface Join {
-  [lectureID: string]: UserSession[];
+  [id: string]: UserSession[];
 }
 
 export const users: UserSession[] = [];

@@ -4,7 +4,7 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  IconButton,
+  Link,
   makeStyles,
   MenuItem,
   Paper,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { ChangeEvent, FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
@@ -164,7 +164,8 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
-  const categories = useAppSelector((state) => state.categories);
+  const allCategories = useAppSelector((state) => state.categories);
+  const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
   const events = useAppSelector((state) => state.events);
   const createLectureRequest = useMutation(createLecture);
@@ -238,7 +239,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     <form>
       <Paper className={classes.formContainer}>
         <Typography className={classes.header} variant="h1">
-          Anmäl pass till kompetensdag
+          {data ? 'Redigera pass till kompetensdag' : 'Anmäl pass till kompetensdag'}
         </Typography>
         <div>
           <FormLabel className={classes.radioButtons} required component="legend">
@@ -404,9 +405,9 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           value={values.message}
         />
         <div className={classes.buttonRow}>
-          <IconButton className={classes.cancel} color="primary">
-            <Typography>Avbryt</Typography>
-          </IconButton>
+          <Link className={classes.cancel} component={NavLink} to="/" variant="subtitle1">
+            Avbryt
+          </Link>
           <div className={classes.buttons}>
             {!data?.draft && (
               <Button

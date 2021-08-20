@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import Content from '../components/content/Content';
 import { isAdmin } from '../lib/Lib';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
+import EventPlanner from '../section/eventPlanner/EventPlanner';
 import Events from '../section/events/Events';
 import Home from '../section/home/Home';
 import Lecture from '../section/lecture/Lecture';
@@ -50,6 +51,12 @@ export const appRoutes: AppRoute[] = [
     name: 'Inställningar',
     path: '/settings',
     Component: Settings,
+  },
+  {
+    name: 'Planera event',
+    path: '/events/:id',
+    Component: EventPlanner,
+    admin: true,
   },
   {
     name: 'Planering',

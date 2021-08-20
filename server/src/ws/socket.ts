@@ -1,8 +1,9 @@
 import { Server } from 'socket.io';
 import { getClaims } from '../handlers/auth';
 import { disconnectUserChat, setupChat } from './chat';
-import { categoriesWS, eventsWS, locationsWS, organisationsWS } from './defaultWS';
-import { setupLectureIdeas } from './lectureIdeas';
+import { categoriesWS, eventsWS, lectureIdeasWS, locationsWS, organisationsWS } from './defaultWS';
+import { disconnectEventLectures, setupEventLectures } from './eventLectures';
+import { disconnectEventRoomsLectures, setupEventLectureRooms } from './lectureRooms';
 import { users } from './types';
 
 export const setupWebSocket = (io: Server): void => {
@@ -26,7 +27,9 @@ export const setupWebSocket = (io: Server): void => {
     users.push({ socket, userID });
 
     setupChat(socket, userID);
-    setupLectureIdeas(socket);
+    setupEventLectures(socket, userID);
+    setupEventLectureRooms(socket, userID);
+    lectureIdeasWS.setup(socket);
     categoriesWS.setup(socket);
     eventsWS.setup(socket);
     locationsWS.setup(socket);
@@ -36,6 +39,8 @@ export const setupWebSocket = (io: Server): void => {
       const ind = users.findIndex((e) => e.socket !== socket);
       users.splice(ind, 1);
       disconnectUserChat(userID);
+      disconnectEventLectures(userID);
+      disconnectEventRoomsLectures(userID);
     });
   });
 };

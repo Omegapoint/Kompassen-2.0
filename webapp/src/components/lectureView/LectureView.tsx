@@ -1,4 +1,5 @@
 import {
+  Button,
   createStyles,
   IconButton,
   Link,
@@ -12,7 +13,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Fragment, ReactElement } from 'react';
+import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
+import { approveLecture } from '../../api/Api';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
@@ -30,7 +33,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
     },
     container: {
       display: 'grid',
-      borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
+      borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
     },
     registeredBy: {
       marginBottom: padding.standard,
@@ -78,19 +81,23 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
   })
 );
 
-interface LectureCardProps {
+interface LectureViewProps {
   lecture: Lecture;
   handleDelete?: () => Promise<void>;
-  editIcon: boolean;
-  deleteIcon: boolean;
+  editIcon?: boolean;
+  deleteIcon?: boolean;
+  admin?: boolean;
+  close?: () => void;
 }
 
-const LectureCard = ({
+const LectureView = ({
   lecture,
   handleDelete,
-  editIcon,
-  deleteIcon,
-}: LectureCardProps): ReactElement => {
+  editIcon = false,
+  deleteIcon = false,
+  admin = false,
+  close,
+}: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
   const classes = useStyles({ categoryColor: category?.color });
@@ -98,18 +105,22 @@ const LectureCard = ({
   const location = locations.find((e) => e.id === lecture.locationID)?.name;
   const events = useAppSelector((state) => state.events);
   const eventDay = events.find((e) => e.id === lecture.eventID);
-
+  const { mutateAsync } = useMutation(approveLecture);
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
-    { name: 'Längd', value: lecture.duration?.toString().concat(' ', 'minuter') },
+    { name: 'Längd', value: ((lecture.duration || 0) / 60)?.toString().concat(' ', 'minuter') },
     { name: 'Max antal', value: lecture.maxParticipants },
-    { name: 'Kan delta på distans', value: lecture.remote?.toString() === 'true' ? 'Ja' : 'Nej' },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Beskrivning', value: lecture.description },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Förberedelser', value: lecture.preparations },
     { name: 'Taggar', value: lecture.tags.reduce((s, e) => `${s} ${e}`, '') },
   ];
+
+  const handleApprove = async () => {
+    await mutateAsync({ approved: !lecture.approved, id: lecture.id });
+    if (close) close();
+  };
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
@@ -151,11 +162,22 @@ const LectureCard = ({
               <Typography>{e.value}</Typography>
             </Fragment>
           ))}
-          <Typography>{lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}</Typography>
+          {!admin && (
+            <Typography>{lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}</Typography>
+          )}
+          {admin && (
+            <Button
+              variant={lecture.approved ? undefined : 'contained'}
+              color={lecture.approved ? undefined : 'primary'}
+              onClick={handleApprove}
+            >
+              {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
+            </Button>
+          )}
         </div>
       </Paper>
     </div>
   );
 };
 
-export default LectureCard;
+export default LectureView;

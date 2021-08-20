@@ -67,24 +67,33 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
   const organisations = useAppSelector((state) => state.organisations);
   const create = useMutation(createEvent);
   const update = useMutation(updateEvent);
+
   const [defaultFormValue, setDefaultFormValue] = useState<FormValues>({
-    comment: '',
-    organisationID: organisations[0].id,
+    comment: event?.comment || '',
+    organisationID: event?.organisationID || organisations[0].id,
     rooms: [],
     date: new Date(),
-    start: set(new Date(), { hours: 13, ...defaultTime }),
-    end: set(new Date(), { hours: 17, ...defaultTime }),
+    start: set(new Date(), {
+      ...defaultTime,
+      hours: event?.startAt.getHours() || 13,
+      minutes: event?.startAt.getMinutes() || 0,
+    }),
+    end: set(new Date(), {
+      ...defaultTime,
+      hours: event?.endAt.getHours() || 17,
+      minutes: event?.endAt.getMinutes() || 0,
+    }),
   });
   const { values, handleChange, updateValues, resetValues } = useForm(defaultFormValue);
 
   useEffect(() => {
     setDefaultFormValue((e) => ({
       ...e,
-      organisationID: organisations[0].id,
+      organisationID: event?.organisationID || organisations[0].id,
       comment: event?.comment || '',
-      rooms: event?.rooms.map((room) => room.name) || [],
+      rooms: (event?.rooms || []).map((room) => room.name),
     }));
-  }, [event?.comment, event?.rooms, organisations]);
+  }, [event?.comment, event?.organisationID, event?.rooms, organisations]);
 
   useEffect(() => {
     if (open) {
@@ -126,78 +135,76 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
   };
 
   return (
-    <>
-      <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          {event ? 'Redigera kompetensdag' : 'Skapa ny kompetensdag'}
-        </DialogTitle>
-        <DialogContent className={classes.dialog}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={sv}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              label="Datum"
-              value={values.date}
-              onChange={(date) => updateValues({ date })}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-            <KeyboardTimePicker
-              margin="normal"
-              label="Starttid"
-              value={values.start}
-              onChange={(start) => updateValues({ start })}
-              KeyboardButtonProps={{
-                'aria-label': 'change time',
-              }}
-              ampm={false}
-            />
-            <KeyboardTimePicker
-              margin="normal"
-              label="Sluttid"
-              value={values.end}
-              onChange={(end) => updateValues({ end })}
-              KeyboardButtonProps={{
-                'aria-label': 'change time',
-              }}
-              ampm={false}
-            />
-            <Select
-              value={values.organisationID}
-              onChange={(e) => handleChange(e)}
-              inputProps={{ name: 'organisationID' }}
-            >
-              {organisations.map((e) => (
-                <MenuItem key={e.id} value={e.id}>
-                  {e.name}
-                </MenuItem>
-              ))}
-            </Select>
-            <TextField
-              fullWidth
-              onChange={handleChange}
-              required
-              value={values.comment}
-              name="comment"
-              label="Kommentar"
-              variant="outlined"
-            />
-            <RoomPicker updateValues={updateValues} values={values} />
-          </MuiPickersUtilsProvider>
-        </DialogContent>
-        <DialogActions className={classes.dialogActions}>
-          <Button onClick={close} color="primary">
-            Avbryt
-          </Button>
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            {event ? 'Redigera kompetensdag' : 'Skapa kompetensdag'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+    <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">
+        {event ? 'Redigera kompetensdag' : 'Skapa ny kompetensdag'}
+      </DialogTitle>
+      <DialogContent className={classes.dialog}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={sv}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            label="Datum"
+            value={values.date}
+            onChange={(date) => updateValues({ date })}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+          <KeyboardTimePicker
+            margin="normal"
+            label="Starttid"
+            value={values.start}
+            onChange={(start) => updateValues({ start })}
+            KeyboardButtonProps={{
+              'aria-label': 'change time',
+            }}
+            ampm={false}
+          />
+          <KeyboardTimePicker
+            margin="normal"
+            label="Sluttid"
+            value={values.end}
+            onChange={(end) => updateValues({ end })}
+            KeyboardButtonProps={{
+              'aria-label': 'change time',
+            }}
+            ampm={false}
+          />
+          <Select
+            value={values.organisationID}
+            onChange={(e) => handleChange(e)}
+            inputProps={{ name: 'organisationID' }}
+          >
+            {organisations.map((e) => (
+              <MenuItem key={e.id} value={e.id}>
+                {e.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <TextField
+            fullWidth
+            onChange={handleChange}
+            required
+            value={values.comment}
+            name="comment"
+            label="Kommentar"
+            variant="outlined"
+          />
+          <RoomPicker updateValues={updateValues} values={values} />
+        </MuiPickersUtilsProvider>
+      </DialogContent>
+      <DialogActions className={classes.dialogActions}>
+        <Button onClick={close} color="primary">
+          Avbryt
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          {event ? 'Redigera kompetensdag' : 'Skapa kompetensdag'}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

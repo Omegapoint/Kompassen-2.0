@@ -1,7 +1,7 @@
 import { Button, IconButton, makeStyles, TextField } from '@material-ui/core';
 import { AccountCircle } from '@material-ui/icons';
 import { IEmojiData } from 'emoji-picker-react';
-import { MouseEvent, ReactElement, useContext } from 'react';
+import { KeyboardEvent, MouseEvent, ReactElement, useContext } from 'react';
 import useForm from '../../hooks/UseForm';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import TextPanel from '../textPanel/TextPanel';
@@ -59,10 +59,21 @@ const Discussion = (): ReactElement => {
     appendChange('message', data.emoji);
   };
 
-  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const submit = () => {
     updateValues({ message: '' });
     sendWSMessage(values.message);
+  };
+
+  const handleSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    submit();
+  };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      submit();
+    }
   };
 
   return (
@@ -80,9 +91,10 @@ const Discussion = (): ReactElement => {
           maxRows={5}
           value={values.message}
           onChange={handleChange}
+          onKeyPress={(e) => handleKeyPress(e)}
           required
           name="message"
-          label="Skriv en kommentar, eller tagga en kollega."
+          label="Skriv en kommentar"
           variant="outlined"
         />
         <div className={classes.panel}>
