@@ -24,13 +24,13 @@ export const setupChat = (socket: Socket, userID: string): void => {
       return;
     }
     const resp = await lectureMessagesDB.insert({ lectureID, message }, userID);
-    joined[lectureID].forEach((e) => e.socket.emit(`lectureChat/${lectureID}/message`, resp));
+    joined[lectureID]?.forEach((e) => e.socket.emit(`lectureChat/${lectureID}/message`, resp));
   });
 
   // for a new user joining the room
   socket.on('lectureChat/join', async (lectureId) => {
     if (!joined[lectureId]) joined[lectureId] = [];
-    joined[lectureId].push({ socket, userID });
+    joined[lectureId]?.push({ socket, userID });
     const lm = await lectureMessagesDB.list(lectureId);
     socket.emit(`lectureChat/${lectureId}/initial`, lm);
   });

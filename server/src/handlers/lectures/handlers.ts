@@ -10,11 +10,12 @@ import {
   NewLectureIdea,
   UpdatedLecture,
 } from '../../lib/types';
+import { lectureIdeasWS } from '../../ws/defaultWS';
 import {
-  onCreatedLectureIdea,
-  onDeleteLectureIdea,
-  onUpdatedLectureIdea,
-} from '../../ws/lectureIdeas';
+  onEventLectureCreate,
+  onEventLectureDelete,
+  onEventLectureUpdate,
+} from '../../ws/eventLectures';
 
 interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
@@ -61,7 +62,8 @@ const lectures: Handlers = {
     );
 
     const lecture = await lecturesDB.getByID(item.id);
-    onCreatedLectureIdea(lecture as Lecture);
+    lectureIdeasWS.onCreated(lecture as Lecture);
+    onEventLectureCreate(lecture as Lecture);
 
     res.send(item);
   },
@@ -78,7 +80,8 @@ const lectures: Handlers = {
     const item = await lecturesDB.update(body, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
-    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+    if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
+    onEventLectureUpdate(lecture as Lecture);
 
     res.send(item);
   },
@@ -86,7 +89,8 @@ const lectures: Handlers = {
     const item = await lecturesDB.approve(body.approved, body.id);
 
     const lecture = await lecturesDB.getByID(item.id);
-    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+    if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
+    onEventLectureUpdate(lecture as Lecture);
 
     res.send(item);
   },
@@ -119,7 +123,8 @@ const lectures: Handlers = {
       httpError(res, 404, 'Location not found');
       return;
     }
-    if (lecture?.idea) onDeleteLectureIdea(params.id);
+    if (lecture?.idea) lectureIdeasWS.onDelete({ id: params.id });
+    onEventLectureDelete(lecture as Lecture);
 
     res.send(item);
   },

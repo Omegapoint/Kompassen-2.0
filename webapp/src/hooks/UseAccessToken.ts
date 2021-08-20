@@ -38,7 +38,7 @@ const useAccessToken = (isAuthenticated: boolean): UseAccessToken => {
       };
 
       getToken();
-      const timerID = setInterval(getToken, 10 * 60 * 1000);
+      const timerID = setInterval(getToken, 60 * 1000);
       return () => clearInterval(timerID);
     }
     return () => {};
@@ -59,7 +59,7 @@ const useAccessToken = (isAuthenticated: boolean): UseAccessToken => {
         }
       };
       getToken();
-      const timerID = setInterval(getToken, 10 * 60 * 1000);
+      const timerID = setInterval(getToken, 60 * 1000);
       return () => clearInterval(timerID);
     }
     return () => {};

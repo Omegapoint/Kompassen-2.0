@@ -121,6 +121,15 @@ export interface Category extends BaseCategory, DefaultTime {
   id: string;
 }
 
+export interface NewLectureInformation {
+  eventID: string;
+  duration: number;
+  title: string;
+  description: string;
+  lecturer: string;
+  categoryID: string;
+}
+
 // Lectures
 interface BaseLectureIdea {
   title: string;
@@ -200,16 +209,23 @@ export interface LectureMessage extends DBLectureMessage {
   user: string | null;
 }
 
-export const reviver = (key: string, value: unknown): unknown => {
-  const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}\.\d*)(?:Z|([+-])([\d|:]*))?$/;
-  if (typeof value === 'string') {
-    const a = reISO.exec(value);
-    if (a) {
-      return new Date(value);
-    }
-  }
-  return value;
-};
+export interface BaseLectureRoom {
+  lectureID: string;
+  roomID: string;
+  startAt: Date;
+}
+
+export interface NewLectureRoom extends BaseLectureRoom {
+  eventID: string;
+}
+
+export interface UpdatedLectureRoom extends NewLectureRoom {
+  id: string;
+}
+
+export interface LectureRoom extends BaseLectureRoom {
+  id: string;
+}
 
 export interface TagStats {
   tag: string;
@@ -229,3 +245,14 @@ export interface Approved {
   approved: boolean;
   id: string;
 }
+
+export const reviver = (key: string, value: unknown): unknown => {
+  const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}\.\d*)(?:Z|([+-])([\d|:]*))?$/;
+  if (typeof value === 'string') {
+    const a = reISO.exec(value);
+    if (a) {
+      return new Date(value);
+    }
+  }
+  return value;
+};

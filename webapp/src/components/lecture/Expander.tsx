@@ -60,7 +60,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
           variant="contained"
           color="primary"
         >
-          Anmäl Pass
+          Ta passet
         </Button>
       )}
 

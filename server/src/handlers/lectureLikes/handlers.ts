@@ -3,7 +3,7 @@ import lecturesDB from '../../database/lecture';
 import lectureLikesDB from '../../database/lectureLikes';
 import { httpError } from '../../lib/lib';
 import { IDParam, Lecture } from '../../lib/types';
-import { onUpdatedLectureIdea } from '../../ws/lectureIdeas';
+import { lectureIdeasWS } from '../../ws/defaultWS';
 
 interface Handlers {
   create: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
@@ -15,7 +15,7 @@ const lectureLikes: Handlers = {
     const { userID } = res.locals;
     const item = await lectureLikesDB.insert({ lectureID: params.id }, userID);
     const lecture = await lecturesDB.getByID(params.id);
-    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+    if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
     res.send(item);
   },
   async delete({ params }, res) {
@@ -26,7 +26,7 @@ const lectureLikes: Handlers = {
       return;
     }
     const lecture = await lecturesDB.getByID(params.id);
-    if (lecture?.idea) onUpdatedLectureIdea(lecture as Lecture);
+    if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
     res.send(item);
   },
 };

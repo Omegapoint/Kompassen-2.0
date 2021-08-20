@@ -4,6 +4,7 @@ import { httpError } from '../lib/lib';
 import { UpdatedEvent } from '../lib/types';
 import categories from './categories/schema';
 import events from './events/schema';
+import lectureRooms from './lectureRooms/schema';
 import lectures from './lectures/schema';
 import locations from './locations/schema';
 import organisations from './organisations/schema';
@@ -33,6 +34,7 @@ const schema = {
   organisations,
   events,
   users,
+  lectureRooms,
   locations,
   categories,
   lectures,

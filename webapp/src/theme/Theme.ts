@@ -122,6 +122,10 @@ export const theme = createTheme({
       fontWeight: 400,
       color: colors.primary,
     },
+    h4: {
+      fontSize: '1.4rem',
+      fontWeight: 500,
+    },
     h5: {
       fontSize: '1.1rem',
       fontWeight: 500,

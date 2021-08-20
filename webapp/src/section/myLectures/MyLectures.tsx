@@ -2,12 +2,9 @@ import { makeStyles } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { deleteLecture, listLectures } from '../../api/Api';
-import LectureCard from '../../components/lectureCard/LectureCard';
+import LectureView from '../../components/lectureView/LectureView';
 import BigLoader from '../../components/loader/BigLoader';
-import MyLecturesNav, {
-  ILectureItems,
-  INavItemKind,
-} from '../../components/myLecturesNav/MyLecturesNav';
+import PageNav, { ILectureItems, INavItem } from '../../components/pageNav/PageNav';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
@@ -19,8 +16,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+export type INavItemKind = 'future' | 'draft' | 'past';
+
 const useMyLectures = (data?: Lecture[]) => {
-  const [items, setItems] = useState<ILectureItems | null>(null);
+  const [items, setItems] = useState<ILectureItems<INavItemKind> | null>(null);
   const events = useAppSelector((state) => state.events);
 
   useEffect(() => {
@@ -63,18 +62,22 @@ const MyLectures = (): ReactElement => {
   if (isLoading || !items) return <BigLoader />;
   const currentItems = items[active];
 
+  const navItems: INavItem<INavItemKind>[] = [
+    { name: 'future', title: `Kommande (${items.future.length})` },
+    { name: 'draft', title: `Utkast (${items.draft.length})` },
+    { name: 'past', title: `Genomförda (${items.past.length})` },
+  ];
+
   return (
     <div className={classes.container}>
-      <MyLecturesNav active={active} setActive={setActive} items={items} />
-      {currentItems.map((e) => (
-        <LectureCard
+      <PageNav active={active} setActive={setActive} navItems={navItems} />
+      {currentItems.map((e: Lecture) => (
+        <LectureView
           key={e.id}
           lecture={e}
           editIcon={active !== 'past'}
           deleteIcon
-          handleDelete={async () => {
-            handleDelete(e.id);
-          }}
+          handleDelete={() => handleDelete(e.id)}
         />
       ))}
     </div>

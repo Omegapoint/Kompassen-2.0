@@ -1,6 +1,6 @@
+import { sub } from 'date-fns';
 import { Category } from '../../src/lib/types';
 import users from './users';
-import { sub } from 'date-fns';
 
 const date = new Date();
 
@@ -44,6 +44,13 @@ const vcsIcon = `
 </svg>
 `;
 
+const informativeIcon = `
+<svg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 0 24 24' width='24px' fill='#000000'>
+    <path d='M0 0h24v24H0z' fill='none'/>
+    <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/>
+</svg>
+`;
+
 const locations: Category[] = [
   {
     id: '38f265ef-14f5-4ee9-aa8e-bcf2e2fd2e3e',
@@ -51,9 +58,9 @@ const locations: Category[] = [
     icon: cloudIcon,
     color: '#F9BC2E',
     createdAt: sub(date, { months: 1 }),
-    createdBy: users[1].id,
+    createdBy: users[0].id,
     updatedAt: sub(date, { months: 1 }),
-    updatedBy: users[1].id,
+    updatedBy: users[0].id,
   },
   {
     id: '71c73381-68ed-4541-ae8f-04c68934e10f',
@@ -61,9 +68,9 @@ const locations: Category[] = [
     icon: codeIcon,
     color: '#6FA5A9',
     createdAt: sub(date, { days: 1 }),
-    createdBy: users[1].id,
+    createdBy: users[0].id,
     updatedAt: sub(date, { days: 1 }),
-    updatedBy: users[1].id,
+    updatedBy: users[0].id,
   },
   {
     id: 'b3b7b6b1-48ed-424a-9ecd-ec6bdce91cfd',
@@ -71,9 +78,9 @@ const locations: Category[] = [
     icon: shieldIcon,
     color: '#E87722',
     createdAt: sub(date, { years: 1 }),
-    createdBy: users[1].id,
+    createdBy: users[0].id,
     updatedAt: sub(date, { years: 1 }),
-    updatedBy: users[1].id,
+    updatedBy: users[0].id,
   },
   {
     id: '8767533d-ae63-4781-be53-8e0cc36206ab',
@@ -81,9 +88,9 @@ const locations: Category[] = [
     icon: sunIcon,
     color: '#7BAC53',
     createdAt: sub(date, { days: 2 }),
-    createdBy: users[1].id,
+    createdBy: users[0].id,
     updatedAt: sub(date, { days: 2 }),
-    updatedBy: users[1].id,
+    updatedBy: users[0].id,
   },
   {
     id: 'c8a3e1b1-1449-42e7-ba78-47fada2e739f',
@@ -91,9 +98,9 @@ const locations: Category[] = [
     icon: vcsIcon,
     color: '#967ECC',
     createdAt: sub(date, { weeks: 1 }),
-    createdBy: users[1].id,
+    createdBy: users[0].id,
     updatedAt: sub(date, { weeks: 1 }),
-    updatedBy: users[1].id,
+    updatedBy: users[0].id,
   },
 ];
 

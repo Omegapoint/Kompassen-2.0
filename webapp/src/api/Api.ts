@@ -1,21 +1,25 @@
 import {
-  Category,
+  Approved,
   CategoryStats,
   Event,
   IDParam,
   IOK,
   Lecture,
+  LectureRoom,
   ListEventParams,
   ListLecturesParams,
   Location,
   NewEvent,
   NewLecture,
   NewLectureIdea,
+  NewLectureInformation,
+  NewLectureRoom,
   NewUser,
   Organisation,
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
+  UpdatedLectureRoom,
   UpdatedUser,
   User,
 } from '../lib/Types';
@@ -89,7 +93,6 @@ export const updateUser = apiBuilder<User, UpdatedUser>('/user').put;
 
 export const listTags = apiBuilder<TagStats[]>('/lecture/tag').get;
 
-export const listCategories = apiBuilder<Category[]>('/category').get;
 export const listLocations = apiBuilder<Location[]>('/location').get;
 export const listOrganisations = apiBuilder<Organisation[]>('/organisation').get;
 export const listEventLectures = apiURLParamsBuilder<Lecture[], IDParam>('/event/:id/lecture').get;
@@ -97,8 +100,24 @@ export const createEvent = apiBuilder<IDParam, NewEvent>('/event').post;
 export const updateEvent = apiBuilder<IDParam, UpdatedEvent>('/event').put;
 export const deleteEvent = apiURLParamsBuilder<IDParam, IDParam>('/event/:id').delete;
 
+export const createLectureRoom = apiBuilder<IDParam, NewLectureRoom>('/event/room/lecture').post;
+export const updateLectureRoom = apiBuilder<IDParam, UpdatedLectureRoom>('/event/room/lecture').put;
+export const deleteLectureRoom = apiURLParamsBuilder<IDParam, IDParam>(
+  '/event/room/lecture/:id'
+).delete;
+export const getLectureRoom = apiURLParamsBuilder<LectureRoom, IDParam>(
+  '/event/room/lecture/:id'
+).get;
+export const listLectureRoom = apiURLParamsBuilder<LectureRoom[], IDParam>(
+  '/event/:id/room/lecture'
+).get;
+
+export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
+export const createLectureInformation = apiBuilder<IDParam, NewLectureInformation>(
+  '/lecture/information'
+).post;
 export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;
 export const createLectureIdea = apiBuilder<IDParam, NewLectureIdea>('/lecture/idea').post;
 export const listLectureCategories = apiURLParamsBuilder<CategoryStats[], IDParam>(
@@ -110,3 +129,4 @@ export const likeLecture = apiURLParamsBuilder<Lecture[], IDParam>('/lecture/:id
 export const unlikeLecture = apiURLParamsBuilder<Lecture[], IDParam>('/lecture/:id/like').delete;
 
 export const listEvents = apiQueryBuilder<Event[], ListEventParams>('/event').get;
+export const getEvent = apiURLParamsBuilder<Event, IDParam>('/event/:id').get;

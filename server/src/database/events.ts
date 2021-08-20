@@ -2,6 +2,7 @@ import { logger } from '../config/config';
 import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
 import { Event, IDParam, NewEvent, Room, UpdatedEvent } from '../lib/types';
+import { onEventRoomDelete } from '../ws/lectureRooms';
 
 const BASE_SELECT_EVENTS = `
     SELECT id,
@@ -81,11 +82,14 @@ interface EventsDB {
   delete: (id: string) => Promise<IDParam>;
 }
 
+const parseEvent = (e: Event) => ({ ...e, rooms: e.rooms || [] });
+
 const eventsDB: EventsDB = {
   async list(onlyNew?: boolean) {
     const filter = onlyNew ? 'WHERE end_at > now()' : '';
     const { rows } = await db.query(`${BASE_SELECT_EVENTS} ${filter} ORDER BY start_at`);
-    return snakeToCamel(rows) || [];
+
+    return snakeToCamel(rows.map(parseEvent)) || [];
   },
 
   async getByID(id) {
@@ -94,7 +98,7 @@ const eventsDB: EventsDB = {
       logger.error(`could not find event with id = '${id}'`);
       return null;
     }
-    return snakeToCamel(rows[0]);
+    return snakeToCamel(parseEvent(rows[0]));
   },
 
   async insert(event, userID): Promise<IDParam> {
@@ -130,7 +134,7 @@ const eventsDB: EventsDB = {
 
     await Promise.all(onlyInOldRooms.map((e) => db.query<Room>(DELETE_ROOM, [e.id])));
     await Promise.all(onlyInNewRooms.map((e) => db.query<Room>(INSERT_ROOM, [e, event.id])));
-
+    onlyInOldRooms.forEach((e) => onEventRoomDelete({ id: e.id }, event.id));
     return rows[0];
   },
 

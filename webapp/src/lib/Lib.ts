@@ -23,3 +23,6 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>();
 
 export const isAdmin = (): boolean => store.getState().session.role === 'Admin';
+
+export const formatImgAsSVG = (img: string): string =>
+  `data:image/svg+xml;base64,${window.btoa(img)}`;

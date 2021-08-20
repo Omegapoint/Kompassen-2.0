@@ -1,9 +1,4 @@
-import {
-  createCategory,
-  deleteCategory,
-  setCategories,
-  updateCategory,
-} from './categories/actions';
+import { createCategory, deleteCategory, setCategories, updateCategory } from './categories';
 import { createEvent, deleteEvent, setEvents, updateEvent } from './events/actions';
 import { createLocation, deleteLocation, setLocations, updateLocation } from './locations/actions';
 import { setLoginInfo } from './loginInfo/actions';

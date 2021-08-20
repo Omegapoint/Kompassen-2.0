@@ -56,7 +56,7 @@ const RoomPicker = ({ values, updateValues }: RoomPickerProps): ReactElement => 
   };
 
   const generateRooms = (str: string, i: number) => (
-    <div className={classes.row}>
+    <div className={classes.row} key={str}>
       <div className={classes.rowItem}>
         <Typography>Rum {i + 1}</Typography>
         <Typography>{str}</Typography>
