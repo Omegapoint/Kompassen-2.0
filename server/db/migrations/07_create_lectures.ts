@@ -12,6 +12,7 @@ export const up = async (knex: Knex): Promise<void> =>
       t.uuid('lecturer_id');
       t.text('description').notNullable();
       t.uuid('location_id').references('locations.id');
+      t.boolean('remote');
       t.uuid('event_id').references('events.id');
       t.integer('duration');
       t.text('title').notNullable();
@@ -22,9 +23,8 @@ export const up = async (knex: Knex): Promise<void> =>
       t.text('message');
       t.specificType('tags', 'text ARRAY');
       t.boolean('idea').notNullable();
-      t.boolean('published').notNullable();
+      t.boolean('draft').notNullable();
       t.boolean('approved').notNullable();
-
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();
       t.uuid('updatedBy').notNullable();

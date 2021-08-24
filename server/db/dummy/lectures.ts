@@ -5,7 +5,7 @@ import locations from './locations';
 import users from './users';
 
 const date = new Date();
-const diffDate = new Date(date.getTime() + 30*60000)
+const diffDate = new Date(date.getTime() + 30 * 60000);
 
 const lectures: DBLecture[] = [
   {
@@ -15,6 +15,7 @@ const lectures: DBLecture[] = [
     lecturer: null,
     lecturerID: null,
     locationID: locations[0].id,
+    remote: null,
     eventID: null,
     duration: null,
     categoryID: categories[0].id,
@@ -29,7 +30,7 @@ const lectures: DBLecture[] = [
     updatedBy: users[0].id,
     idea: true,
     approved: false,
-    published: false,
+    draft: true,
   },
   {
     id: 'eb976a0f-146d-497d-bf4d-237a7ea79ce6',
@@ -37,6 +38,7 @@ const lectures: DBLecture[] = [
     description: 'Vi löser den stora frågan, är elixir världens bästa programspråk?',
     lecturer: 'Jonas Sjödin',
     lecturerID: users[0].id,
+    remote: null,
     locationID: locations[0].id,
     eventID: events[1].id,
     duration: 3600,
@@ -52,7 +54,7 @@ const lectures: DBLecture[] = [
     updatedAt: date,
     updatedBy: users[0].id,
     approved: false,
-    published: false,
+    draft: true,
   },
   {
     id: 'eb976a0f-146d-497d-bf4d-237a7ea79ce5',
@@ -61,6 +63,7 @@ const lectures: DBLecture[] = [
     lecturer: 'Mirjam Borén',
     lecturerID: users[1].id,
     locationID: locations[0].id,
+    remote: null,
     eventID: events[1].id,
     duration: 3600,
     categoryID: categories[0].id,
@@ -75,7 +78,7 @@ const lectures: DBLecture[] = [
     updatedAt: date,
     updatedBy: users[1].id,
     approved: false,
-    published: true,
+    draft: false,
   },
 ];
 

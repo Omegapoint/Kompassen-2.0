@@ -133,6 +133,7 @@ export type NewLectureIdea = BaseLectureIdea;
 
 export interface NewLecture extends BaseLectureIdea {
   locationID: string | null;
+  remote: boolean | null;
   eventID: string | null;
   duration: number | null;
   maxParticipants: number | null;
@@ -140,7 +141,7 @@ export interface NewLecture extends BaseLectureIdea {
   preparations: string | null;
   message: string | null;
   categoryID: string | null;
-  published: boolean;
+  draft: boolean;
 }
 
 export interface DLecture extends NewLecture {

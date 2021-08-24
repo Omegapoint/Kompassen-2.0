@@ -123,6 +123,7 @@ const invalidTags = (str: string) => str.split(' ').filter((e) => e).length === 
 
 interface FormValues {
   locationID: string;
+  remote: string;
   eventID: string;
   hours: string;
   minutes: string;
@@ -173,6 +174,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const defaultFormValue = {
     locationID:
       locations.find((location) => location.id === data?.locationID)?.id || locations[0].id,
+    remote: (data?.remote || false).toString(),
     eventID: events.find((event) => event.id === data?.eventID)?.id || events[0].id,
     hours: data?.duration ? Math.floor(data.duration / 60).toString() : '',
     minutes: data?.duration ? (data.duration % 60).toString() : '',
@@ -189,7 +191,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
-  const handleSubmit = (evt: FormEvent, published: boolean) => {
+  const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
     const category = categories.find((e) => e.name === values.category) as Category;
     const formData = {
@@ -198,6 +200,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       lecturer: values.lecturer,
       tags: values.tags.split(' ').filter((e) => e),
       locationID: values.locationID,
+      remote: values.remote === 'true',
       eventID: values.eventID,
       duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
       categoryID: category.id,
@@ -207,9 +210,9 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       message: values.message,
     };
     if (data) {
-      updateLectureRequest.mutate({ id: data.id, published, ...formData });
+      updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
-      createLectureRequest.mutate({ ...formData, published });
+      createLectureRequest.mutate({ ...formData, draft });
     }
   };
 
@@ -247,7 +250,15 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             ))}
           </RadioGroup>
         </div>
-
+        <div>
+          <FormLabel className={classes.radioButtons} required component="legend">
+            Kan delta på distans
+          </FormLabel>
+          <RadioGroup name="remote" onChange={handleChange} value={values.remote}>
+            <FormControlLabel value="true" control={<Radio />} label="Ja" />
+            <FormControlLabel value="false" control={<Radio />} label="Nej" />
+          </RadioGroup>
+        </div>
         <div className={classes.row}>
           <FormControl className={classes.day} variant="outlined">
             <FormLabel className={classes.dateLineMargin} required component="legend">
@@ -397,12 +408,12 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             <Typography>Avbryt</Typography>
           </IconButton>
           <div className={classes.buttons}>
-            {!data?.published && (
+            {!data?.draft && (
               <Button
                 variant="contained"
                 disabled={invalid}
                 color="primary"
-                onClick={(e) => handleSubmit(e, false)}
+                onClick={(e) => handleSubmit(e, true)}
               >
                 Spara utkast
               </Button>
@@ -412,7 +423,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
               variant="contained"
               disabled={invalid}
               color="primary"
-              onClick={(e) => handleSubmit(e, true)}
+              onClick={(e) => handleSubmit(e, false)}
             >
               Anmäl pass
             </Button>

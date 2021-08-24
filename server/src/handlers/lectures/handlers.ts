@@ -46,6 +46,7 @@ const lectures: Handlers = {
         lecturerID,
         idea: true,
         locationID: null,
+        remote: null,
         eventID: null,
         preparations: null,
         maxParticipants: null,
@@ -54,7 +55,7 @@ const lectures: Handlers = {
         categoryID: null,
         message: null,
         approved: false,
-        published: false,
+        draft: true,
       },
       userID
     );

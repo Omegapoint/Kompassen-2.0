@@ -15,10 +15,11 @@ const other = {
   categoryID: Joi.string().uuid(),
   maxParticipants: Joi.number().min(0).max(1000),
   locationID: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
+  remote: Joi.boolean(),
   requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
-  published: Joi.boolean(),
+  draft: Joi.boolean(),
 };
 
 const newIdea = Joi.object<NewLectureIdea>({

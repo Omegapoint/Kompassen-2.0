@@ -133,14 +133,15 @@ export type NewLectureIdea = BaseLectureIdea;
 
 export interface NewLecture extends BaseLectureIdea {
   locationID: string | null;
-  eventID: string;
+  remote: boolean | null;
+  eventID: string | null;
   duration: number | null;
   maxParticipants: number | null;
   requirements: string | null;
   preparations: string | null;
   message: string | null;
   categoryID: string | null;
-  published: boolean;
+  draft: boolean;
 }
 
 export interface DLecture extends NewLecture {
