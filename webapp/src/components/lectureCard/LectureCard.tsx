@@ -103,6 +103,7 @@ const LectureCard = ({
     { name: 'Passhållare', value: lecture.lecturer },
     { name: 'Längd', value: lecture.duration?.toString().concat(' ', 'minuter') },
     { name: 'Max antal', value: lecture.maxParticipants },
+    { name: 'Kan delta på distans', value: lecture.remote?.toString() === 'true' ? 'Ja' : 'Nej' },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Beskrivning', value: lecture.description },
     { name: 'Förkunskapskrav', value: lecture.requirements },
@@ -120,7 +121,7 @@ const LectureCard = ({
       </div>
       <Paper className={classes.paper}>
         <div className={classes.row}>
-          <Typography variant="h5">Agil Filosofi</Typography>
+          <Typography variant="h5">{lecture.title}</Typography>
           <div>
             {editIcon && (
               <IconButton>

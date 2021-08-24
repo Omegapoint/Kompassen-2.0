@@ -59,18 +59,18 @@ const EventRow = ({
     listEventLectures({ id: event.id })
   );
 
-  const unpublished = data?.filter((e) => e.published).length || 0;
-  const published = (data?.length || 0) - unpublished;
+  const published = data?.filter((e) => e.draft).length || 0;
+  const draft = (data?.length || 0) - published;
 
   return (
     <RowPaper color={color} className={classes.container}>
       <Typography>{organisation}</Typography>
       <Typography>{time}</Typography>
       <div className={classes.cell}>
-        {showStats && <Typography className={classes.ringNumber}>{published}</Typography>}
+        {showStats && <Typography className={classes.ringNumber}>{draft}</Typography>}
       </div>
       <div className={classes.cell}>
-        {showStats && <Typography className={classes.ringNumber}>{unpublished}</Typography>}
+        {showStats && <Typography className={classes.ringNumber}>{published}</Typography>}
       </div>
       <div className={classes.cell}>
         <List event={event} organisation={organisation} time={time} openEdit={openEdit} />

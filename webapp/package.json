@@ -43,7 +43,8 @@
       "react/jsx-props-no-spreading": "off",
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      "react/require-default-props": "off"
+      "react/require-default-props": "off",
+      "@typescript-eslint/no-non-null-assertion": "off"
     }
   },
   "eslintIgnore": [

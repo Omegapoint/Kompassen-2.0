@@ -9,6 +9,7 @@ export const SELECT_LECTURES = `
            l.lecturer_id,
            l.description,
            l.location_id,
+           l.remote,
            l.event_id,
            l.duration,
            l.title,
@@ -23,7 +24,7 @@ export const SELECT_LECTURES = `
            l.updated_at,
            l.updated_by,
            l.approved,
-           l.published,
+           l.draft,
            (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
            l.category_id
     FROM lectures l
@@ -61,10 +62,10 @@ const SELECT_LECTURE_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO lectures(lecturer, lecturer_id, description, location_id, event_id, duration, title, category_id,
-                         max_participants,
-                         requirements, preparations, tags, message, idea, approved, published, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $17)
+    INSERT INTO lectures(lecturer, lecturer_id, description, location_id, remote, event_id, duration, title,
+                         category_id, max_participants, requirements, preparations, tags, message, idea, approved,
+                         draft, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $18)
     RETURNING id
 `;
 
@@ -73,18 +74,19 @@ const UPDATE_EVENT = `
     SET lecturer         = $1,
         description      = $2,
         location_id      = $3,
-        event_id         = $4,
-        duration         = $5,
-        title            = $6,
-        category_id      = $7,
-        max_participants = $8,
-        requirements     = $9,
-        preparations     = $10,
-        tags             = $11,
-        message          = $12,
-        published        = $13,
-        updated_by       = $14
-    WHERE id = $15
+        remote           = $4,
+        event_id         = $5,
+        duration         = $6,
+        title            = $7,
+        category_id      = $8,
+        max_participants = $9,
+        requirements     = $10,
+        preparations     = $11,
+        tags             = $12,
+        message          = $13,
+        draft            = $14,
+        updated_by       = $15
+    WHERE id = $16
     RETURNING id
 `;
 
@@ -157,6 +159,7 @@ const lecturesDB: LecturesDB = {
       userID,
       lecture.description,
       lecture.locationID,
+      lecture.remote,
       lecture.eventID,
       lecture.duration,
       lecture.title,
@@ -168,7 +171,7 @@ const lecturesDB: LecturesDB = {
       lecture.message,
       lecture.idea,
       false,
-      lecture.published,
+      lecture.draft,
       userID,
     ]);
     return rows[0];
@@ -179,6 +182,7 @@ const lecturesDB: LecturesDB = {
       lecture.lecturer,
       lecture.description,
       lecture.locationID,
+      lecture.remote,
       lecture.eventID,
       lecture.duration,
       lecture.title,
@@ -188,7 +192,7 @@ const lecturesDB: LecturesDB = {
       lecture.preparations,
       lecture.tags,
       lecture.message,
-      lecture.published,
+      lecture.draft,
       userID,
       lecture.id,
     ]);

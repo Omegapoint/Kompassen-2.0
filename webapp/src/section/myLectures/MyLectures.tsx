@@ -31,9 +31,9 @@ const useMyLectures = (data?: Lecture[]) => {
 
     if (data) {
       setItems({
-        draft: data.filter((e) => !e.published),
-        future: data.filter((e) => e.published && findEvent(e.eventID, (d) => d > new Date())),
-        past: data.filter((e) => findEvent(e.eventID, (d) => d < new Date())),
+        draft: data.filter((e) => e.draft),
+        future: data.filter((e) => !e.draft && findEvent(e.eventID!, (d) => d > new Date())),
+        past: data.filter((e) => findEvent(e.eventID!, (d) => d < new Date())),
       });
     }
   }, [data, events]);
