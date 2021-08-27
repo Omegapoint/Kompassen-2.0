@@ -1,7 +1,11 @@
 import { makeStyles } from '@material-ui/core';
 import { ReactElement } from 'react';
+import { useQuery } from 'react-query';
+import { listLectures } from '../../api/Api';
+import { useAppSelector } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
-import Lecture, { LectureKind } from './lecture';
+import SmallLoader from '../loader/SmallLoader';
+import Lecture from './lecture';
 
 const date1 = new Date();
 date1.setDate(date1.getDate() - 1);
@@ -13,32 +17,12 @@ const date3 = new Date();
 date3.setDate(date3.getDate() - 50);
 
 interface MappableClass {
-  name: string;
+  title: string;
   location: string;
   date: Date;
-  kind: LectureKind;
+  icon: string;
+  name: string;
 }
-
-const mappableClasses: MappableClass[] = [
-  {
-    name: 'Agil Filosofi 101',
-    location: 'Stockholm',
-    date: date1,
-    kind: 'cloud',
-  },
-  {
-    name: 'Agil Filosofi 101',
-    location: 'Stockholm',
-    date: date2,
-    kind: 'sun',
-  },
-  {
-    name: 'Agil Filosofi 101',
-    location: 'Stockholm',
-    date: date3,
-    kind: 'cloud',
-  },
-];
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -49,15 +33,38 @@ const useStyles = makeStyles(() => ({
 
 const LatestLectures = (): ReactElement => {
   const classes = useStyles();
+  const locations = useAppSelector((state) => state.locations);
+  const categories = useAppSelector((state) => state.categories);
+  const { data, isLoading } = useQuery(`listMyLectures`, () => listLectures({ mine: 'true' }));
+
+  if (isLoading || !data) return <SmallLoader />;
+
+  const latestlectureList = [...data].sort(
+    (a, b) => +new Date(b.updatedAt) - +new Date(a.updatedAt)
+  );
+  const slicedlectureList = latestlectureList.slice(0, 3);
+
+  const mappableClasses = slicedlectureList.map((lecture) => {
+    const lastLectureItem: MappableClass = {
+      title: lecture.title,
+      location: locations.find((loc) => loc.id === lecture.locationID)?.name || '-',
+      date: lecture.updatedAt,
+      icon: categories?.find((cat) => cat.id === lecture.categoryID)?.icon as string,
+      name: (categories?.find((cat) => cat.id === lecture.categoryID)?.name as string) || '',
+    };
+    return lastLectureItem;
+  });
+
   return (
     <div className={classes.container}>
       {mappableClasses.map((e) => (
         <Lecture
-          key={e.name + e.kind + e.date.toString()}
-          name={e.name}
+          key={e.title + e.icon + e.date.toString()}
+          title={e.title}
           location={e.location}
           date={e.date}
-          kind={e.kind}
+          name={e.name}
+          icon={e.icon}
         />
       ))}
     </div>

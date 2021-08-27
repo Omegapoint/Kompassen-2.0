@@ -4,19 +4,10 @@ import { PieChart } from 'react-minimal-pie-chart';
 import { useQuery } from 'react-query';
 import { listLectureCategories } from '../../api/Api';
 import { useAppSelector } from '../../lib/Lib';
-import { colors, padding } from '../../theme/Theme';
-import { IconType } from '../latestLectures/lecture';
+import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import ChartIcon from './ChartIcon';
 import EventContext from './EventContext';
-
-export const iconColor: IconType = {
-  cloud: colors.yellow,
-  code: colors.teal,
-  shield: colors.orange,
-  sun: colors.lightGreen,
-  vcs: colors.purple,
-};
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -57,7 +48,6 @@ const LectureStats = (): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const mapped = data?.map((e) => {
     const category = categories?.find((e1) => e1.id === e.categoryID);
-
     return {
       title: category?.icon,
       desc: category?.name,
@@ -65,7 +55,6 @@ const LectureStats = (): ReactElement => {
       color: category?.color || '',
     };
   });
-
   return (
     <div className={classes.container}>
       <div>
