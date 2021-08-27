@@ -44,10 +44,8 @@ export const useAzure = (): IUseAzure => {
 export const graphConfig = {
   graphMeEndpoint:
     'https://graph.microsoft.com/v1.0/users/23a416c5-7dab-4c84-aff1-fd22ec61386d/photo/$value',
-  // graphMeEndpoint: 'https://graph.microsoft.com/v1.0/me',
 };
-// 23a416c5-7dab-4c84-aff1-fd22ec61386d
-// 4a612d67-31e3-4ad3-b503-93543ec54c27
+
 export async function callMsGraph(accessToken: string): Promise<Response> {
   const headers = new Headers();
   const bearer = `Bearer ${accessToken}`;

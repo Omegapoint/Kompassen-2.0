@@ -1,12 +1,12 @@
-import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Button, makeStyles, Modal, Theme, Typography } from '@material-ui/core';
 import { addSeconds, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
+import LectureView from '../../components/lectureView/LectureView';
 import useBoolean from '../../hooks/UseBoolean';
 import { useAppSelector } from '../../lib/Lib';
 import { Category, Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
-import HandleLecture from './HandleLecture';
 
 interface StyleProps {
   color: string;
@@ -55,6 +55,14 @@ const useStyles = makeStyles<Theme, StyleProps>(() => ({
     display: 'grid',
     gridTemplateColumns: '1fr max-content',
   },
+  modalContainer: {
+    display: 'grid',
+    alignItems: 'center',
+    justifyItems: 'center',
+  },
+  modalSubcontainer: {
+    width: '800px',
+  },
 }));
 
 interface LectureCardProps {
@@ -77,23 +85,6 @@ const LectureCard = ({ lecture, edit = false, startAt }: LectureCardProps): Reac
     const e = format(addSeconds(time, lecture.duration || 0), 'HH:mm', { locale: sv });
     return `${s} - ${e}`;
   };
-
-  if (category.name === 'Information') {
-    return (
-      <div className={classes.container}>
-        <div
-          className={classes.card}
-          style={{ padding: `${padding.small}`, alignContent: 'center' }}
-        >
-          <div className={`${classes.header} ${classes.information}`}>
-            <Typography variant="h6">{lecture.title}</Typography>
-            {startAt && <Typography>{genTime(startAt)}</Typography>}
-            {!startAt && <Typography>{(lecture.duration || 0) / 60} min</Typography>}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className={classes.container}>
@@ -121,7 +112,11 @@ const LectureCard = ({ lecture, edit = false, startAt }: LectureCardProps): Reac
             </Button>
           )}
         </div>
-        <HandleLecture lecture={lecture} close={off} open={open} />
+        <Modal open={open} onClose={off} className={classes.modalContainer}>
+          <div className={classes.modalSubcontainer}>
+            <LectureView lecture={lecture} admin close={off} />
+          </div>
+        </Modal>
       </div>
     </div>
   );

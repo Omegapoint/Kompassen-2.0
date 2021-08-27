@@ -73,8 +73,8 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
   return (
     <>
       <div className={classes.titleContainer}>
-        {event.rooms.map((e, i) => (
-          <div key={e.id}>
+        {event.rooms.map((room, i) => (
+          <div key={room.id}>
             <div className={classes.title}>
               <Typography variant="h6">
                 Rum {i + 1}: {event.rooms[i].name}
@@ -88,12 +88,12 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
       <div className={classes.timeTitles}>
         {[
           ...[...new Array(numRows)]
-            .map((e, i) => i * MINUTES)
+            .map((_, i) => i * MINUTES)
             .filter((e) => e % 30 === 0)
             .map((e) => addMinutes(event.startAt, e)),
           event.endAt,
-        ].map((e) => (
-          <Typography key={e.toString()}>{format(e, 'HH:mm', { locale: sv })}</Typography>
+        ].map((date) => (
+          <Typography key={date.toString()}>{format(date, 'HH:mm', { locale: sv })}</Typography>
         ))}
       </div>
       <div className={`fullSchedule ${classes.scheduleContainer}`}>

@@ -2,17 +2,17 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import { differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PageNav, { INavItem } from '../../components/pageNav/PageNav';
 import useBoolean from '../../hooks/UseBoolean';
-import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, useAppSelector } from '../../lib/Lib';
-import { Event, IDParam, Lecture, Organisation } from '../../lib/Types';
+import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
+import { IDParam } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import CreateEvent from '../events/CreateEvent';
 import RegisteredLectures from './RegisteredLectures';
 import Schedule from './Schedule';
+import useEventLecturesWS from './UseEventLecturesWS';
 
 type INavItemKind = 'lectures' | 'schedule';
 
@@ -35,61 +35,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const useEventLecturesWS = (id: string) => {
-  const socket = useAppSelector((state) => state.session.socket);
-  const [lectures, setLectures] = useState<Lecture[]>([]);
-  const mounted = useUnmount();
-
-  useEffect(() => {
-    if (socket) {
-      socket.on(`event/${id}/lecture`, (li) => {
-        if (mounted.current) {
-          setLectures(formatDates(li));
-        }
-      });
-
-      socket.on(`event/${id}/lecture/update`, (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectures((ideas) =>
-            ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
-          );
-        }
-      });
-
-      socket.on(`event/${id}/lecture/create`, (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectures((ideas) => [formatDates(lecture), ...ideas]);
-        }
-      });
-
-      socket.on(`event/${id}/lecture/delete`, (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectures((ideas) => ideas.filter((e) => e.id !== lecture.id));
-        }
-      });
-      socket.emit('event/lecture/join', id);
-
-      return () => {
-        socket.emit('event/lecture/leave', id);
-      };
-    }
-    return () => {};
-  }, [id, mounted, socket]);
-
-  return lectures;
-};
-
 const EventPlanner = (): ReactElement => {
   const { id } = useParams<IDParam>();
-  const events = useAppSelector((state) => state.events);
-  const organisations = useAppSelector((state) => state.organisations);
   const [active, setActive] = useState<INavItemKind>('lectures');
   const classes = useStyles();
-  const event = events.find((e) => e.id === id) as Event;
+  const event = useEvent(id)!;
+  const organisation = useOrganisation(event.organisationID)!;
   const lectures = useEventLecturesWS(id);
   const [editEventIsOpen, editEvent] = useBoolean();
-  const organisation = organisations.find((e) => e.id === event.organisationID) as Organisation;
-  const approvedLectures = lectures.filter((e) => e.approved);
+  const approvedLectures = lectures.filter((lecture) => lecture.approved);
 
   const navItems: INavItem<INavItemKind>[] = [
     {

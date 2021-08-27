@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
 import { ReactComponent as TinyArrow } from '../../assets/tinyArrow.svg';
-import { useAppSelector } from '../../lib/Lib';
+import { useOrganisation } from '../../hooks/UseReduxState';
 import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
@@ -51,10 +51,8 @@ export const formatDayTime = (event: Event): string => {
 const DayPicker = (): ReactElement => {
   const classes = useStyles();
   const { events, ind, setInd } = useContext(EventContext);
-  const organisations = useAppSelector((state) => state.organisations);
-
   const event = events[ind];
-  const organisation = organisations.find((e) => e.id === event.organisationID)?.name;
+  const organisation = useOrganisation(event.organisationID)?.name;
 
   const previousEvent = () => setInd((i) => (i > 0 ? i - 1 : i));
   const nextEvent = () => setInd((i) => (i <= events.length - 1 ? i + 1 : i));

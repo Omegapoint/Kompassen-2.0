@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export type INavItemKind = 'future' | 'draft' | 'past';
+export type INavItemKind = 'ideas' | 'future' | 'draft' | 'past';
 
 const useMyLectures = (data?: Lecture[]) => {
   const [items, setItems] = useState<ILectureItems<INavItemKind> | null>(null);
@@ -30,7 +30,8 @@ const useMyLectures = (data?: Lecture[]) => {
 
     if (data) {
       setItems({
-        draft: data.filter((e) => e.draft),
+        ideas: data.filter((e) => e.idea && !e.eventID),
+        draft: data.filter((e) => e.draft && !e.idea),
         future: data.filter((e) => !e.draft && findEvent(e.eventID!, (d) => d > new Date())),
         past: data.filter((e) => findEvent(e.eventID!, (d) => d < new Date())),
       });
@@ -47,6 +48,7 @@ const MyLectures = (): ReactElement => {
     listLectures({ mine: 'true' })
   );
   const deleteLectureRequest = useMutation(deleteLecture);
+  const items = useMyLectures(data);
 
   const handleDelete = async (cardID: string) => {
     await deleteLectureRequest.mutateAsync({ id: cardID });
@@ -57,12 +59,11 @@ const MyLectures = (): ReactElement => {
     refetch();
   }, [forceUpdate, refetch]);
 
-  const items = useMyLectures(data);
-
   if (isLoading || !items) return <BigLoader />;
   const currentItems = items[active];
 
   const navItems: INavItem<INavItemKind>[] = [
+    { name: 'ideas', title: `Idéer (${items.ideas.length})` },
     { name: 'future', title: `Kommande (${items.future.length})` },
     { name: 'draft', title: `Utkast (${items.draft.length})` },
     { name: 'past', title: `Genomförda (${items.past.length})` },

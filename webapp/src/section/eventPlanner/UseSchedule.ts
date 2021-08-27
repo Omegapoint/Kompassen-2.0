@@ -59,12 +59,12 @@ const useSchedule = (event: Event, lectures: Lecture[], colWidth: number): UseSc
     );
     setScheduled((oldScheduled) =>
       lectureRooms.reduce((s, lectureRoom) => {
-        const col = roomIds[lectureRoom.roomID];
+        const ind = roomIds[lectureRoom.roomID];
         const row = differenceInMinutes(lectureRoom.startAt, event.startAt) / MINUTES;
         const cp = [...s];
-        const cp2 = [...s[col]];
+        const cp2 = [...s[ind]];
         cp2[row] = lectures.find((e) => e.id === lectureRoom.lectureID) || null;
-        cp[col] = cp2;
+        cp[ind] = cp2;
         return cp;
       }, oldScheduled)
     );
@@ -74,8 +74,7 @@ const useSchedule = (event: Event, lectures: Lecture[], colWidth: number): UseSc
     if (event.rooms.length > scheduled.length) {
       setScheduled((oldScheduled) => [...oldScheduled, genScheduledCol(numRows)]);
     } else if (event.rooms.length < scheduled.length) {
-      const found = scheduleMapping.find((e) => !event.rooms.find((e1) => e.id === e1.id));
-
+      const found = scheduleMapping.find((e) => !event.rooms.find((room) => e.id === room.id));
       setScheduled((oldScheduled) => oldScheduled.filter((_, i) => i !== found?.ind));
     }
   }, [event.rooms, event.rooms.length, numRows, scheduleMapping, scheduled.length]);
@@ -90,7 +89,7 @@ const useSchedule = (event: Event, lectures: Lecture[], colWidth: number): UseSc
     );
   }, [lectureRooms, lectures]);
 
-  const move = ([...array]: (Lecture | null)[], ind: number, lecture: Lecture | null) => {
+  const move = (array: (Lecture | null)[], ind: number, lecture: Lecture | null) => {
     const arr = [...array];
     arr[ind] = lecture;
     return arr;
@@ -109,9 +108,9 @@ const useSchedule = (event: Event, lectures: Lecture[], colWidth: number): UseSc
     const newY = startPos.y + pos.y;
     const newX = startPos.x + pos.x;
     const yCol = toYCol(newY);
-    const tempXCol = toXCol(newX);
-    const n = tempXCol >= event.rooms.length ? event.rooms.length - 1 : tempXCol;
-    const xCol = event.rooms.length === 1 ? 0 : n;
+    const desiredXCol = toXCol(newX);
+    const futureXCol = desiredXCol >= event.rooms.length ? event.rooms.length - 1 : desiredXCol;
+    const xCol = event.rooms.length === 1 ? 0 : futureXCol;
 
     setScheduled((oldScheduled) => {
       const scheduledCopy = [...oldScheduled];

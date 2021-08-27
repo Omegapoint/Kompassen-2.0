@@ -121,15 +121,6 @@ export interface Category extends BaseCategory, DefaultTime {
   id: string;
 }
 
-export interface NewLectureInformation {
-  eventID: string;
-  duration: number;
-  title: string;
-  description: string;
-  lecturer: string;
-  categoryID: string;
-}
-
 // Lectures
 interface BaseLectureIdea {
   title: string;

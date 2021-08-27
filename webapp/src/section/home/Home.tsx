@@ -1,12 +1,10 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
-import CurrentPlanner from '../../components/currentPlanner/CurrentPlanner';
 import Filter from '../../components/filter/Filter';
 import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
-import QuickGuide from '../../components/quickGuide/QuickGuide';
 import SideCard from '../../components/sideCard/SideCard';
 import WordCloud from '../../components/wordCloud/WordCloud';
 import useBoolean from '../../hooks/UseBoolean';
@@ -41,6 +39,12 @@ const useStyles = makeStyles(() => ({
   button: {
     fontSize: '0.95rem',
     padding: padding.minimal,
+  },
+  emptyContainer: {
+    display: 'grid',
+    justifyContent: 'center',
+    alignContent: 'center',
+    minHeight: '300px',
   },
 }));
 
@@ -99,7 +103,13 @@ const Home = (): ReactElement => {
             Publicera ny idé
           </Button>
         )}
-        <Filter lectures={lectureIdeas} />
+        {lectureIdeas?.length ? (
+          <Filter lectures={lectureIdeas} />
+        ) : (
+          <div className={classes.emptyContainer}>
+            <Typography variant="h5">Här var det tomt.</Typography>
+          </div>
+        )}
       </div>
       <div className={classes.rightPanel}>
         {isAdmin() && (
@@ -127,12 +137,13 @@ const Home = (): ReactElement => {
         <SideCard title="Funderar på att hålla i ett pass?">
           <Interested />
         </SideCard>
-        <SideCard title="Snabbguide för KomPass 2.0">
-          <QuickGuide />
-        </SideCard>
-        <SideCard title="Nuvarande planerare">
-          <CurrentPlanner />
-        </SideCard>
+        {/* TODO: Add some content to this */}
+        {/* <SideCard title="Snabbguide för KomPass 2.0"> */}
+        {/*  <QuickGuide /> */}
+        {/* </SideCard> */}
+        {/* <SideCard title="Nuvarande planerare"> */}
+        {/*  <CurrentPlanner /> */}
+        {/* </SideCard> */}
       </div>
     </div>
   );
