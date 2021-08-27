@@ -1,22 +1,7 @@
 import { makeStyles, Paper, Typography } from '@material-ui/core';
 import { ReactElement } from 'react';
-import cloud from '../../assets/cloud.svg';
-import code from '../../assets/code.svg';
-import shield from '../../assets/shield.svg';
-import sun from '../../assets/sun.svg';
-import vcs from '../../assets/vcs.svg';
 import { borderRadius, padding } from '../../theme/Theme';
 import { formatDate } from '../lecture/Row';
-
-export type LectureKind = 'cloud' | 'sun' | 'shield' | 'code' | 'vcs';
-
-export type IconType = {
-  [key in LectureKind]: string;
-};
-
-const icons: IconType = { cloud, code, shield, sun, vcs };
-
-export const getIconByKind = (kind: LectureKind): string => icons[kind];
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -30,20 +15,25 @@ const useStyles = makeStyles(() => ({
 }));
 
 interface LectureProps {
-  name: string;
+  title: string;
   location: string;
   date: Date;
-  kind: LectureKind;
+  name: string;
+  icon: string;
 }
-const Lecture = ({ name, location, date, kind }: LectureProps): ReactElement => {
+const Lecture = ({ title, location, date, name, icon: kind }: LectureProps): ReactElement => {
   const classes = useStyles();
-  const icon = getIconByKind(kind);
   const formattedDate = formatDate(date);
 
   return (
     <Paper className={classes.container}>
-      <img width={20} height={20} src={icon} alt={kind} />
-      <Typography variant="h6">{name}</Typography>
+      <img
+        width={20}
+        height={20}
+        src={`data:image/svg+xml;base64,${window.btoa(kind as string)}`}
+        alt={`${name} icon`}
+      />
+      <Typography variant="h6">{title}</Typography>
       <Typography>{`${formattedDate} • ${location}`}</Typography>
     </Paper>
   );
