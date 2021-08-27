@@ -203,7 +203,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       locationID: values.locationID,
       remote: values.remote === 'true',
       eventID: values.eventID,
-      duration: parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10),
+      duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
       categoryID: category.id,
       maxParticipants: parseInt(values.maxParticipants, 10),
       requirements: values.requirements,

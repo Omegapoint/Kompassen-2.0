@@ -30,6 +30,7 @@ resource "azuread_application_password" "app" {
 resource "azuread_service_principal" "app" {
   application_id               = azuread_application.app.application_id
   app_role_assignment_required = false
+  owners                       = [data.azuread_client_config.current.object_id]
 }
 
 resource "azurerm_role_assignment" "contributor" {

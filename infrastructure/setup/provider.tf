@@ -1,8 +1,15 @@
 terraform {
+  backend "azurerm" {
+    resource_group_name  = "kompassen2setup"
+    storage_account_name = "kompassen2setup"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
-      version = "1.5.1"
+      version = "2.0.1"
     }
 
     azurerm = {

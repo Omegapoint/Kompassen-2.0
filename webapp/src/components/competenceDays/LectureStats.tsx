@@ -3,7 +3,7 @@ import { Fragment, ReactElement, useContext, useState } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import { useQuery } from 'react-query';
 import { listLectureCategories } from '../../api/Api';
-import { useAppSelector } from '../../lib/Lib';
+import { formatImgAsSVG, useAppSelector } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import ChartIcon from './ChartIcon';
@@ -89,12 +89,7 @@ const LectureStats = (): ReactElement => {
               <div className={classes.descContainer}>
                 {mapped?.map((e) => (
                   <Fragment key={e.title}>
-                    <img
-                      alt="icon"
-                      width="12"
-                      height="12"
-                      src={`data:image/svg+xml;base64,${window.btoa(e.title as string)}`}
-                    />
+                    <img alt="icon" width="12" height="12" src={formatImgAsSVG(e.title!)} />
                     <Typography>{e.desc}</Typography>
                     <Typography>{e.value}</Typography>
                   </Fragment>

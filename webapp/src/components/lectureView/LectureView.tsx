@@ -2,7 +2,6 @@ import {
   Button,
   createStyles,
   IconButton,
-  Link,
   makeStyles,
   Paper,
   Theme,
@@ -16,6 +15,7 @@ import { Fragment, ReactElement } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import { useEvent } from '../../hooks/UseReduxState';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
@@ -23,6 +23,7 @@ import { formatDayTime } from '../competenceDays/DayPicker';
 
 interface StyleProps {
   categoryColor?: string;
+  isUnpublishedIdea: boolean;
 }
 
 const useStyles = makeStyles<Theme, StyleProps>(() =>
@@ -40,12 +41,16 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
     },
     header: {
       display: 'grid',
-      gridTemplateColumns: 'max-content max-content 1fr',
+      gridTemplateColumns: ({ isUnpublishedIdea }) =>
+        isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
 
       justifyItems: 'center',
       '& > :first-child': {
         background: colors.darkTeal,
-        borderRadius: `${borderRadius.standard} 0 0 0`,
+        borderRadius: ({ isUnpublishedIdea }) =>
+          isUnpublishedIdea
+            ? `${borderRadius.standard} ${borderRadius.standard} 0 0`
+            : `${borderRadius.standard} 0 0 0`,
       },
       '& > :nth-child(2)': {
         background: colors.blue,
@@ -78,6 +83,10 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
         gridColumn: 'span 1',
       },
     },
+    removeLinkPadding: {
+      padding: 0,
+      margin: 0,
+    },
   })
 );
 
@@ -100,11 +109,12 @@ const LectureView = ({
 }: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
-  const classes = useStyles({ categoryColor: category?.color });
+  const isUnpublishedIdea = lecture.idea && !lecture.eventID;
+  const classes = useStyles({ categoryColor: category?.color, isUnpublishedIdea });
   const locations = useAppSelector((state) => state.locations);
   const location = locations.find((e) => e.id === lecture.locationID)?.name;
-  const events = useAppSelector((state) => state.events);
-  const eventDay = events.find((e) => e.id === lecture.eventID);
+  const eventDay = useEvent(lecture.eventID!);
+
   const { mutateAsync } = useMutation(approveLecture);
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
@@ -115,7 +125,7 @@ const LectureView = ({
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Förberedelser', value: lecture.preparations },
     { name: 'Taggar', value: lecture.tags.reduce((s, e) => `${s} ${e}`, '') },
-  ];
+  ].filter((e) => e.value);
 
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
@@ -125,24 +135,24 @@ const LectureView = ({
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
     <div className={classes.container}>
-      <div className={classes.header}>
-        {eventDay !== undefined && <Typography>{formatDayTime(eventDay)}</Typography>}
-        <Typography>{location}</Typography>
-        <Typography>{category?.name}</Typography>
-      </div>
+      {isUnpublishedIdea ? (
+        <div className={classes.header}>
+          <Typography>Idé</Typography>
+        </div>
+      ) : (
+        <div className={classes.header}>
+          {eventDay !== undefined && <Typography>{formatDayTime(eventDay)}</Typography>}
+          <Typography>{location}</Typography>
+          <Typography>{category?.name}</Typography>
+        </div>
+      )}
       <Paper className={classes.paper}>
         <div className={classes.row}>
           <Typography variant="h5">{lecture.title}</Typography>
           <div>
             {editIcon && (
-              <IconButton>
-                <Link
-                  className={classes.removeLinkPadding}
-                  component={NavLink}
-                  to={`/lecture/edit/${lecture.id}`}
-                >
-                  <EditIcon />
-                </Link>
+              <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`}>
+                <EditIcon />
               </IconButton>
             )}
             {deleteIcon && (
@@ -162,7 +172,7 @@ const LectureView = ({
               <Typography>{e.value}</Typography>
             </Fragment>
           ))}
-          {!admin && (
+          {!isUnpublishedIdea && !admin && (
             <Typography>{lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}</Typography>
           )}
           {admin && (

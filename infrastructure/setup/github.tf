@@ -9,7 +9,7 @@ resource "github_actions_secret" "azure_credentials" {
     clientId : azuread_application.app.application_id,
     clientSecret : nonsensitive(azuread_application_password.app.value),
     subscriptionId : var.subscription,
-    tenantId : data.azuread_client_config.current.tenant_id,
+    tenantId : azuread_service_principal.app.application_tenant_id,
     activeDirectoryEndpointUrl : "https://login.microsoftonline.com",
     resourceManagerEndpointUrl : "https://management.azure.com/",
     activeDirectoryGraphResourceId : "https://graph.windows.net/",
@@ -40,5 +40,5 @@ resource "github_actions_secret" "azure_subscription_id" {
 resource "github_actions_secret" "azure_tenant_id" {
   repository      = var.git_repo
   secret_name     = "ARM_TENANT_ID"
-  plaintext_value = data.azuread_client_config.current.tenant_id
+  plaintext_value = azuread_service_principal.app.application_tenant_id
 }

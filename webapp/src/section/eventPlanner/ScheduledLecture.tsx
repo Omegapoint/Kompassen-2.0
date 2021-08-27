@@ -7,7 +7,7 @@ interface ExampleCardProps {
   lecture: Lecture;
   colHeight: number;
   handleDragStop: (startPos: Position, { x, y }: Position) => void;
-  colToTime?: (y: number) => Date;
+  rowToTime?: (y: number) => Date;
   startY: number;
   startX: number;
 }
@@ -21,7 +21,7 @@ export default function ScheduledLecture({
   lecture,
   colHeight,
   handleDragStop,
-  colToTime,
+  rowToTime,
   startY,
   startX,
 }: ExampleCardProps): ReactElement {
@@ -51,7 +51,7 @@ export default function ScheduledLecture({
       onStop={(_, { x, y }) => setPos({ x, y })}
     >
       <div ref={ref} style={{ cursor: 'grab' }}>
-        <LectureCard lecture={lecture} startAt={colToTime && colToTime(startY + newY)} />
+        <LectureCard lecture={lecture} startAt={rowToTime && rowToTime(startY + newY)} />
       </div>
     </Draggable>
   );

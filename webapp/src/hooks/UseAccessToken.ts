@@ -25,16 +25,50 @@ const useAccessToken = (isAuthenticated: boolean): UseAccessToken => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      const getGraphToken = async () => {
+        if (accounts.length) {
+          try {
+            const resp = await instance.acquireTokenSilent({
+              scopes: ['User.ReadBasic.All'],
+              account: accounts[0],
+            });
+            if (!resp.accessToken) return;
+
+            dispatch(setGraphTokenRedux(resp.accessToken));
+            const azureUser = await getMyUser();
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if (!azureUser || (azureUser as any).error) {
+              await new Promise((e) => setTimeout(e, 1000));
+              await getGraphToken();
+              return;
+            }
+            dispatch(setAzureUser(azureUser));
+            setGraphToken(resp.accessToken);
+          } catch (e) {
+            await getGraphToken();
+          }
+        }
+      };
+
       const getToken = async () => {
         if (accounts.length) {
-          const resp = await instance.acquireTokenSilent({ ...loginRequest, account: accounts[0] });
-          dispatch(setAPITokenRedux(resp.accessToken));
-          setAPIToken(resp.accessToken);
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const claims = resp.idTokenClaims as any;
-          const role = claims.roles ? claims.roles[0] : 'Worker';
-          dispatch(setRole(role));
+          try {
+            const resp = await instance.acquireTokenSilent({
+              ...loginRequest,
+              account: accounts[0],
+            });
+            dispatch(setAPITokenRedux(resp.accessToken));
+            setAPIToken(resp.accessToken);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const claims = resp.idTokenClaims as any;
+            const role = claims.roles ? claims.roles[0] : 'Worker';
+            dispatch(setRole(role));
+          } catch (e) {
+            await instance.logoutPopup({ postLogoutRedirectUri: '/', mainWindowRedirectUri: '/' });
+          }
         }
+        await getGraphToken();
       };
 
       getToken();
@@ -43,27 +77,6 @@ const useAccessToken = (isAuthenticated: boolean): UseAccessToken => {
     }
     return () => {};
   }, [accounts, dispatch, instance, isAuthenticated, loginRequest]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const getToken = async () => {
-        if (accounts.length) {
-          const resp = await instance.acquireTokenSilent({
-            scopes: ['User.ReadBasic.All'],
-            account: accounts[0],
-          });
-          dispatch(setGraphTokenRedux(resp.accessToken));
-          const azureUser = await getMyUser();
-          dispatch(setAzureUser(azureUser));
-          setGraphToken(resp.accessToken);
-        }
-      };
-      getToken();
-      const timerID = setInterval(getToken, 60 * 1000);
-      return () => clearInterval(timerID);
-    }
-    return () => {};
-  }, [accounts, dispatch, instance, isAuthenticated]);
 
   return { loading: !(apiToken && graphToken), apiToken, graphToken };
 };

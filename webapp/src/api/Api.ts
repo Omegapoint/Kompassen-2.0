@@ -5,17 +5,14 @@ import {
   IDParam,
   IOK,
   Lecture,
-  LectureRoom,
   ListEventParams,
   ListLecturesParams,
-  Location,
   NewEvent,
   NewLecture,
   NewLectureIdea,
   NewLectureInformation,
   NewLectureRoom,
   NewUser,
-  Organisation,
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
@@ -93,8 +90,6 @@ export const updateUser = apiBuilder<User, UpdatedUser>('/user').put;
 
 export const listTags = apiBuilder<TagStats[]>('/lecture/tag').get;
 
-export const listLocations = apiBuilder<Location[]>('/location').get;
-export const listOrganisations = apiBuilder<Organisation[]>('/organisation').get;
 export const listEventLectures = apiURLParamsBuilder<Lecture[], IDParam>('/event/:id/lecture').get;
 export const createEvent = apiBuilder<IDParam, NewEvent>('/event').post;
 export const updateEvent = apiBuilder<IDParam, UpdatedEvent>('/event').put;
@@ -105,12 +100,6 @@ export const updateLectureRoom = apiBuilder<IDParam, UpdatedLectureRoom>('/event
 export const deleteLectureRoom = apiURLParamsBuilder<IDParam, IDParam>(
   '/event/room/lecture/:id'
 ).delete;
-export const getLectureRoom = apiURLParamsBuilder<LectureRoom, IDParam>(
-  '/event/room/lecture/:id'
-).get;
-export const listLectureRoom = apiURLParamsBuilder<LectureRoom[], IDParam>(
-  '/event/:id/room/lecture'
-).get;
 
 export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;

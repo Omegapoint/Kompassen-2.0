@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { listEventLectures } from '../../api/Api';
 import RowPaper from '../../components/rowPaper/RowPaper';
-import { useAppSelector } from '../../lib/Lib';
+import { useOrganisation } from '../../hooks/UseReduxState';
 import { Event } from '../../lib/Types';
 import { colors } from '../../theme/Theme';
 import List from './List';
@@ -56,8 +56,9 @@ const EventRow = ({
   openEdit,
 }: EventRowProps): ReactElement => {
   const time = format(event.startAt, 'd MMMM', { locale: sv });
-  const organisations = useAppSelector((state) => state.organisations);
-  const organisation = organisations.find((e) => e.id === event.organisationID)?.name as string;
+
+  const organisation = useOrganisation(event.organisationID)!.name;
+
   const classes = useStyles();
   const { data } = useQuery(`listEventLecture-${event.id}`, () =>
     listEventLectures({ id: event.id })

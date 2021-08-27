@@ -36,20 +36,22 @@ const Sideline = ({
 
   return (
     <div className={classes.container}>
-      {lectures.map((e, i) => (
+      {lectures.map((li, i) => (
         <div key={Math.random()}>
-          {e.map((e1, i1) => (
+          {li.map((lecture, i1) => (
             <ScheduledLecture
               startY={
                 COL_HEIGHT * numRows +
                 25 +
-                heightByMin(e.slice(0, i1).reduce((s, e2) => s + (e2.duration || 0) / 60, 0))
+                heightByMin(li.slice(0, i1).reduce((s, e2) => s + (e2.duration || 0) / 60, 0))
               }
               startX={totWidth * (i / 4)}
-              key={e1.id}
-              lecture={e1}
+              key={lecture.id}
+              lecture={lecture}
               colHeight={COL_HEIGHT}
-              handleDragStop={(startPos, pos) => handleDragStop(e1, startPos, pos, i, i1, true)}
+              handleDragStop={(startPos, pos) =>
+                handleDragStop(lecture, startPos, pos, i, i1, true)
+              }
             />
           ))}
         </div>

@@ -90,14 +90,14 @@ const UPDATE_EVENT = `
     RETURNING id
 `;
 
-const APPROVE_EVENT = `
+const APPROVE_LECTURE = `
     UPDATE lectures
     SET approved = $1
     WHERE id = $2
     RETURNING id
 `;
 
-const DELETE_EVENT = `
+const DELETE_LECTURE = `
     DELETE
     FROM lectures
     WHERE id = $1
@@ -200,12 +200,12 @@ const lecturesDB: LecturesDB = {
   },
 
   async approve(approved, id): Promise<IDParam> {
-    const { rows } = await db.query(APPROVE_EVENT, [approved, id]);
+    const { rows } = await db.query(APPROVE_LECTURE, [approved, id]);
     return rows[0];
   },
 
   async delete(id): Promise<IDParam> {
-    const { rows } = await db.query(DELETE_EVENT, [id]);
+    const { rows } = await db.query(DELETE_LECTURE, [id]);
     return rows[0];
   },
 };

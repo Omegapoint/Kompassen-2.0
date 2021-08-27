@@ -41,19 +41,19 @@ const ScheduleArea = ({
 
   return (
     <div className={classes.container}>
-      {lectures.map((e, i) => (
+      {lectures.map((li, i) => (
         <div key={Math.random()}>
-          {e.map((e1, i1) => (
-            <div className={classes.cell} key={Math.random()}>
-              {e1 ? (
+          {li.map((lecture, j) => (
+            <div className={classes.cell} key={lecture?.id}>
+              {lecture ? (
                 <ScheduledLecture
                   startX={colWidth * i}
-                  startY={heightByMin(i1 * MINUTES)}
-                  colToTime={(y) => rowToTime(toYCol(y))}
-                  lecture={e1}
+                  startY={heightByMin(j * MINUTES)}
+                  rowToTime={(row) => rowToTime(toYCol(row))}
+                  lecture={lecture}
                   colHeight={COL_HEIGHT}
                   handleDragStop={(startPos, pos) =>
-                    handleDragStop(e1, startPos, pos, i, i1, false)
+                    handleDragStop(lecture, startPos, pos, i, j, false)
                   }
                 />
               ) : null}

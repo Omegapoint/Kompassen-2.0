@@ -58,7 +58,7 @@ const ConfirmLecture = (): ReactElement => {
           Skicka in ett till pass!
         </Link>
       </Typography>
-      <LectureView lecture={data} editIcon={false} deleteIcon={false} />
+      <LectureView lecture={data} />
     </div>
   );
 };
