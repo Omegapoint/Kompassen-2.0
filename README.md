@@ -9,7 +9,7 @@ To start developing you need to install the following dependencies.
 - [Yarn](https://yarnpkg.com/getting-started/install)
 
 ## Contact
-If you have any issues or anything is unclear, please feel free to contact Jonas Sjödin at [jonas.sjodin@omegapoint.se](jonas.sjodin@omegapoint.se) (2021).
+If you have any issues or anything is unclear, please feel free to contact Jonas Sjödin at [jonas.sjodin@omegapoint.se](mailto:jonas.sjodin@omegapoint.se) (2021).
 
 ### Development
 To start developing, open two terminals and run the following commands.

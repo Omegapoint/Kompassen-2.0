@@ -1,8 +1,7 @@
-import { Button, createStyles, makeStyles, Paper, Typography } from '@material-ui/core';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { ReactElement, useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import io from 'socket.io-client';
-import { createUser, getUser, userExists } from './api/Api';
+import { getUser } from './api/Api';
 import { BASE_WS_URL } from './api/Fetch';
 import Body from './components/body/Body';
 import Footer from './components/footer/Footer';
@@ -11,42 +10,11 @@ import Navbar from './components/navbar/Navbar';
 import { useAppDispatch, useAppSelector } from './lib/Lib';
 import { setSocket } from './reducers/session/actions';
 import { setUser } from './reducers/user/actions';
-import GreetingPage from './section/landing/GreetingPage';
-import Notifications from './section/settings/Notifications';
-import { padding } from './theme/Theme';
 import { useCategoriesWS, useEventsWS, useLocationsWS, useOrganisationsWS } from './ws/ReduxWS';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    modal: {
-      display: 'grid',
-      height: '100vh',
-      width: '100vw',
-      alignContent: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      display: 'grid',
-      padding: padding.medium,
-      gridGap: padding.standard,
-      '& > button': {
-        justifySelf: 'center',
-      },
-    },
-  })
-);
-
-const defaultNotifications = {
-  newLecture: true,
-  newComment: true,
-  adminRead: true,
-  lectureTaken: true,
-};
 
 function useFetchDispatch<Res>(
   key: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fn1: () => any,
+  fn1: () => Promise<Res>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fn2: (payload: Res) => any
 ) {
@@ -107,44 +75,4 @@ const Content = (): ReactElement => {
   );
 };
 
-const ContentWrapper = (): ReactElement => {
-  const exists = useQuery('', () => userExists());
-  const classes = useStyles();
-  const [notifications, setNotifications] = useState(defaultNotifications);
-  const { mutate, isSuccess } = useMutation(createUser);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNotifications({ ...notifications, [event.target.name]: event.target.checked });
-  };
-
-  const handleSubmit = async () => {
-    mutate({ notifications });
-  };
-
-  useEffect(() => {
-    if (isSuccess) window.location.reload();
-  }, [isSuccess]);
-
-  if (exists.isLoading) {
-    return <BigLoader />;
-  }
-
-  if (!exists.data?.ok) {
-    return (
-      <GreetingPage>
-        <Paper className={classes.paper}>
-          <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
-          <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
-          <Notifications handleChange={handleChange} checked={notifications} />
-          <Button color="primary" variant="contained" onClick={handleSubmit}>
-            Spara inställningarna
-          </Button>
-        </Paper>
-      </GreetingPage>
-    );
-  }
-
-  return <Content />;
-};
-
-export default ContentWrapper;
+export default Content;
