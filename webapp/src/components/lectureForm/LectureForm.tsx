@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { ChangeEvent, FormEvent, ReactElement, useEffect } from 'react';
+import { ChangeEvent, FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useHistory } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
@@ -22,7 +22,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Lecture } from '../../lib/Types';
+import { Category, Event, Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
 
@@ -160,7 +160,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
     invalid: formIsInvalid(validate),
   };
 };
-
+// The more complex form to create a new lecture
 const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
@@ -171,12 +171,12 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const history = useHistory();
-
+  const [futureEvents, setFutureEvents] = useState<Event[]>([]);
   const defaultFormValue = {
     locationID:
       locations.find((location) => location.id === data?.locationID)?.id || locations[0].id,
     remote: (data?.remote || false).toString(),
-    eventID: events.find((event) => event.id === data?.eventID)?.id || events[0].id,
+    eventID: events.find((event) => event.id === data?.eventID)?.id || '',
     hours: data?.duration ? Math.floor(data.duration / 60).toString() : '',
     minutes: data?.duration ? (data.duration % 60).toString() : '',
     title: data?.title || '',
@@ -234,6 +234,15 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       handleChange(e);
     }
   };
+  // User can not register lecture to an event that has already started/happened
+  useEffect(() => {
+    const findEvent = (id: string, cond: (d: Date) => boolean) => {
+      const event = events.find((e1) => id === e1.id);
+      return event ? cond(event.startAt) : undefined;
+    };
+    const future = events.filter((e) => findEvent(e.id, (d) => d > new Date()));
+    setFutureEvents(future);
+  }, [events]);
 
   return (
     <form>
@@ -270,7 +279,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
               onChange={(e) => handleChange(e)}
               inputProps={{ name: 'eventID' }}
             >
-              {events.map((e) => (
+              {futureEvents.map((e) => (
                 <MenuItem key={e.id} value={e.id}>
                   {formatEventTime(e)}
                 </MenuItem>
@@ -327,7 +336,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             ))}
           </RadioGroup>
         </div>
-
         <TextField
           fullWidth
           onChange={handleChange}
@@ -337,7 +345,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           label="Passhållare"
           variant="outlined"
         />
-
         <TextField
           {...validate.description}
           fullWidth
@@ -351,7 +358,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           label="Innehåll"
           variant="outlined"
         />
-
         <TextField
           {...validate.maxParticipants}
           fullWidth
@@ -361,7 +367,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.maxParticipants}
         />
-
         <TextField
           {...validate.requirements}
           fullWidth
@@ -371,7 +376,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.requirements}
         />
-
         <TextField
           {...validate.preparations}
           fullWidth
@@ -381,7 +385,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.preparations}
         />
-
         <TextField
           {...validate.tags}
           fullWidth
@@ -391,7 +394,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.tags}
         />
-
         <TextField
           {...validate.message}
           fullWidth
@@ -419,7 +421,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
                 Spara utkast
               </Button>
             )}
-
             <Button
               variant="contained"
               disabled={invalid}

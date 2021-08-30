@@ -24,8 +24,8 @@ const useMyLectures = (data?: Lecture[]) => {
 
   useEffect(() => {
     const findEvent = (id: string, cond: (d: Date) => boolean) => {
-      const r = events.find((e1) => id === e1.id);
-      return r ? cond(r.endAt) : undefined;
+      const event = events.find((e1) => id === e1.id);
+      return event ? cond(event.endAt) : undefined;
     };
 
     if (data) {

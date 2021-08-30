@@ -110,7 +110,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
     invalid: formIsInvalid(validate),
   };
 };
-
+// The simple lecture form on the homepage
 const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
   const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
