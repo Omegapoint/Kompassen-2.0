@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Modal } from '@material-ui/core';
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import LectureView from '../../components/lectureView/LectureView';
 import { Lecture } from '../../lib/Types';
 
