@@ -30,4 +30,4 @@ RUN yarn install --production --frozen-lockfile
 COPY --from=build-stage /app/build/db ./db
 COPY --from=build-stage /app/build/src ./
 
-CMD ["sh", "-c", "yarn knex:migrate:latest && yarn start"]
+CMD ["sh", "-c", "yarn knex:migrate:latest; yarn start"]

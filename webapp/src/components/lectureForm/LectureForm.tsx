@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { ChangeEvent, FormEvent, ReactElement, useEffect, useState } from 'react';
+import { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useHistory } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
@@ -23,7 +23,7 @@ import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/Us
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { Category, Event, Lecture } from '../../lib/Types';
-import { borderRadius, colors, padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
 
 const useStyles = makeStyles(() =>
@@ -33,11 +33,6 @@ const useStyles = makeStyles(() =>
       padding: padding.large,
       justifyItems: 'start',
       rowGap: padding.medium,
-    },
-    line: {
-      width: '6px',
-      background: colors.primary,
-      borderRadius: `${borderRadius.small} 0 0 ${borderRadius.small}`,
     },
     header: {
       display: 'grid',
@@ -141,7 +136,7 @@ interface FormValues {
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     hours: useFormValidation(values.hours, hoursText, invalidHours),
-    minutes: useFormValidation(values.hours, minutesText, invalidMinutes),
+    minutes: useFormValidation(values.minutes, minutesText, invalidMinutes),
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
     maxParticipants: useFormValidation(
@@ -180,7 +175,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     hours: data?.duration ? Math.floor(data.duration / 60).toString() : '',
     minutes: data?.duration ? (data.duration % 60).toString() : '',
     title: data?.title || '',
-    category: categories.find((cath) => cath.id === data?.categoryID)?.name || categories[0].name,
+    category: categories.find((cat) => cat.id === data?.categoryID)?.name || categories[0].name,
     lecturer: azureUser.displayName,
     description: data?.description || '',
     maxParticipants: data?.maxParticipants?.toString() || '',
@@ -229,11 +224,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     }
   }, [history, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 
-  const checkNumberLimit = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    if (parseInt(e.target.value, 10) < 60) {
-      handleChange(e);
-    }
-  };
   // User can not register lecture to an event that has already started/happened
   useEffect(() => {
     const findEvent = (id: string, cond: (d: Date) => boolean) => {
@@ -305,7 +295,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
               <TextField
                 {...validate.minutes}
                 className={classes.minutes}
-                onChange={checkNumberLimit}
+                onChange={handleChange}
                 value={values.minutes}
                 label="Minuter"
                 name="minutes"
