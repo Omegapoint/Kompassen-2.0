@@ -72,17 +72,24 @@ const lectures: Handlers = {
 
     const currentLecture = await lecturesDB.getByID(body.id);
 
+    if (!currentLecture) {
+      httpError(res, 404, 'No lecture with that ID exists');
+      return;
+    }
+
     if (currentLecture?.lecturerID && userID !== currentLecture?.lecturerID) {
       httpError(res, 403, 'You cannot edit another lecturers lecture');
       return;
     }
 
-    const item = await lecturesDB.update(body, userID);
+    const lecturerID = currentLecture?.lecturerID || userID;
+
+    const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
+
     if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
     onEventLectureUpdate(lecture as Lecture);
-
     res.send(item);
   },
   async approve({ body }, res) {

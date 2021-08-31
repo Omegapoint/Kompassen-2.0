@@ -43,7 +43,7 @@ const useMyLectures = (data?: Lecture[]) => {
 const MyLectures = (): ReactElement => {
   const classes = useStyles();
   const [forceUpdate, setForceUpdate] = useState('');
-  const [active, setActive] = useState<INavItemKind>('future');
+  const [active, setActive] = useState<INavItemKind>('ideas');
   const { data, isLoading, refetch } = useQuery(`listMyLectures-${forceUpdate}`, () =>
     listLectures({ mine: 'true' })
   );
@@ -84,5 +84,4 @@ const MyLectures = (): ReactElement => {
     </div>
   );
 };
-
 export default MyLectures;

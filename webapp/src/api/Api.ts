@@ -10,7 +10,6 @@ import {
   NewEvent,
   NewLecture,
   NewLectureIdea,
-  NewLectureInformation,
   NewLectureRoom,
   NewUser,
   TagStats,
@@ -104,9 +103,6 @@ export const deleteLectureRoom = apiURLParamsBuilder<IDParam, IDParam>(
 export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
-export const createLectureInformation = apiBuilder<IDParam, NewLectureInformation>(
-  '/lecture/information'
-).post;
 export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;
 export const createLectureIdea = apiBuilder<IDParam, NewLectureIdea>('/lecture/idea').post;
 export const listLectureCategories = apiURLParamsBuilder<CategoryStats[], IDParam>(

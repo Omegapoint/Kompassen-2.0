@@ -121,15 +121,6 @@ export interface Category extends BaseCategory, DefaultTime {
   id: string;
 }
 
-export interface NewLectureInformation {
-  eventID: string;
-  duration: number;
-  title: string;
-  description: string;
-  lecturer: string;
-  categoryID: string;
-}
-
 // Lectures
 interface BaseLectureIdea {
   title: string;
@@ -161,6 +152,10 @@ export interface DLecture extends NewLecture {
 
 export interface UpdatedLecture extends NewLecture {
   id: string;
+}
+
+export interface UpdatedDBLecture extends UpdatedLecture {
+  lecturerID: string | null;
 }
 
 export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}

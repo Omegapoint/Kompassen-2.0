@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { FormEvent, ReactElement, useEffect, useState } from 'react';
+import { FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useHistory } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
@@ -22,7 +22,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Event, Lecture } from '../../lib/Types';
+import { Category, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
 
@@ -166,14 +166,14 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const history = useHistory();
-  const [futureEvents, setFutureEvents] = useState<Event[]>([]);
+
   const defaultFormValue = {
     locationID:
       locations.find((location) => location.id === data?.locationID)?.id || locations[0].id,
     remote: (data?.remote || false).toString(),
     eventID: events.find((event) => event.id === data?.eventID)?.id || '',
-    hours: data?.duration ? Math.floor(data.duration / 60).toString() : '',
-    minutes: data?.duration ? (data.duration % 60).toString() : '',
+    hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '',
+    minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '',
     title: data?.title || '',
     category: categories.find((cat) => cat.id === data?.categoryID)?.name || categories[0].name,
     lecturer: azureUser.displayName,
@@ -225,14 +225,11 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   }, [history, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 
   // User can not register lecture to an event that has already started/happened
-  useEffect(() => {
-    const findEvent = (id: string, cond: (d: Date) => boolean) => {
-      const event = events.find((e1) => id === e1.id);
-      return event ? cond(event.startAt) : undefined;
-    };
-    const future = events.filter((e) => findEvent(e.id, (d) => d > new Date()));
-    setFutureEvents(future);
-  }, [events]);
+  const findEvent = (id: string, cond: (d: Date) => boolean) => {
+    const event = events.find((e1) => id === e1.id);
+    return event ? cond(event.startAt) : undefined;
+  };
+  const futureEvents = events.filter((e) => findEvent(e.id, (d) => d > new Date()));
 
   return (
     <form>
