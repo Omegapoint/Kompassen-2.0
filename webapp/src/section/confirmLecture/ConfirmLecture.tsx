@@ -33,7 +33,6 @@ const ConfirmLecture = (): ReactElement => {
   );
 
   if (isLoading || !data) return <BigLoader />;
-
   return (
     <div className={classes.container}>
       <Typography variant="h5" color="primary">

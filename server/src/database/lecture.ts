@@ -1,7 +1,14 @@
 import { logger } from '../config/config';
 import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
-import { CategoryStats, DLecture, IDParam, Lecture, TagStats, UpdatedLecture } from '../lib/types';
+import {
+  CategoryStats,
+  DLecture,
+  IDParam,
+  Lecture,
+  TagStats,
+  UpdatedDBLecture,
+} from '../lib/types';
 
 export const SELECT_LECTURES = `
     SELECT l.id,
@@ -72,21 +79,22 @@ const INSERT_LECTURE = `
 const UPDATE_EVENT = `
     UPDATE lectures
     SET lecturer         = $1,
-        description      = $2,
-        location_id      = $3,
-        remote           = $4,
-        event_id         = $5,
-        duration         = $6,
-        title            = $7,
-        category_id      = $8,
-        max_participants = $9,
-        requirements     = $10,
-        preparations     = $11,
-        tags             = $12,
-        message          = $13,
-        draft            = $14,
-        updated_by       = $15
-    WHERE id = $16
+        lecturer_id      = $2,
+        description      = $3,
+        location_id      = $4,
+        remote           = $5,
+        event_id         = $6,
+        duration         = $7,
+        title            = $8,
+        category_id      = $9,
+        max_participants = $10,
+        requirements     = $11,
+        preparations     = $12,
+        tags             = $13,
+        message          = $14,
+        draft            = $15,
+        updated_by       = $16
+    WHERE id = $17
     RETURNING id
 `;
 
@@ -111,7 +119,7 @@ interface LecturesDB {
   listEventLectures: (id: string) => Promise<Lecture[]>;
   getByID: (id: string) => Promise<Lecture | null>;
   insert: (lecture: DLecture, id: string) => Promise<IDParam>;
-  update: (lecture: UpdatedLecture, id: string) => Promise<IDParam>;
+  update: (lecture: UpdatedDBLecture, id: string) => Promise<IDParam>;
   approve: (approved: boolean, id: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
@@ -180,6 +188,7 @@ const lecturesDB: LecturesDB = {
   async update(lecture, userID): Promise<IDParam> {
     const { rows } = await db.query(UPDATE_EVENT, [
       lecture.lecturer,
+      lecture.lecturerID,
       lecture.description,
       lecture.locationID,
       lecture.remote,

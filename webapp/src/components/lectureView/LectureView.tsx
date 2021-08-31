@@ -150,7 +150,7 @@ const LectureView = ({
         <div className={classes.row}>
           <Typography variant="h5">{lecture.title}</Typography>
           <div>
-            {editIcon && (
+            {editIcon && lecture.lecturer && (
               <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`}>
                 <EditIcon />
               </IconButton>

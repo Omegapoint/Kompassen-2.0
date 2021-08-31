@@ -154,6 +154,10 @@ export interface UpdatedLecture extends NewLecture {
   id: string;
 }
 
+export interface UpdatedDBLecture extends UpdatedLecture {
+  lecturerID: string | null;
+}
+
 export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
 
 export interface Lecture extends DLecture, DefaultTime {
