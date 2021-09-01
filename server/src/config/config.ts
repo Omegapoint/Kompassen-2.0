@@ -31,7 +31,7 @@ const config = {
   port: PORT || '8080',
   oidc: {
     azure: {
-      clientID: OIDC_CLIENT_ID || 'bcc1714d-6fcc-458b-b94e-7f7ea69c798a',
+      clientID: OIDC_CLIENT_ID || '7dbe946a-2e34-4739-9734-84768447312f',
       tenantID: OIDC_TENANT_ID || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
       redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
     },

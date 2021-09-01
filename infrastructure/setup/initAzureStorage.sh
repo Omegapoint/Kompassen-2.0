@@ -7,8 +7,8 @@ GROUP="$NAME"
 LOCATION="West Europe"
 
 if [ "$1" == "--delete" ] || [ "$1" == "-d" ]; then
-    az group delete -n $GROUP
     az storage account delete -n $NAME -g $GROUP
+    az group delete -n $GROUP
 else
     az group create -l "$LOCATION" -n $GROUP
     az storage account create -n $NAME -g $GROUP --sku Standard_LRS

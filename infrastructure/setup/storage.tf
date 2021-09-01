@@ -24,3 +24,15 @@ resource "azurerm_storage_blob" "app" {
     ignore_changes = [content_md5]
   }
 }
+
+resource "local_file" "production_tfvars" {
+  content  = <<EOF
+location  = "West Europe"
+name      = "kompassen2"
+git_repo  = "Kompassen-2.0"
+client_id = "${azuread_application.app.application_id}"
+tenant_id = "${azuread_service_principal.app.application_tenant_id}"
+
+EOF
+  filename = "${path.module}/../production/terraform.tfvars"
+}

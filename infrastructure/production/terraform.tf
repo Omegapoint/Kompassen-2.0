@@ -50,8 +50,8 @@ resource "azurerm_app_service" "server" {
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
 
     PORT              = "8080"
-    OIDC_CLIENT_ID    = "bcc1714d-6fcc-458b-b94e-7f7ea69c798a"
-    OIDC_TENANT_ID    = "3b68c6c1-04d4-4e86-875f-e48fa80b9529"
+    OIDC_CLIENT_ID    = var.client_id
+    OIDC_TENANT_ID    = var.tenant_id
     OIDC_REDIRECT_URL = "https://${var.name}.azurewebsites.net"
 
     PG_USERNAME = "${azurerm_postgresql_server.ps.administrator_login}@${var.name}"
