@@ -6,6 +6,7 @@ import {
   NewLecture,
   NewLectureIdea,
   UpdatedLecture,
+  UpdatedLectureIdea,
 } from '../../lib/types';
 
 const defaultSchema = {
@@ -37,6 +38,11 @@ const newIdea = Joi.object<NewLectureIdea>({
   ...defaultSchema,
 });
 
+const updatedIdea = Joi.object<UpdatedLectureIdea>({
+  id: Joi.string().uuid(),
+  ...defaultSchema,
+});
+
 const newLecture = Joi.object<NewLecture>({
   ...defaultSchema,
   ...other,
@@ -52,6 +58,6 @@ const listLectures = Joi.object<ListLecturesParams>({
   mine: Joi.string().valid('true', 'false'),
 });
 
-const lectures = { newLecture, updateLecture, newIdea, listLectures, approve };
+const lectures = { newLecture, updateLecture, newIdea, listLectures, approve, updatedIdea };
 
 export default lectures;

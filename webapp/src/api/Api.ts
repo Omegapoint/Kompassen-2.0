@@ -15,6 +15,7 @@ import {
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
+  UpdatedLectureIdea,
   UpdatedLectureRoom,
   UpdatedUser,
   User,
@@ -105,6 +106,7 @@ export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
 export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;
 export const createLectureIdea = apiBuilder<IDParam, NewLectureIdea>('/lecture/idea').post;
+export const updateLectureIdea = apiBuilder<IDParam, UpdatedLectureIdea>('/lecture/idea').put;
 export const listLectureCategories = apiURLParamsBuilder<CategoryStats[], IDParam>(
   '/lecture/:id/category'
 ).get;

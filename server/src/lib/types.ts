@@ -131,6 +131,13 @@ interface BaseLectureIdea {
 
 export type NewLectureIdea = BaseLectureIdea;
 
+export interface UpdatedLectureIdea {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+}
+
 export interface NewLecture extends BaseLectureIdea {
   locationID: string | null;
   remote: boolean | null;

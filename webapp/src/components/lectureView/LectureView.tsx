@@ -15,11 +15,13 @@ import { Fragment, ReactElement } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
+import UpdateLectureIdea from '../updateLectureIdea/UpdateLectureIdea';
 
 interface StyleProps {
   categoryColor?: string;
@@ -97,6 +99,7 @@ interface LectureViewProps {
   deleteIcon?: boolean;
   admin?: boolean;
   close?: () => void;
+  onSuccess?: () => unknown;
 }
 
 const LectureView = ({
@@ -106,6 +109,7 @@ const LectureView = ({
   deleteIcon = false,
   admin = false,
   close,
+  onSuccess,
 }: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
@@ -114,6 +118,7 @@ const LectureView = ({
   const locations = useAppSelector((state) => state.locations);
   const location = locations.find((e) => e.id === lecture.locationID)?.name;
   const eventDay = useEvent(lecture.eventID!);
+  const [open, { on, off }] = useBoolean();
 
   const { mutateAsync } = useMutation(approveLecture);
   const table = [
@@ -135,6 +140,14 @@ const LectureView = ({
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
     <div className={classes.container}>
+      <UpdateLectureIdea
+        open={open}
+        close={() => {
+          if (onSuccess) onSuccess();
+          off();
+        }}
+        lecture={lecture}
+      />
       {isUnpublishedIdea ? (
         <div className={classes.header}>
           <Typography>Idé</Typography>
@@ -150,11 +163,16 @@ const LectureView = ({
         <div className={classes.row}>
           <Typography variant="h5">{lecture.title}</Typography>
           <div>
-            {editIcon && lecture.lecturer && (
-              <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`}>
-                <EditIcon />
-              </IconButton>
-            )}
+            {editIcon &&
+              (isUnpublishedIdea ? (
+                <IconButton onClick={on}>
+                  <EditIcon />
+                </IconButton>
+              ) : (
+                <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`}>
+                  <EditIcon />
+                </IconButton>
+              ))}
             {deleteIcon && (
               <IconButton onClick={handleDelete}>
                 <DeleteIcon />

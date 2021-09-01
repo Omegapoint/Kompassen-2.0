@@ -9,6 +9,7 @@ import {
   NewLecture,
   NewLectureIdea,
   UpdatedLecture,
+  UpdatedLectureIdea,
 } from '../../lib/types';
 import { lectureIdeasWS } from '../../ws/defaultWS';
 import {
@@ -20,6 +21,7 @@ import {
 interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
   createIdea: (req: Request<null, null, NewLectureIdea>, res: Response) => Promise<void>;
+  updateIdea: (req: Request<null, null, UpdatedLectureIdea>, res: Response) => Promise<void>;
   update: (req: Request<null, null, UpdatedLecture>, res: Response) => Promise<void>;
   approve: (req: Request<null, null, Approved>, res: Response) => Promise<void>;
   getByID: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
@@ -60,6 +62,15 @@ const lectures: Handlers = {
       },
       userID
     );
+
+    const lecture = await lecturesDB.getByID(item.id);
+    lectureIdeasWS.onCreated(lecture as Lecture);
+    onEventLectureCreate(lecture as Lecture);
+
+    res.send(item);
+  },
+  async updateIdea({ body }, res) {
+    const item = await lecturesDB.updateIdea(body);
 
     const lecture = await lecturesDB.getByID(item.id);
     lectureIdeasWS.onCreated(lecture as Lecture);

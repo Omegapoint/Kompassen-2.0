@@ -5,6 +5,7 @@ import { deleteLecture, listLectures } from '../../api/Api';
 import LectureView from '../../components/lectureView/LectureView';
 import BigLoader from '../../components/loader/BigLoader';
 import PageNav, { ILectureItems, INavItem } from '../../components/pageNav/PageNav';
+import useCacheUpdater from '../../hooks/useCacheUpdater';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
@@ -42,22 +43,19 @@ const useMyLectures = (data?: Lecture[]) => {
 
 const MyLectures = (): ReactElement => {
   const classes = useStyles();
-  const [forceUpdate, setForceUpdate] = useState('');
   const [active, setActive] = useState<INavItemKind>('ideas');
-  const { data, isLoading, refetch } = useQuery(`listMyLectures-${forceUpdate}`, () =>
+  const [cacheKey, updateCache] = useCacheUpdater();
+  const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () =>
     listLectures({ mine: 'true' })
   );
+
   const deleteLectureRequest = useMutation(deleteLecture);
   const items = useMyLectures(data);
 
   const handleDelete = async (cardID: string) => {
     await deleteLectureRequest.mutateAsync({ id: cardID });
-    setForceUpdate(cardID);
+    updateCache();
   };
-
-  useEffect(() => {
-    refetch();
-  }, [forceUpdate, refetch]);
 
   if (isLoading || !items) return <BigLoader />;
   const currentItems = items[active];
@@ -78,6 +76,7 @@ const MyLectures = (): ReactElement => {
           lecture={e}
           editIcon={active !== 'past'}
           deleteIcon
+          onSuccess={updateCache}
           handleDelete={() => handleDelete(e.id)}
         />
       ))}

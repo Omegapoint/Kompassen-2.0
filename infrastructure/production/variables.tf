@@ -9,3 +9,12 @@ variable "name" {
 variable "git_repo" {
   type = string
 }
+
+variable "client_id" {
+  type = string
+}
+
+variable "tenant_id" {
+  type = string
+}
+

@@ -8,6 +8,7 @@ import {
   Lecture,
   TagStats,
   UpdatedDBLecture,
+  UpdatedLectureIdea,
 } from '../lib/types';
 
 export const SELECT_LECTURES = `
@@ -98,6 +99,15 @@ const UPDATE_EVENT = `
     RETURNING id
 `;
 
+const UPDATE_LECTURE_IDEA = `
+    UPDATE lectures
+    SET title       = $1,
+        description = $2,
+        tags        = $3
+    WHERE id = $4
+    RETURNING id
+`;
+
 const APPROVE_LECTURE = `
     UPDATE lectures
     SET approved = $1
@@ -120,6 +130,7 @@ interface LecturesDB {
   getByID: (id: string) => Promise<Lecture | null>;
   insert: (lecture: DLecture, id: string) => Promise<IDParam>;
   update: (lecture: UpdatedDBLecture, id: string) => Promise<IDParam>;
+  updateIdea: (lecture: UpdatedLectureIdea) => Promise<IDParam>;
   approve: (approved: boolean, id: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
@@ -203,6 +214,16 @@ const lecturesDB: LecturesDB = {
       lecture.message,
       lecture.draft,
       userID,
+      lecture.id,
+    ]);
+    return rows[0];
+  },
+
+  async updateIdea(lecture): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_LECTURE_IDEA, [
+      lecture.title,
+      lecture.description,
+      lecture.tags,
       lecture.id,
     ]);
     return rows[0];
