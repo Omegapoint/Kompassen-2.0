@@ -68,12 +68,12 @@ const List = ({ event, time, organisation, openEdit }: ListProps): ReactElement 
     openEdit();
   };
 
-  function handleListKeyDown(e: KeyboardEvent) {
+  const handleListKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Tab') {
       e.preventDefault();
       off();
     }
-  }
+  };
 
   const prevOpen = useRef(open);
   useEffect(() => {

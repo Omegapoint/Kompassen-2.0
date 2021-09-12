@@ -72,7 +72,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "random_password" "password" {
-  length           = 16
+  length           = 42
   special          = true
   override_special = "_%@"
 }
@@ -85,7 +85,7 @@ resource "azurerm_postgresql_server" "ps" {
   administrator_login          = "pgadmin"
   administrator_login_password = random_password.password.result
 
-  sku_name   = "GP_Gen5_2"
+  sku_name   = "B_Gen5_1"
   version    = "11"
   storage_mb = 640000
 
@@ -98,38 +98,46 @@ resource "azurerm_postgresql_server" "ps" {
   ssl_minimal_tls_version_enforced = "TLS1_2"
 }
 
-resource "azurerm_virtual_network" "vn" {
-  name                = var.name
-  resource_group_name = var.name
-  location            = var.location
-
-  address_space = ["172.17.0.0/16"]
-}
-
-resource "azurerm_subnet" "default" {
-  name                 = "default"
-  resource_group_name  = var.name
-  virtual_network_name = azurerm_virtual_network.vn.name
-  address_prefixes     = ["172.17.0.0/24"]
-  service_endpoints    = ["Microsoft.Sql"]
-
-  delegation {
-    name = "Microsoft.Web.serverFarms"
-    service_delegation {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-resource "azurerm_postgresql_virtual_network_rule" "vnr" {
+resource "azurerm_postgresql_firewall_rule" "fr" {
   name                = var.name
   resource_group_name = var.name
   server_name         = azurerm_postgresql_server.ps.name
-  subnet_id           = azurerm_subnet.default.id
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "255.255.255.255"
 }
 
-resource "azurerm_app_service_virtual_network_swift_connection" "vnsc" {
-  app_service_id = azurerm_app_service.server.id
-  subnet_id      = azurerm_subnet.default.id
-}
+# resource "azurerm_virtual_network" "vn" {
+#   name                = var.name
+#   resource_group_name = var.name
+#   location            = var.location
+
+#   address_space = ["172.17.0.0/16"]
+# }
+
+# resource "azurerm_subnet" "default" {
+#   name                 = "default"
+#   resource_group_name  = var.name
+#   virtual_network_name = azurerm_virtual_network.vn.name
+#   address_prefixes     = ["172.17.0.0/24"]
+#   service_endpoints    = ["Microsoft.Sql"]
+
+#   delegation {
+#     name = "Microsoft.Web.serverFarms"
+#     service_delegation {
+#       name    = "Microsoft.Web/serverFarms"
+#       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+#     }
+#   }
+# }
+
+# resource "azurerm_postgresql_virtual_network_rule" "vnr" {
+#   name                = var.name
+#   resource_group_name = var.name
+#   server_name         = azurerm_postgresql_server.ps.name
+#   subnet_id           = azurerm_subnet.default.id
+# }
+
+# resource "azurerm_app_service_virtual_network_swift_connection" "vnsc" {
+#   app_service_id = azurerm_app_service.server.id
+#   subnet_id      = azurerm_subnet.default.id
+# }
