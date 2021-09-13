@@ -2,7 +2,7 @@ import { createStyles, IconButton, makeStyles, Typography } from '@material-ui/c
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
-import alarmCircled from '../../assets/alarmCircled.svg';
+import { ReactComponent as AlarmCircled } from '../../assets/alarmCircled.svg';
 import useAzureUser from '../../hooks/UseAzureUser';
 import { padding } from '../../theme/Theme';
 import Discussion from './Discussion';
@@ -52,7 +52,9 @@ const BottomContainer = (): ReactElement => {
         Diskussion
       </Typography>
       <IconButton className={classes.icon}>
-        <img className={classes.icon} alt="arrow circled" src={alarmCircled} />
+        <div style={{ gridArea: 'icon' }}>
+          <AlarmCircled className={classes.icon} height="25px" width="25px" />
+        </div>
       </IconButton>
       <Typography className={classes.info} variant="subtitle1">
         {`Publicerat av ${name} ${date}`}
