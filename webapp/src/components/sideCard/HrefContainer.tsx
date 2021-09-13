@@ -1,7 +1,7 @@
 import { Link, makeStyles, Paper, Theme } from '@material-ui/core';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
-import longArrowCircled from '../../assets/longArrowCircled.svg';
+import { ReactComponent as LongArrowCircled } from '../../assets/longArrowCircled.svg';
 import { borderRadius, padding } from '../../theme/Theme';
 
 interface StyleProps {
@@ -37,7 +37,7 @@ const HrefContainer = ({ href, hrefText, hrefBarColor }: LinkContainerProps): Re
         {hrefText}
       </Link>
       <Link component={NavLink} to={href} className={classes.arrowIcon}>
-        <img alt="arrow circled" src={longArrowCircled} width="20px" height="20px" />
+        <LongArrowCircled width="20px" height="20px" />
       </Link>
     </Paper>
   );

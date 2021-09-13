@@ -1,20 +1,16 @@
-import { makeStyles, Theme, Typography } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, ReactNode } from 'react';
 import loginBg from '../../assets/loginBg.svg';
 import { fontFamilies } from '../../theme/Theme';
 
-interface StyleProps {
-  image: string;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
     height: '100vh',
   },
   image: {
-    background: ({ image }) => `url(${image})`,
+    background: `url(${loginBg})`,
     display: 'grid',
     alignContent: 'center',
     justifyContent: 'center',
@@ -35,7 +31,7 @@ interface GreetingPageProps {
 }
 
 const GreetingPage = ({ children }: GreetingPageProps): ReactElement => {
-  const classes = useStyles({ image: loginBg });
+  const classes = useStyles();
 
   return (
     <div className={classes.container}>
@@ -43,7 +39,7 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => {
         <Typography color="secondary" variant="body1" className={classes.largeHeader}>
           KomPass 2.0
         </Typography>
-        <Typography color="secondary" variant="h2" className={classes.mediumHeader}>
+        <Typography color="secondary" variant="h2">
           Skapa bättre kompetensdagar
         </Typography>
       </div>

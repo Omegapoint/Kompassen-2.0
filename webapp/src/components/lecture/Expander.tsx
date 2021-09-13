@@ -1,7 +1,7 @@
 import { Button, createStyles, IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
 import { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import shortArrowCircled from '../../assets/shortArrowCircled.svg';
+import { ReactComponent as ShortArrowCircled } from '../../assets/shortArrowCircled.svg';
 import { padding } from '../../theme/Theme';
 import LectureContext from './LectureContext';
 
@@ -27,7 +27,7 @@ const useStyles = makeStyles<Theme, StyleProps>(() =>
       justifyItems: 'center',
     },
     expandButton: {
-      '& img': {
+      '& svg': {
         width: '26px',
         height: '26px',
       },
@@ -66,7 +66,8 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
 
       <div className={classes.expandButtonContainer}>
         <IconButton className={classes.expandButton} onClick={expand}>
-          <img alt="arrow circled" src={shortArrowCircled} />
+          <ShortArrowCircled />
+          {/* <img alt="arrow circled" src={shortArrowCircled} /> */}
         </IconButton>
       </div>
     </>
