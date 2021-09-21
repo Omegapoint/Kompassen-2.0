@@ -7,8 +7,8 @@ resource "azurerm_app_service_plan" "asp" {
   reserved = true
 
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = "Basic"
+    size = "B1"
   }
 }
 
@@ -87,7 +87,7 @@ resource "azurerm_postgresql_server" "ps" {
 
   sku_name   = "B_Gen5_1"
   version    = "11"
-  storage_mb = 640000
+  storage_mb = 8192
 
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false
