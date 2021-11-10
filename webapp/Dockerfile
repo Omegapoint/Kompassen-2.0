@@ -1,5 +1,5 @@
 # Stage 0 - Building
-FROM node:alpine3.14 as build-stage
+FROM node:16.13-alpine as build-stage
 ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
 
