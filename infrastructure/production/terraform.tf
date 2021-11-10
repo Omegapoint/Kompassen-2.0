@@ -21,6 +21,7 @@ resource "azurerm_app_service" "webapp" {
 
   site_config {
     linux_fx_version = "DOCKER|kompassen2.azurecr.io/webapp:latest"
+    always_on        = true
   }
 
   app_settings = {
@@ -42,6 +43,7 @@ resource "azurerm_app_service" "server" {
 
   site_config {
     linux_fx_version = "DOCKER|kompassen2.azurecr.io/server:latest"
+    always_on        = true
   }
 
   app_settings = {
