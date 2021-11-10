@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { listEvents } from '../../api/Api';
@@ -25,6 +25,8 @@ const CompetenceDays = (): ReactElement => {
   const [ind, setInd] = useState(0);
 
   if (isLoading || !data) return <SmallLoader />;
+
+  if (!data.length) return <Typography>Här var det tomt</Typography>;
 
   return (
     <EventContext.Provider value={{ events: data, event: data[ind], ind, setInd }}>

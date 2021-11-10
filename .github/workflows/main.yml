@@ -76,7 +76,6 @@ jobs:
         id: azure_api_key
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.25.0
           inlineScript: "az webapp restart -g ${{ env.DEPLOY_NAME }} -n ${{ env.DEPLOY_NAME }}"
 
   build_and_deploy_server:
@@ -120,5 +119,4 @@ jobs:
         id: azure_api_key
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.25.0
           inlineScript: "az webapp restart -g ${{ env.DEPLOY_NAME }} -n ${{ env.DEPLOY_NAME }}-server"
