@@ -47,7 +47,7 @@ const vcsIcon = `
 const locations: Category[] = [
   {
     id: '38f265ef-14f5-4ee9-aa8e-bcf2e2fd2e3e',
-    name: 'Molnbaserat',
+    name: 'Omvärld, ideér och annat',
     icon: cloudIcon,
     color: '#F9BC2E',
     createdAt: sub(date, { months: 1 }),
@@ -57,7 +57,7 @@ const locations: Category[] = [
   },
   {
     id: '71c73381-68ed-4541-ae8f-04c68934e10f',
-    name: 'Utveckling',
+    name: 'Teknik och utveckling',
     icon: codeIcon,
     color: '#6FA5A9',
     createdAt: sub(date, { days: 1 }),
@@ -77,24 +77,14 @@ const locations: Category[] = [
   },
   {
     id: '8767533d-ae63-4781-be53-8e0cc36206ab',
-    name: 'Mjukt spår',
+    name: 'Team, kvalitet och metoder',
     icon: sunIcon,
     color: '#7BAC53',
     createdAt: sub(date, { days: 2 }),
     createdBy: users[0].id,
     updatedAt: sub(date, { days: 2 }),
     updatedBy: users[0].id,
-  },
-  {
-    id: 'c8a3e1b1-1449-42e7-ba78-47fada2e739f',
-    name: 'Versionshantering',
-    icon: vcsIcon,
-    color: '#967ECC',
-    createdAt: sub(date, { weeks: 1 }),
-    createdBy: users[0].id,
-    updatedAt: sub(date, { weeks: 1 }),
-    updatedBy: users[0].id,
-  },
+  }
 ];
 
 export default locations;
