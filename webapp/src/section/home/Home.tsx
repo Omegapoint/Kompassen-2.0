@@ -2,7 +2,6 @@ import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useEffect, useState } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import Filter from '../../components/filter/Filter';
-import Interested from '../../components/interested/Interested';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
 import SideCard from '../../components/sideCard/SideCard';
@@ -134,10 +133,10 @@ const Home = (): ReactElement => {
         <SideCard title="Trendar just nu">
           <WordCloud />
         </SideCard>
-        <SideCard title="Funderar på att hålla i ett pass?">
-          <Interested />
-        </SideCard>
         {/* TODO: Add some content to this */}
+        {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
+        {/*  <Interested /> */}
+        {/* </SideCard> */}
         {/* <SideCard title="Snabbguide för KomPass 2.0"> */}
         {/*  <QuickGuide /> */}
         {/* </SideCard> */}

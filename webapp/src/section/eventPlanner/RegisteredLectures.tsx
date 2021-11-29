@@ -6,6 +6,7 @@ import LectureCard from './LectureCard';
 
 interface RegisteredLecturesProps {
   lectures: Lecture[];
+  admin?: boolean;
 }
 
 const useStyles = makeStyles(() => ({
@@ -16,13 +17,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const RegisteredLectures = ({ lectures }: RegisteredLecturesProps): ReactElement => {
+const RegisteredLectures = ({ lectures, admin = false }: RegisteredLecturesProps): ReactElement => {
   const classes = useStyles();
 
   return (
     <div className={classes.container}>
       {lectures.map((e) => (
-        <LectureCard key={e.id} lecture={e} edit />
+        <LectureCard key={e.id} lecture={e} edit admin={admin} />
       ))}
     </div>
   );

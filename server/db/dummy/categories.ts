@@ -36,14 +36,6 @@ const sunIcon = `
 </svg>
 `;
 
-const vcsIcon = `
-<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 21.04 15.549'>
-    <path id='Icon_metro-versions'
-          d='M0,11.6H2.9V10.154H1.451v-5.8H2.9V2.9H0v8.7ZM8.7,0V14.506h11.6V0H8.7Zm8.7,11.6H11.6V2.9h5.8ZM4.352,13.055h2.9V11.6H5.8V2.9H7.253V1.451h-2.9Z'
-          transform='matrix(0.999, -0.052, 0.052, 0.999, 0, 1.063)' fill='#967ecc'/>
-</svg>
-`;
-
 const locations: Category[] = [
   {
     id: '38f265ef-14f5-4ee9-aa8e-bcf2e2fd2e3e',

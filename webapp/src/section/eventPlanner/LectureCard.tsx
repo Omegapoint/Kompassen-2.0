@@ -69,9 +69,15 @@ interface LectureCardProps {
   lecture: Lecture;
   edit?: boolean;
   startAt?: Date;
+  admin?: boolean;
 }
 
-const LectureCard = ({ lecture, edit = false, startAt }: LectureCardProps): ReactElement => {
+const LectureCard = ({
+  lecture,
+  edit = false,
+  startAt,
+  admin = false,
+}: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
   const classes = useStyles({
@@ -102,7 +108,7 @@ const LectureCard = ({ lecture, edit = false, startAt }: LectureCardProps): Reac
         </div>
 
         <div className={classes.right}>
-          {edit && (
+          {edit && admin && (
             <Button
               variant={lecture.approved ? undefined : 'contained'}
               color={lecture.approved ? undefined : 'primary'}
@@ -111,10 +117,15 @@ const LectureCard = ({ lecture, edit = false, startAt }: LectureCardProps): Reac
               Hantera
             </Button>
           )}
+          {edit && !admin && (
+            <Button variant="contained" color="primary" onClick={on}>
+              Visa
+            </Button>
+          )}
         </div>
         <Modal open={open} onClose={off} className={classes.modalContainer}>
           <div className={classes.modalSubcontainer}>
-            <LectureView lecture={lecture} admin close={off} />
+            <LectureView lecture={lecture} admin={admin} close={off} />
           </div>
         </Modal>
       </div>

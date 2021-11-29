@@ -1,6 +1,7 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useHistory } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
@@ -21,7 +22,7 @@ const listNewEvents = () => listEvents({ filter: 'new' });
 const CompetenceDays = (): ReactElement => {
   const classes = useStyles();
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
-
+  const history = useHistory();
   const [ind, setInd] = useState(0);
 
   if (isLoading || !data) return <SmallLoader />;
@@ -34,6 +35,14 @@ const CompetenceDays = (): ReactElement => {
         <div className={classes.container}>
           <DayPicker />
           <DaysToGo />
+          <Button
+            type="button"
+            color="primary"
+            variant="contained"
+            onClick={() => history.push(`/events/view/${data[ind].id}`)}
+          >
+            Se inskickade pass
+          </Button>
           <LectureStats />
         </div>
       )}
