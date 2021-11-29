@@ -72,7 +72,7 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
     comment: event?.comment || '',
     organisationID: event?.organisationID || organisations[0].id,
     rooms: [],
-    date: new Date(),
+    date: event?.startAt || new Date(),
     start: set(new Date(), {
       ...defaultTime,
       hours: event?.startAt.getHours() || 13,

@@ -9,7 +9,7 @@ const lecturesRoutes = (app: Express): void => {
   app.post('/lecture/idea', locked, validate(schema.lectures.newIdea), lectures.createIdea);
   app.put('/lecture/idea', locked, validate(schema.lectures.updatedIdea), lectures.updateIdea);
   app.put('/lecture', locked, validate(schema.lectures.updateLecture), lectures.update);
-  app.delete('/lecture/:id', admin, validate(schema.uuidParam, 'params'), lectures.delete);
+  app.delete('/lecture/:id', locked, validate(schema.uuidParam, 'params'), lectures.delete);
   app.get('/lecture/tag', locked, lectures.listTags);
   app.get(
     '/lecture/:id/category',
