@@ -13,19 +13,21 @@ const defaultSchema = {
   title: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
   description: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).required(),
   lecturer: Joi.string().allow(null),
-  tags: Joi.array().items(Joi.string().required()).required(),
+  tags: Joi.array().items(Joi.string()).required(),
 };
 
 const other = {
-  eventID: Joi.string().uuid(),
-  duration: Joi.number().max(1000 * 60),
-  categoryID: Joi.string().uuid(),
-  maxParticipants: Joi.number().min(0).max(1000),
+  eventID: Joi.string().uuid().required(),
+  duration: Joi.number()
+    .max(1000 * 60)
+    .required(),
+  categoryID: Joi.string().uuid().required(),
+  maxParticipants: Joi.number().min(0).max(1000).allow(null),
   locationID: Joi.string().min(STRING_MIN_LEN).max(SHORT_STRING_LEN).required(),
-  remote: Joi.boolean(),
-  requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
-  preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
-  message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN),
+  remote: Joi.boolean().required(),
+  requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
+  preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
+  message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   draft: Joi.boolean(),
 };
 
@@ -46,13 +48,13 @@ const updatedIdea = Joi.object<UpdatedLectureIdea>({
 const newLecture = Joi.object<NewLecture>({
   ...defaultSchema,
   ...other,
-}).options({ presence: 'required' });
+});
 
 const updateLecture = Joi.object<UpdatedLecture>({
   id: Joi.string().uuid(),
   ...defaultSchema,
   ...other,
-}).options({ presence: 'required' });
+});
 
 const listLectures = Joi.object<ListLecturesParams>({
   mine: Joi.string().valid('true', 'false'),

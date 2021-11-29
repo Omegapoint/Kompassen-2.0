@@ -107,6 +107,7 @@ const invalidMinutes = (str: string) => {
 };
 
 const invalidParticipants = (str: string) => {
+  if (!str) return false;
   const val = parseInt(str, 10);
   if (Number.isNaN(val)) return true;
   return val < 0 || val > 100000;
@@ -114,7 +115,8 @@ const invalidParticipants = (str: string) => {
 
 const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
 const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
-const invalidTags = (str: string) => str.split(' ').filter((e) => e).length === 0;
+const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN;
+const invalidTags = (str: string) => !!str.split(' ').find((e) => e.length > 50);
 
 interface FormValues {
   locationID: string;
@@ -144,10 +146,18 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
       maxParticipantsText,
       invalidParticipants
     ),
-    requirements: useFormValidation(values.requirements, requirementsText, invalidLongString),
-    preparations: useFormValidation(values.preparations, preparationsText, invalidLongString),
+    requirements: useFormValidation(
+      values.requirements,
+      requirementsText,
+      invalidNullableLongString
+    ),
+    preparations: useFormValidation(
+      values.preparations,
+      preparationsText,
+      invalidNullableLongString
+    ),
     tags: useFormValidation(values.tags, tagsText, invalidTags),
-    message: useFormValidation(values.message, messageText, invalidLongString),
+    message: useFormValidation(values.message, messageText, invalidNullableLongString),
   };
 
   return {
@@ -200,10 +210,10 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       eventID: values.eventID,
       duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
       categoryID: category.id,
-      maxParticipants: parseInt(values.maxParticipants, 10),
-      requirements: values.requirements,
-      preparations: values.preparations,
-      message: values.message,
+      maxParticipants: values.maxParticipants ? parseInt(values.maxParticipants, 10) : null,
+      requirements: values.requirements || null,
+      preparations: values.preparations || null,
+      message: values.message || null,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
@@ -350,6 +360,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           fullWidth
           onChange={handleChange}
           name="maxParticipants"
+          type="number"
           label="Max antal deltagare"
           variant="outlined"
           value={values.maxParticipants}

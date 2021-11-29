@@ -135,7 +135,15 @@ const lectures: Handlers = {
     res.send(items);
   },
   async delete({ params }, res) {
+    const { userID } = res.locals;
+
     const lecture = await lecturesDB.getByID(params.id);
+
+    if (lecture?.lecturerID && userID !== lecture?.lecturerID) {
+      httpError(res, 403, 'You cannot delete another lecturers lecture');
+      return;
+    }
+
     const item = await lecturesDB.delete(params.id);
     if (!item) {
       httpError(res, 404, 'Location not found');
