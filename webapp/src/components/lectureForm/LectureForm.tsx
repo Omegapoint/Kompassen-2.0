@@ -22,7 +22,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Lecture } from '../../lib/Types';
+import { Category, Event, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
 
@@ -170,6 +170,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
   const allCategories = useAppSelector((state) => state.categories);
+  const allOrganisations = useAppSelector((state) => state.organisations);
   const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
   const events = useAppSelector((state) => state.events);
@@ -241,6 +242,12 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   };
   const futureEvents = events.filter((e) => findEvent(e.id, (d) => d > new Date()));
 
+  const getEventName = (e: Event) => {
+    const orgName = allOrganisations.find((e1) => e1.id === e.organisationID)?.name;
+    const time = formatEventTime(e);
+    return `${orgName} - ${time}`;
+  };
+
   return (
     <form>
       <Paper className={classes.formContainer}>
@@ -278,7 +285,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             >
               {futureEvents.map((e) => (
                 <MenuItem key={e.id} value={e.id}>
-                  {formatEventTime(e)}
+                  {getEventName(e)}
                 </MenuItem>
               ))}
             </Select>
