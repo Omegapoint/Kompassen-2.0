@@ -5,6 +5,7 @@ import { isAdmin } from '../lib/Lib';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
 import EventPlanner from '../section/eventPlanner/EventPlanner';
 import Events from '../section/events/Events';
+import EventViewer from '../section/eventViewer/EventViewer';
 import Home from '../section/home/Home';
 import Lecture from '../section/lecture/Lecture';
 import MyLectures from '../section/myLectures/MyLectures';
@@ -51,6 +52,11 @@ export const appRoutes: AppRoute[] = [
     name: 'Inställningar',
     path: '/settings',
     Component: Settings,
+  },
+  {
+    name: 'Planera event',
+    path: '/events/view/:id',
+    Component: EventViewer,
   },
   {
     name: 'Planera event',
