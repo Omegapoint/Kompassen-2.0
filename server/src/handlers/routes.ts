@@ -7,7 +7,6 @@ import eventsRoutes from './events/routes';
 import lectureLikesRoutes from './lectureLikes/routes';
 import lectureRoomsRoutes from './lectureRooms/routes';
 import lecturesRoutes from './lectures/routes';
-import locationRoutes from './locations/routes';
 import loginRoutes from './login/routes';
 import organisationRoutes from './organisations/routes';
 import userRoutes from './users/routes';
@@ -31,7 +30,6 @@ const setupExpress = (): Express => {
     categoriesRoutes,
     eventsRoutes,
     lecturesRoutes,
-    locationRoutes,
     organisationRoutes,
     loginRoutes,
     userRoutes,

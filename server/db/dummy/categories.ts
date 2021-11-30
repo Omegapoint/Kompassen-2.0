@@ -36,7 +36,7 @@ const sunIcon = `
 </svg>
 `;
 
-const locations: Category[] = [
+const categories: Category[] = [
   {
     id: '38f265ef-14f5-4ee9-aa8e-bcf2e2fd2e3e',
     name: 'Omvärld, ideér och annat',
@@ -79,4 +79,4 @@ const locations: Category[] = [
   }
 ];
 
-export default locations;
+export default categories;

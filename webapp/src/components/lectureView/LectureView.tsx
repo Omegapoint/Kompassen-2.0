@@ -7,6 +7,7 @@ import { Fragment, ReactElement } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import useAzureUser from '../../hooks/UseAzureUser';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
 import { useAppSelector } from '../../lib/Lib';
@@ -36,11 +37,15 @@ const LectureView = ({
 }: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
+  const events = useAppSelector((state) => state.events);
+  const event = events.find((e) => e.id === lecture.eventID);
+  const organisations = useAppSelector((state) => state.organisations);
+  const organisation = organisations.find((e) => e.id === event?.organisationID);
+
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
-  const locations = useAppSelector((state) => state.locations);
-  const location = locations.find((e) => e.id === lecture.locationID)?.name;
   const eventDay = useEvent(lecture.eventID!);
   const [open, { on, off }] = useBoolean();
+  const { name: createdBy } = useAzureUser(lecture.createdBy);
 
   const { mutateAsync } = useMutation(approveLecture);
   const table = [
@@ -112,7 +117,7 @@ const LectureView = ({
                 {formatDayTime(eventDay)}
               </Typography>
             )}
-            <Typography sx={{ background: colors.blue }}>{location}</Typography>
+            <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
             <Typography
               sx={{
                 borderRadius: `0 ${borderRadius.standard} 0 0`,
@@ -154,7 +159,9 @@ const LectureView = ({
           </div>
         </Box>
         <Typography sx={{ marginBottom: padding.standard }}>
-          {`Anmäld av ${lecture.lecturer} den ${time}`}
+          {lecture.lecturer
+            ? `Anmäld av ${lecture.lecturer} den ${time}`
+            : `Skapad av ${createdBy} den ${time}`}
         </Typography>
         <Box
           sx={{

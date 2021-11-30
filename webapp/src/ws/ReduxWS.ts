@@ -58,5 +58,4 @@ function genUseReduxWS<T>(name: string, reduxActions: Action<T>): () => boolean 
 
 export const useCategoriesWS = genUseReduxWS('categories', actions.categories);
 export const useEventsWS = genUseReduxWS('events', actions.events);
-export const useLocationsWS = genUseReduxWS('locations', actions.locations);
 export const useOrganisationsWS = genUseReduxWS('organisations', actions.organisations);

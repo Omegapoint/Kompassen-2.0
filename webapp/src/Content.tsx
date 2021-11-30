@@ -13,7 +13,7 @@ import { setSocket } from './reducers/session/actions';
 import { setUser } from './reducers/user/actions';
 import Router from './router/Router';
 import { padding } from './theme/Theme';
-import { useCategoriesWS, useEventsWS, useLocationsWS, useOrganisationsWS } from './ws/ReduxWS';
+import { useCategoriesWS, useEventsWS, useOrganisationsWS } from './ws/ReduxWS';
 
 function useFetchDispatch<Res>(
   key: string,
@@ -37,7 +37,6 @@ function useFetchDispatch<Res>(
 const useInit = () => {
   const categoriesReady = useCategoriesWS();
   const eventsReady = useEventsWS();
-  const locationsReady = useLocationsWS();
   const organisationsReady = useOrganisationsWS();
   const user = useFetchDispatch('user', getUser, setUser);
 
@@ -54,8 +53,7 @@ const useInit = () => {
     })();
   }, [dispatch, apiToken]);
 
-  const finished =
-    user.finished && locationsReady && categoriesReady && eventsReady && organisationsReady;
+  const finished = user.finished && categoriesReady && eventsReady && organisationsReady;
 
   return { error: user.error, loading: !finished };
 };

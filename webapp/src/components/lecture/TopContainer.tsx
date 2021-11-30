@@ -15,9 +15,6 @@ const iconStyle = { width: '20px', height: '20px' };
 const getAnnotation = (lecture: Lecture): string | undefined =>
   lecture.lecturer === null ? 'Söker passhållare' : 'Feedback önskas';
 
-const formatInfoBar = (location?: string | null, annotation?: string | null) =>
-  [location, annotation].filter((e) => e).join(' • ');
-
 const formatTags = (tags: string[]) =>
   tags.map((e) => (
     <Typography key={e} variant="subtitle2">
@@ -29,21 +26,12 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const { lecture, chat } = useContext(LectureContext);
   const annotation = getAnnotation(lecture);
   const user = useAppSelector((state) => state.user);
-  const locations = useAppSelector((state) => state.locations);
-  const location = locations.find((e) => e.id === lecture.locationID)?.name as string;
-
   const likes = lecture.likes?.length || 0;
-
   const likeMutation = useMutation(likeLecture);
   const unlikeMutation = useMutation(unlikeLecture);
+  const like = () => likeMutation.mutate({ id: lecture.id });
+  const unlike = () => unlikeMutation.mutate({ id: lecture.id });
 
-  const like = () => {
-    likeMutation.mutate({ id: lecture.id });
-  };
-
-  const unlike = () => {
-    unlikeMutation.mutate({ id: lecture.id });
-  };
   return (
     <Box
       sx={{
@@ -67,7 +55,7 @@ const TopContainer = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
         }}
         variant="subtitle1"
       >
-        {formatInfoBar(location, annotation)}
+        {annotation}
       </Typography>
       <Box
         sx={{

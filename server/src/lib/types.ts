@@ -74,21 +74,6 @@ export interface User extends BaseUser {
   updatedAt: Date | null;
 }
 
-// Location
-interface BaseLocation {
-  name: string;
-}
-
-export type NewLocation = BaseLocation;
-
-export interface UpdatedLocation extends BaseLocation {
-  id: string;
-}
-
-export interface Location extends BaseLocation, DefaultTime {
-  id: string;
-}
-
 // Organisation
 interface BaseOrganisation {
   name: string;
@@ -139,7 +124,6 @@ export interface UpdatedLectureIdea {
 }
 
 export interface NewLecture extends BaseLectureIdea {
-  locationID: string | null;
   remote: boolean | null;
   eventID: string | null;
   duration: number | null;

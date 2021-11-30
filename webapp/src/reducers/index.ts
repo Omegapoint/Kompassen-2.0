@@ -1,7 +1,6 @@
 import { combineReducers, createStore } from 'redux';
 import categories from './categories';
 import events from './events';
-import locations from './locations';
 import loginInfo from './loginInfo';
 import organisations from './organisations';
 import session from './session';
@@ -13,7 +12,6 @@ export type AppDispatch = typeof store.dispatch;
 const rootReducer = combineReducers({
   user,
   session,
-  locations,
   categories,
   organisations,
   events,

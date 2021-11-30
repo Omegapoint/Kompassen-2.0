@@ -1,7 +1,6 @@
 import { DBLecture } from '../../src/lib/types';
 import categories from './categories';
 import events from './events';
-import locations from './locations';
 import users from './users';
 
 const date = new Date();
@@ -14,7 +13,6 @@ const lectures: DBLecture[] = [
     description: 'Vi tänker gå igenom lite grejer runt azure med en pecha kucha kanske.',
     lecturer: null,
     lecturerID: null,
-    locationID: locations[0].id,
     remote: null,
     eventID: null,
     duration: null,
@@ -38,7 +36,6 @@ const lectures: DBLecture[] = [
     description: 'Vi löser den stora frågan, är elixir världens bästa programspråk?',
     lecturer: 'Jonas Sjödin',
     lecturerID: users[0].id,
-    locationID: locations[0].id,
     eventID: events[1].id,
     duration: 4500,
     remote: false,
@@ -62,7 +59,6 @@ const lectures: DBLecture[] = [
     description: 'Vi löser den stora frågan, är kotlin världens bästa programspråk?',
     lecturer: 'Mirjam Borén',
     lecturerID: users[1].id,
-    locationID: locations[0].id,
     remote: true,
     eventID: events[1].id,
     duration: 3600,

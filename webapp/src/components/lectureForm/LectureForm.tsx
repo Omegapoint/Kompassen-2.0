@@ -64,7 +64,6 @@ const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN
 const invalidTags = (str: string) => !!str.split(' ').find((e) => e.length > 50);
 
 interface FormValues {
-  locationID: string;
   remote: string;
   eventID: string;
   hours: string;
@@ -112,7 +111,6 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 };
 // The more complex form to create a new lecture
 const LectureForm = ({ data }: LectureFormProps): ReactElement => {
-  const locations = useAppSelector((state) => state.locations);
   const allCategories = useAppSelector((state) => state.categories);
   const allOrganisations = useAppSelector((state) => state.organisations);
   const categories = allCategories.filter((e) => e.name !== 'Information');
@@ -123,8 +121,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const navigate = useNavigate();
 
   const defaultFormValue = {
-    locationID:
-      locations.find((location) => location.id === data?.locationID)?.id || locations[0].id,
     remote: (data?.remote || false).toString(),
     eventID: events.find((event) => event.id === data?.eventID)?.id || '',
     hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '',
@@ -157,7 +153,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             .filter((e) => e)
         ),
       ],
-      locationID: values.locationID,
       remote: values.remote === 'true',
       eventID: values.eventID,
       duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
@@ -215,16 +210,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
         >
           {data ? 'Redigera pass till kompetensdag' : 'Anmäl pass till kompetensdag'}
         </Typography>
-        <div>
-          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-            Plats
-          </FormLabel>
-          <RadioGroup name="locationID" onChange={handleChange} value={values.locationID}>
-            {locations.map((e) => (
-              <FormControlLabel key={e.name} value={e.id} control={<Radio />} label={e.name} />
-            ))}
-          </RadioGroup>
-        </div>
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Kan delta på distans

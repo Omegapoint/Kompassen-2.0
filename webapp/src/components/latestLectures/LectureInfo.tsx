@@ -1,7 +1,7 @@
 import { WbIncandescent } from '@mui/icons-material';
 import { Paper, Typography } from '@mui/material';
 import { ReactElement } from 'react';
-import { useCategory, useLocation } from '../../hooks/UseReduxState';
+import { useCategory } from '../../hooks/UseReduxState';
 import { formatImgAsSVG } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
@@ -14,7 +14,6 @@ interface LectureInfoProps {
 const LectureInfo = ({ lecture }: LectureInfoProps): ReactElement => {
   const formattedDate = formatDate(lecture.updatedAt);
   const category = useCategory(lecture.categoryID || '');
-  const location = useLocation(lecture.locationID || '');
 
   return (
     <Paper
@@ -43,7 +42,7 @@ const LectureInfo = ({ lecture }: LectureInfoProps): ReactElement => {
         />
       )}
       <Typography variant="h6">{lecture.title}</Typography>
-      <Typography>{[formattedDate, location?.name].filter((e) => e).join(' • ')}</Typography>
+      <Typography>{formattedDate}</Typography>
     </Paper>
   );
 };
