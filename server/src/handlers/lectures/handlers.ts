@@ -48,7 +48,6 @@ const lectures: Handlers = {
         ...body,
         lecturerID,
         idea: true,
-        locationID: null,
         remote: null,
         eventID: null,
         preparations: null,
@@ -115,7 +114,7 @@ const lectures: Handlers = {
   async getByID({ params }, res) {
     const item = await lecturesDB.getByID(params.id);
     if (!item) {
-      httpError(res, 404, 'Location not found');
+      httpError(res, 404, 'Lecture not found');
       return;
     }
     res.send(item);
@@ -146,7 +145,7 @@ const lectures: Handlers = {
 
     const item = await lecturesDB.delete(params.id);
     if (!item) {
-      httpError(res, 404, 'Location not found');
+      httpError(res, 404, 'Lecture not found');
       return;
     }
     if (lecture?.idea) lectureIdeasWS.onDelete({ id: params.id });

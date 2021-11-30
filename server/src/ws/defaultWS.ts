@@ -2,9 +2,8 @@ import { Socket } from 'socket.io';
 import categoriesDB from '../database/categories';
 import eventsDB from '../database/events';
 import lecturesDB from '../database/lecture';
-import locationsDB from '../database/locations';
 import organisationsDB from '../database/organisations';
-import { Category, Event, IDParam, Lecture, Location, Organisation } from '../lib/types';
+import { Category, Event, IDParam, Lecture, Organisation } from '../lib/types';
 import { users } from './types';
 
 function defaultWS<T>(name: string, setupFn: () => Promise<unknown>) {
@@ -39,5 +38,4 @@ function defaultWS<T>(name: string, setupFn: () => Promise<unknown>) {
 export const lectureIdeasWS = defaultWS<Lecture>('lectureIdeas', () => lecturesDB.list(true));
 export const categoriesWS = defaultWS<Category>('categories', categoriesDB.list);
 export const eventsWS = defaultWS<Event>('events', eventsDB.list);
-export const locationsWS = defaultWS<Location>('locations', locationsDB.list);
 export const organisationsWS = defaultWS<Organisation>('organisations', organisationsDB.list);

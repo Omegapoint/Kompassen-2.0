@@ -6,7 +6,6 @@ import categories from './categories/schema';
 import events from './events/schema';
 import lectureRooms from './lectureRooms/schema';
 import lectures from './lectures/schema';
-import locations from './locations/schema';
 import organisations from './organisations/schema';
 import users from './users/schema';
 
@@ -35,7 +34,6 @@ const schema = {
   events,
   users,
   lectureRooms,
-  locations,
   categories,
   lectures,
   uuidParam,

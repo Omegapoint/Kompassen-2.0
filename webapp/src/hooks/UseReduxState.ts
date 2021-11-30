@@ -1,5 +1,5 @@
 import { useAppSelector } from '../lib/Lib';
-import { Category, Event, Location, Organisation } from '../lib/Types';
+import { Category, Event, Organisation } from '../lib/Types';
 
 export const useEvent = (id: string): Event | undefined => {
   const events = useAppSelector((state) => state.events);
@@ -14,9 +14,4 @@ export const useOrganisation = (id: string): Organisation | undefined => {
 export const useCategory = (id: string): Category | undefined => {
   const categories = useAppSelector((state) => state.categories);
   return categories.find((cat) => cat.id === id);
-};
-
-export const useLocation = (id: string): Location | undefined => {
-  const locations = useAppSelector((state) => state.locations);
-  return locations.find((loc) => loc.id === id);
 };
