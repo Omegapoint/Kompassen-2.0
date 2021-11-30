@@ -1,23 +1,10 @@
-import { createStyles, makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { listTags } from '../../api/Api';
 import { TagStats } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import Word from './Word';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: 'flex',
-      gridGap: padding.tiny,
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      padding: padding.small,
-    },
-  })
-);
 
 const differentColors = [
   colors.lightGreen,
@@ -28,7 +15,6 @@ const differentColors = [
 ];
 
 const WordCloud = (): ReactElement => {
-  const classes = useStyles();
   const { data } = useQuery('tags', () => listTags());
 
   const getTags = (tags: TagStats[]) => {
@@ -43,7 +29,16 @@ const WordCloud = (): ReactElement => {
   };
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'flex',
+        gridGap: padding.tiny,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: padding.small,
+      }}
+    >
       {getTags(data || []).map((e, i) => (
         <Word
           key={e.tag}
@@ -52,7 +47,7 @@ const WordCloud = (): ReactElement => {
           size={e.count}
         />
       ))}
-    </div>
+    </Box>
   );
 };
 

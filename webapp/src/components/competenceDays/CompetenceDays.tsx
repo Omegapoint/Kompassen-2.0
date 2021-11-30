@@ -1,7 +1,7 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
@@ -10,41 +10,32 @@ import DaysToGo from './DaysToGo';
 import EventContext from './EventContext';
 import LectureStats from './LectureStats';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridGap: padding.standard,
-  },
-}));
-
 const listNewEvents = () => listEvents({ filter: 'new' });
 
 const CompetenceDays = (): ReactElement => {
-  const classes = useStyles();
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [ind, setInd] = useState(0);
 
   if (isLoading || !data) return <SmallLoader />;
-
   if (!data.length) return <Typography>Här var det tomt</Typography>;
 
   return (
     <EventContext.Provider value={{ events: data, event: data[ind], ind, setInd }}>
       {data && (
-        <div className={classes.container}>
+        <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
           <DaysToGo />
           <Button
             type="button"
             color="primary"
             variant="contained"
-            onClick={() => history.push(`/events/view/${data[ind].id}`)}
+            onClick={() => navigate(`/events/view/${data[ind].id}`)}
           >
             Se inskickade pass
           </Button>
           <LectureStats />
-        </div>
+        </Box>
       )}
     </EventContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { Avatar, IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Avatar, Box, IconButton, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import useAzureUser from '../../hooks/UseAzureUser';
 import { useAppSelector } from '../../lib/Lib';
@@ -28,66 +28,58 @@ export const formatDate = (date: Date): string => {
   return `${date.getDate().toString()} ${monthNames[date.getMonth()]}`;
 };
 
-interface StyleProps {
-  isSender: boolean;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() => ({
-  subContainer: {
-    justifySelf: ({ isSender }) => (isSender ? 'end' : 'start'),
-    display: 'grid',
-    gridGap: padding.minimal,
-    gridAutoFlow: 'column',
-    alignItems: 'start',
-    maxWidth: '80%',
-    direction: ({ isSender }) => (isSender ? 'rtl' : 'ltr'),
-    padding: 0,
-  },
-  message: {
-    direction: 'ltr',
-    background: colors.lightBlue,
-    padding: padding.minimal,
-    borderRadius: borderRadius.standard,
-  },
-  date: {
-    alignSelf: 'center',
-  },
-  icon: {
-    padding: 0,
-    width: '36px',
-    height: '36px',
-  },
-  avatar: {
-    backgroundColor: colors.grey,
-    color: colors.white,
-    fontSize: '1rem',
-    width: '34px',
-    height: '34px',
-  },
-}));
-
 interface RowProps {
   message: LectureMessage;
 }
 
 const Row = ({ message }: RowProps): ReactElement => {
   const user = useAppSelector((state) => state.user);
-  const classes = useStyles({ isSender: message.userID === user.id });
+  const isSender = message.userID === user.id;
   const { initials, name } = useAzureUser(message.userID);
 
   return (
-    <div className={classes.subContainer}>
-      <IconButton className={classes.icon}>
-        <Avatar className={classes.avatar}>{initials}</Avatar>
+    <Box
+      sx={{
+        justifySelf: isSender ? 'end' : 'start',
+        display: 'grid',
+        gridGap: padding.minimal,
+        gridAutoFlow: 'column',
+        alignItems: 'start',
+        maxWidth: '80%',
+        direction: isSender ? 'rtl' : 'ltr',
+        padding: 0,
+      }}
+    >
+      <IconButton sx={{ padding: 0, width: '36px', height: '36px' }} size="large">
+        <Avatar
+          sx={{
+            backgroundColor: colors.grey,
+            color: colors.white,
+            fontSize: '1rem',
+            width: '34px',
+            height: '34px',
+          }}
+        >
+          {initials}
+        </Avatar>
       </IconButton>
       <div>
         <Typography variant="subtitle1">{name}</Typography>
-        <Typography className={classes.message}>{message.message}</Typography>
+        <Typography
+          sx={{
+            direction: 'ltr',
+            background: colors.lightBlue,
+            padding: padding.minimal,
+            borderRadius: borderRadius.standard,
+          }}
+        >
+          {message.message}
+        </Typography>
       </div>
-      <Typography variant="subtitle1" className={classes.date}>
+      <Typography variant="subtitle1" sx={{ alignSelf: 'center' }}>
         {formatDate(message.createdAt)}
       </Typography>
-    </div>
+    </Box>
   );
 };
 

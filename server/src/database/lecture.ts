@@ -136,7 +136,7 @@ interface LecturesDB {
 }
 
 const lecturesDB: LecturesDB = {
-  async list(idea = false, userID) {
+  async list(idea, userID) {
     const whereClause = idea ? 'WHERE l.idea = TRUE' : '';
     const userClause = userID ? 'WHERE l.lecturer_id = $1' : '';
     const { rows } = await db.query(

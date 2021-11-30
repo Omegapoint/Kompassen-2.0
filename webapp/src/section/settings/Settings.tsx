@@ -1,4 +1,4 @@
-import { createStyles, Divider, makeStyles, Typography } from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { updateUser } from '../../api/Api';
@@ -8,27 +8,7 @@ import { padding } from '../../theme/Theme';
 import Notifications from './Notifications';
 import Profile from './Profile';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      width: '100%',
-      display: 'grid',
-      gridTemplateRows: 'max-content auto auto auto auto',
-      gridGap: `${padding.medium} ${padding.large}`,
-      padding: '0 20px',
-      '& > :nth-child(1)': {
-        gridColumn: '1 / 2',
-      },
-    },
-    wrapper: {
-      display: 'grid',
-      gridGap: `${padding.small}`,
-    },
-  })
-);
-
 const Settings = (): ReactElement => {
-  const classes = useStyles();
   const user = useAppSelector((state) => state.user);
   const { mutate, isSuccess } = useMutation(updateUser);
   useInvalidateOnSuccess(isSuccess, 'user');
@@ -44,17 +24,25 @@ const Settings = (): ReactElement => {
   };
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'grid',
+        gridTemplateRows: 'max-content auto auto auto auto',
+        gridGap: `${padding.medium} ${padding.large}`,
+        padding: '0 20px',
+      }}
+    >
       <Typography variant="h1">Inställningar</Typography>
-      <div className={classes.wrapper}>
+      <Box sx={{ display: 'grid', gridGap: `${padding.small}` }}>
         <Typography variant="h2">Min Profil</Typography>
         <Divider />
         <Profile />
         <Typography variant="h2">Hantera Notiser</Typography>
         <Divider />
         <Notifications handleChange={handleChange} checked={checked} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

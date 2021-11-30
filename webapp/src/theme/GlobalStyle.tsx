@@ -1,10 +1,10 @@
-import { createStyles, makeStyles } from '@material-ui/core';
+import MuiGlobalStyles from '@mui/material/GlobalStyles';
 import { ReactElement } from 'react';
 import { colors } from './Theme';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    '@global': {
+const GlobalStyles = (): ReactElement => (
+  <MuiGlobalStyles
+    styles={{
       body: {
         background: colors.background,
       },
@@ -13,13 +13,8 @@ const useStyles = makeStyles(() =>
         margin: 0,
         padding: 0,
       },
-    },
-  })
+    }}
+  />
 );
-
-const GlobalStyles = (): ReactElement => {
-  useStyles();
-  return <></>;
-};
 
 export default GlobalStyles;

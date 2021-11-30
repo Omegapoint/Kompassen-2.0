@@ -1,26 +1,18 @@
-import { CircularProgress, createStyles, makeStyles } from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
 import { ReactElement } from 'react';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    loadingScreen: {
+const BigLoader = (): ReactElement => (
+  <Box
+    sx={{
       display: 'grid',
       width: '100vw',
       height: '100vh',
       justifyContent: 'center',
       alignContent: 'center',
-    },
-  })
+    }}
+  >
+    <CircularProgress />
+  </Box>
 );
-
-const BigLoader = (): ReactElement => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.loadingScreen}>
-      <CircularProgress />
-    </div>
-  );
-};
 
 export default BigLoader;

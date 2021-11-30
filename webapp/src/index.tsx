@@ -1,6 +1,6 @@
 import { BrowserAuthOptions, PublicClientApplication } from '@azure/msal-browser';
 import { MsalProvider } from '@azure/msal-react';
-import { Button, makeStyles, MuiThemeProvider, Typography } from '@material-ui/core';
+import { Box, Button, StyledEngineProvider, ThemeProvider, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -18,21 +18,10 @@ import { padding, theme } from './theme/Theme';
 
 const queryClient = new QueryClient();
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridGap: padding.standard,
-    justifyItems: 'center',
-    alignContent: 'center',
-    height: '100vh',
-  },
-}));
-
 const Index = () => {
   const [loginInfo, setLoginInfo] = useState<null | BrowserAuthOptions>();
   const dispatch = useAppDispatch();
   const [error, setError] = useState(false);
-  const classes = useStyles();
 
   useEffect(() => {
     (async () => {
@@ -48,12 +37,20 @@ const Index = () => {
 
   if (error) {
     return (
-      <div className={classes.container}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridGap: padding.standard,
+          justifyItems: 'center',
+          alignContent: 'center',
+          height: '100vh',
+        }}
+      >
         <Typography variant="h6">Ett problem har uppstått, testa ladda om sidan.</Typography>
         <Button color="primary" variant="contained" onClick={() => window.location.reload()}>
           Ladda om
         </Button>
-      </div>
+      </Box>
     );
   }
 
@@ -73,9 +70,11 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <GlobalStyles />
-        <MuiThemeProvider theme={theme}>
-          <Index />
-        </MuiThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <Index />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

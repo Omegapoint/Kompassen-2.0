@@ -1,4 +1,4 @@
-import { Divider, makeStyles, Typography } from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { Fragment, ReactElement, useContext, useState } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import { useQuery } from 'react-query';
@@ -9,36 +9,9 @@ import SmallLoader from '../loader/SmallLoader';
 import ChartIcon from './ChartIcon';
 import EventContext from './EventContext';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridGap: padding.small,
-  },
-  subContainer: {
-    display: 'grid',
-    gridTemplateColumns: '25% 1fr',
-    gridGap: padding.small,
-  },
-  descContainer: {
-    display: 'grid',
-    gridGap: padding.minimal,
-    gridTemplateColumns: 'max-content 1fr max-content',
-    alignItems: 'center',
-    '& p': {
-      lineHeight: '1',
-    },
-  },
-  emptyLabel: {
-    display: 'grid',
-    gridColumn: 'span 3',
-    justifyItems: 'center',
-  },
-}));
-
 const size = 6;
 
 const LectureStats = (): ReactElement => {
-  const classes = useStyles();
   const [hovered, setHovered] = useState<number | undefined>(undefined);
   const { event } = useContext(EventContext);
   const { data, isLoading } = useQuery(`lectureCategories-${event.id}`, () =>
@@ -56,7 +29,7 @@ const LectureStats = (): ReactElement => {
     };
   });
   return (
-    <div className={classes.container}>
+    <Box sx={{ display: 'grid', gridGap: padding.small }}>
       <div>
         <Typography color="primary">Inskickade Pass</Typography>
         <Divider />
@@ -64,7 +37,7 @@ const LectureStats = (): ReactElement => {
       {isLoading ? (
         <SmallLoader />
       ) : (
-        <div className={classes.subContainer}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '25% 1fr', gridGap: padding.small }}>
           {mapped?.length ? (
             <>
               <PieChart
@@ -86,7 +59,15 @@ const LectureStats = (): ReactElement => {
                   />
                 )}
               />
-              <div className={classes.descContainer}>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridGap: padding.minimal,
+                  gridTemplateColumns: 'max-content 1fr max-content',
+                  alignItems: 'center',
+                  '& p': { lineHeight: '1' },
+                }}
+              >
                 {mapped?.map((e) => (
                   <Fragment key={e.title}>
                     <img alt="icon" width="12" height="12" src={formatImgAsSVG(e.title!)} />
@@ -94,14 +75,16 @@ const LectureStats = (): ReactElement => {
                     <Typography>{e.value}</Typography>
                   </Fragment>
                 ))}
-              </div>
+              </Box>
             </>
           ) : (
-            <Typography className={classes.emptyLabel}>Här var det tomt</Typography>
+            <Typography sx={{ display: 'grid', gridColumn: 'span 3', justifyItems: 'center' }}>
+              Här var det tomt
+            </Typography>
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

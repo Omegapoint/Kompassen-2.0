@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { deleteLecture, listLectures } from '../../api/Api';
@@ -9,13 +9,6 @@ import useCacheUpdater from '../../hooks/useCacheUpdater';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridGap: padding.medium,
-  },
-}));
 
 export type INavItemKind = 'ideas' | 'future' | 'draft' | 'past';
 
@@ -42,7 +35,6 @@ const useMyLectures = (data?: Lecture[]) => {
 };
 
 const MyLectures = (): ReactElement => {
-  const classes = useStyles();
   const [active, setActive] = useState<INavItemKind>('ideas');
   const [cacheKey, updateCache] = useCacheUpdater();
   const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () =>
@@ -68,7 +60,7 @@ const MyLectures = (): ReactElement => {
   ];
 
   return (
-    <div className={classes.container}>
+    <Box sx={{ display: 'grid', gridGap: padding.medium }}>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
       {currentItems.map((e: Lecture) => (
         <LectureView
@@ -80,7 +72,7 @@ const MyLectures = (): ReactElement => {
           handleDelete={() => handleDelete(e.id)}
         />
       ))}
-    </div>
+    </Box>
   );
 };
 export default MyLectures;

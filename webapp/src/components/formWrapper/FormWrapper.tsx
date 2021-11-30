@@ -2,7 +2,6 @@ import { cloneElement, ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { APIFunction } from '../../api/Fetch';
-import { IDParam } from '../../lib/Types';
 import PageNotFound from '../../section/pageNotFound/PageNotFound';
 import BigLoader from '../loader/BigLoader';
 
@@ -14,7 +13,7 @@ interface FormWrapperProps {
 }
 
 const FormWrapper = ({ children, name, fn }: FormWrapperProps): ReactElement => {
-  const { id } = useParams<Partial<IDParam>>();
+  const { id } = useParams<'id'>();
   const { isLoading, data, error } = useQuery(`${name}-${id}`, () => fn({ id }), { enabled: !!id });
 
   if (error) {

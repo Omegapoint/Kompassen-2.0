@@ -1,5 +1,5 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, Typography } from '@mui/material';
 import { differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement, useState } from 'react';
@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import PageNav, { INavItem } from '../../components/pageNav/PageNav';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
-import { IDParam } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import CreateEvent from '../events/CreateEvent';
 import RegisteredLectures from './RegisteredLectures';
@@ -16,32 +15,12 @@ import useEventLecturesWS from './UseEventLecturesWS';
 
 type INavItemKind = 'lectures' | 'schedule';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    justifyItems: 'center',
-  },
-  subContainer: {
-    display: 'grid',
-    gridGap: padding.standard,
-    marginTop: padding.medium,
-    width: '100%',
-  },
-  header: {
-    display: 'grid',
-    gridTemplateColumns: 'max-content 1fr max-content max-content',
-    alignItems: 'center',
-    gridGap: padding.standard,
-  },
-}));
-
 const EventPlanner = (): ReactElement => {
-  const { id } = useParams<IDParam>();
+  const { id } = useParams<'id'>();
   const [active, setActive] = useState<INavItemKind>('lectures');
-  const classes = useStyles();
-  const event = useEvent(id)!;
+  const event = useEvent(id!)!;
   const organisation = useOrganisation(event.organisationID)!;
-  const lectures = useEventLecturesWS(id);
+  const lectures = useEventLecturesWS(id!);
   const [editEventIsOpen, editEvent] = useBoolean();
   const approvedLectures = lectures.filter((lecture) => lecture.approved);
 
@@ -62,10 +41,24 @@ const EventPlanner = (): ReactElement => {
   const daysLeft = differenceInDays(event.startAt, new Date());
 
   return (
-    <div className={classes.container}>
+    <Box sx={{ display: 'grid', justifyItems: 'center' }}>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
-      <div className={classes.subContainer}>
-        <div className={classes.header}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridGap: padding.standard,
+          marginTop: padding.medium,
+          width: '100%',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'max-content 1fr max-content max-content',
+            alignItems: 'center',
+            gridGap: padding.standard,
+          }}
+        >
           <Typography variant="h4">{`${date} ${organisation.name}`}</Typography>
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
           <Button
@@ -76,13 +69,13 @@ const EventPlanner = (): ReactElement => {
           >
             Redigera
           </Button>
-        </div>
+        </Box>
 
         {active === 'lectures' && <RegisteredLectures lectures={lectures} admin />}
         {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} />}
-      </div>
+      </Box>
       <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
-    </div>
+    </Box>
   );
 };
 

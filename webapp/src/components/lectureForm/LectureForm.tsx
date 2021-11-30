@@ -1,11 +1,10 @@
 import {
+  Box,
   Button,
-  createStyles,
   FormControl,
   FormControlLabel,
   FormLabel,
   Link,
-  makeStyles,
   MenuItem,
   Paper,
   Radio,
@@ -13,10 +12,10 @@ import {
   Select,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
@@ -25,60 +24,6 @@ import { useAppSelector } from '../../lib/Lib';
 import { Category, Event, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    formContainer: {
-      display: 'grid',
-      padding: padding.large,
-      justifyItems: 'start',
-      rowGap: padding.medium,
-    },
-    header: {
-      display: 'grid',
-      justifySelf: 'center',
-      color: colors.orange,
-    },
-    radioButtons: {
-      paddingTop: padding.minimal,
-    },
-    row: {
-      display: 'grid',
-      gridGap: padding.medium,
-      gridTemplateAreas: `"day hours minutes"`,
-    },
-    subContainer: {
-      display: 'flex',
-      gridGap: padding.standard,
-    },
-    day: {
-      gridArea: 'day',
-    },
-    hours: {
-      gridArea: 'hours',
-    },
-    minutes: {
-      gridArea: 'minutes',
-    },
-    dateLineMargin: {
-      marginBottom: padding.minimal,
-    },
-    buttonRow: {
-      display: 'grid',
-      gridTemplateColumns: 'max-content 1fr max-content',
-      gridTemplateAreas: `"cancel . buttons"`,
-      width: '100%',
-    },
-    cancel: {
-      gridArea: 'cancel',
-    },
-    buttons: {
-      gridArea: 'buttons',
-      display: 'flex',
-      gridGap: padding.standard,
-    },
-  })
-);
 
 interface LectureFormProps {
   data?: Lecture;
@@ -167,7 +112,6 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 };
 // The more complex form to create a new lecture
 const LectureForm = ({ data }: LectureFormProps): ReactElement => {
-  const classes = useStyles();
   const locations = useAppSelector((state) => state.locations);
   const allCategories = useAppSelector((state) => state.categories);
   const allOrganisations = useAppSelector((state) => state.organisations);
@@ -176,7 +120,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const events = useAppSelector((state) => state.events);
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const defaultFormValue = {
     locationID:
@@ -205,7 +149,14 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       title: values.title,
       description: values.description,
       lecturer: values.lecturer,
-      tags: values.tags.split(' ').filter((e) => e),
+      tags: [
+        ...new Set(
+          values.tags
+            .split(' ')
+            .map((e) => e.trim())
+            .filter((e) => e)
+        ),
+      ],
       locationID: values.locationID,
       remote: values.remote === 'true',
       eventID: values.eventID,
@@ -225,15 +176,15 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
 
   useEffect(() => {
     if (updateLectureRequest.isSuccess) {
-      history.push(`/lecture/${updateLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/${updateLectureRequest.data?.id}/confirm`);
     }
-  }, [history, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
+  }, [navigate, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
 
   useEffect(() => {
     if (createLectureRequest.isSuccess) {
-      history.push(`/lecture/${createLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/${createLectureRequest.data?.id}/confirm`);
     }
-  }, [history, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
+  }, [navigate, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 
   // User can not register lecture to an event that has already started/happened
   const findEvent = (id: string, cond: (d: Date) => boolean) => {
@@ -250,12 +201,22 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
 
   return (
     <form>
-      <Paper className={classes.formContainer}>
-        <Typography className={classes.header} variant="h1">
+      <Paper
+        sx={{
+          display: 'grid',
+          padding: padding.large,
+          justifyItems: 'start',
+          rowGap: padding.medium,
+        }}
+      >
+        <Typography
+          sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
+          variant="h1"
+        >
           {data ? 'Redigera pass till kompetensdag' : 'Anmäl pass till kompetensdag'}
         </Typography>
         <div>
-          <FormLabel className={classes.radioButtons} required component="legend">
+          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Plats
           </FormLabel>
           <RadioGroup name="locationID" onChange={handleChange} value={values.locationID}>
@@ -265,7 +226,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           </RadioGroup>
         </div>
         <div>
-          <FormLabel className={classes.radioButtons} required component="legend">
+          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Kan delta på distans
           </FormLabel>
           <RadioGroup name="remote" onChange={handleChange} value={values.remote}>
@@ -273,9 +234,15 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             <FormControlLabel value="false" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
-        <div className={classes.row}>
-          <FormControl className={classes.day} variant="outlined">
-            <FormLabel className={classes.dateLineMargin} required component="legend">
+        <Box
+          sx={{
+            display: 'grid',
+            gridGap: padding.medium,
+            gridTemplateAreas: `"day hours minutes"`,
+          }}
+        >
+          <FormControl sx={{ gridArea: 'day' }} variant="outlined">
+            <FormLabel sx={{ marginBottom: padding.minimal }} required component="legend">
               Kompetensdag
             </FormLabel>
             <Select
@@ -291,13 +258,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             </Select>
           </FormControl>
           <div>
-            <FormLabel className={classes.dateLineMargin} required component="legend">
+            <FormLabel sx={{ marginBottom: padding.minimal }} required component="legend">
               Längd på passet
             </FormLabel>
-            <div className={classes.subContainer}>
+            <Box sx={{ display: 'flex', gridGap: padding.standard }}>
               <TextField
                 {...validate.hours}
-                className={classes.hours}
+                sx={{ gridArea: 'hours' }}
                 onChange={handleChange}
                 value={values.hours}
                 label="Timmar"
@@ -308,7 +275,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
               />
               <TextField
                 {...validate.minutes}
-                className={classes.minutes}
+                sx={{ gridArea: 'minutes' }}
                 onChange={handleChange}
                 value={values.minutes}
                 label="Minuter"
@@ -317,9 +284,9 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
                 InputProps={{ inputProps: { min: 0, max: 59 } }}
                 variant="outlined"
               />
-            </div>
+            </Box>
           </div>
-        </div>
+        </Box>
         <TextField
           fullWidth
           onChange={handleChange}
@@ -331,7 +298,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           {...validate.title}
         />
         <div>
-          <FormLabel className={classes.radioButtons} required component="legend">
+          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Kategori
           </FormLabel>
           <RadioGroup name="category" onChange={handleChange} value={values.category}>
@@ -411,11 +378,18 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.message}
         />
-        <div className={classes.buttonRow}>
-          <Link className={classes.cancel} component={NavLink} to="/" variant="subtitle1">
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'max-content 1fr max-content',
+            gridTemplateAreas: `"cancel . buttons"`,
+            width: '100%',
+          }}
+        >
+          <Link sx={{ gridArea: 'cancel' }} component={NavLink} to="/" variant="subtitle1">
             Avbryt
           </Link>
-          <div className={classes.buttons}>
+          <Box sx={{ gridArea: 'buttons', display: 'flex', gridGap: padding.standard }}>
             {!data?.draft && (
               <Button
                 variant="contained"
@@ -434,10 +408,11 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             >
               Anmäl pass
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Paper>
     </form>
   );
 };
+
 export default LectureForm;

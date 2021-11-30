@@ -1,28 +1,9 @@
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import React, { ReactElement } from 'react';
 import { Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import ScheduledLecture from './ScheduledLecture';
 import { COL_HEIGHT, DragStopFn, heightByMin, MINUTES, toYCol } from './UseSchedule';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    gridGap: padding.standard,
-    display: 'grid',
-    gridAutoFlow: 'column',
-    gridAutoColumns: '1fr',
-  },
-  cell: {
-    height: `${COL_HEIGHT}px`,
-    borderBottom: `${colors.lightGrey} solid 1px`,
-    '&:first-of-type': {
-      borderTop: `${colors.grey} solid 1px`,
-    },
-    [`&:nth-of-type(${30 / MINUTES}n)`]: {
-      borderBottom: `${colors.grey} solid 1px`,
-    },
-  },
-}));
 
 interface ScheduleAreaProps {
   lectures: (Lecture | null)[][];
@@ -36,33 +17,48 @@ const ScheduleArea = ({
   colWidth,
   rowToTime,
   handleDragStop,
-}: ScheduleAreaProps): ReactElement => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      {lectures.map((li, i) => (
-        <div key={Math.random()}>
-          {li.map((lecture, j) => (
-            <div className={classes.cell} key={lecture?.id}>
-              {lecture ? (
-                <ScheduledLecture
-                  startX={colWidth * i}
-                  startY={heightByMin(j * MINUTES)}
-                  rowToTime={(row) => rowToTime(toYCol(row))}
-                  lecture={lecture}
-                  colHeight={COL_HEIGHT}
-                  handleDragStop={(startPos, pos) =>
-                    handleDragStop(lecture, startPos, pos, i, j, false)
-                  }
-                />
-              ) : null}
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-};
+}: ScheduleAreaProps): ReactElement => (
+  <Box
+    sx={{
+      gridGap: padding.standard,
+      display: 'grid',
+      gridAutoFlow: 'column',
+      gridAutoColumns: '1fr',
+    }}
+  >
+    {lectures.map((li, i) => (
+      <div key={Math.random()}>
+        {li.map((lecture, j) => (
+          <Box
+            sx={{
+              height: `${COL_HEIGHT}px`,
+              borderBottom: `${colors.lightGrey} solid 1px`,
+              '&:first-of-type': {
+                borderTop: `${colors.grey} solid 1px`,
+              },
+              [`&:nth-of-type(${30 / MINUTES}n)`]: {
+                borderBottom: `${colors.grey} solid 1px`,
+              },
+            }}
+            key={Math.random()}
+          >
+            {lecture ? (
+              <ScheduledLecture
+                startX={colWidth * i}
+                startY={heightByMin(j * MINUTES)}
+                rowToTime={(row) => rowToTime(toYCol(row))}
+                lecture={lecture}
+                colHeight={COL_HEIGHT}
+                handleDragStop={(startPos, pos) =>
+                  handleDragStop(lecture, startPos, pos, i, j, false)
+                }
+              />
+            ) : null}
+          </Box>
+        ))}
+      </div>
+    ))}
+  </Box>
+);
 
 export default ScheduleArea;

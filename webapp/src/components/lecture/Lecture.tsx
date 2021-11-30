@@ -1,4 +1,4 @@
-import { Divider } from '@material-ui/core';
+import { Divider } from '@mui/material';
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
@@ -55,12 +55,8 @@ const Lecture = ({ lecture }: LectureProps): ReactElement => {
     <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
       <RowPaper>
         <TopContainer isExpanded={isExpanded} expand={expand.toggle} />
-        {isExpanded && (
-          <>
-            <Divider />
-            <BottomContainer />
-          </>
-        )}
+        {isExpanded && <Divider />}
+        {isExpanded && <BottomContainer />}
       </RowPaper>
     </LectureContext.Provider>
   );

@@ -1,18 +1,7 @@
-import { makeStyles, Paper, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import { colors, padding } from '../../theme/Theme';
 import HrefContainer from './HrefContainer';
-
-const useStyles = makeStyles(() => ({
-  content: {
-    display: 'grid',
-    gridGap: padding.minimal,
-    padding: padding.small,
-    '& h6': {
-      lineHeight: 1,
-    },
-  },
-}));
 
 interface SideCardProps {
   href?: string;
@@ -28,24 +17,29 @@ const SideCard = ({
   hrefText,
   title,
   children,
-}: SideCardProps): ReactElement => {
-  const classes = useStyles();
-
-  return (
-    <div>
-      {href && hrefText && (
-        <HrefContainer href={href} hrefText={hrefText} hrefBarColor={hrefBarColor} />
-      )}
-      {title && (
-        <Paper className={classes.content}>
-          <Typography variant="h6" color="primary">
-            {title}
-          </Typography>
-          {children}
-        </Paper>
-      )}
-    </div>
-  );
-};
+}: SideCardProps): ReactElement => (
+  <div>
+    {href && hrefText && (
+      <HrefContainer href={href} hrefText={hrefText} hrefBarColor={hrefBarColor} />
+    )}
+    {title && (
+      <Paper
+        sx={{
+          display: 'grid',
+          gridGap: padding.minimal,
+          padding: padding.small,
+          '& h6': {
+            lineHeight: 1,
+          },
+        }}
+      >
+        <Typography variant="h6" color="primary">
+          {title}
+        </Typography>
+        {children}
+      </Paper>
+    )}
+  </div>
+);
 
 export default SideCard;

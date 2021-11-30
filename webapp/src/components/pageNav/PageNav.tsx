@@ -1,16 +1,7 @@
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { ReactElement } from 'react';
 import { Lecture } from '../../lib/Types';
 import NavItem from './NavItem';
-
-const useStyles = makeStyles(() => ({
-  nav: {
-    display: 'grid',
-    gridAutoColumns: '1fr',
-    gridAutoFlow: 'column',
-    justifyItems: 'center',
-  },
-}));
 
 export interface INavItem<T> {
   name: T;
@@ -32,10 +23,15 @@ function PageNav<T extends string>({
   setActive,
   navItems,
 }: IMyLecturesNav<T>): ReactElement {
-  const classes = useStyles();
-
   return (
-    <div className={classes.nav}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridAutoColumns: '1fr',
+        gridAutoFlow: 'column',
+        justifyItems: 'center',
+      }}
+    >
       {navItems.map((e) => (
         <NavItem
           key={e.name}
@@ -44,7 +40,7 @@ function PageNav<T extends string>({
           handleClick={() => setActive(e.name)}
         />
       ))}
-    </div>
+    </Box>
   );
 }
 

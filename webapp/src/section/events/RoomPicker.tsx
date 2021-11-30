@@ -1,33 +1,7 @@
-import { IconButton, makeStyles, TextField, Typography } from '@material-ui/core';
-import { Clear } from '@material-ui/icons';
+import { Clear } from '@mui/icons-material';
+import { Box, IconButton, TextField, Typography } from '@mui/material';
 import React, { KeyboardEvent, ReactElement, useState } from 'react';
 import { colors, padding } from '../../theme/Theme';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridAutoRows: '1fr',
-    gridGap: `${padding.tiny} ${padding.medium}`,
-  },
-  row: {
-    display: 'grid',
-    gridTemplateColumns: '1fr min-content',
-    alignItems: 'center',
-  },
-  rowItem: {
-    height: '100%',
-    display: 'grid',
-    alignItems: 'center',
-    gridTemplateColumns: '1fr 2fr',
-    border: `1px solid ${colors.lightGrey}`,
-    padding: padding.tiny,
-  },
-  delete: {
-    color: colors.red,
-    padding: padding.tiny,
-  },
-}));
 
 interface RoomPickerProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +11,6 @@ interface RoomPickerProps {
 }
 
 const RoomPicker = ({ values, updateValues }: RoomPickerProps): ReactElement => {
-  const classes = useStyles();
   const [text, setText] = useState<string>('');
 
   const deleteRoom = (str: string) => {
@@ -56,19 +29,42 @@ const RoomPicker = ({ values, updateValues }: RoomPickerProps): ReactElement => 
   };
 
   const generateRooms = (str: string, i: number) => (
-    <div className={classes.row} key={str}>
-      <div className={classes.rowItem}>
+    <Box
+      sx={{ display: 'grid', gridTemplateColumns: '1fr min-content', alignItems: 'center' }}
+      key={str}
+    >
+      <Box
+        sx={{
+          height: '100%',
+          display: 'grid',
+          alignItems: 'center',
+          gridTemplateColumns: '1fr 2fr',
+          border: `1px solid ${colors.lightGrey}`,
+          padding: padding.tiny,
+        }}
+      >
         <Typography>Rum {i + 1}</Typography>
         <Typography>{str}</Typography>
-      </div>
-      <IconButton className={classes.delete} onClick={() => deleteRoom(str)}>
+      </Box>
+      <IconButton
+        sx={{ color: colors.red, padding: padding.tiny }}
+        onClick={() => deleteRoom(str)}
+        size="large"
+      >
         <Clear />
       </IconButton>
-    </div>
+    </Box>
   );
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gridAutoRows: '1fr',
+        gridGap: `${padding.tiny} ${padding.medium}`,
+      }}
+    >
       {values.rooms.map(generateRooms)}
       <TextField
         fullWidth
@@ -81,7 +77,7 @@ const RoomPicker = ({ values, updateValues }: RoomPickerProps): ReactElement => 
         label="Nytt rum"
         variant="outlined"
       />
-    </div>
+    </Box>
   );
 };
 

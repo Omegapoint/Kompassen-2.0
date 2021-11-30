@@ -1,27 +1,19 @@
-import { IconButton, makeStyles, Popover } from '@material-ui/core';
-import { EmojiEmotions } from '@material-ui/icons';
+import { EmojiEmotions } from '@mui/icons-material';
+import { IconButton, Popover } from '@mui/material';
 import Picker, { IEmojiData } from 'emoji-picker-react';
-import * as React from 'react';
-import { ReactElement } from 'react';
+import { MouseEvent, ReactElement } from 'react';
 import useAnchor from '../../hooks/UseAnchor';
 
 interface TextPanelProps {
-  handleEmojiClick: (_: React.MouseEvent, data: IEmojiData) => void;
+  handleEmojiClick: (_: MouseEvent, data: IEmojiData) => void;
 }
 
-const useStyles = makeStyles(() => ({
-  iconButton: {
-    padding: 0,
-  },
-}));
-
 const TextPanel = ({ handleEmojiClick }: TextPanelProps): ReactElement => {
-  const classes = useStyles();
   const { handleClose, handleClick, open, anchorEl } = useAnchor();
 
   return (
     <div>
-      <IconButton className={classes.iconButton} onClick={handleClick}>
+      <IconButton sx={{ padding: 0 }} onClick={handleClick} size="large">
         <EmojiEmotions />
       </IconButton>
       <Popover

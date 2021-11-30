@@ -1,4 +1,4 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
@@ -8,34 +8,17 @@ import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: 'min-content 1fr min-content',
-    gridGap: padding.standard,
-    alignItems: 'center',
-    justifyItems: 'center',
-    backgroundColor: colors.background,
-    borderRadius: borderRadius.tiny,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    padding: `${padding.minimal} ${padding.tiny}`,
-    minWidth: 0,
-    lineHeight: 1,
-    '&:disabled': {
-      '& path': {
-        fill: colors.grey,
-      },
+const buttonStyle = {
+  backgroundColor: colors.primary,
+  padding: `${padding.minimal} ${padding.tiny}`,
+  minWidth: 0,
+  lineHeight: 1,
+  '&:disabled': {
+    '& path': {
+      fill: colors.grey,
     },
   },
-  leftButton: {
-    borderRadius: `${borderRadius.tiny} 0 0 ${borderRadius.tiny}`,
-  },
-  rightButton: {
-    borderRadius: `0 ${borderRadius.tiny} ${borderRadius.tiny} 0`,
-  },
-}));
+};
 
 export const formatEventTime = (event: Event): string => {
   const startTime = format(event.startAt, 'dd MMM HH:mm', { locale: sv });
@@ -49,7 +32,6 @@ export const formatDayTime = (event: Event): string => {
 };
 
 const DayPicker = (): ReactElement => {
-  const classes = useStyles();
   const { events, ind, setInd } = useContext(EventContext);
   const event = events[ind];
   const organisation = useOrganisation(event.organisationID)?.name;
@@ -58,12 +40,22 @@ const DayPicker = (): ReactElement => {
   const nextEvent = () => setInd((i) => (i <= events.length - 1 ? i + 1 : i));
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'min-content 1fr min-content',
+        gridGap: padding.standard,
+        alignItems: 'center',
+        justifyItems: 'center',
+        backgroundColor: colors.background,
+        borderRadius: borderRadius.tiny,
+      }}
+    >
       <Button
         color="primary"
         variant="contained"
         disabled={ind === 0}
-        className={`${classes.button} ${classes.leftButton}`}
+        sx={{ ...buttonStyle, borderRadius: `${borderRadius.tiny} 0 0 ${borderRadius.tiny}` }}
         onClick={previousEvent}
       >
         <TinyArrow width={10} height={10} transform="rotate(180)" />
@@ -73,12 +65,12 @@ const DayPicker = (): ReactElement => {
         color="primary"
         variant="contained"
         disabled={ind >= events.length - 1}
-        className={`${classes.button} ${classes.rightButton}`}
+        sx={{ ...buttonStyle, borderRadius: `0 ${borderRadius.tiny} ${borderRadius.tiny} 0` }}
         onClick={nextEvent}
       >
         <TinyArrow width={10} height={10} />
       </Button>
-    </div>
+    </Box>
   );
 };
 

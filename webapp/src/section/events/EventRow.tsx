@@ -1,4 +1,4 @@
-import { createStyles, Link, makeStyles, Typography } from '@material-ui/core';
+import { Box, Link, SxProps, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement } from 'react';
@@ -11,36 +11,22 @@ import { Event } from '../../lib/Types';
 import { colors } from '../../theme/Theme';
 import List from './List';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gridTemplateColumns: '3fr 3fr 2fr 2fr min-content',
-      alignItems: 'center',
-    },
-    cell: {
-      display: 'grid',
-      alignItems: 'center',
-      justifyItems: 'center',
-    },
-    ringNumber: {
-      background: colors.primary,
-      color: colors.white,
-      display: 'grid',
-      alignItems: 'center',
-      justifyItems: 'center',
-      height: '26px',
-      width: '26px',
-      borderRadius: '50%',
-    },
-    menupaper: {
-      borderRadius: 0,
-    },
-    link: {
-      color: colors.black,
-    },
-  })
-);
+const ringNumberStyle: SxProps = {
+  background: colors.primary,
+  color: colors.white,
+  display: 'grid',
+  alignItems: 'center',
+  justifyItems: 'center',
+  height: '26px',
+  width: '26px',
+  borderRadius: '50%',
+};
+
+const cellStyle: SxProps = {
+  display: 'grid',
+  alignItems: 'center',
+  justifyItems: 'center',
+};
 
 interface EventRowProps {
   event: Event;
@@ -56,10 +42,7 @@ const EventRow = ({
   openEdit,
 }: EventRowProps): ReactElement => {
   const time = format(event.startAt, 'd MMMM', { locale: sv });
-
   const organisation = useOrganisation(event.organisationID)!.name;
-
-  const classes = useStyles();
   const { data } = useQuery(`listEventLecture-${event.id}`, () =>
     listEventLectures({ id: event.id })
   );
@@ -68,22 +51,37 @@ const EventRow = ({
   const draft = (data?.length || 0) - published;
 
   return (
-    <RowPaper color={color} className={classes.container}>
-      <Link component={NavLink} to={`/events/${event.id}`} variant="body1" className={classes.link}>
+    <RowPaper
+      color={color}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '3fr 3fr 2fr 2fr min-content',
+        alignItems: 'center',
+      }}
+    >
+      <Link
+        component={NavLink}
+        to={`/events/${event.id}`}
+        variant="body1"
+        sx={{ color: colors.black }}
+      >
         {organisation}
       </Link>
-      <Link component={NavLink} to={`/events/${event.id}`} variant="body1" className={classes.link}>
+      <Link
+        component={NavLink}
+        to={`/events/${event.id}`}
+        variant="body1"
+        sx={{ color: colors.black }}
+      >
         {time}
       </Link>
-      <div className={classes.cell}>
-        {showStats && <Typography className={classes.ringNumber}>{draft}</Typography>}
-      </div>
-      <div className={classes.cell}>
-        {showStats && <Typography className={classes.ringNumber}>{published}</Typography>}
-      </div>
-      <div className={classes.cell}>
+      <Box sx={cellStyle}>{showStats && <Typography sx={ringNumberStyle}>{draft}</Typography>}</Box>
+      <Box sx={cellStyle}>
+        {showStats && <Typography sx={ringNumberStyle}>{published}</Typography>}
+      </Box>
+      <Box sx={cellStyle}>
         <List event={event} organisation={organisation} time={time} openEdit={openEdit} />
-      </div>
+      </Box>
     </RowPaper>
   );
 };

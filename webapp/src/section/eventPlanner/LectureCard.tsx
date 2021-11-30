@@ -1,4 +1,4 @@
-import { Button, makeStyles, Modal, Theme, Typography } from '@material-ui/core';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import { addSeconds, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement } from 'react';
@@ -8,62 +8,7 @@ import { useAppSelector } from '../../lib/Lib';
 import { Category, Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 
-interface StyleProps {
-  color: string;
-  time: number;
-}
-
 export const cellHeight = 150;
-
-const useStyles = makeStyles<Theme, StyleProps>(() => ({
-  container: {
-    background: `${colors.white}dd`,
-    borderRadius: borderRadius.small,
-  },
-  card: {
-    display: 'grid',
-    gridTemplateColumns: '1fr max-content',
-    gridTemplateRows: 'max-content 1fr max-content',
-    border: ({ color }) => `${color} 1px solid`,
-    background: ({ color }) => `${color}20`,
-    borderRadius: borderRadius.small,
-    padding: padding.small,
-    width: '100%',
-    height: ({ time }) => `${(time / 3600) * cellHeight}px`,
-  },
-  icon: {
-    width: '20px',
-    height: '20px',
-    '& path': {
-      fill: colors.black,
-    },
-  },
-  left: {
-    display: 'grid',
-    gridGap: padding.tiny,
-  },
-  right: {
-    display: 'grid',
-    alignItems: 'end',
-  },
-  header: {
-    display: 'grid',
-    gridGap: padding.minimal,
-    gridTemplateColumns: 'max-content 1fr',
-  },
-  information: {
-    display: 'grid',
-    gridTemplateColumns: '1fr max-content',
-  },
-  modalContainer: {
-    display: 'grid',
-    alignItems: 'center',
-    justifyItems: 'center',
-  },
-  modalSubcontainer: {
-    width: '800px',
-  },
-}));
 
 interface LectureCardProps {
   lecture: Lecture;
@@ -80,10 +25,6 @@ const LectureCard = ({
 }: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
-  const classes = useStyles({
-    color: category.color,
-    time: edit ? 3600 : lecture.duration || 3600,
-  });
   const [open, { on, off }] = useBoolean();
 
   const genTime = (time: Date) => {
@@ -93,21 +34,46 @@ const LectureCard = ({
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.card}>
-        <div className={classes.left}>
-          <div className={classes.header}>
+    <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: '1fr max-content',
+          gridTemplateRows: 'max-content 1fr max-content',
+          border: `${category.color} 1px solid`,
+          background: `${category.color}20`,
+          borderRadius: borderRadius.small,
+          padding: padding.small,
+          width: '100%',
+          height: `${((edit ? 3600 : lecture.duration || 3600) / 3600) * cellHeight}px`,
+        }}
+      >
+        <Box sx={{ display: 'grid', gridGap: padding.tiny }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridGap: padding.minimal,
+              gridTemplateColumns: 'max-content 1fr',
+            }}
+          >
             {/* eslint-disable-next-line react/no-danger */}
-            <div className={classes.icon} dangerouslySetInnerHTML={{ __html: category.icon }} />
+            <Box
+              sx={{
+                width: '20px',
+                height: '20px',
+                '& path': { fill: colors.black },
+              }}
+              dangerouslySetInnerHTML={{ __html: category.icon }}
+            />
             <Typography variant="h6">{lecture.title}</Typography>
             {startAt && <Typography>{genTime(startAt)}</Typography>}
-          </div>
+          </Box>
 
           <Typography>{lecture.lecturer}</Typography>
           {!startAt && <Typography>{(lecture.duration || 0) / 60} min</Typography>}
-        </div>
+        </Box>
 
-        <div className={classes.right}>
+        <Box sx={{ display: 'grid', alignItems: 'end' }}>
           {edit && admin && (
             <Button
               variant={lecture.approved ? undefined : 'contained'}
@@ -122,14 +88,18 @@ const LectureCard = ({
               Visa
             </Button>
           )}
-        </div>
-        <Modal open={open} onClose={off} className={classes.modalContainer}>
-          <div className={classes.modalSubcontainer}>
+        </Box>
+        <Modal
+          open={open}
+          onClose={off}
+          sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
+        >
+          <Box sx={{ width: '800px' }}>
             <LectureView lecture={lecture} admin={admin} close={off} />
-          </div>
+          </Box>
         </Modal>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

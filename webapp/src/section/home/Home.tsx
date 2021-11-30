@@ -1,4 +1,4 @@
-import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import Filter from '../../components/filter/Filter';
@@ -11,41 +11,6 @@ import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    width: '100%',
-    display: 'grid',
-    gridTemplateColumns: '1fr max-content',
-    gridTemplateRows: 'max-content auto auto auto auto',
-    gridGap: `${padding.medium} ${padding.large}`,
-    padding: '0 20px',
-    '& > :nth-child(1)': {
-      gridColumn: '1 / 3',
-    },
-  },
-  leftPanel: {
-    display: 'grid',
-    gridGap: padding.standard,
-    alignContent: 'start',
-  },
-  rightPanel: {
-    display: 'grid',
-    width: '320px',
-    gridGap: padding.standard,
-    alignContent: 'start',
-  },
-  button: {
-    fontSize: '0.95rem',
-    padding: padding.minimal,
-  },
-  emptyContainer: {
-    display: 'grid',
-    justifyContent: 'center',
-    alignContent: 'center',
-    minHeight: '300px',
-  },
-}));
 
 const useLectureIdeasWS = () => {
   const socket = useAppSelector((state) => state.session.socket);
@@ -89,28 +54,63 @@ const useLectureIdeasWS = () => {
 
 const Home = (): ReactElement => {
   const [active, { off, on }] = useBoolean();
-  const classes = useStyles();
   const lectureIdeas = useLectureIdeasWS();
 
   return (
-    <div className={classes.container}>
-      <Typography variant="h1">Idéer till kompetensdagar</Typography>
-      <div className={classes.leftPanel}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'grid',
+        gridTemplateColumns: '1fr max-content',
+        gridTemplateRows: 'max-content auto auto auto auto',
+        gridGap: `${padding.medium} ${padding.large}`,
+        padding: '0 20px',
+      }}
+    >
+      <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
+        Idéer till kompetensdagar
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridGap: padding.standard,
+          alignContent: 'start',
+        }}
+      >
         {active && <PublishIdea cancel={off} />}
         {!active && (
-          <Button onClick={on} className={classes.button} variant="contained" color="primary">
+          <Button
+            onClick={on}
+            sx={{ fontSize: '0.95rem', padding: padding.minimal }}
+            variant="contained"
+            color="primary"
+          >
             Publicera ny idé
           </Button>
         )}
         {lectureIdeas?.length ? (
           <Filter lectures={lectureIdeas} />
         ) : (
-          <div className={classes.emptyContainer}>
+          <Box
+            sx={{
+              display: 'grid',
+              justifyContent: 'center',
+              alignContent: 'center',
+              minHeight: '300px',
+            }}
+          >
             <Typography variant="h5">Här var det tomt.</Typography>
-          </div>
+          </Box>
         )}
-      </div>
-      <div className={classes.rightPanel}>
+      </Box>
+      <Box
+        sx={{
+          display: 'grid',
+          width: '320px',
+          gridGap: padding.standard,
+          alignContent: 'start',
+        }}
+      >
         {isAdmin() && (
           <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
         )}
@@ -143,8 +143,8 @@ const Home = (): ReactElement => {
         {/* <SideCard title="Nuvarande planerare"> */}
         {/*  <CurrentPlanner /> */}
         {/* </SideCard> */}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
