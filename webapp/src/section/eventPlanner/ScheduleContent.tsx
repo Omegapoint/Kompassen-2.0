@@ -1,4 +1,4 @@
-import { Divider, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { addMinutes, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
@@ -7,43 +7,6 @@ import { colors, padding } from '../../theme/Theme';
 import ScheduleArea from './ScheduleArea';
 import Sideline from './Sideline';
 import useSchedule, { MINUTES } from './UseSchedule';
-
-interface StyleProps {
-  scheduleHeight: number;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() => ({
-  scheduleContainer: {
-    position: 'relative',
-    gridArea: 'schedule',
-    gridGap: 25,
-    display: 'grid',
-  },
-  title: {
-    display: 'grid',
-    gridTemplateColumns: '1fr max-content',
-  },
-  divider: {
-    background: colors.black,
-    height: '3px',
-  },
-  titleContainer: {
-    display: 'grid',
-    gridArea: 'titles',
-    gridAutoFlow: 'column',
-    gridAutoColumns: '1fr',
-    gridGap: padding.standard,
-  },
-  timeTitles: {
-    position: 'relative',
-    display: 'grid',
-    gridArea: 'time',
-    justifyItems: 'center',
-    alignContent: 'space-between',
-    top: '-11px',
-    height: ({ scheduleHeight }) => scheduleHeight,
-  },
-}));
 
 interface ScheduleContentProps {
   event: Event;
@@ -56,7 +19,6 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
   const scheduleRef = useRef<HTMLDivElement>(null);
   const [totWidth, setTotWidth] = useState(0);
   const [totHeight, setTotHeight] = useState(0);
-  const classes = useStyles({ scheduleHeight: totHeight + 20 });
   const colWidth = totWidth / event.rooms.length;
   const { handleDragStop, numRows, sideline, scheduled } = useSchedule(event, lectures, colWidth);
 
@@ -72,20 +34,38 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
 
   return (
     <>
-      <div className={classes.titleContainer}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridArea: 'titles',
+          gridAutoFlow: 'column',
+          gridAutoColumns: '1fr',
+          gridGap: padding.standard,
+        }}
+      >
         {event.rooms.map((room, i) => (
           <div key={room.id}>
-            <div className={classes.title}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr max-content' }}>
               <Typography variant="h6">
                 Rum {i + 1}: {event.rooms[i].name}
               </Typography>
               <Typography variant="h6">0h</Typography>
-            </div>
-            <Divider className={classes.divider} />
+            </Box>
+            <Divider sx={{ background: colors.black, height: '3px' }} />
           </div>
         ))}
-      </div>
-      <div className={classes.timeTitles}>
+      </Box>
+      <Box
+        sx={{
+          position: 'relative',
+          display: 'grid',
+          gridArea: 'time',
+          justifyItems: 'center',
+          alignContent: 'space-between',
+          top: '-11px',
+          height: totHeight + 20,
+        }}
+      >
         {[
           ...[...new Array(numRows)]
             .map((_, i) => i * MINUTES)
@@ -95,8 +75,16 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
         ].map((date) => (
           <Typography key={date.toString()}>{format(date, 'HH:mm', { locale: sv })}</Typography>
         ))}
-      </div>
-      <div className={`fullSchedule ${classes.scheduleContainer}`}>
+      </Box>
+      <Box
+        className="fullSchedule"
+        sx={{
+          position: 'relative',
+          gridArea: 'schedule',
+          gridGap: 25,
+          display: 'grid',
+        }}
+      >
         <div ref={scheduleRef}>
           <ScheduleArea
             lectures={scheduled}
@@ -113,7 +101,7 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
           totWidth={totWidth}
           handleDragStop={handleDragStop}
         />
-      </div>
+      </Box>
     </>
   );
 };

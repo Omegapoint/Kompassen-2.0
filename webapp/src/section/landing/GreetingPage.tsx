@@ -1,51 +1,49 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import loginBg from '../../assets/loginBg.svg';
 import { fontFamilies } from '../../theme/Theme';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 2fr',
-    height: '100vh',
-  },
-  image: {
-    background: `url(${loginBg})`,
-    display: 'grid',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  contentContainer: {
-    display: 'grid',
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  largeHeader: {
-    fontFamily: fontFamilies.header,
-    fontSize: '4rem',
-  },
-}));
 
 interface GreetingPageProps {
   children: ReactNode;
 }
 
-const GreetingPage = ({ children }: GreetingPageProps): ReactElement => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.image}>
-        <Typography color="secondary" variant="body1" className={classes.largeHeader}>
-          KomPass 2.0
-        </Typography>
-        <Typography color="secondary" variant="h2">
-          Skapa bättre kompetensdagar
-        </Typography>
-      </div>
-      <div className={classes.contentContainer}>{children}</div>
-    </div>
-  );
-};
+const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
+  <Box
+    sx={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 2fr',
+      height: '100vh',
+    }}
+  >
+    <Box
+      sx={{
+        background: `url(${loginBg})`,
+        display: 'grid',
+        alignContent: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Typography
+        color="secondary"
+        variant="body1"
+        sx={{ fontFamily: fontFamilies.header, fontSize: '4rem' }}
+      >
+        KomPass 2.0
+      </Typography>
+      <Typography color="secondary" variant="h2">
+        Skapa bättre kompetensdagar
+      </Typography>
+    </Box>
+    <Box
+      sx={{
+        display: 'grid',
+        justifyContent: 'center',
+        alignContent: 'center',
+      }}
+    >
+      {children}
+    </Box>
+  </Box>
+);
 
 export default GreetingPage;

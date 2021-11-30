@@ -1,17 +1,6 @@
-import { createStyles, FormGroup, makeStyles, Switch, Typography } from '@material-ui/core';
+import { FormGroup, Switch, Typography } from '@mui/material';
 import { ChangeEvent, Fragment, ReactElement } from 'react';
 import { padding } from '../../theme/Theme';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    handleNote: {
-      display: 'grid',
-      gridGap: `${padding.minimal} ${padding.large}`,
-      alignItems: 'center',
-      gridTemplateColumns: 'max-content max-content',
-    },
-  })
-);
 
 interface SwitchType {
   newLecture: boolean;
@@ -49,17 +38,21 @@ const data: DataType[] = [
   },
 ];
 
-const Notifications = ({ checked, handleChange }: NotificationProps): ReactElement => {
-  const classes = useStyles();
-  return (
-    <FormGroup className={classes.handleNote}>
-      {data.map((e) => (
-        <Fragment key={e.name}>
-          <Typography>{e.title}</Typography>
-          <Switch checked={checked[e.name]} onChange={handleChange} name={e.name} />
-        </Fragment>
-      ))}
-    </FormGroup>
-  );
-};
+const Notifications = ({ checked, handleChange }: NotificationProps): ReactElement => (
+  <FormGroup
+    sx={{
+      display: 'grid',
+      gridGap: `${padding.minimal} ${padding.large}`,
+      alignItems: 'center',
+      gridTemplateColumns: 'max-content max-content',
+    }}
+  >
+    {data.map((e) => (
+      <Fragment key={e.name}>
+        <Typography>{e.title}</Typography>
+        <Switch checked={checked[e.name]} onChange={handleChange} name={e.name} />
+      </Fragment>
+    ))}
+  </FormGroup>
+);
 export default Notifications;

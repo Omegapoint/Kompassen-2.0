@@ -1,32 +1,18 @@
-import { createStyles, Link, makeStyles, Typography } from '@material-ui/core';
+import { Box, Link, SxProps, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { getLecture } from '../../api/Api';
 import LectureView from '../../components/lectureView/LectureView';
 import BigLoader from '../../components/loader/BigLoader';
-import { IDParam } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gridGap: padding.standard,
-      maxWidth: '1000px',
-    },
-    link: {
-      color: colors.black,
-      textDecoration: 'underline',
-    },
-  })
-);
+const linkStyle: SxProps = { color: colors.black, textDecoration: 'underline' };
 
 const buttonClick = '"Hantera mina anmälda pass"';
 
 const ConfirmLecture = (): ReactElement => {
-  const classes = useStyles();
-  const { id } = useParams<IDParam>();
+  const { id } = useParams<'id'>();
   const { data, isLoading } = useQuery(`lecture-${id}`, () =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     getLecture({ id: id! })
@@ -34,7 +20,7 @@ const ConfirmLecture = (): ReactElement => {
 
   if (isLoading || !data) return <BigLoader />;
   return (
-    <div className={classes.container}>
+    <Box sx={{ display: 'grid', gridGap: padding.standard, maxWidth: '1000px' }}>
       <Typography variant="h5" color="primary">
         Ditt pass är nu skapat!
       </Typography>
@@ -45,7 +31,7 @@ const ConfirmLecture = (): ReactElement => {
         </Typography>
         <Typography>
           {'För att se dina anmälda pass gå till '}
-          <Link className={classes.link} component={NavLink} to="/lecture/user">
+          <Link sx={linkStyle} component={NavLink} to="/lecture/user">
             {buttonClick}
           </Link>
           .
@@ -53,12 +39,12 @@ const ConfirmLecture = (): ReactElement => {
       </div>
       <Typography>
         {'Känner du att du har mer att bidra med? '}
-        <Link className={classes.link} component={NavLink} to="/lecture/create">
+        <Link sx={linkStyle} component={NavLink} to="/lecture/create">
           Skicka in ett till pass!
         </Link>
       </Typography>
       <LectureView lecture={data} />
-    </div>
+    </Box>
   );
 };
 

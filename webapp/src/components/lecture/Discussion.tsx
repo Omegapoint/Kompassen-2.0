@@ -1,5 +1,5 @@
-import { Button, IconButton, makeStyles, TextField } from '@material-ui/core';
-import { AccountCircle } from '@material-ui/icons';
+import { AccountCircle } from '@mui/icons-material';
+import { Box, Button, IconButton, TextField } from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
 import { KeyboardEvent, MouseEvent, ReactElement, useContext } from 'react';
 import useForm from '../../hooks/UseForm';
@@ -8,50 +8,11 @@ import TextPanel from '../textPanel/TextPanel';
 import LectureContext from './LectureContext';
 import Row from './Row';
 
-const useStyles = makeStyles(() => ({
-  container: {
-    gridArea: 'content',
-    width: '100%',
-    display: 'grid',
-    gridGap: padding.minimal,
-  },
-  form: {
-    display: 'grid',
-    background: colors.background,
-    padding: padding.minimal,
-    gridTemplateColumns: 'min-content 1fr max-content',
-    gridTemplateAreas: `"icon text text"
-                        ". panel submit"`,
-    alignItems: 'start',
-    gridAutoFlow: 'column',
-    border: `1px solid ${colors.lightGrey}`,
-    borderRadius: borderRadius.small,
-    gridGap: padding.minimal,
-  },
-  text: {
-    gridArea: 'text',
-    backgroundColor: colors.white,
-  },
-  icon: {
-    gridArea: 'icon',
-    padding: 0,
-  },
-  panel: {
-    display: 'grid',
-    alignSelf: 'center',
-    gridArea: 'panel',
-  },
-  submit: {
-    gridArea: 'submit',
-  },
-}));
-
 const defaultFormValue = {
   message: '',
 };
 
 const Discussion = (): ReactElement => {
-  const classes = useStyles();
   const { chat, sendWSMessage } = useContext(LectureContext);
   const { values, handleChange, appendChange, updateValues } = useForm(defaultFormValue);
 
@@ -77,40 +38,63 @@ const Discussion = (): ReactElement => {
   };
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        gridArea: 'content',
+        width: '100%',
+        display: 'grid',
+        gridGap: padding.minimal,
+      }}
+    >
       {chat && chat.map((e) => <Row key={e.id} message={e} />)}
-      <form className={classes.form}>
-        <IconButton className={classes.icon}>
-          <AccountCircle />
-        </IconButton>
-        <TextField
-          className={classes.text}
-          fullWidth
-          multiline
-          minRows={1}
-          maxRows={5}
-          value={values.message}
-          onChange={handleChange}
-          onKeyPress={(e) => handleKeyPress(e)}
-          required
-          name="message"
-          label="Skriv en kommentar"
-          variant="outlined"
-        />
-        <div className={classes.panel}>
-          <TextPanel handleEmojiClick={handleSmiley} />
-        </div>
-        <Button
-          type="submit"
-          className={classes.submit}
-          onClick={(e) => handleSubmit(e)}
-          color="primary"
-          variant="contained"
+      <form>
+        <Box
+          sx={{
+            display: 'grid',
+            background: colors.background,
+            padding: padding.minimal,
+            gridTemplateColumns: 'min-content 1fr max-content',
+            gridTemplateAreas: `"icon text text"
+                        ". panel submit"`,
+            alignItems: 'start',
+            gridAutoFlow: 'column',
+            border: `1px solid ${colors.lightGrey}`,
+            borderRadius: borderRadius.small,
+            gridGap: padding.minimal,
+          }}
         >
-          Skicka
-        </Button>
+          <IconButton sx={{ gridArea: 'icon', padding: 0 }} size="large">
+            <AccountCircle />
+          </IconButton>
+          <TextField
+            sx={{ gridArea: 'text', backgroundColor: colors.white }}
+            fullWidth
+            multiline
+            minRows={1}
+            maxRows={5}
+            value={values.message}
+            onChange={handleChange}
+            onKeyPress={(e) => handleKeyPress(e)}
+            required
+            name="message"
+            label="Skriv en kommentar"
+            variant="outlined"
+          />
+          <Box sx={{ display: 'grid', alignSelf: 'center', gridArea: 'panel' }}>
+            <TextPanel handleEmojiClick={handleSmiley} />
+          </Box>
+          <Button
+            type="submit"
+            sx={{ gridArea: 'submit' }}
+            onClick={(e) => handleSubmit(e)}
+            color="primary"
+            variant="contained"
+          >
+            Skicka
+          </Button>
+        </Box>
       </form>
-    </div>
+    </Box>
   );
 };
 

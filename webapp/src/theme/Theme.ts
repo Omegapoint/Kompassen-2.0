@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
 
 export const colors = {
   primary: '#286166',
@@ -46,59 +46,73 @@ export const padding = {
 };
 
 export const theme = createTheme({
-  overrides: {
+  components: {
     MuiButton: {
-      root: {
-        textTransform: 'none',
-        fontWeight: 300,
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 300,
+        },
+      },
+      defaultProps: {},
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.primary,
+        },
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        underline: 'none',
+      },
+    },
+    MuiList: {
+      defaultProps: {
+        disablePadding: true,
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          alignItems: 'center',
+        },
+      },
+    },
+    MuiPaper: {
+      defaultProps: {
+        square: true,
       },
     },
     MuiRadio: {
-      colorSecondary: {
-        '&$checked': {
-          color: colors.primary,
+      styleOverrides: {
+        colorSecondary: {
+          '&$checked': {
+            color: colors.primary,
+          },
         },
       },
     },
     MuiSwitch: {
-      switchBase: {
-        color: colors.darkGrey,
-      },
-      track: {
-        opacity: 0.6,
-        backgroundColor: colors.darkGrey,
-        '$checked$checked + &': {
+      styleOverrides: {
+        switchBase: {
+          color: colors.darkGrey,
+        },
+        track: {
           opacity: 0.6,
-          backgroundColor: colors.primary,
+          backgroundColor: colors.darkGrey,
+          '$checked$checked + &': {
+            opacity: 0.6,
+            backgroundColor: colors.primary,
+          },
+        },
+        colorSecondary: {
+          '&$checked': {
+            color: colors.primary,
+          },
         },
       },
-      colorSecondary: {
-        // Controls checked color for the thumb
-        '&$checked': {
-          color: colors.primary,
-        },
-      },
-    },
-    MuiDivider: {
-      root: {
-        backgroundColor: colors.primary,
-      },
-    },
-    MuiListItemIcon: {
-      root: {
-        alignItems: 'center',
-      },
-    },
-  },
-  props: {
-    MuiPaper: {
-      square: true,
-    },
-    MuiLink: {
-      underline: 'none',
-    },
-    MuiList: {
-      disablePadding: true,
     },
   },
   palette: {

@@ -1,36 +1,23 @@
+import { Search } from '@mui/icons-material';
 import {
+  Box,
   FormControl,
   InputAdornment,
   InputLabel,
-  makeStyles,
   MenuItem,
   Select,
+  SxProps,
   TextField,
-} from '@material-ui/core';
-import { Search } from '@material-ui/icons';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+} from '@mui/material';
+import { ReactElement, useEffect, useState } from 'react';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import LectureIdea from '../lecture/Lecture';
 
-const useStyles = makeStyles(() => ({
-  formControl: {
-    marginBottom: padding.standard,
-    minWidth: 120,
-  },
-  leftPanel: {
-    display: 'grid',
-    gridGap: padding.standard,
-    alignContent: 'start',
-  },
-  oneRow: {
-    display: 'grid',
-    gridAutoFlow: 'column',
-    alignItems: 'top',
-    gridTemplateColumns: 'initial initial auto',
-    columnGap: padding.standard,
-  },
-}));
+const formControlStyle: SxProps = {
+  marginBottom: padding.standard,
+  minWidth: 120,
+};
 
 interface FilterProps {
   lectures: Lecture[];
@@ -49,35 +36,27 @@ const handleSort = (value: string, lectures: Lecture[]): Lecture[] => {
 
 // filter the "Filtrera" - dropdown
 const handleFilters = (value: string, sorted: Lecture[]): Lecture[] => {
-  const filtered = [...sorted];
   switch (value) {
     case 'lecturer':
       return sorted.filter((lecture) => lecture.lecturer !== null);
     case 'null':
       return sorted.filter((lecture) => lecture.lecturer === null);
     default:
-      return filtered;
+      return sorted;
   }
 };
 
 // searchbar filtering based on title and description
 const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
-  const search = [...filtered];
-  if (!value) {
-    return search;
-  }
-  return search.filter((lecture) => {
+  if (!value) return filtered;
+  return filtered.filter((lecture) => {
     const title = lecture.title.toLowerCase();
     const description = lecture.description.toLowerCase();
-    if (title.includes(value.toLowerCase()) || description.includes(value.toLowerCase())) {
-      return true;
-    }
-    return false;
+    return title.includes(value.toLowerCase()) || description.includes(value.toLowerCase());
   });
 };
 
 const Filter = ({ lectures }: FilterProps): ReactElement => {
-  const classes = useStyles();
   const [filteredLectures, setLectures] = useState(lectures);
 
   const [options, setOptions] = useState({
@@ -86,7 +65,8 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
     search: '',
   });
 
-  const handleOptions = (event: ChangeEvent<{ name?: string; value: unknown }>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleOptions = (event: any) => {
     setOptions({ ...options, [event.target.name as string]: event.target.value });
   };
 
@@ -99,8 +79,16 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
 
   return (
     <div>
-      <div className={classes.oneRow}>
-        <FormControl variant="filled" className={classes.formControl}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridAutoFlow: 'column',
+          alignItems: 'top',
+          gridTemplateColumns: 'initial initial auto',
+          columnGap: padding.standard,
+        }}
+      >
+        <FormControl variant="filled" sx={formControlStyle}>
           <InputLabel shrink>Sortera</InputLabel>
           <Select
             value={options.sort}
@@ -114,7 +102,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
             <MenuItem value="old">Äldst först</MenuItem>
           </Select>
         </FormControl>
-        <FormControl variant="filled" className={classes.formControl}>
+        <FormControl variant="filled" sx={formControlStyle}>
           <InputLabel shrink>Filter</InputLabel>
           <Select
             value={options.filter}
@@ -129,7 +117,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
           </Select>
         </FormControl>
         <TextField
-          className={classes.formControl}
+          sx={formControlStyle}
           value={options.search}
           onChange={(e) => handleOptions(e)}
           name="search"
@@ -143,13 +131,19 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
             ),
           }}
         />
-      </div>
+      </Box>
 
-      <div className={classes.leftPanel}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridGap: padding.standard,
+          alignContent: 'start',
+        }}
+      >
         {filteredLectures.map((lecture) => (
           <LectureIdea key={lecture.id} lecture={lecture} />
         ))}
-      </div>
+      </Box>
     </div>
   );
 };

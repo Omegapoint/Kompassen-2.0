@@ -1,4 +1,4 @@
-import { Button, createStyles, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Button, Paper, Typography } from '@mui/material';
 import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { createUser } from '../../api/Api';
@@ -12,25 +12,11 @@ const defaultNotifications = {
   lectureTaken: true,
 };
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    paper: {
-      display: 'grid',
-      padding: padding.medium,
-      gridGap: padding.standard,
-      '& > button': {
-        justifySelf: 'center',
-      },
-    },
-  })
-);
-
 interface CreateUserProps {
   onFinish: () => void;
 }
 
 const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
-  const classes = useStyles();
   const { mutate, isSuccess } = useMutation(createUser);
   const [notifications, setNotifications] = useState(defaultNotifications);
 
@@ -45,7 +31,16 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
   const handleSubmit = async () => mutate({ notifications });
 
   return (
-    <Paper className={classes.paper}>
+    <Paper
+      sx={{
+        display: 'grid',
+        padding: padding.medium,
+        gridGap: padding.standard,
+        '& > button': {
+          justifySelf: 'center',
+        },
+      }}
+    >
       <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
       <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
       <Notifications handleChange={handleChange} checked={notifications} />

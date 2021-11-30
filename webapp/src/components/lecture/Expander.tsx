@@ -1,62 +1,30 @@
-import { Button, createStyles, IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import { ReactElement, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as ShortArrowCircled } from '../../assets/shortArrowCircled.svg';
 import { padding } from '../../theme/Theme';
 import LectureContext from './LectureContext';
 
-interface StyleProps {
-  isExpanded: boolean;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() =>
-  createStyles({
-    bookedByContainer: {
-      gridArea: 'registerButton',
-      maxWidth: '190px',
-    },
-    bookedBy: {
-      justifySelf: 'flex-end',
-    },
-    expandButtonContainer: {
-      gridArea: 'expandButtonContainer',
-      position: 'absolute',
-      bottom: `calc(-12px - 13px - ${padding.small})`,
-      width: '100%',
-      display: 'grid',
-      justifyItems: 'center',
-    },
-    expandButton: {
-      '& svg': {
-        width: '26px',
-        height: '26px',
-      },
-      transform: ({ isExpanded }) => `rotate(${isExpanded ? 180 : 0}deg)`,
-    },
-  })
-);
-
 export interface ExpanderProps {
   isExpanded: boolean;
   expand: () => void;
 }
-const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
-  const classes = useStyles({ isExpanded });
-  const { lecture } = useContext(LectureContext);
 
+const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
+  const { lecture } = useContext(LectureContext);
   return (
     <>
       {lecture.lecturer ? (
-        <div className={classes.bookedByContainer}>
-          <Typography variant="body2" className={classes.bookedBy}>
+        <Box sx={{ gridArea: 'registerButton', maxWidth: '190px' }}>
+          <Typography variant="body2" sx={{ justifySelf: 'flex-end' }}>
             {`${lecture.lecturer} har ställt upp som passhållare`}
           </Typography>
-        </div>
+        </Box>
       ) : (
         <Button
           component={NavLink}
           to={`/lecture/edit/${lecture.id}`}
-          className={classes.bookedByContainer}
+          sx={{ gridArea: 'registerButton', maxWidth: '190px' }}
           variant="contained"
           color="primary"
         >
@@ -64,12 +32,27 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
         </Button>
       )}
 
-      <div className={classes.expandButtonContainer}>
-        <IconButton className={classes.expandButton} onClick={expand}>
+      <Box
+        sx={{
+          gridArea: 'expandButtonContainer',
+          position: 'absolute',
+          bottom: `calc(-12px - 13px - ${padding.small})`,
+          width: '100%',
+          display: 'grid',
+          justifyItems: 'center',
+        }}
+      >
+        <IconButton
+          sx={{
+            '& svg': { width: '26px', height: '26px' },
+            transform: `rotate(${isExpanded ? 180 : 0}deg)`,
+          }}
+          onClick={expand}
+          size="large"
+        >
           <ShortArrowCircled />
-          {/* <img alt="arrow circled" src={shortArrowCircled} /> */}
         </IconButton>
-      </div>
+      </Box>
     </>
   );
 };

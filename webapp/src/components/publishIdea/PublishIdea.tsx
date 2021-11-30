@@ -1,17 +1,16 @@
 import {
+  Box,
   Button,
-  createStyles,
   FormControl,
   FormControlLabel,
   FormLabel,
   IconButton,
-  makeStyles,
   Paper,
   Radio,
   RadioGroup,
   TextField,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
 import { FormEvent, MouseEvent, ReactElement } from 'react';
 import { useMutation } from 'react-query';
@@ -22,60 +21,6 @@ import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import TextPanel from '../textPanel/TextPanel';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    page: {
-      display: 'grid',
-      gridAutoFlow: 'column',
-      gridTemplateColumns: 'min-content 1fr',
-    },
-    formContainer: {
-      display: 'grid',
-      gridGap: padding.medium,
-      padding: padding.medium,
-      gridTemplateColumns: 'max-content 1fr max-content',
-      gridTemplateAreas: `"header header header"
-                          "title title title"
-                          "content content content"
-                          "tags tags tags"
-                          "status status status"
-                          "cancel . submit"`,
-    },
-    line: {
-      width: '6px',
-      background: colors.primary,
-      borderRadius: `${borderRadius.small} 0 0 ${borderRadius.small}`,
-    },
-    header: {
-      gridArea: 'header',
-      justifySelf: 'center',
-    },
-    radioButtons: {
-      paddingTop: padding.minimal,
-    },
-    title: {
-      gridArea: 'title',
-    },
-    content: {
-      gridArea: 'content',
-      width: '100%',
-    },
-    tags: {
-      gridArea: 'tags',
-    },
-    status: {
-      gridArea: 'status',
-    },
-    cancel: {
-      gridArea: 'cancel',
-      padding: 0,
-    },
-    submit: {
-      gridArea: 'submit',
-    },
-  })
-);
 
 interface PublishIdeaProps {
   cancel: () => void;
@@ -112,7 +57,6 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 };
 // The simple lecture form on the homepage
 const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
-  const classes = useStyles();
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
   const { mutateAsync } = useMutation(createLectureIdea);
@@ -124,7 +68,14 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
     await mutateAsync({
       title: values.title,
       description: values.description,
-      tags: values.tags.split(' ').filter((e) => e),
+      tags: [
+        ...new Set(
+          values.tags
+            .split(' ')
+            .map((e) => e.trim())
+            .filter((e) => e)
+        ),
+      ],
       lecturer: values.status === 'feedback_wanted' ? azureUser.displayName : null,
     });
     cancel();
@@ -136,15 +87,34 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className={classes.page}>
-        <div className={classes.line} />
-        <Paper className={classes.formContainer}>
-          <Typography className={classes.header} variant="h2">
+      <Box sx={{ display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: 'min-content 1fr' }}>
+        <Box
+          sx={{
+            width: '6px',
+            background: colors.primary,
+            borderRadius: `${borderRadius.small} 0 0 ${borderRadius.small}`,
+          }}
+        />
+        <Paper
+          sx={{
+            display: 'grid',
+            gridGap: padding.medium,
+            padding: padding.medium,
+            gridTemplateColumns: 'max-content 1fr max-content',
+            gridTemplateAreas: `"header header header"
+                                "title title title"
+                                "content content content"
+                                "tags tags tags"
+                                "status status status"
+                                "cancel . submit"`,
+          }}
+        >
+          <Typography sx={{ gridArea: 'header', justifySelf: 'center' }} variant="h2">
             Ny idé
           </Typography>
           <TextField
             {...validate.title}
-            className={classes.title}
+            sx={{ gridArea: 'title' }}
             fullWidth
             onChange={handleChange}
             required
@@ -152,7 +122,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             label="Titel"
             variant="outlined"
           />
-          <div className={classes.content}>
+          <Box sx={{ gridArea: 'content', width: '100%' }}>
             <TextField
               {...validate.description}
               fullWidth
@@ -167,11 +137,11 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               variant="outlined"
             />
             <TextPanel handleEmojiClick={handleSmiley} />
-          </div>
+          </Box>
 
           <TextField
             {...validate.tags}
-            className={classes.tags}
+            sx={{ gridArea: 'tags' }}
             fullWidth
             onChange={handleChange}
             name="tags"
@@ -179,8 +149,8 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             variant="outlined"
           />
 
-          <FormControl className={classes.status} component="fieldset">
-            <FormLabel className={classes.radioButtons} component="legend">
+          <FormControl sx={{ gridArea: 'status' }} component="fieldset">
+            <FormLabel sx={{ paddingTop: padding.minimal }} component="legend">
               Typ av idé
             </FormLabel>
             <RadioGroup name="status" onChange={handleChange} value={values.status}>
@@ -197,11 +167,16 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             </RadioGroup>
           </FormControl>
 
-          <IconButton className={classes.cancel} onClick={cancel} color="primary">
+          <IconButton
+            sx={{ gridArea: 'cancel', padding: 0 }}
+            onClick={cancel}
+            color="primary"
+            size="large"
+          >
             <Typography>Avbryt</Typography>
           </IconButton>
           <Button
-            className={classes.submit}
+            sx={{ gridArea: 'submit' }}
             onClick={handleSubmit}
             disabled={invalid}
             variant="contained"
@@ -210,7 +185,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             Publisera idé
           </Button>
         </Paper>
-      </div>
+      </Box>
     </form>
   );
 };

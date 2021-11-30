@@ -1,4 +1,4 @@
-import { createStyles, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Box, IconButton, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
@@ -8,32 +8,6 @@ import { padding } from '../../theme/Theme';
 import Discussion from './Discussion';
 import LectureContext from './LectureContext';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    title: {
-      gridArea: 'title',
-    },
-    container: {
-      display: 'grid',
-      gridTemplateColumns: 'max-content max-content 1fr max-content',
-      gridTemplateAreas: `"title icon . info"
-                          "content content content content"`,
-      padding: padding.small,
-      gridGap: `${padding.minimal}`,
-    },
-    icon: {
-      gridArea: 'icon',
-      height: '25px',
-      width: '25px',
-    },
-    info: {
-      gridArea: 'info',
-      maxWidth: '200px',
-      textAlign: 'end',
-    },
-  })
-);
-
 const formatTime = (d: Date): string => {
   const date = format(d, 'dd MMMM', { locale: sv });
   const time = format(d, 'HH:mm', { locale: sv });
@@ -42,25 +16,36 @@ const formatTime = (d: Date): string => {
 
 const BottomContainer = (): ReactElement => {
   const { lecture } = useContext(LectureContext);
-  const classes = useStyles();
   const date = formatTime(lecture.createdAt);
   const { name } = useAzureUser(lecture.createdBy);
 
   return (
-    <div className={classes.container}>
-      <Typography className={classes.title} variant="subtitle2">
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'max-content max-content 1fr max-content',
+        gridTemplateAreas: `"title icon . info"
+                            "content content content content"`,
+        padding: padding.small,
+        gridGap: `${padding.minimal}`,
+      }}
+    >
+      <Typography sx={{ gridArea: 'title' }} variant="subtitle2">
         Diskussion
       </Typography>
-      <IconButton className={classes.icon}>
-        <div style={{ gridArea: 'icon' }}>
-          <AlarmCircled className={classes.icon} height="25px" width="25px" />
+      <IconButton sx={{ gridArea: 'icon', height: '25px', width: '25px' }} size="large">
+        <div>
+          <AlarmCircled height="25px" width="25px" />
         </div>
       </IconButton>
-      <Typography className={classes.info} variant="subtitle1">
+      <Typography
+        sx={{ gridArea: 'info', maxWidth: '200px', textAlign: 'end' }}
+        variant="subtitle1"
+      >
         {`Publicerat av ${name} ${date}`}
       </Typography>
       <Discussion />
-    </div>
+    </Box>
   );
 };
 

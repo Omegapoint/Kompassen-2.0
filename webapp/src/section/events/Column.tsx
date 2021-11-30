@@ -1,4 +1,4 @@
-import { createStyles, Divider, makeStyles, Typography } from '@material-ui/core';
+import { Box, Divider, Typography } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import { colors, padding } from '../../theme/Theme';
 
@@ -7,39 +7,22 @@ interface ColumnProps {
   children: ReactNode;
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gridGap: padding.small,
-    },
-    header: {
-      color: colors.orange,
-    },
-    divider: {
-      width: '100%',
-    },
-    children: {
-      display: 'grid',
-      gridGap: padding.small,
-      '& >*': {
-        width: '100%',
-      },
-    },
-  })
+const Column = ({ title, children }: ColumnProps): ReactElement => (
+  <Box sx={{ display: 'grid', gridGap: padding.small }}>
+    <Typography variant="h5" sx={{ color: colors.orange }}>
+      {title}
+    </Typography>
+    <Divider sx={{ width: '100%' }} />
+    <Box
+      sx={{
+        display: 'grid',
+        gridGap: padding.small,
+        '& >*': { width: '100%' },
+      }}
+    >
+      {children}
+    </Box>
+  </Box>
 );
-
-const Column = ({ title, children }: ColumnProps): ReactElement => {
-  const classes = useStyles();
-  return (
-    <div className={classes.container}>
-      <Typography variant="h5" className={classes.header}>
-        {title}
-      </Typography>
-      <Divider className={classes.divider} />
-      <div className={classes.children}>{children}</div>
-    </div>
-  );
-};
 
 export default Column;

@@ -1,47 +1,24 @@
-import { createStyles, makeStyles, Paper, Theme } from '@material-ui/core';
+import { Box, Paper, SxProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import { borderRadius, colors, padding } from '../../theme/Theme';
-
-interface StyleProps {
-  color: string;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gridTemplateColumns: 'min-content 1fr',
-    },
-    line: {
-      background: ({ color }) => color,
-      width: '6px',
-      borderRadius: `${borderRadius.standard} 0 0 ${borderRadius.standard}`,
-    },
-    paper: {
-      padding: padding.small,
-    },
-  })
-);
 
 interface RowPaperProps {
   children: ReactNode;
   color?: string;
-  className?: string;
+  sx?: SxProps;
 }
 
-const RowPaper = ({
-  children,
-  color = colors.blue,
-  className = '',
-}: RowPaperProps): ReactElement => {
-  const classes = useStyles({ color });
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.line} />
-      <Paper className={`${classes.paper} ${className}`}>{children}</Paper>
-    </div>
-  );
-};
+const RowPaper = ({ children, color = colors.blue, sx = {} }: RowPaperProps): ReactElement => (
+  <Box sx={{ display: 'grid', gridTemplateColumns: 'min-content 1fr' }}>
+    <Box
+      sx={{
+        background: color,
+        width: '6px',
+        borderRadius: `${borderRadius.standard} 0 0 ${borderRadius.standard}`,
+      }}
+    />
+    <Paper sx={{ ...sx, padding: padding.small }}>{children}</Paper>
+  </Box>
+);
 
 export default RowPaper;

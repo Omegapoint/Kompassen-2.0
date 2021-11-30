@@ -1,14 +1,6 @@
-import {
-  Button,
-  createStyles,
-  IconButton,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Fragment, ReactElement } from 'react';
@@ -22,75 +14,6 @@ import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
 import UpdateLectureIdea from '../updateLectureIdea/UpdateLectureIdea';
-
-interface StyleProps {
-  categoryColor?: string;
-  isUnpublishedIdea: boolean;
-}
-
-const useStyles = makeStyles<Theme, StyleProps>(() =>
-  createStyles({
-    paper: {
-      display: 'grid',
-      padding: padding.standard,
-    },
-    container: {
-      display: 'grid',
-      borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
-    },
-    registeredBy: {
-      marginBottom: padding.standard,
-    },
-    header: {
-      display: 'grid',
-      gridTemplateColumns: ({ isUnpublishedIdea }) =>
-        isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
-
-      justifyItems: 'center',
-      '& > :first-child': {
-        background: colors.darkTeal,
-        borderRadius: ({ isUnpublishedIdea }) =>
-          isUnpublishedIdea
-            ? `${borderRadius.standard} ${borderRadius.standard} 0 0`
-            : `${borderRadius.standard} 0 0 0`,
-      },
-      '& > :nth-child(2)': {
-        background: colors.blue,
-      },
-      '& > :last-child': {
-        borderRadius: `0 ${borderRadius.standard} 0 0`,
-        background: ({ categoryColor }) => categoryColor,
-      },
-      '& *': {
-        width: '100%',
-        color: colors.white,
-        textAlign: 'center',
-        padding: `3px ${padding.medium}`,
-      },
-    },
-    row: {
-      display: 'grid',
-      gridAutoFlow: 'column',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    table: {
-      display: 'grid',
-      gridTemplateColumns: 'max-content 1fr max-content',
-      gridGap: padding.minimal,
-      '& > :nth-child(even)': {
-        gridColumn: 'span 2',
-      },
-      '& > :nth-last-child(2)': {
-        gridColumn: 'span 1',
-      },
-    },
-    removeLinkPadding: {
-      padding: 0,
-      margin: 0,
-    },
-  })
-);
 
 interface LectureViewProps {
   lecture: Lecture;
@@ -114,7 +37,6 @@ const LectureView = ({
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
-  const classes = useStyles({ categoryColor: category?.color, isUnpublishedIdea });
   const locations = useAppSelector((state) => state.locations);
   const location = locations.find((e) => e.id === lecture.locationID)?.name;
   const eventDay = useEvent(lecture.eventID!);
@@ -139,7 +61,12 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'grid',
+        borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
+      }}
+    >
       <UpdateLectureIdea
         open={open}
         close={() => {
@@ -148,53 +75,108 @@ const LectureView = ({
         }}
         lecture={lecture}
       />
-      {isUnpublishedIdea ? (
-        <div className={classes.header}>
-          <Typography>Idé</Typography>
-        </div>
-      ) : (
-        <div className={classes.header}>
-          {eventDay !== undefined && <Typography>{formatDayTime(eventDay)}</Typography>}
-          <Typography>{location}</Typography>
-          <Typography>{category?.name}</Typography>
-        </div>
-      )}
-      <Paper className={classes.paper}>
-        <div className={classes.row}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
+          justifyItems: 'center',
+          '& *': {
+            width: '100%',
+            color: colors.white,
+            textAlign: 'center',
+            padding: `3px ${padding.medium}`,
+          },
+        }}
+      >
+        {isUnpublishedIdea ? (
+          <>
+            <Typography
+              sx={{
+                background: colors.darkTeal,
+                borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
+              }}
+            >
+              Idé
+            </Typography>
+          </>
+        ) : (
+          <>
+            {eventDay !== undefined && (
+              <Typography
+                sx={{
+                  background: colors.darkTeal,
+                  borderRadius: `${borderRadius.standard} 0 0 0`,
+                }}
+              >
+                {formatDayTime(eventDay)}
+              </Typography>
+            )}
+            <Typography sx={{ background: colors.blue }}>{location}</Typography>
+            <Typography
+              sx={{
+                borderRadius: `0 ${borderRadius.standard} 0 0`,
+                background: category?.color,
+              }}
+            >
+              {category?.name}
+            </Typography>
+          </>
+        )}
+      </Box>
+
+      <Paper sx={{ display: 'grid', padding: padding.standard }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridAutoFlow: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
           <Typography variant="h5">{lecture.title}</Typography>
           <div>
             {editIcon &&
               (isUnpublishedIdea ? (
-                <IconButton onClick={on}>
+                <IconButton onClick={on} size="large">
                   <EditIcon />
                 </IconButton>
               ) : (
-                <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`}>
+                <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`} size="large">
                   <EditIcon />
                 </IconButton>
               ))}
             {deleteIcon && (
-              <IconButton onClick={handleDelete}>
+              <IconButton onClick={handleDelete} size="large">
                 <DeleteIcon />
               </IconButton>
             )}
           </div>
-        </div>
-        <Typography
-          className={classes.registeredBy}
-        >{`Anmäld av ${lecture.lecturer} den ${time}`}</Typography>
-        <div className={classes.table}>
+        </Box>
+        <Typography sx={{ marginBottom: padding.standard }}>
+          {`Anmäld av ${lecture.lecturer} den ${time}`}
+        </Typography>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'max-content 1fr max-content',
+            gridGap: padding.minimal,
+          }}
+        >
           {table.map((e) => (
             <Fragment key={e.name}>
-              <Typography>{e.name}:</Typography>
-              <Typography>{e.value}</Typography>
+              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
             </Fragment>
           ))}
+          <Box sx={{ gridColumn: 'span 2' }} />
           {!isUnpublishedIdea && !admin && (
-            <Typography>{lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}</Typography>
+            <Typography sx={{ gridColumn: 'span 1' }}>
+              {lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}
+            </Typography>
           )}
           {admin && (
             <Button
+              sx={{ gridColumn: 'span 1' }}
               variant={lecture.approved ? undefined : 'contained'}
               color={lecture.approved ? undefined : 'primary'}
               onClick={handleApprove}
@@ -202,9 +184,9 @@ const LectureView = ({
               {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
             </Button>
           )}
-        </div>
+        </Box>
       </Paper>
-    </div>
+    </Box>
   );
 };
 

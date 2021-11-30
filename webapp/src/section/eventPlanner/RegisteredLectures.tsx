@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { ReactElement } from 'react';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
@@ -9,24 +9,18 @@ interface RegisteredLecturesProps {
   admin?: boolean;
 }
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    gridGap: padding.standard,
-    gridTemplateColumns: '1fr 1fr 1fr',
-  },
-}));
-
-const RegisteredLectures = ({ lectures, admin = false }: RegisteredLecturesProps): ReactElement => {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      {lectures.map((e) => (
-        <LectureCard key={e.id} lecture={e} edit admin={admin} />
-      ))}
-    </div>
-  );
-};
+const RegisteredLectures = ({ lectures, admin = false }: RegisteredLecturesProps): ReactElement => (
+  <Box
+    sx={{
+      display: 'grid',
+      gridGap: padding.standard,
+      gridTemplateColumns: '1fr 1fr 1fr',
+    }}
+  >
+    {lectures.map((e) => (
+      <LectureCard key={e.id} lecture={e} edit admin={admin} />
+    ))}
+  </Box>
+);
 
 export default RegisteredLectures;

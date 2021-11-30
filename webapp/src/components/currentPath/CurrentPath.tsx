@@ -1,7 +1,6 @@
-import { makeStyles } from '@material-ui/core';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
-import Typography from '@material-ui/core/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { ReactElement } from 'react';
 import { matchPath, NavLink, useLocation } from 'react-router-dom';
 import { isAdmin } from '../../lib/Lib';
@@ -18,10 +17,10 @@ const findCurrentPaths = (
     .filter((route) => (route.admin && isAdmin()) || !route.admin)
     .find((route) => {
       if (route.name === notFound.name) return false;
-      const isStart = path.startsWith(route.path) || matchPath(path, route.path);
+      const isStart = path.startsWith(route.path) || matchPath(route.path, path);
       const isRoot = route.path === '/';
       const isLongerPath = path.length > route.path.length && path[route.path.length] === '/';
-      const isSamePath = path === route.path || matchPath(path, route.path);
+      const isSamePath = path === route.path || matchPath(route.path, path);
       return isStart && (isRoot || isLongerPath || isSamePath);
     });
 
@@ -31,34 +30,28 @@ const findCurrentPaths = (
   return findCurrentPaths(path, routesNotFoundYet, currentFoundRoutes);
 };
 
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'grid',
-    height: '25px',
-    alignItems: 'center',
-    '& *': {
-      lineHeight: '1',
-    },
-  },
-}));
-
 const CurrentPath = (): ReactElement => {
-  const classes = useStyles();
   const location = useLocation();
   const { pathname } = location;
-
   const foundRoutes = findCurrentPaths(pathname, sortedRoutes, []);
+  const lastMatch = foundRoutes[foundRoutes.length - 1].path;
 
-  const currentRoute =
-    foundRoutes.length === 1 && !matchPath(pathname, notFound.path)?.isExact
-      ? notFound
-      : foundRoutes[foundRoutes.length - 1];
+  const currentRoute = matchPath(lastMatch, pathname)
+    ? foundRoutes[foundRoutes.length - 1]
+    : notFound;
 
   const parentRoutes =
     currentRoute === notFound ? foundRoutes : foundRoutes.slice(0, foundRoutes.length - 1);
 
   return (
-    <Breadcrumbs className={classes.container}>
+    <Breadcrumbs
+      sx={{
+        display: 'grid',
+        height: '25px',
+        alignItems: 'center',
+        '& *': { lineHeight: '1' },
+      }}
+    >
       {parentRoutes.map((e) => (
         <Link variant="subtitle2" key={e.path} component={NavLink} to={e.path} color="inherit">
           {e.name}

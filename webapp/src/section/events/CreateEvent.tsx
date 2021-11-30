@@ -1,20 +1,16 @@
-import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, LocalizationProvider, TimePicker } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles,
   MenuItem,
   Select,
   TextField,
-} from '@material-ui/core';
-import {
-  KeyboardDatePicker,
-  KeyboardTimePicker,
-  MuiPickersUtilsProvider,
-} from '@material-ui/pickers';
+} from '@mui/material';
 import { set } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -25,25 +21,6 @@ import { useAppSelector } from '../../lib/Lib';
 import { Event } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import RoomPicker from './RoomPicker';
-
-const useStyles = makeStyles(() => ({
-  dialog: {
-    display: 'grid',
-    gridGap: padding.standard,
-    gridTemplateColumns: '1fr 1fr 1fr',
-    '& > *': {
-      gridColumn: 'span 3',
-    },
-    '& > :nth-child(-n+3)': {
-      gridColumn: 'span 1',
-    },
-  },
-  dialogActions: {
-    display: 'grid',
-    gridAutoFlow: 'column',
-    justifyContent: 'space-between',
-  },
-}));
 
 const defaultTime = { minutes: 0, seconds: 0, milliseconds: 0 };
 
@@ -63,7 +40,6 @@ interface CreateElementProps {
 }
 
 const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement => {
-  const classes = useStyles();
   const organisations = useAppSelector((state) => state.organisations);
   const create = useMutation(createEvent);
   const update = useMutation(updateEvent);
@@ -139,40 +115,41 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
       <DialogTitle id="form-dialog-title">
         {event ? 'Redigera kompetensdag' : 'Skapa ny kompetensdag'}
       </DialogTitle>
-      <DialogContent className={classes.dialog}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={sv}>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            label="Datum"
-            value={values.date}
-            onChange={(date) => updateValues({ date })}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-          />
-          <KeyboardTimePicker
-            margin="normal"
-            label="Starttid"
-            value={values.start}
-            onChange={(start) => updateValues({ start })}
-            KeyboardButtonProps={{
-              'aria-label': 'change time',
-            }}
-            ampm={false}
-          />
-          <KeyboardTimePicker
-            margin="normal"
-            label="Sluttid"
-            value={values.end}
-            onChange={(end) => updateValues({ end })}
-            KeyboardButtonProps={{
-              'aria-label': 'change time',
-            }}
-            ampm={false}
-          />
+      <DialogContent
+        sx={{
+          display: 'grid',
+          gridGap: padding.standard,
+          gridTemplateColumns: '1fr 1fr 1fr',
+          '& > *': { gridColumn: 'span 3' },
+        }}
+      >
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={sv}>
+          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+            <DatePicker
+              label="Datum"
+              value={values.date}
+              onChange={(date) => updateValues({ date })}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+            <TimePicker
+              label="Starttid"
+              value={values.start}
+              onChange={(start) => updateValues({ start })}
+              ampm={false}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+            <TimePicker
+              label="Sluttid"
+              value={values.end}
+              onChange={(end) => updateValues({ end })}
+              ampm={false}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
           <Select
             value={values.organisationID}
             onChange={(e) => handleChange(e)}
@@ -194,9 +171,15 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
             variant="outlined"
           />
           <RoomPicker updateValues={updateValues} values={values} />
-        </MuiPickersUtilsProvider>
+        </LocalizationProvider>
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions
+        sx={{
+          display: 'grid',
+          gridAutoFlow: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <Button onClick={close} color="primary">
           Avbryt
         </Button>

@@ -1,15 +1,18 @@
+import { Box } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import io from 'socket.io-client';
 import { getUser } from './api/Api';
 import { BASE_WS_URL } from './api/Fetch';
-import Body from './components/body/Body';
+import CurrentPath from './components/currentPath/CurrentPath';
 import Footer from './components/footer/Footer';
 import BigLoader from './components/loader/BigLoader';
 import Navbar from './components/navbar/Navbar';
 import { useAppDispatch, useAppSelector } from './lib/Lib';
 import { setSocket } from './reducers/session/actions';
 import { setUser } from './reducers/user/actions';
+import Router from './router/Router';
+import { padding } from './theme/Theme';
 import { useCategoriesWS, useEventsWS, useLocationsWS, useOrganisationsWS } from './ws/ReduxWS';
 
 function useFetchDispatch<Res>(
@@ -67,9 +70,20 @@ const Content = (): ReactElement => {
   return (
     <>
       <Navbar />
-      <div style={{ display: 'grid', justifyItems: 'center' }}>
-        <Body />
-      </div>
+      <Box sx={{ display: 'grid', justifyItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'grid',
+            width: '100%',
+            padding: padding.standard,
+            maxWidth: '1500px',
+            justifySelf: 'center',
+          }}
+        >
+          <CurrentPath />
+          <Router />
+        </Box>
+      </Box>
       <Footer />
     </>
   );

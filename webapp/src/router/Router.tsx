@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import { isAdmin } from '../lib/Lib';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
@@ -16,15 +16,13 @@ export interface AppRoute {
   name: string;
   path: string;
   Component: FC;
-  notExact?: boolean;
   admin?: boolean;
 }
 
 export const notFound: AppRoute = {
   name: 'Sidan kunde inte hittas',
-  path: '/',
+  path: '/*',
   Component: PageNotFound,
-  notExact: true,
 };
 
 export const appRoutes: AppRoute[] = [
@@ -79,17 +77,21 @@ export const appRoutes: AppRoute[] = [
 ];
 
 const Router = (): ReactElement => (
-  <Switch>
+  <Routes>
     {appRoutes
       .filter((route) => (route.admin && isAdmin()) || !route.admin)
       .map((route) => (
-        <Route path={route.path} key={route.path + route.name} exact={!route.notExact}>
-          <Content>
-            <route.Component />
-          </Content>
-        </Route>
+        <Route
+          path={route.path}
+          key={route.path + route.name}
+          element={
+            <Content>
+              <route.Component />
+            </Content>
+          }
+        />
       ))}
-  </Switch>
+  </Routes>
 );
 
 export default Router;

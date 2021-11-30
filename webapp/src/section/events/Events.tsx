@@ -1,4 +1,4 @@
-import { Button, createStyles, makeStyles } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import React, { ReactElement, useState } from 'react';
 import useBoolean from '../../hooks/UseBoolean';
 import { useAppSelector } from '../../lib/Lib';
@@ -9,19 +9,7 @@ import CreateEvent from './CreateEvent';
 import EventRow from './EventRow';
 import EventTitles from './EventTitles';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      alignItems: 'start',
-      gridGap: padding.xlarge,
-    },
-  })
-);
-
 const Events = (): ReactElement => {
-  const classes = useStyles();
   const events = useAppSelector((state) => state.events);
   const today = new Date();
   const previous = events.filter((e) => e.endAt < today);
@@ -30,7 +18,14 @@ const Events = (): ReactElement => {
   const [currentEvent, setCurrentEvent] = useState<undefined | Event>();
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        alignItems: 'start',
+        gridGap: padding.xlarge,
+      }}
+    >
       <Column title="Kommande kompetensdagar">
         <Button
           variant="contained"
@@ -69,7 +64,7 @@ const Events = (): ReactElement => {
           />
         ))}
       </Column>
-    </div>
+    </Box>
   );
 };
 

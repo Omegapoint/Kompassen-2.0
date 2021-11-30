@@ -4,9 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
 import React, { MouseEvent, ReactElement } from 'react';
 import { useMutation } from 'react-query';
@@ -22,23 +21,7 @@ interface UpdateLectureIdeaProps {
   lecture: Lecture;
 }
 
-const useStyles = makeStyles(() => ({
-  dialog: {
-    display: 'grid',
-    minWidth: '400px',
-    gridGap: padding.standard,
-  },
-  dialogActions: {},
-  status: {},
-  title: {},
-  content: {},
-  tags: {},
-  radioButtons: {},
-}));
-
 const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): ReactElement => {
-  const classes = useStyles();
-
   const defaultFormValue = {
     title: lecture.title,
     description: lecture.description,
@@ -54,7 +37,14 @@ const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): Re
       id: lecture.id,
       title: values.title,
       description: values.description,
-      tags: values.tags.split(' ').filter((e) => e),
+      tags: [
+        ...new Set(
+          values.tags
+            .split(' ')
+            .map((e) => e.trim())
+            .filter((e) => e)
+        ),
+      ],
     });
     close();
   };
@@ -66,10 +56,8 @@ const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): Re
   return (
     <Dialog open={open} onClose={close} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Redigera Idé</DialogTitle>
-      <DialogContent className={classes.dialog}>
+      <DialogContent sx={{ display: 'grid', minWidth: '400px', gridGap: padding.standard }}>
         <TextField
-          // {...validate.title}
-          className={classes.title}
           fullWidth
           onChange={handleChange}
           required
@@ -78,9 +66,8 @@ const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): Re
           label="Titel"
           variant="outlined"
         />
-        <div className={classes.content}>
+        <div>
           <TextField
-            // {...validate.description}
             fullWidth
             multiline
             minRows={3}
@@ -96,8 +83,6 @@ const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): Re
         </div>
 
         <TextField
-          // {...validate.tags}
-          className={classes.tags}
           fullWidth
           onChange={handleChange}
           name="tags"
@@ -106,7 +91,7 @@ const UpdateLectureIdea = ({ open, close, lecture }: UpdateLectureIdeaProps): Re
           variant="outlined"
         />
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions>
         <Button onClick={close} color="primary">
           Avbryt
         </Button>

@@ -1,37 +1,9 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { differenceInDays, intervalToDuration } from 'date-fns';
 import { ReactElement, useContext, useEffect, useState } from 'react';
 import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    gridGap: padding.small,
-    justifyContent: 'center',
-    background: colors.background,
-    padding: `${padding.minimal} 0`,
-    borderRadius: borderRadius.tiny,
-  },
-  nr: {
-    background: colors.primary,
-    color: colors.white,
-    lineHeight: 1,
-    fontSize: '1.2rem',
-    padding: padding.tiny,
-    borderRadius: borderRadius.tiny,
-  },
-  desc: {
-    lineHeight: 1,
-    color: colors.primary,
-  },
-  subContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    gridGap: padding.tiny,
-  },
-}));
 
 interface Time {
   days: number;
@@ -46,7 +18,6 @@ const getTime = (event: Event): Time => {
 };
 
 const DaysToGo = (): ReactElement => {
-  const classes = useStyles();
   const { events, ind } = useContext(EventContext);
 
   const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind]));
@@ -64,14 +35,34 @@ const DaysToGo = (): ReactElement => {
   ];
 
   return (
-    <div className={classes.container}>
+    <Box
+      sx={{
+        display: 'flex',
+        gridGap: padding.small,
+        justifyContent: 'center',
+        background: colors.background,
+        padding: `${padding.minimal} 0`,
+        borderRadius: borderRadius.tiny,
+      }}
+    >
       {data.map((e) => (
-        <div key={e.desc} className={classes.subContainer}>
-          <Typography className={classes.nr}>{e.nr}</Typography>
-          <Typography className={classes.desc}>{e.desc}</Typography>
-        </div>
+        <Box key={e.desc} sx={{ display: 'flex', alignItems: 'center', gridGap: padding.tiny }}>
+          <Typography
+            sx={{
+              background: colors.primary,
+              color: colors.white,
+              lineHeight: 1,
+              fontSize: '1.2rem',
+              padding: padding.tiny,
+              borderRadius: borderRadius.tiny,
+            }}
+          >
+            {e.nr}
+          </Typography>
+          <Typography sx={{ lineHeight: 1, color: colors.primary }}>{e.desc}</Typography>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 };
 
