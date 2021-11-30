@@ -56,7 +56,6 @@ const LectureCard = ({
               gridTemplateColumns: 'max-content 1fr',
             }}
           >
-            {/* eslint-disable-next-line react/no-danger */}
             <Box
               sx={{
                 width: '20px',
@@ -66,11 +65,13 @@ const LectureCard = ({
               dangerouslySetInnerHTML={{ __html: category.icon }}
             />
             <Typography variant="h6">{lecture.title}</Typography>
-            {startAt && <Typography>{genTime(startAt)}</Typography>}
           </Box>
 
+          <Typography>
+            {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
+          </Typography>
+
           <Typography>{lecture.lecturer}</Typography>
-          {!startAt && <Typography>{(lecture.duration || 0) / 60} min</Typography>}
         </Box>
 
         <Box sx={{ display: 'grid', alignItems: 'end' }}>

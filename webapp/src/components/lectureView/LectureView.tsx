@@ -46,13 +46,14 @@ const LectureView = ({
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
     { name: 'Längd', value: ((lecture.duration || 0) / 60)?.toString().concat(' ', 'minuter') },
+    { name: 'Distans', value: lecture.remote ? 'Ja' : 'Nej' },
     { name: 'Max antal', value: lecture.maxParticipants },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Beskrivning', value: lecture.description },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Förberedelser', value: lecture.preparations },
     { name: 'Taggar', value: lecture.tags.reduce((s, e) => `${s} ${e}`, '') },
-  ].filter((e) => e.value);
+  ].map((e) => ({ ...e, value: e.value || '-' }));
 
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
