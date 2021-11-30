@@ -17,7 +17,7 @@ const Schedule = ({ event, lectures }: ScheduleProps): ReactElement => (
       padding: padding.standard,
       gridGap: padding.standard,
       gridTemplateAreas: `".    titles"
-                        "time schedule"`,
+                          "time schedule"`,
       gridTemplateColumns: 'max-content 1fr',
     }}
   >
