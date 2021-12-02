@@ -6,51 +6,93 @@ on:
       - "**"
       - "!main"
 
+env:
+  OCI_REGISTRY: kompassen2.azurecr.io
+
 jobs:
-  test_web_app:
+  build_web_app:
+    name: Build web app
     runs-on: ubuntu-latest
-    name: Test web app
+    env:
+      OCI_IMAGE: kompassen2.azurecr.io/webapp/build
     steps:
       - uses: actions/checkout@v2
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
 
-      - name: Use caching
-        uses: actions/cache@v2
+      - name: Login to ACR
+        uses: docker/login-action@v1
         with:
-          path: webapp/node_modules
-          key: webapp-${{ hashFiles('webapp/package-lock.json') }}
+          registry: "${{ env.OCI_REGISTRY }}"
+          username: "${{ secrets.ARM_CLIENT_ID }}"
+          password: "${{ secrets.ARM_CLIENT_SECRET }}"
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v1
+      - name: Build and push
+        uses: docker/build-push-action@v2
         with:
-          node-version: "14.x"
+          context: webapp
+          push: true
+          tags: "${{ env.OCI_IMAGE }}:${{ github.sha }}"
+          target: build
+          cache-from: "type=registry,ref=${{ env.OCI_IMAGE }}:buildcache"
+          cache-to: "type=registry,ref=${{ env.OCI_IMAGE }}:buildcache,mode=max"
 
-      - name: Install dependencies and test code
+  test_web_app:
+    name: Test web app
+    needs: build_web_app
+    runs-on: ubuntu-latest
+    container:
+      image: "kompassen2.azurecr.io/webapp/build:${{ github.sha }}"
+      credentials:
+        username: "${{ secrets.ARM_CLIENT_ID }}"
+        password: "${{ secrets.ARM_CLIENT_SECRET }}"
+    steps:
+      - name: Run static code analysis and unit tests
         run: |
-          npm install
-          npm run format:check
-          npm run lint:check
-        working-directory: webapp
+          yarn lint:check
+          yarn format:check
+          yarn test
+        working-directory: /app
+  build_server:
+    name: Build Server
+    runs-on: ubuntu-latest
+    env:
+      OCI_IMAGE: kompassen2.azurecr.io/server/build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
+
+      - name: Login to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: "${{ env.OCI_REGISTRY }}"
+          username: "${{ secrets.ARM_CLIENT_ID }}"
+          password: "${{ secrets.ARM_CLIENT_SECRET }}"
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: server
+          push: true
+          tags: "${{ env.OCI_IMAGE }}:${{ github.sha }}"
+          target: build
+          cache-from: "type=registry,ref=${{ env.OCI_IMAGE }}:buildcache"
+          cache-to: "type=registry,ref=${{ env.OCI_IMAGE }}:buildcache,mode=max"
 
   test_server:
-    runs-on: ubuntu-latest
     name: Test server
+    needs: build_server
+    runs-on: ubuntu-latest
+    container:
+      image: "kompassen2.azurecr.io/server/build:${{ github.sha }}"
+      credentials:
+        username: "${{ secrets.ARM_CLIENT_ID }}"
+        password: "${{ secrets.ARM_CLIENT_SECRET }}"
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Use caching
-        uses: actions/cache@v2
-        with:
-          path: server/node_modules
-          key: server-${{ hashFiles('server/package-lock.json') }}
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v1
-        with:
-          node-version: "14.x"
-
-      - name: Install dependencies and test code
+      - name: Run static code analysis and unit tests
         run: |
-          npm install
-          npm run format:check
-          npm run lint:check
-        working-directory: server
+          yarn lint:check
+          yarn format:check
+          yarn test
+        working-directory: /app
