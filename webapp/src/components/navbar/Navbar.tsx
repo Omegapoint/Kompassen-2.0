@@ -3,6 +3,7 @@ import { Badge, Box, IconButton, Link } from '@mui/material';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { colors, constants, fontFamilies, padding } from '../../theme/Theme';
+import Logo from './Logo';
 import User from './User';
 
 const Navbar = (): ReactElement => (
@@ -26,12 +27,12 @@ const Navbar = (): ReactElement => (
       sx={{
         justifySelf: 'left',
         fontFamily: fontFamilies.header,
-        fontSize: '1.6rem',
         textDecoration: 'none',
         color: 'white',
+        display: 'flex',
       }}
     >
-      KomPass 2.0
+      <Logo />
     </Link>
     <User />
 
