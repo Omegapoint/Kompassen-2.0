@@ -5,12 +5,14 @@
   "scripts": {
     "build": "tsc",
     "format:check": "prettier --check 'src/**/*'",
+    "format:write": "prettier --write 'src/**/*'",
     "knex:migrate:latest": "knex --knexfile=db/knexfile.ts migrate:latest",
     "knex:migrate:rollback": "knex --knexfile=db/knexfile.ts migrate:rollback",
     "knex:seed:run": "knex --knexfile=db/knexfile.ts seed:run",
     "reseed": "yarn knex:migrate:rollback && yarn knex:migrate:latest && yarn knex:seed:run",
     "lint:check": "eslint --max-warnings 0 'src/**/*'",
-    "start": "if [ \"$NODE_ENV\" = \"production\" ]; then node index.js; else nodemon; fi"
+    "start": "if [ \"$NODE_ENV\" = \"production\" ]; then node index.js; else nodemon; fi",
+    "test": "echo 'Running tests... 🧪'"
   },
   "nodemonConfig": {
     "exec": "npx ts-node ./src/index.ts",
