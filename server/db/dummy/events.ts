@@ -3,7 +3,7 @@ import { DBEvent } from '../../src/lib/types';
 import organisations from './organisations';
 import users from './users';
 
-const date = new Date();
+const date = add(new Date(), { days: 1 });
 
 const startTime = { hours: 13, minutes: 0, seconds: 0, milliseconds: 0 };
 const endTime = { ...startTime, hours: 17 };
@@ -17,6 +17,8 @@ const events: DBEvent[] = [
     startAt: sub(startDate, { months: 1 }),
     endAt: sub(endDate, { months: 1 }),
     comment: 'Gör något om ni vill',
+    registrationStart: sub(date, { months: 1, days: 10 }),
+    registrationEnd: sub(date, { months: 1, days: 5 }),
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,
@@ -28,6 +30,8 @@ const events: DBEvent[] = [
     startAt: startDate,
     endAt: endDate,
     comment: 'Gör något om ni vill, joo',
+    registrationStart: sub(startDate, { days: 10 }),
+    registrationEnd: add(startDate, { hours: 12 }),
     createdAt: date,
     createdBy: users[1].id,
     updatedAt: date,
@@ -39,6 +43,8 @@ const events: DBEvent[] = [
     startAt: add(startDate, { months: 1 }),
     endAt: add(endDate, { months: 1 }),
     comment: 'Gör något om ni vill, kanske',
+    registrationStart: add(date, { days: 5 }),
+    registrationEnd: add(date, { days: 10 }),
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,

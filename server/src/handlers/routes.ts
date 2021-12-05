@@ -2,6 +2,7 @@ import cors from 'cors';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { logger } from '../config/config';
 import { reviver } from '../lib/types';
+import attendantsRoutes from './attendants/routes';
 import categoriesRoutes from './categories/routes';
 import eventsRoutes from './events/routes';
 import lectureLikesRoutes from './lectureLikes/routes';
@@ -33,6 +34,7 @@ const setupExpress = (): Express => {
     organisationRoutes,
     loginRoutes,
     userRoutes,
+    attendantsRoutes,
     lectureLikesRoutes,
     lectureRoomsRoutes,
   ];

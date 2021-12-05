@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import { httpError } from '../lib/lib';
 import { UpdatedEvent } from '../lib/types';
+import attendants from './attendants/schema';
 import categories from './categories/schema';
 import events from './events/schema';
 import lectureRooms from './lectureRooms/schema';
@@ -36,6 +37,7 @@ const schema = {
   lectureRooms,
   categories,
   lectures,
+  attendants,
   uuidParam,
 };
 

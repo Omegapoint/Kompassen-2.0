@@ -22,6 +22,8 @@ export interface BaseEvent {
   startAt: Date;
   endAt: Date;
   comment: string;
+  registrationStart: Date;
+  registrationEnd: Date;
 }
 
 export interface NewEvent extends BaseEvent {
@@ -211,6 +213,23 @@ export interface UpdatedLectureRoom extends NewLectureRoom {
 
 export interface LectureRoom extends BaseLectureRoom {
   id: string;
+}
+
+export interface BaseAttendant {
+  eventID: string;
+  lectures: string[];
+  message: string;
+  remote: boolean;
+}
+
+export type NewAttendant = BaseAttendant;
+
+export interface UpdatedAttendant extends NewAttendant {
+  id: string;
+}
+
+export interface Attendant extends UpdatedAttendant, DefaultTime {
+  userID: string;
 }
 
 export interface TagStats {

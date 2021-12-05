@@ -10,6 +10,8 @@ const BASE_SELECT_EVENTS = `
            start_at,
            end_at,
            comment,
+           registration_start,
+           registration_end,
            created_at,
            created_by,
            updated_at,
@@ -31,8 +33,9 @@ const SELECT_EVENT_BY_ID = `
 `;
 
 const INSERT_EVENT = `
-    INSERT INTO events(organisation_id, start_at, end_at, comment, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $5)
+    INSERT INTO events(organisation_id, start_at, end_at, comment, registration_start, registration_end, created_by,
+                       updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $7)
     RETURNING id
 `;
 
@@ -58,12 +61,14 @@ const DELETE_ROOM = `
 
 const UPDATE_EVENT = `
     UPDATE events
-    SET organisation_id = $1,
-        start_at        = $2,
-        end_at          = $3,
-        comment         = $4,
-        updated_by      = $5
-    WHERE id = $6
+    SET organisation_id    = $1,
+        start_at           = $2,
+        end_at             = $3,
+        comment            = $4,
+        registration_start = $5,
+        registration_end   = $6,
+        updated_by         = $7
+    WHERE id = $8
     RETURNING id
 `;
 
@@ -107,6 +112,8 @@ const eventsDB: EventsDB = {
       event.startAt,
       event.endAt,
       event.comment,
+      event.registrationStart,
+      event.registrationEnd,
       userID,
     ]);
     await Promise.all(event.rooms.map((e) => db.query(INSERT_ROOM, [e, created.rows[0].id])));
@@ -120,6 +127,8 @@ const eventsDB: EventsDB = {
       event.startAt,
       event.endAt,
       event.comment,
+      event.registrationStart,
+      event.registrationEnd,
       userID,
       event.id,
     ]);

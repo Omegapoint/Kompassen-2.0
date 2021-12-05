@@ -5,6 +5,8 @@ const defaultSchema = {
   comment: Joi.string(),
   organisationID: Joi.string().uuid(),
   rooms: Joi.array().items(Joi.string()).required().unique(),
+  registrationStart: Joi.date(),
+  registrationEnd: Joi.date().greater(Joi.ref('registrationStart')),
   startAt: Joi.date(),
   endAt: Joi.date().greater(Joi.ref('startAt')),
 };

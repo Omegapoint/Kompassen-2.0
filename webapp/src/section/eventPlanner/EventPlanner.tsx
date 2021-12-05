@@ -9,15 +9,16 @@ import useBoolean from '../../hooks/UseBoolean';
 import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
 import { padding } from '../../theme/Theme';
 import CreateEvent from '../events/CreateEvent';
+import Attendance from './Attendance';
 import RegisteredLectures from './RegisteredLectures';
 import Schedule from './Schedule';
 import useEventLecturesWS from './UseEventLecturesWS';
 
-type INavItemKind = 'lectures' | 'schedule';
+type INavItemKind = 'lectures' | 'schedule' | 'attendance';
 
 const EventPlanner = (): ReactElement => {
   const { id } = useParams<'id'>();
-  const [active, setActive] = useState<INavItemKind>('lectures');
+  const [active, setActive] = useState<INavItemKind>('attendance');
   const event = useEvent(id!)!;
   const organisation = useOrganisation(event.organisationID)!;
   const lectures = useEventLecturesWS(id!);
@@ -32,6 +33,10 @@ const EventPlanner = (): ReactElement => {
     {
       name: 'schedule',
       title: 'Schemalägg',
+    },
+    {
+      name: 'attendance',
+      title: 'Anmälningar',
     },
   ];
 
@@ -73,6 +78,7 @@ const EventPlanner = (): ReactElement => {
 
         {active === 'lectures' && <RegisteredLectures lectures={lectures} admin />}
         {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} />}
+        {active === 'attendance' && <Attendance event={event} lectures={lectures} />}
       </Box>
       <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
     </Box>
