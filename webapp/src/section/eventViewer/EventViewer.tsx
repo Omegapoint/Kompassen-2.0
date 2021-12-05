@@ -9,6 +9,7 @@ import { padding } from '../../theme/Theme';
 import RegisteredLectures from '../eventPlanner/RegisteredLectures';
 import useEventLecturesWS from '../eventPlanner/UseEventLecturesWS';
 import CreateEvent from '../events/CreateEvent';
+import EventRegistration from './EventRegistration';
 
 const EventViewer = (): ReactElement => {
   const { id } = useParams<'id'>();
@@ -21,6 +22,8 @@ const EventViewer = (): ReactElement => {
   const startTime = format(event.startAt, 'HH:mm', { locale: sv });
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   const daysLeft = differenceInDays(event.startAt, new Date());
+
+  const canRegister = event.registrationStart < new Date() && event.registrationEnd > new Date();
 
   return (
     <Box sx={{ display: 'grid', justifyItems: 'center' }}>
@@ -45,6 +48,7 @@ const EventViewer = (): ReactElement => {
         </Box>
 
         <RegisteredLectures lectures={lectures} />
+        {canRegister && <EventRegistration lectures={lectures} event={event} />}
       </Box>
       <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
     </Box>

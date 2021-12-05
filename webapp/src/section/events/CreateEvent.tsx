@@ -1,4 +1,4 @@
-import { DatePicker, LocalizationProvider, TimePicker } from '@mui/lab';
+import { DatePicker, DateTimePicker, LocalizationProvider, TimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Box,
@@ -31,6 +31,8 @@ interface FormValues {
   date: Date | null;
   start: Date | null;
   end: Date | null;
+  registrationStart: Date;
+  registrationEnd: Date;
 }
 
 interface CreateElementProps {
@@ -39,28 +41,36 @@ interface CreateElementProps {
   event?: Event;
 }
 
+const defaultValue = (event: Event | undefined, orgId: string) => ({
+  comment: event?.comment || '',
+  organisationID: event?.organisationID || orgId,
+  rooms: [],
+  date: event?.startAt || new Date(),
+  start: set(new Date(), {
+    ...defaultTime,
+    hours: event?.startAt.getHours() || 13,
+    minutes: event?.startAt.getMinutes() || 0,
+  }),
+  end: set(new Date(), {
+    ...defaultTime,
+    hours: event?.endAt.getHours() || 17,
+    minutes: event?.endAt.getMinutes() || 0,
+  }),
+  registrationStart: event?.registrationStart || new Date(),
+  registrationEnd: event?.registrationEnd || new Date(),
+});
+
 const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement => {
   const organisations = useAppSelector((state) => state.organisations);
   const create = useMutation(createEvent);
   const update = useMutation(updateEvent);
-
-  const [defaultFormValue, setDefaultFormValue] = useState<FormValues>({
-    comment: event?.comment || '',
-    organisationID: event?.organisationID || organisations[0].id,
-    rooms: [],
-    date: event?.startAt || new Date(),
-    start: set(new Date(), {
-      ...defaultTime,
-      hours: event?.startAt.getHours() || 13,
-      minutes: event?.startAt.getMinutes() || 0,
-    }),
-    end: set(new Date(), {
-      ...defaultTime,
-      hours: event?.endAt.getHours() || 17,
-      minutes: event?.endAt.getMinutes() || 0,
-    }),
-  });
+  const orgId = organisations[0].id;
+  const [defaultFormValue, setDefaultFormValue] = useState<FormValues>(defaultValue(event, orgId));
   const { values, handleChange, updateValues, resetValues } = useForm(defaultFormValue);
+
+  useEffect(() => {
+    setDefaultFormValue(defaultValue(event, orgId));
+  }, [event, orgId]);
 
   useEffect(() => {
     setDefaultFormValue((e) => ({
@@ -93,6 +103,8 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
           hours: values.end?.getHours(),
           minutes: values.end?.getMinutes(),
         }),
+        registrationStart: values.registrationStart,
+        registrationEnd: values.registrationEnd,
       };
 
       if (event) {
@@ -119,12 +131,12 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
         sx={{
           display: 'grid',
           gridGap: padding.standard,
-          gridTemplateColumns: '1fr 1fr 1fr',
-          '& > *': { gridColumn: 'span 3' },
+          gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
+          '& > *': { gridColumn: 'span 6' },
         }}
       >
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={sv}>
-          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+          <Box sx={{ gridColumn: 'span 2', marginTop: '10px' }}>
             <DatePicker
               label="Datum"
               value={values.date}
@@ -132,7 +144,7 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
               renderInput={(params) => <TextField {...params} />}
             />
           </Box>
-          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+          <Box sx={{ gridColumn: 'span 2', marginTop: '10px' }}>
             <TimePicker
               label="Starttid"
               value={values.start}
@@ -141,11 +153,29 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
               renderInput={(params) => <TextField {...params} />}
             />
           </Box>
-          <Box sx={{ gridColumn: 'span 1', marginTop: '10px' }}>
+          <Box sx={{ gridColumn: 'span 2', marginTop: '10px' }}>
             <TimePicker
               label="Sluttid"
               value={values.end}
               onChange={(end) => updateValues({ end })}
+              ampm={false}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+          <Box sx={{ gridColumn: 'span 3', marginTop: '10px' }}>
+            <DateTimePicker
+              label="Registreringsstart"
+              value={values.registrationStart}
+              onChange={(registrationStart) => updateValues({ registrationStart })}
+              ampm={false}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
+          <Box sx={{ gridColumn: 'span 3', marginTop: '10px' }}>
+            <DateTimePicker
+              label="Registreringsstopp"
+              value={values.registrationEnd}
+              onChange={(registrationEnd) => updateValues({ registrationEnd })}
               ampm={false}
               renderInput={(params) => <TextField {...params} />}
             />

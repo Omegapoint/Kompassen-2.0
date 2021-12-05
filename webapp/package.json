@@ -74,6 +74,7 @@
     "@mui/icons-material": "^5.2.0",
     "@mui/lab": "^5.0.0-alpha.58",
     "@mui/material": "^5.2.2",
+    "@mui/x-data-grid": "^5.1.0",
     "date-fns": "^2.26.0",
     "emoji-picker-react": "^3.4.8",
     "http-proxy-middleware": "^2.0.1",

@@ -107,39 +107,3 @@ resource "azurerm_postgresql_firewall_rule" "fr" {
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "255.255.255.255"
 }
-
-# resource "azurerm_virtual_network" "vn" {
-#   name                = var.name
-#   resource_group_name = var.name
-#   location            = var.location
-
-#   address_space = ["172.17.0.0/16"]
-# }
-
-# resource "azurerm_subnet" "default" {
-#   name                 = "default"
-#   resource_group_name  = var.name
-#   virtual_network_name = azurerm_virtual_network.vn.name
-#   address_prefixes     = ["172.17.0.0/24"]
-#   service_endpoints    = ["Microsoft.Sql"]
-
-#   delegation {
-#     name = "Microsoft.Web.serverFarms"
-#     service_delegation {
-#       name    = "Microsoft.Web/serverFarms"
-#       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-#     }
-#   }
-# }
-
-# resource "azurerm_postgresql_virtual_network_rule" "vnr" {
-#   name                = var.name
-#   resource_group_name = var.name
-#   server_name         = azurerm_postgresql_server.ps.name
-#   subnet_id           = azurerm_subnet.default.id
-# }
-
-# resource "azurerm_app_service_virtual_network_swift_connection" "vnsc" {
-#   app_service_id = azurerm_app_service.server.id
-#   subnet_id      = azurerm_subnet.default.id
-# }

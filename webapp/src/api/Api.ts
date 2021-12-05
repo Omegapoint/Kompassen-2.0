@@ -1,5 +1,6 @@
 import {
   Approved,
+  Attendant,
   CategoryStats,
   Event,
   IDParam,
@@ -7,6 +8,7 @@ import {
   Lecture,
   ListEventParams,
   ListLecturesParams,
+  NewAttendant,
   NewEvent,
   NewLecture,
   NewLectureIdea,
@@ -100,6 +102,13 @@ export const updateLectureRoom = apiBuilder<IDParam, UpdatedLectureRoom>('/event
 export const deleteLectureRoom = apiURLParamsBuilder<IDParam, IDParam>(
   '/event/room/lecture/:id'
 ).delete;
+
+export const createAttendance = apiBuilder<IDParam, NewAttendant>('/attendant').post;
+export const getAttendanceByEventID = apiURLParamsBuilder<Attendant[], IDParam>(
+  '/attendant/:id'
+).get;
+export const isAttending = apiURLParamsBuilder<IOK, IDParam>('/attendant/:id/attending').get;
+export const deleteAttendance = apiURLParamsBuilder<IDParam, IDParam>('/attendant/:id').delete;
 
 export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
