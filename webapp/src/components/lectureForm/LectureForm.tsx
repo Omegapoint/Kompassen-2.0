@@ -127,7 +127,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '',
     title: data?.title || '',
     category: categories.find((cat) => cat.id === data?.categoryID)?.name || categories[0].name,
-    lecturer: azureUser.displayName,
+    lecturer: data?.lecturer || azureUser.displayName,
     description: data?.description || '',
     maxParticipants: data?.maxParticipants?.toString() || '',
     requirements: data?.requirements || '',
