@@ -30,9 +30,14 @@ interface FormValue {
 interface EventRegistrationProps {
   lectures: Lecture[];
   event: Event;
+  toggleOnlyRemote: () => void;
 }
 
-const EventRegistration = ({ event, lectures }: EventRegistrationProps): ReactElement => {
+const EventRegistration = ({
+  event,
+  lectures,
+  toggleOnlyRemote,
+}: EventRegistrationProps): ReactElement => {
   const { values, updateValues, handleChange } = useForm(defaultFormValue);
   const onCreate = useMutation(createAttendance);
   const onDelete = useMutation(deleteAttendance);
@@ -114,7 +119,16 @@ const EventRegistration = ({ event, lectures }: EventRegistrationProps): ReactEl
 
         <Box>
           <FormControlLabel
-            control={<Switch checked={values.remote} onChange={handleChange} name="remote" />}
+            control={
+              <Switch
+                checked={values.remote}
+                onChange={(e) => {
+                  handleChange(e);
+                  toggleOnlyRemote();
+                }}
+                name="remote"
+              />
+            }
             label="Distans"
           />
         </Box>

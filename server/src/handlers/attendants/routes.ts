@@ -4,7 +4,7 @@ import schema, { validate } from '../validationSchemas';
 import attendants from './handlers';
 
 const attendantsRoutes = (app: Express): void => {
-  app.post('/attendant', admin, validate(schema.attendants.newAttendant), attendants.create);
+  app.post('/attendant', locked, validate(schema.attendants.newAttendant), attendants.create);
   app.get(
     '/attendant/:id',
     admin,
