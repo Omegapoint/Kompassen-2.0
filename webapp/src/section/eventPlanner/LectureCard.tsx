@@ -96,7 +96,7 @@ const LectureCard = ({
           sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
         >
           <Box sx={{ width: '800px' }}>
-            <LectureView lecture={lecture} admin={admin} close={off} />
+            <LectureView lecture={lecture} admin={admin} close={off} editIcon={edit} />
           </Box>
         </Modal>
       </Box>

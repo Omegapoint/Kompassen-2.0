@@ -78,7 +78,7 @@ const lectures: Handlers = {
     res.send(item);
   },
   async update({ body }, res) {
-    const { userID } = res.locals;
+    const { userID, role } = res.locals;
 
     const currentLecture = await lecturesDB.getByID(body.id);
 
@@ -86,8 +86,7 @@ const lectures: Handlers = {
       httpError(res, 404, 'No lecture with that ID exists');
       return;
     }
-
-    if (currentLecture?.lecturerID && userID !== currentLecture?.lecturerID) {
+    if (currentLecture?.lecturerID && userID !== currentLecture?.lecturerID && role !== 'Admin') {
       httpError(res, 403, 'You cannot edit another lecturers lecture');
       return;
     }
