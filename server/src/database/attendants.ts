@@ -12,7 +12,7 @@ const SELECT_ATTENDANTS = `
            created_by,
            updated_at,
            updated_by,
-           (SELECT array_agg(lecture_attendants.lecture_id) as lectures
+           (SELECT coalesce(array_agg(lecture_attendants.lecture_id), '{}') as lectures
             FROM lecture_attendants
             WHERE attendant_id = a.id)
     FROM attendants a
