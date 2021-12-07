@@ -66,7 +66,7 @@ const lectures: DBLecture[] = [
     maxParticipants: 100,
     requirements: 'Det är bra om man kan programmera',
     preparations: 'Ha med dig en dator typ eller nåt.',
-    message: null,
+    message: 'Måste ha ett rum med projektor',
     tags: ['cloud'],
     idea: true,
     createdAt: date,
