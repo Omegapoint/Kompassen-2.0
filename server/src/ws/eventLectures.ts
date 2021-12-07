@@ -5,12 +5,16 @@ import { Join } from './types';
 
 const joined: Join = {};
 
-export const setupEventLectures = (socket: Socket, userID: string): void => {
+export const setupEventLectures = (socket: Socket, userID: string, userRole: string): void => {
   socket.on('event/lecture/join', async (eventID) => {
     if (!joined[eventID]) joined[eventID] = [];
     joined[eventID].push({ socket, userID });
-    const lm = await lecturesDB.listEventLectures(eventID);
-    socket.emit(`event/${eventID}/lecture`, lm);
+    const eventLectures = await lecturesDB.listEventLectures(eventID);
+    const newEventLectures =
+      userRole !== 'Admin'
+        ? eventLectures.map((item) => ({ ...item, message: null }))
+        : eventLectures;
+    socket.emit(`event/${eventID}/lecture`, newEventLectures);
   });
 
   socket.on('event/lecture/leave', (eventID) => {

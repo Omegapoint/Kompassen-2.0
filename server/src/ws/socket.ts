@@ -24,10 +24,11 @@ export const setupWebSocket = (io: Server): void => {
 
   io.on('connection', (socket) => {
     const userID = socket.data.claims.oid;
+    const userRole = socket.data.claims.roles ? socket.data.claims.roles[0] : 'Worker';
     users.push({ socket, userID });
 
     setupChat(socket, userID);
-    setupEventLectures(socket, userID);
+    setupEventLectures(socket, userID, userRole);
     setupEventLectureRooms(socket, userID);
     lectureIdeasWS.setup(socket);
     categoriesWS.setup(socket);
