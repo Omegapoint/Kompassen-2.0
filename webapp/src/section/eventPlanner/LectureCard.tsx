@@ -25,6 +25,8 @@ const LectureCard = ({
 }: LectureCardProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
+  const { azureUser } = useAppSelector((state) => state.session);
+  const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
 
   const genTime = (time: Date) => {
@@ -96,7 +98,13 @@ const LectureCard = ({
           sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
         >
           <Box sx={{ width: '800px' }}>
-            <LectureView lecture={lecture} admin={admin} close={off} editIcon={edit} />
+            <LectureView
+              lecture={lecture}
+              admin={admin}
+              close={off}
+              editIcon={isOwner || admin}
+              showAttendance={isOwner || admin}
+            />
           </Box>
         </Modal>
       </Box>
