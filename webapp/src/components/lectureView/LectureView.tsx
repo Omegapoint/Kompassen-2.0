@@ -15,6 +15,7 @@ import { Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
 import UpdateLectureIdea from '../updateLectureIdea/UpdateLectureIdea';
+import LectureAttendanceList from './LectureAttendanceList';
 
 interface LectureViewProps {
   lecture: Lecture;
@@ -24,6 +25,7 @@ interface LectureViewProps {
   admin?: boolean;
   close?: () => void;
   onSuccess?: () => unknown;
+  showAttendance?: boolean;
 }
 
 const LectureView = ({
@@ -32,6 +34,7 @@ const LectureView = ({
   editIcon = false,
   deleteIcon = false,
   admin = false,
+  showAttendance = false,
   close,
   onSuccess,
 }: LectureViewProps): ReactElement => {
@@ -130,7 +133,7 @@ const LectureView = ({
         )}
       </Box>
 
-      <Paper sx={{ display: 'grid', padding: padding.standard }}>
+      <Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
         <Box
           sx={{
             display: 'grid',
@@ -193,6 +196,7 @@ const LectureView = ({
             </Button>
           )}
         </Box>
+        {showAttendance && <LectureAttendanceList lecture={lecture} />}
       </Paper>
     </Box>
   );

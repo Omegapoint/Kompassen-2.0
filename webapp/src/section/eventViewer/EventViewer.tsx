@@ -5,6 +5,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
+import { isAdmin } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import RegisteredLectures from '../eventPlanner/RegisteredLectures';
@@ -55,7 +56,7 @@ const EventViewer = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
         </Box>
 
-        <RegisteredLectures lectures={filteredLectures} />
+        <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />
         {canRegister && (
           <EventRegistration
             lectures={filteredLectures}
