@@ -25,6 +25,17 @@ const users: User[] = [
     createdAt: date,
     updatedAt: date,
   },
+  {
+    id: 'f45202d2-5a25-4053-8754-20b1814d92c2',
+    notifications: {
+      newLecture: true,
+      newComment: true,
+      adminRead: true,
+      lectureTaken: true,
+    },
+    createdAt: date,
+    updatedAt: date,
+  },
 ];
 
 export default users;
