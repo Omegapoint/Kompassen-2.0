@@ -8,12 +8,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { FormEvent, ReactElement } from 'react';
+import { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { createAttendance, deleteAttendance, isAttending } from '../../api/Api';
+import {
+  createAttendance,
+  deleteAttendance,
+  getAttendanceByEventID,
+  isAttending,
+} from '../../api/Api';
 import SmallLoader from '../../components/loader/SmallLoader';
 import useForm from '../../hooks/UseForm';
+import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
+import SmallLectureCard from '../eventPlanner/SmallLectureCard';
 
 const defaultFormValue: FormValue = {
   lectures: [],
@@ -38,6 +45,14 @@ const EventRegistration = ({
   lectures,
   toggleOnlyRemote,
 }: EventRegistrationProps): ReactElement => {
+  interface LectureInfo {
+    lecture: Lecture;
+    color: string;
+    icon: string;
+  }
+  const [userAttendedLectures, setUserAttendedLectures] = useState<LectureInfo[] | null>(null);
+  const { azureUser } = useAppSelector((state) => state.session);
+  const categories = useAppSelector((state) => state.categories);
   const { values, updateValues, handleChange } = useForm(defaultFormValue);
   const onCreate = useMutation(createAttendance);
   const onDelete = useMutation(deleteAttendance);
@@ -64,6 +79,25 @@ const EventRegistration = ({
 
   const approvedLectures = lectures.filter((e) => e.approved);
 
+  const attendantRequest = () => getAttendanceByEventID({ id: event.id });
+  const { data: registrationData } = useQuery(`attendance-${event.id}`, attendantRequest);
+
+  useEffect(() => {
+    function getColorAndIconForCategory(categoryID: string) {
+      return {
+        color: categories.find((c) => c.id === categoryID)?.color || 'grey',
+        icon: categories.find((c) => c.id === categoryID)?.icon || '* ',
+      };
+    }
+    if (registrationData && lectures) {
+      const currentUser = registrationData.find((e) => e.userID === azureUser.id);
+      const usersRegistrations: LectureInfo[] = lectures
+        .filter((e) => currentUser?.lectures.includes(e.id))
+        .map((e) => ({ lecture: e, ...getColorAndIconForCategory(e.categoryID!) }));
+      setUserAttendedLectures(usersRegistrations);
+    }
+  }, [registrationData, lectures, azureUser.id, categories]);
+
   if (isLoading) return <SmallLoader />;
   if (data?.ok || onCreate.isSuccess) {
     return (
@@ -73,11 +107,16 @@ const EventRegistration = ({
           display: 'grid',
           alignContent: 'center',
           justifyItems: 'center',
+          rowGap: '5px',
         }}
       >
         <Typography variant="h4">
-          {onCreate.isSuccess ? 'Tack för din anmälan!' : 'Du är redan anmäld till passet.'}
+          {onCreate.isSuccess ? 'Tack för din anmälan!' : 'Din anmälan'}
         </Typography>
+        {userAttendedLectures &&
+          userAttendedLectures.map((lecture: LectureInfo) => (
+            <SmallLectureCard lecture={lecture.lecture} color={lecture.color} icon={lecture.icon} />
+          ))}
         <Button
           sx={{ marginTop: '10px', marginLeft: '10px' }}
           color="primary"
