@@ -123,8 +123,8 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const defaultFormValue = {
     remote: (data?.remote || false).toString(),
     eventID: events.find((event) => event.id === data?.eventID)?.id || '',
-    hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '',
-    minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '',
+    hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '0',
+    minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '0',
     title: data?.title || '',
     category: categories.find((cat) => cat.id === data?.categoryID)?.name || categories[0].name,
     lecturer: data?.lecturer || azureUser.displayName,
