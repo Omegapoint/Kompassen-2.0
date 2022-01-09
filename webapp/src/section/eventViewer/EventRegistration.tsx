@@ -131,6 +131,19 @@ const EventRegistration = ({
   return (
     <Box sx={{ display: 'grid', gridGap: '10px', marginTop: '40px' }}>
       <Typography variant="h4">Anmäl dig till kompetensdagen</Typography>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={values.remote}
+            onChange={(e) => {
+              handleChange(e);
+              toggleOnlyRemote();
+            }}
+            name="remote"
+          />
+        }
+        label="Visa bara de pass som går på distans"
+      />
       <Box>
         {!!approvedLectures.length && (
           <>
@@ -142,7 +155,8 @@ const EventRegistration = ({
             </FormGroup>
           </>
         )}
-
+      </Box>
+      {!values.remote && (
         <TextField
           fullWidth
           multiline
@@ -150,32 +164,14 @@ const EventRegistration = ({
           maxRows={5}
           value={values.message}
           onChange={handleChange}
-          required
           name="message"
           label="Matpreferens"
           variant="outlined"
         />
-
-        <Box>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={values.remote}
-                onChange={(e) => {
-                  handleChange(e);
-                  toggleOnlyRemote();
-                }}
-                name="remote"
-              />
-            }
-            label="Distans"
-          />
-        </Box>
-
-        <Button variant="contained" color="primary" onClick={onSubmit}>
-          Skicka in anmälan
-        </Button>
-      </Box>
+      )}
+      <Button variant="contained" color="primary" onClick={onSubmit}>
+        Skicka in anmälan
+      </Button>
     </Box>
   );
 };
