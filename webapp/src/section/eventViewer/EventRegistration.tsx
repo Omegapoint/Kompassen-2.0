@@ -156,17 +156,19 @@ const EventRegistration = ({
           </>
         )}
       </Box>
-      <TextField
-        fullWidth
-        multiline
-        minRows={1}
-        maxRows={5}
-        value={values.message}
-        onChange={handleChange}
-        name="message"
-        label="Matpreferens"
-        variant="outlined"
-      />
+      { !values.remote && (
+          <TextField
+            fullWidth
+            multiline
+            minRows={1}
+            maxRows={5}
+            value={values.message}
+            onChange={handleChange}
+            name="message"
+            label="Matpreferens"
+            variant="outlined"
+          />
+      )}
       <Button variant="contained" color="primary" onClick={onSubmit}>
         Skicka in anmälan
       </Button>
