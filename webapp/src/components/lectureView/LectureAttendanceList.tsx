@@ -5,7 +5,7 @@ import { getAttendanceByEventID } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
 import { Lecture } from '../../lib/Types';
 import { colors } from '../../theme/Theme';
-import ExportDataButton from "../exportDataButton/ExportDataButton";
+import ExportDataButton from '../exportDataButton/ExportDataButton';
 
 interface LectureAttendanceListProps {
   lecture: Lecture;

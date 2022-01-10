@@ -4,11 +4,11 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getAttendanceByEventID } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
+import ExportDataButton from '../../components/exportDataButton/ExportDataButton';
 import SmallLoader from '../../components/loader/SmallLoader';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
-import ExportDataButton from "../../components/exportDataButton/ExportDataButton";
 
 interface LectureRow {
   color: string;
