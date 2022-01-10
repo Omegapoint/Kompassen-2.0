@@ -8,6 +8,7 @@ import SmallLoader from '../../components/loader/SmallLoader';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
+import ExportDataButton from "../../components/exportDataButton/ExportDataButton";
 
 interface LectureRow {
   color: string;
@@ -126,6 +127,9 @@ const Attendance = ({ event, lectures }: AttendanceProps): ReactElement => {
         '& .MuiDataGrid-virtualScrollerRenderZone': {
           backgroundColor: colors.white,
         },
+      }}
+      components={{
+        Toolbar: ExportDataButton,
       }}
       rowHeight={200}
       rows={rows}
