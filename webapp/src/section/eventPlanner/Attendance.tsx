@@ -96,7 +96,7 @@ const Attendance = ({ event, lectures }: AttendanceProps): ReactElement => {
               remote: attendant.remote ? 'Ja' : 'Nej',
               message: attendant.message || '-',
               allLectures,
-              lectures: allLectures.map((lectureData) => lectureData.lecture.title).join(' '),
+              lectures: allLectures.map((lectureData) => lectureData.lecture.title).join('; '),
             };
           })
         );
