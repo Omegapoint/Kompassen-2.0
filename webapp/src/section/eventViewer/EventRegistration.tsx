@@ -142,7 +142,7 @@ const EventRegistration = ({
             name="remote"
           />
         }
-        label="Visa bara de pass som går på distans"
+        label="Jag vill delta på distans"
       />
       <Box>
         {!!approvedLectures.length && (
