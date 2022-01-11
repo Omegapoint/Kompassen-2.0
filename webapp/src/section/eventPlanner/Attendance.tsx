@@ -4,6 +4,7 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getAttendanceByEventID } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
+import ExportDataButton from '../../components/exportDataButton/ExportDataButton';
 import SmallLoader from '../../components/loader/SmallLoader';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
@@ -95,7 +96,7 @@ const Attendance = ({ event, lectures }: AttendanceProps): ReactElement => {
               remote: attendant.remote ? 'Ja' : 'Nej',
               message: attendant.message || '-',
               allLectures,
-              lectures: allLectures.map((lectureData) => lectureData.lecture.title).join(' '),
+              lectures: allLectures.map((lectureData) => lectureData.lecture.title).join('; '),
             };
           })
         );
@@ -126,6 +127,9 @@ const Attendance = ({ event, lectures }: AttendanceProps): ReactElement => {
         '& .MuiDataGrid-virtualScrollerRenderZone': {
           backgroundColor: colors.white,
         },
+      }}
+      components={{
+        Toolbar: ExportDataButton,
       }}
       rowHeight={200}
       rows={rows}
