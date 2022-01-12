@@ -12,6 +12,7 @@ import RegisteredLectures from '../eventPlanner/RegisteredLectures';
 import useEventLecturesWS from '../eventPlanner/UseEventLecturesWS';
 import CreateEvent from '../events/CreateEvent';
 import EventRegistration from './EventRegistration';
+import EventRegistrationNotification from './EventRegistrationNotification';
 
 const EventViewer = (): ReactElement => {
   const { id } = useParams<'id'>();
@@ -27,7 +28,10 @@ const EventViewer = (): ReactElement => {
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   const daysLeft = differenceInDays(event.startAt, new Date());
 
-  const canRegister = event.registrationStart < new Date() && event.registrationEnd > new Date();
+  const registrationStart = format(event.registrationStart, 'yyyy-MM-dd HH:mm', { locale: sv });
+  const isBeforeRegistrationStart = event.registrationStart > new Date();
+  const isAfterRegistrationEnd = event.registrationEnd < new Date();
+  const canRegister = !isBeforeRegistrationStart && !isAfterRegistrationEnd;
 
   useEffect(() => {
     const filtered = onlyRemote ? lectures.filter((e) => e.remote) : lectures;
@@ -57,11 +61,23 @@ const EventViewer = (): ReactElement => {
         </Box>
 
         <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />
+
         {canRegister && (
           <EventRegistration
             lectures={filteredLectures}
             event={event}
             toggleOnlyRemote={toggleOnlyRemote}
+          />
+        )}
+
+        {isBeforeRegistrationStart && (
+          <EventRegistrationNotification title={`Anmälan öppnar ${registrationStart}`} />
+        )}
+
+        {isAfterRegistrationEnd && (
+          <EventRegistrationNotification
+            title="Anmälan är stängd"
+            message="Du kan alltid höra med kompetensdagsmadame om du kan hoppa in någonstans, men vi gör inga extra matbeställningar"
           />
         )}
       </Box>

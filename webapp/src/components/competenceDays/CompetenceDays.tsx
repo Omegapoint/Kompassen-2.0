@@ -32,7 +32,7 @@ const CompetenceDays = (): ReactElement => {
             variant="contained"
             onClick={() => navigate(`/events/view/${data[ind].id}`)}
           >
-            Se inskickade pass
+            Anmäl deltagande
           </Button>
           <LectureStats />
         </Box>
