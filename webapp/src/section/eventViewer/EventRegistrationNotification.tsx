@@ -7,8 +7,8 @@ interface EventRegistrationNoteProps {
   message?: string;
 }
 
-const EventRegistrationNote = ({title, message}: EventRegistrationNoteProps): ReactElement => (
-  <Box sx={{display: 'grid', justifyItems: 'center'}}>
+const EventRegistrationNote = ({ title, message }: EventRegistrationNoteProps): ReactElement => (
+  <Box sx={{ display: 'grid', justifyItems: 'center' }}>
     <Paper
       sx={{
         display: 'grid',
@@ -30,7 +30,6 @@ const EventRegistrationNote = ({title, message}: EventRegistrationNoteProps): Re
       )}
     </Paper>
   </Box>
-
 );
 
 export default EventRegistrationNote;
