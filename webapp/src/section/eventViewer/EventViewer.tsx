@@ -12,23 +12,23 @@ import RegisteredLectures from '../eventPlanner/RegisteredLectures';
 import useEventLecturesWS from '../eventPlanner/UseEventLecturesWS';
 import CreateEvent from '../events/CreateEvent';
 import EventRegistration from './EventRegistration';
-import EventRegistrationNotification from "./EventRegistrationNotification";
+import EventRegistrationNotification from './EventRegistrationNotification';
 
 const EventViewer = (): ReactElement => {
-  const {id} = useParams<'id'>();
+  const { id } = useParams<'id'>();
   const event = useEvent(id!)!;
   const organisation = useOrganisation(event.organisationID)!;
   const lectures = useEventLecturesWS(id!);
   const [editEventIsOpen, editEvent] = useBoolean();
-  const [onlyRemote, {toggle: toggleOnlyRemote}] = useBoolean();
+  const [onlyRemote, { toggle: toggleOnlyRemote }] = useBoolean();
   const [filteredLectures, setFilteredLectures] = useState<Lecture[]>([]);
 
-  const date = format(event.startAt, 'yyyy-MM-dd', {locale: sv});
-  const startTime = format(event.startAt, 'HH:mm', {locale: sv});
-  const endTime = format(event.endAt, 'HH:mm', {locale: sv});
+  const date = format(event.startAt, 'yyyy-MM-dd', { locale: sv });
+  const startTime = format(event.startAt, 'HH:mm', { locale: sv });
+  const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   const daysLeft = differenceInDays(event.startAt, new Date());
 
-  const registrationStart = format(event.registrationStart, 'yyyy-MM-dd HH:mm', {locale: sv});
+  const registrationStart = format(event.registrationStart, 'yyyy-MM-dd HH:mm', { locale: sv });
   const isBeforeRegistrationStart = event.registrationStart > new Date();
   const isAfterRegistrationEnd = event.registrationEnd < new Date();
   const canRegister = event.registrationStart < new Date() && event.registrationEnd > new Date();
@@ -39,7 +39,7 @@ const EventViewer = (): ReactElement => {
   }, [lectures, onlyRemote]);
 
   return (
-    <Box sx={{display: 'grid', justifyItems: 'center'}}>
+    <Box sx={{ display: 'grid', justifyItems: 'center' }}>
       <Box
         sx={{
           display: 'grid',
@@ -60,7 +60,7 @@ const EventViewer = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
         </Box>
 
-        <RegisteredLectures lectures={filteredLectures} admin={isAdmin()}/>
+        <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />
 
         {canRegister && (
           <EventRegistration
@@ -71,7 +71,7 @@ const EventViewer = (): ReactElement => {
         )}
 
         {isBeforeRegistrationStart && (
-          <EventRegistrationNotification title={`Anmälan öppnar ${registrationStart}`}/>
+          <EventRegistrationNotification title={`Anmälan öppnar ${registrationStart}`} />
         )}
 
         {isAfterRegistrationEnd && (
@@ -80,9 +80,8 @@ const EventViewer = (): ReactElement => {
             message="Du kan alltid höra med kompetensdagsmadame om du kan hoppa in någonstans, men vi gör inga extra matbeställningar"
           />
         )}
-
       </Box>
-      <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event}/>
+      <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
     </Box>
   );
 };

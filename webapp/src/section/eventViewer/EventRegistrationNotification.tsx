@@ -1,15 +1,15 @@
+import { Box, Paper, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
-import { Box, Paper, Typography } from "@mui/material";
-import { padding } from "../../theme/Theme";
+import { padding } from '../../theme/Theme';
 
 interface EventRegistrationNoteProps {
   title: string;
   message?: string;
 }
 
-const EventRegistrationNote = ({title, message}: EventRegistrationNoteProps): ReactElement => {
+const EventRegistrationNote = ({ title, message }: EventRegistrationNoteProps): ReactElement => {
   return (
-    <Box sx={{display: 'grid', justifyItems: 'center'}}>
+    <Box sx={{ display: 'grid', justifyItems: 'center' }}>
       <Paper
         sx={{
           display: 'grid',
@@ -21,13 +21,17 @@ const EventRegistrationNote = ({title, message}: EventRegistrationNoteProps): Re
           },
         }}
       >
-        <Typography variant="h4" align="center">{title}</Typography>
+        <Typography variant="h4" align="center">
+          {title}
+        </Typography>
         {!!message && (
-          <Typography variant="body1" align="center">{message}</Typography>
+          <Typography variant="body1" align="center">
+            {message}
+          </Typography>
         )}
       </Paper>
     </Box>
   );
 };
 
-export default EventRegistrationNote
+export default EventRegistrationNote;
