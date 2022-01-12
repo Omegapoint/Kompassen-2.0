@@ -31,7 +31,7 @@ const EventViewer = (): ReactElement => {
   const registrationStart = format(event.registrationStart, 'yyyy-MM-dd HH:mm', { locale: sv });
   const isBeforeRegistrationStart = event.registrationStart > new Date();
   const isAfterRegistrationEnd = event.registrationEnd < new Date();
-  const canRegister = event.registrationStart < new Date() && event.registrationEnd > new Date();
+  const canRegister = !isBeforeRegistrationStart && !isAfterRegistrationEnd;
 
   useEffect(() => {
     const filtered = onlyRemote ? lectures.filter((e) => e.remote) : lectures;
