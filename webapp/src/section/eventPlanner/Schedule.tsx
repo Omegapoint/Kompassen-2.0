@@ -7,9 +7,10 @@ import ScheduleContent from './ScheduleContent';
 interface ScheduleProps {
   event: Event;
   lectures: Lecture[];
+  editable: boolean;
 }
 
-const Schedule = ({ event, lectures }: ScheduleProps): ReactElement => (
+const Schedule = ({ event, lectures, editable }: ScheduleProps): ReactElement => (
   <Box
     sx={{
       display: 'grid',
@@ -22,7 +23,7 @@ const Schedule = ({ event, lectures }: ScheduleProps): ReactElement => (
     }}
   >
     {event.rooms.length ? (
-      <ScheduleContent event={event} lectures={lectures} />
+      <ScheduleContent event={event} lectures={lectures} editable={editable} />
     ) : (
       <Typography
         variant="h5"

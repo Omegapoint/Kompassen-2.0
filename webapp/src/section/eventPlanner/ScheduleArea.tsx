@@ -10,6 +10,7 @@ interface ScheduleAreaProps {
   colWidth: number;
   rowToTime: (col: number) => Date;
   handleDragStop: DragStopFn;
+  editable: boolean;
 }
 
 const ScheduleArea = ({
@@ -17,6 +18,7 @@ const ScheduleArea = ({
   colWidth,
   rowToTime,
   handleDragStop,
+  editable,
 }: ScheduleAreaProps): ReactElement => (
   <Box
     sx={{
@@ -49,6 +51,7 @@ const ScheduleArea = ({
                 rowToTime={(row) => rowToTime(toYCol(row))}
                 lecture={lecture}
                 colHeight={COL_HEIGHT}
+                editable={editable}
                 handleDragStop={(startPos, pos) =>
                   handleDragStop(lecture, startPos, pos, i, j, false)
                 }

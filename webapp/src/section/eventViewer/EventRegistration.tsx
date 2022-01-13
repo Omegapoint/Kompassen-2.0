@@ -20,6 +20,7 @@ import SmallLoader from '../../components/loader/SmallLoader';
 import useForm from '../../hooks/UseForm';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
+import Schedule from '../eventPlanner/Schedule';
 import SmallLectureCard from '../eventPlanner/SmallLectureCard';
 
 const defaultFormValue: FormValue = {
@@ -130,6 +131,7 @@ const EventRegistration = ({
   }
   return (
     <Box sx={{ display: 'grid', gridGap: '10px', marginTop: '40px' }}>
+      <Schedule lectures={approvedLectures} event={event} editable={false} />
       <Typography variant="h4">Anmäl dig till kompetensdagen</Typography>
       <FormControlLabel
         control={
@@ -148,6 +150,21 @@ const EventRegistration = ({
         {!!approvedLectures.length && (
           <>
             <Typography variant="h5">Välj pass</Typography>
+            <Box>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={values.remote}
+                    onChange={(e) => {
+                      handleChange(e);
+                      toggleOnlyRemote();
+                    }}
+                    name="remote"
+                  />
+                }
+                label="Distans"
+              />
+            </Box>
             <FormGroup onChange={handleSelectChange}>
               {approvedLectures.map((e) => (
                 <FormControlLabel key={e.id} control={<Checkbox value={e.id} />} label={e.title} />
