@@ -11,9 +11,10 @@ import useSchedule, { MINUTES } from './UseSchedule';
 interface ScheduleContentProps {
   event: Event;
   lectures: Lecture[];
+  editable: boolean;
 }
 
-const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElement => {
+const ScheduleContent = ({ event, lectures, editable }: ScheduleContentProps): ReactElement => {
   const sortedDurations = lectures.map((e) => e.duration || 0).sort();
   const longestDuration = sortedDurations.length ? sortedDurations[sortedDurations.length - 1] : 0;
   const scheduleRef = useRef<HTMLDivElement>(null);
@@ -91,6 +92,7 @@ const ScheduleContent = ({ event, lectures }: ScheduleContentProps): ReactElemen
             colWidth={colWidth}
             rowToTime={rowToTime}
             handleDragStop={handleDragStop}
+            editable={editable}
           />
         </div>
 

@@ -77,7 +77,7 @@ const EventPlanner = (): ReactElement => {
         </Box>
 
         {active === 'lectures' && <RegisteredLectures lectures={lectures} admin />}
-        {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} />}
+        {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} editable />}
         {active === 'attendance' && <Attendance event={event} lectures={lectures} />}
       </Box>
       <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
