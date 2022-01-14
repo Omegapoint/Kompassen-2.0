@@ -1,9 +1,12 @@
 import EditIcon from '@mui/icons-material/Edit';
+import PublishIcon from '@mui/icons-material/Publish';
 import { Box, Button, Typography } from '@mui/material';
 import { differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement, useState } from 'react';
+import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { updateEvent } from '../../api/Api';
 import PageNav, { INavItem } from '../../components/pageNav/PageNav';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
@@ -44,6 +47,12 @@ const EventPlanner = (): ReactElement => {
   const startTime = format(event.startAt, 'HH:mm', { locale: sv });
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   const daysLeft = differenceInDays(event.startAt, new Date());
+  const testVal = { comment: 'test' };
+  const update = useMutation(updateEvent);
+  const handlePublish = async () => {
+    const updatedEvent = { ...event, published: true };
+    console.log(updatedEvent);
+  };
 
   return (
     <Box sx={{ display: 'grid', justifyItems: 'center' }}>
@@ -73,6 +82,17 @@ const EventPlanner = (): ReactElement => {
             onClick={editEvent.on}
           >
             Redigera
+          </Button>
+
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<PublishIcon />}
+            onClick={(e) => {
+              handlePublish();
+            }}
+          >
+            Publicera Schema
           </Button>
         </Box>
 

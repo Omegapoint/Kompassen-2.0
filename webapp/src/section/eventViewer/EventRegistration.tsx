@@ -79,7 +79,6 @@ const EventRegistration = ({
   };
 
   const approvedLectures = lectures.filter((e) => e.approved);
-
   const attendantRequest = () => getAttendanceByEventID({ id: event.id });
   const { data: registrationData } = useQuery(`attendance-${event.id}`, attendantRequest);
 
@@ -131,6 +130,10 @@ const EventRegistration = ({
   }
   return (
     <Box sx={{ display: 'grid', gridGap: '10px', marginTop: '40px' }}>
+      {/* {event.rooms?.length > 0 && (
+        <Schedule lectures={approvedLectures} event={event} editable={false} />
+      )} */}
+
       <Schedule lectures={approvedLectures} event={event} editable={false} />
       <Typography variant="h4">Anmäl dig till kompetensdagen</Typography>
       <FormControlLabel

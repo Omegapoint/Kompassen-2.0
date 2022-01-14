@@ -16,6 +16,7 @@ const BASE_SELECT_EVENTS = `
            created_by,
            updated_at,
            updated_by,
+           published,
            (SELECT json_agg(t)
             FROM (
                      SELECT id,
@@ -67,8 +68,9 @@ const UPDATE_EVENT = `
         comment            = $4,
         registration_start = $5,
         registration_end   = $6,
-        updated_by         = $7
-    WHERE id = $8
+        updated_by         = $7,
+        published          = $8,
+    WHERE id = $9
     RETURNING id
 `;
 
@@ -130,6 +132,7 @@ const eventsDB: EventsDB = {
       event.registrationStart,
       event.registrationEnd,
       userID,
+      event.published,
       event.id,
     ]);
 

@@ -110,6 +110,7 @@ const CreateEvent = ({ close, open, event }: CreateElementProps): ReactElement =
       if (event) {
         await update.mutateAsync({
           id: event.id,
+          published: false,
           ...formValues,
         });
       } else {

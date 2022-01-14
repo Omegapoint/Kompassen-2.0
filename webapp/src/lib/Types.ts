@@ -32,6 +32,7 @@ export interface NewEvent extends BaseEvent {
 
 export interface UpdatedEvent extends NewEvent {
   id: string;
+  published: boolean;
 }
 
 export interface DBEvent extends BaseEvent, DefaultTime {
