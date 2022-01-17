@@ -4,9 +4,7 @@ import { Box, Button, Typography } from '@mui/material';
 import { differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { ReactElement, useState } from 'react';
-import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { updateEvent } from '../../api/Api';
 import PageNav, { INavItem } from '../../components/pageNav/PageNav';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
@@ -26,6 +24,7 @@ const EventPlanner = (): ReactElement => {
   const organisation = useOrganisation(event.organisationID)!;
   const lectures = useEventLecturesWS(id!);
   const [editEventIsOpen, editEvent] = useBoolean();
+  const [publishModalOpen, setPublishModal] = useBoolean();
   const approvedLectures = lectures.filter((lecture) => lecture.approved);
 
   const navItems: INavItem<INavItemKind>[] = [
@@ -47,12 +46,6 @@ const EventPlanner = (): ReactElement => {
   const startTime = format(event.startAt, 'HH:mm', { locale: sv });
   const endTime = format(event.endAt, 'HH:mm', { locale: sv });
   const daysLeft = differenceInDays(event.startAt, new Date());
-  const testVal = { comment: 'test' };
-  const update = useMutation(updateEvent);
-  const handlePublish = async () => {
-    const updatedEvent = { ...event, published: true };
-    console.log(updatedEvent);
-  };
 
   return (
     <Box sx={{ display: 'grid', justifyItems: 'center' }}>
@@ -77,22 +70,29 @@ const EventPlanner = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
           <Button
             variant="contained"
-            color="primary"
-            startIcon={<EditIcon />}
-            onClick={editEvent.on}
+            color={event.published ? 'warning' : 'primary'}
+            startIcon={
+              event.published ? (
+                <PublishIcon sx={{ transform: 'rotate(180deg)' }} />
+              ) : (
+                <PublishIcon />
+              )
+            }
+            onClick={() => {
+              editEvent.on();
+              setPublishModal.on();
+            }}
           >
-            Redigera
+            {event.published ? 'Avpublicera Schema' : 'Publicera Schema'}
           </Button>
 
           <Button
             variant="contained"
             color="primary"
-            startIcon={<PublishIcon />}
-            onClick={(e) => {
-              handlePublish();
-            }}
+            startIcon={<EditIcon />}
+            onClick={editEvent.on}
           >
-            Publicera Schema
+            Redigera
           </Button>
         </Box>
 
@@ -100,7 +100,15 @@ const EventPlanner = (): ReactElement => {
         {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} editable />}
         {active === 'attendance' && <Attendance event={event} lectures={lectures} />}
       </Box>
-      <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
+      <CreateEvent
+        close={() => {
+          editEvent.off();
+          setPublishModal.off();
+        }}
+        open={editEventIsOpen}
+        event={event}
+        publishModal={publishModalOpen}
+      />
     </Box>
   );
 };

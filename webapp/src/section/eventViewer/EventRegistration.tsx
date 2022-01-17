@@ -20,7 +20,6 @@ import SmallLoader from '../../components/loader/SmallLoader';
 import useForm from '../../hooks/UseForm';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
-import Schedule from '../eventPlanner/Schedule';
 import SmallLectureCard from '../eventPlanner/SmallLectureCard';
 
 const defaultFormValue: FormValue = {
@@ -130,11 +129,6 @@ const EventRegistration = ({
   }
   return (
     <Box sx={{ display: 'grid', gridGap: '10px', marginTop: '40px' }}>
-      {/* {event.rooms?.length > 0 && (
-        <Schedule lectures={approvedLectures} event={event} editable={false} />
-      )} */}
-
-      <Schedule lectures={approvedLectures} event={event} editable={false} />
       <Typography variant="h4">Anmäl dig till kompetensdagen</Typography>
       <FormControlLabel
         control={
