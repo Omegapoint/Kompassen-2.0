@@ -17,6 +17,7 @@ const newEvent = Joi.object<NewEvent>({
 
 const updateEvent = Joi.object<UpdatedEvent>({
   id: Joi.string().uuid(),
+  published: Joi.boolean(),
   ...defaultSchema,
 }).options({ presence: 'required' });
 

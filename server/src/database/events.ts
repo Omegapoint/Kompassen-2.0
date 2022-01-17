@@ -69,7 +69,7 @@ const UPDATE_EVENT = `
         registration_start = $5,
         registration_end   = $6,
         updated_by         = $7,
-        published          = $8,
+        published          = $8
     WHERE id = $9
     RETURNING id
 `;
@@ -135,7 +135,6 @@ const eventsDB: EventsDB = {
       event.published,
       event.id,
     ]);
-
     const rooms = await db.query<Room>(SELECT_ROOM, [event.id]);
 
     const oldRooms = rooms.rows;

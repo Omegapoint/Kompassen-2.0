@@ -37,10 +37,12 @@ export interface UpdatedEvent extends NewEvent {
 
 export interface DBEvent extends BaseEvent, DefaultTime {
   id: string;
+  published: boolean;
 }
 
 export interface Event extends BaseEvent, DefaultTime {
   id: string;
+  published: boolean;
   rooms: Room[];
 }
 
