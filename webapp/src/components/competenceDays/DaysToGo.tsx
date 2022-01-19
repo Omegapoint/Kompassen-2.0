@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
-import { differenceInDays, intervalToDuration } from 'date-fns';
+import { differenceInDays, intervalToDuration, isWithinInterval } from 'date-fns';
 import { ReactElement, useContext, useEffect, useState } from 'react';
+import useBoolean from '../../hooks/UseBoolean';
 import { Event } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import EventContext from './EventContext';
@@ -19,8 +20,8 @@ const getTime = (event: Event): Time => {
 
 const DaysToGo = (): ReactElement => {
   const { events, ind } = useContext(EventContext);
-
   const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind]));
+  const [isOngoing, ongoing] = useBoolean();
 
   useEffect(() => {
     setDates(getTime(events[ind]));
@@ -30,9 +31,15 @@ const DaysToGo = (): ReactElement => {
 
   const data = [
     { nr: days, desc: 'dagar' },
-    { nr: hours, desc: 'h' },
+    { nr: hours, desc: 'timmar' },
     { nr: minutes, desc: 'min' },
   ];
+
+  useEffect(() => {
+    if (isWithinInterval(new Date(), { start: events[ind].startAt, end: events[ind].endAt }))
+      ongoing.on();
+    else ongoing.off();
+  }, [minutes, events, ind, ongoing]);
 
   return (
     <Box
@@ -40,28 +47,40 @@ const DaysToGo = (): ReactElement => {
         display: 'flex',
         gridGap: padding.small,
         justifyContent: 'center',
-        background: colors.background,
+        background: !isOngoing ? colors.background : colors.blue,
         padding: `${padding.minimal} 0`,
         borderRadius: borderRadius.tiny,
       }}
     >
-      {data.map((e) => (
-        <Box key={e.desc} sx={{ display: 'flex', alignItems: 'center', gridGap: padding.tiny }}>
-          <Typography
-            sx={{
-              background: colors.primary,
-              color: colors.white,
-              lineHeight: 1,
-              fontSize: '1.2rem',
-              padding: padding.tiny,
-              borderRadius: borderRadius.tiny,
-            }}
-          >
-            {e.nr}
-          </Typography>
-          <Typography sx={{ lineHeight: 1, color: colors.primary }}>{e.desc}</Typography>
+      {!isOngoing &&
+        data.map((e) => (
+          <Box key={e.desc} sx={{ display: 'flex', alignItems: 'center', gridGap: padding.tiny }}>
+            <Typography
+              sx={{
+                background: colors.primary,
+                color: colors.white,
+                lineHeight: 1,
+                fontSize: '1.2rem',
+                padding: padding.tiny,
+                borderRadius: borderRadius.tiny,
+              }}
+            >
+              {e.nr}
+            </Typography>
+            <Typography sx={{ lineHeight: 1, color: colors.primary }}>{e.desc}</Typography>
+          </Box>
+        ))}
+      {isOngoing && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gridGap: padding.tiny,
+          }}
+        >
+          <Typography sx={{ lineHeight: 1, color: colors.white }}>Pågår nu!</Typography>
         </Box>
-      ))}
+      )}
     </Box>
   );
 };
