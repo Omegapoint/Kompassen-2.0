@@ -50,7 +50,7 @@ const ScheduleContent = ({ event, lectures, editable }: ScheduleContentProps): R
               <Typography variant="h6">
                 Rum {i + 1}: {event.rooms[i].name}
               </Typography>
-              <Typography variant="h6">0h</Typography>
+              {/* <Typography variant="h6">0h</Typography> */}
             </Box>
             <Divider sx={{ background: colors.black, height: '3px' }} />
           </div>

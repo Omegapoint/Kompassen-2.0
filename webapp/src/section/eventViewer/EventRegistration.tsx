@@ -147,21 +147,6 @@ const EventRegistration = ({
         {!!approvedLectures.length && (
           <>
             <Typography variant="h5">Välj pass</Typography>
-            <Box>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={values.remote}
-                    onChange={(e) => {
-                      handleChange(e);
-                      toggleOnlyRemote();
-                    }}
-                    name="remote"
-                  />
-                }
-                label="Distans"
-              />
-            </Box>
             <FormGroup onChange={handleSelectChange}>
               {approvedLectures.map((e) => (
                 <FormControlLabel key={e.id} control={<Checkbox value={e.id} />} label={e.title} />

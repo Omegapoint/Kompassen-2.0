@@ -74,6 +74,11 @@ const LectureCard = ({
           </Typography>
 
           <Typography>{lecture.lecturer}</Typography>
+          {lecture.approved && admin && (
+            <Typography variant="subtitle2" sx={{ fontStyle: 'italic' }}>
+              Godkänt pass
+            </Typography>
+          )}
         </Box>
 
         <Box sx={{ display: 'grid', alignItems: 'end' }}>
@@ -86,7 +91,7 @@ const LectureCard = ({
               Hantera
             </Button>
           )}
-          {edit && !admin && (
+          {!edit && (
             <Button variant="contained" color="primary" onClick={on}>
               Visa
             </Button>

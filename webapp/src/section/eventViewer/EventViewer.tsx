@@ -62,7 +62,7 @@ const EventViewer = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
         </Box>
 
-        <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />
+        {isAdmin() && <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />}
 
         {event.published ? (
           <Schedule lectures={approvedLectures} event={event} editable={false} />
@@ -72,7 +72,7 @@ const EventViewer = (): ReactElement => {
           </Typography>
         )}
 
-        {canRegister && (
+        {canRegister && event.published && (
           <EventRegistration
             lectures={filteredLectures}
             event={event}
