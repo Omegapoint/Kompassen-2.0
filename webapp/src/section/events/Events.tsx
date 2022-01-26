@@ -37,7 +37,7 @@ const Events = (): ReactElement => {
         >
           Skapa ny kompetensdag
         </Button>
-        <CreateEvent close={off} open={open} event={currentEvent} />
+        <CreateEvent close={off} open={open} event={currentEvent} publishModal={false} />
         <EventTitles />
         {current.map((e) => (
           <EventRow

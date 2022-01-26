@@ -28,11 +28,12 @@ const CompetenceDays = (): ReactElement => {
           <DaysToGo />
           <Button
             type="button"
-            color="primary"
+            color="success"
             variant="contained"
+            size="large"
             onClick={() => navigate(`/events/view/${data[ind].id}`)}
           >
-            Anmäl deltagande
+            Schema och anmälan
           </Button>
           <LectureStats />
         </Box>

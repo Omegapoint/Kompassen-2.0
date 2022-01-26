@@ -9,6 +9,7 @@ import { isAdmin } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import RegisteredLectures from '../eventPlanner/RegisteredLectures';
+import Schedule from '../eventPlanner/Schedule';
 import useEventLecturesWS from '../eventPlanner/UseEventLecturesWS';
 import CreateEvent from '../events/CreateEvent';
 import EventRegistration from './EventRegistration';
@@ -32,6 +33,7 @@ const EventViewer = (): ReactElement => {
   const isBeforeRegistrationStart = event.registrationStart > new Date();
   const isAfterRegistrationEnd = event.registrationEnd < new Date();
   const canRegister = !isBeforeRegistrationStart && !isAfterRegistrationEnd;
+  const approvedLectures = lectures.filter((e) => e.approved);
 
   useEffect(() => {
     const filtered = onlyRemote ? lectures.filter((e) => e.remote) : lectures;
@@ -60,9 +62,17 @@ const EventViewer = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
         </Box>
 
-        <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />
+        {isAdmin() && <RegisteredLectures lectures={filteredLectures} admin={isAdmin()} />}
 
-        {canRegister && (
+        {event.published ? (
+          <Schedule lectures={approvedLectures} event={event} editable={false} />
+        ) : (
+          <Typography variant="h5" align="center">
+            Schemat har inte publicerats ännu!
+          </Typography>
+        )}
+
+        {canRegister && event.published && (
           <EventRegistration
             lectures={filteredLectures}
             event={event}
@@ -81,7 +91,12 @@ const EventViewer = (): ReactElement => {
           />
         )}
       </Box>
-      <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
+      <CreateEvent
+        close={editEvent.off}
+        open={editEventIsOpen}
+        event={event}
+        publishModal={false}
+      />
     </Box>
   );
 };

@@ -40,6 +40,7 @@ const Sideline = ({
             key={lecture.id}
             lecture={lecture}
             colHeight={COL_HEIGHT}
+            editable
             handleDragStop={(startPos, pos) => handleDragStop(lecture, startPos, pos, i, i1, true)}
           />
         ))}

@@ -32,15 +32,18 @@ export interface NewEvent extends BaseEvent {
 
 export interface UpdatedEvent extends NewEvent {
   id: string;
+  published: boolean;
 }
 
 export interface DBEvent extends BaseEvent, DefaultTime {
   id: string;
+  published: boolean;
 }
 
 export interface Event extends BaseEvent, DefaultTime {
   id: string;
   rooms: Room[];
+  published: boolean;
 }
 
 export interface UpdatedRoom {

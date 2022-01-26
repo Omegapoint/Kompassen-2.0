@@ -78,7 +78,6 @@ const EventRegistration = ({
   };
 
   const approvedLectures = lectures.filter((e) => e.approved);
-
   const attendantRequest = () => getAttendanceByEventID({ id: event.id });
   const { data: registrationData } = useQuery(`attendance-${event.id}`, attendantRequest);
 

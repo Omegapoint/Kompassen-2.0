@@ -23,6 +23,7 @@ const events: DBEvent[] = [
     createdBy: users[0].id,
     updatedAt: date,
     updatedBy: users[0].id,
+    published: false,
   },
   {
     id: '51914a7a-522c-422b-a3c0-0b65594d70af',
@@ -36,6 +37,7 @@ const events: DBEvent[] = [
     createdBy: users[1].id,
     updatedAt: date,
     updatedBy: users[1].id,
+    published: false,
   },
   {
     id: 'faf29b61-6272-46c2-afa6-1f110b91b40f',
@@ -49,6 +51,7 @@ const events: DBEvent[] = [
     createdBy: users[0].id,
     updatedAt: date,
     updatedBy: users[0].id,
+    published: false,
   },
 ];
 

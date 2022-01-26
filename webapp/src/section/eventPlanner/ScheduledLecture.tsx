@@ -10,6 +10,7 @@ interface ExampleCardProps {
   rowToTime?: (y: number) => Date;
   startY: number;
   startX: number;
+  editable: boolean;
 }
 
 export interface Position {
@@ -24,6 +25,7 @@ export default function ScheduledLecture({
   rowToTime,
   startY,
   startX,
+  editable,
 }: ExampleCardProps): ReactElement {
   const [controlledPosition] = useState({ x: 0, y: 0 });
   const ref = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ export default function ScheduledLecture({
     setNewY(d.y);
   };
 
-  return (
+  return editable ? (
     <Draggable
       bounds=".fullSchedule"
       nodeRef={ref}
@@ -50,9 +52,13 @@ export default function ScheduledLecture({
       onDrag={handleDrag}
       onStop={(_, { x, y }) => setPos({ x, y })}
     >
-      <div ref={ref} style={{ cursor: 'grab' }}>
+      <div ref={ref} style={{ cursor: 'grab', transform: '(0px, 0px)' }}>
         <LectureCard lecture={lecture} startAt={rowToTime && rowToTime(startY + newY)} />
       </div>
     </Draggable>
+  ) : (
+    <div ref={ref} style={{ transform: 'translate(0px, 0px)' }}>
+      <LectureCard lecture={lecture} startAt={rowToTime && rowToTime(startY + newY)} />
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import EditIcon from '@mui/icons-material/Edit';
+import PublishIcon from '@mui/icons-material/Publish';
 import { Box, Button, Typography } from '@mui/material';
 import { differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -23,6 +24,7 @@ const EventPlanner = (): ReactElement => {
   const organisation = useOrganisation(event.organisationID)!;
   const lectures = useEventLecturesWS(id!);
   const [editEventIsOpen, editEvent] = useBoolean();
+  const [publishModalOpen, setPublishModal] = useBoolean();
   const approvedLectures = lectures.filter((lecture) => lecture.approved);
 
   const navItems: INavItem<INavItemKind>[] = [
@@ -68,6 +70,24 @@ const EventPlanner = (): ReactElement => {
           <Typography>{`${startTime}-${endTime} (Om ${daysLeft} dagar)`}</Typography>
           <Button
             variant="contained"
+            color={event.published ? 'warning' : 'primary'}
+            startIcon={
+              event.published ? (
+                <PublishIcon sx={{ transform: 'rotate(180deg)' }} />
+              ) : (
+                <PublishIcon />
+              )
+            }
+            onClick={() => {
+              editEvent.on();
+              setPublishModal.on();
+            }}
+          >
+            {event.published ? 'Avpublicera Schema' : 'Publicera Schema'}
+          </Button>
+
+          <Button
+            variant="contained"
             color="primary"
             startIcon={<EditIcon />}
             onClick={editEvent.on}
@@ -77,10 +97,18 @@ const EventPlanner = (): ReactElement => {
         </Box>
 
         {active === 'lectures' && <RegisteredLectures lectures={lectures} admin />}
-        {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} />}
+        {active === 'schedule' && <Schedule lectures={approvedLectures} event={event} editable />}
         {active === 'attendance' && <Attendance event={event} lectures={lectures} />}
       </Box>
-      <CreateEvent close={editEvent.off} open={editEventIsOpen} event={event} />
+      <CreateEvent
+        close={() => {
+          editEvent.off();
+          setPublishModal.off();
+        }}
+        open={editEventIsOpen}
+        event={event}
+        publishModal={publishModalOpen}
+      />
     </Box>
   );
 };
