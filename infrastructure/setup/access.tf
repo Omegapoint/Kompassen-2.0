@@ -63,6 +63,7 @@ resource "azuread_application" "app" {
     redirect_uris = [
       "http://localhost:3000/",
       "https://kompassen2.azurewebsites.net/",
+      "https://kompass.omegapoint.academy/"
     ]
   }
 }

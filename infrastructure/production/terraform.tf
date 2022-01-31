@@ -18,6 +18,7 @@ resource "azurerm_app_service" "webapp" {
   resource_group_name = var.name
 
   app_service_plan_id = azurerm_app_service_plan.asp.id
+  https_only = true
 
   site_config {
     linux_fx_version = "DOCKER|kompassen2.azurecr.io/webapp:latest"
@@ -40,6 +41,7 @@ resource "azurerm_app_service" "server" {
   resource_group_name = var.name
 
   app_service_plan_id = azurerm_app_service_plan.asp.id
+  https_only = true
 
   site_config {
     linux_fx_version = "DOCKER|kompassen2.azurecr.io/server:latest"
@@ -54,7 +56,7 @@ resource "azurerm_app_service" "server" {
     PORT              = "8080"
     OIDC_CLIENT_ID    = var.client_id
     OIDC_TENANT_ID    = var.tenant_id
-    OIDC_REDIRECT_URL = "https://${var.name}.azurewebsites.net"
+    OIDC_REDIRECT_URL = "https://kompass.omegapoint.academy"
 
     PG_USERNAME = "${azurerm_postgresql_server.ps.administrator_login}@${var.name}"
     PG_PASSWORD = azurerm_postgresql_server.ps.administrator_login_password
