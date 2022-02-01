@@ -65,6 +65,19 @@ const Index = () => {
   );
 };
 
+// TODO: This is an ugly redirect fix, please remove this when kompassen2.azurewebsites.net is not used anymore or hidden.
+const Redirecter = () => {
+  const from = 'kompassen2.azurewebsites.net';
+  const to = 'https://kompass.omegapoint.academy/';
+
+  if (window.location.hostname === from) {
+    window.location.href = to;
+    return null;
+  }
+
+  return <Index />;
+};
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -72,7 +85,7 @@ ReactDOM.render(
         <GlobalStyles />
         <StyledEngineProvider injectFirst>
           <ThemeProvider theme={theme}>
-            <Index />
+            <Redirecter />
           </ThemeProvider>
         </StyledEngineProvider>
       </BrowserRouter>
