@@ -86,12 +86,12 @@ const lectures: Handlers = {
       httpError(res, 404, 'No lecture with that ID exists');
       return;
     }
-    if (currentLecture?.lecturerID && userID !== currentLecture?.lecturerID && role !== 'Admin') {
+    if (currentLecture?.lecturer && userID !== currentLecture?.lecturerID && role !== 'Admin') {
       httpError(res, 403, 'You cannot edit another lecturers lecture');
       return;
     }
 
-    const lecturerID = currentLecture?.lecturerID || userID;
+    const lecturerID = currentLecture?.lecturer ? currentLecture.lecturerID : userID;
 
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
