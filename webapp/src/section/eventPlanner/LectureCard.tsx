@@ -91,11 +91,12 @@ const LectureCard = ({
               Hantera
             </Button>
           )}
-          {!edit && (
-            <Button variant="contained" color="primary" onClick={on}>
-              Visa
-            </Button>
-          )}
+          {!edit ||
+            (!admin && (
+              <Button variant="contained" color="primary" onClick={on}>
+                Visa
+              </Button>
+            ))}
         </Box>
         <Modal
           open={open}
