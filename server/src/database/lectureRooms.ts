@@ -15,6 +15,11 @@ const SELECT_LECTURE_ROOMS = `
         WHERE approved = TRUE
           AND event_id = $1
     )
+      AND room_id IN (
+        SELECT id
+        FROM rooms
+        WHERE event_id = $1
+    )
 `;
 
 const SELECT_LECTURE_ROOM_BY_ID = `
@@ -28,11 +33,10 @@ const SELECT_LECTURE_ROOM_BY_ID = `
 
 const INSERT_LECTURE_ROOM = `
     INSERT INTO lecture_rooms(room_id, lecture_id, start_at)
-    SELECT $1, $2, $3
-    WHERE EXISTS(
-                  SELECT 1 FROM events WHERE id = $4
-              )
-    RETURNING id
+    SELECT $1,
+           $2,
+           $3 WHERE EXISTS(
+                  SELECT 1 FROM events WHERE id = $4 ) RETURNING id
 `;
 
 const UPDATE_LECTURE_ROOM = `
@@ -40,15 +44,13 @@ const UPDATE_LECTURE_ROOM = `
     SET room_id    = $1,
         lecture_id = $2,
         start_at   = $3
-    WHERE id = $4
-    RETURNING id
+    WHERE id = $4 RETURNING id
 `;
 
 const DELETE_LECTURE_ROOM = `
     DELETE
     FROM lecture_rooms
-    WHERE id = $1
-    RETURNING id
+    WHERE id = $1 RETURNING id
 `;
 
 interface LectureRoomsDB {
