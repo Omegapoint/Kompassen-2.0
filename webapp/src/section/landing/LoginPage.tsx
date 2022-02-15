@@ -13,24 +13,34 @@ const LoginPage = (): ReactElement => {
     <Box
       sx={{
         background: colors.background,
-        minWidth: '400px',
+        width: window.innerWidth,
         display: 'grid',
-        padding: padding.standard,
-        gridGap: padding.large,
+        padding: ['none', padding.standard],
+        gridGap: ['none', padding.large],
+        // minWidth: '400px', any particular reason for this?
       }}
     >
       <Typography
         color="primary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
+        sx={{ display: ['none', 'inline'], fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
       >
         KomPass 2.0
       </Typography>
       <Box sx={{ display: 'grid', gridGap: padding.standard }}>
-        <Typography variant="h6" sx={{ fontSize: '1rem' }}>
+        <Typography variant="h6" sx={{ fontSize: '1rem', display: ['none', 'inline'] }}>
           Logga in på Kompassen2
         </Typography>
-        <Button color="primary" variant="contained" onClick={login}>
+        <Button
+          variant="contained"
+          onClick={login}
+          sx={{
+            borderRadius: [0, 1],
+            height: ['10vh', 'auto'],
+            fontSize: ['large', 'medium'],
+            backgroundColor: [colors.lightGreen, colors.primary],
+          }}
+        >
           Logga in med Azure AD
         </Button>
       </Box>
