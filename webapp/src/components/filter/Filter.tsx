@@ -10,9 +10,10 @@ import {
   TextField,
 } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
-import { Lecture } from '../../lib/Types';
+import { Lecture, Event  } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import LectureIdea from '../lecture/Lecture';
+import { useAppSelector } from '../../lib/Lib';
 
 const formControlStyle: SxProps = {
   marginBottom: padding.standard,
@@ -34,17 +35,21 @@ const handleSort = (value: string, lectures: Lecture[]): Lecture[] => {
   return sorted;
 };
 
+// Show cards that is scheduled for the future.
+const findFutureEvent = (events: Event[]) => {
+  return events.find(e => e.startAt > new Date())?.id;
+}
+
 // filter the "Filtrera" - dropdown
-const handleFilters = (value: string, sorted: Lecture[]): Lecture[] => {
+const handleFilters = (value: string, sorted: Lecture[], events: Event[]): Lecture[] => {
   switch (value) {
     case 'lecturer':
       return sorted.filter((lecture) => lecture.lecturer !== null);
     case 'null':
       return sorted.filter((lecture) => lecture.lecturer === null);
     default:
-      return sorted;
-  }
-};
+      return sorted.filter((lecture) => lecture.eventID === findFutureEvent(events));
+  }};
 
 // searchbar filtering based on title and description
 const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
@@ -58,6 +63,7 @@ const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
 
 const Filter = ({ lectures }: FilterProps): ReactElement => {
   const [filteredLectures, setLectures] = useState(lectures);
+  const events = useAppSelector((state) => state.events);
 
   const [options, setOptions] = useState({
     sort: '',
@@ -72,10 +78,10 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
 
   useEffect(() => {
     const sorted = handleSort(options.sort, lectures);
-    const filtered = handleFilters(options.filter, sorted);
+    const filtered = handleFilters(options.filter, sorted, events);
     const finished = handleSearch(options.search, filtered);
     setLectures(finished);
-  }, [lectures, options]);
+  }, [lectures, events, options]);
 
   return (
     <div>
@@ -147,4 +153,5 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
     </div>
   );
 };
+
 export default Filter;
