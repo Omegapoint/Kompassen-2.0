@@ -36,8 +36,8 @@ const handleSort = (value: string, lectures: Lecture[]): Lecture[] => {
 };
 
 // Show cards that is scheduled for the future.
-const findFutureEvent = (events: Event[]) => {
-  return events.find(e => e.startAt > new Date())?.id;
+const findFutureEvent = (events: Event[]): string => {
+  return events.find(e => e.startAt > new Date())?.id as string;
 }
 
 // filter the "Filtrera" - dropdown
