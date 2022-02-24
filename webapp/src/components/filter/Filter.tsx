@@ -39,7 +39,6 @@ const handleSort = (value: string, lectures: Lecture[]): Lecture[] => {
 const findFutureEvent = (events: Event[]) => 
   events.find(e => e.startAt > new Date())?.id;
 
-
 // filter the "Filtrera" - dropdown
 const handleFilters = (value: string, sorted: Lecture[], events: Event[]): Lecture[] => {
   switch (value) {

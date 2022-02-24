@@ -53,10 +53,8 @@ const invalidHoursTotTime = (time: Array<string>) => {
 const invalidMinutes = (time: Array<string>) => {
   const hours = parseInt(time[0], 10);
   const minutes = parseInt(time[1], 10);
-
   minutesText = `Minuter måste vara mellan 0-59`;
   if (minutes > 59 && minutes < 0 || minutes > 59) return true;
-
   minutesText = `Ett pass behöver vara minst 15 minuter`;
   if (hours < 1 && minutes < 15) return true;
   return minutes < 0 || minutes > 59; 
