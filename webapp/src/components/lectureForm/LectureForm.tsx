@@ -29,8 +29,8 @@ interface LectureFormProps {
   data?: Lecture;
 }
 
-const hoursText = `Timmar måste vara mellan 0-100`;
-const minutesText = `Minuter måste vara mellan 0-59`;
+let hoursText = `Timmar måste vara mellan 0-3`;
+let minutesText = `Minuter måste vara mellan 0-59`;
 const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 const maxParticipantsText = `Maxdeltagare måste vara mellan 0-100000 tecken långt`;
@@ -39,16 +39,27 @@ const preparationsText = `Förberedelser måste vara mellan 1-${LARGE_STRING_LEN
 const tagsText = `Du måste ha minst en tagg`;
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 
-const invalidHours = (str: string) => {
-  const val = parseInt(str, 10);
-  if (Number.isNaN(val)) return true;
-  return val < 0 || val > 100;
-};
+const invalidHoursTotTime = (time: Array<string>) => {
+  const hours = parseInt(time[0], 10);
+  const minutes = parseInt(time[1], 10);
+  const totTime = (hours*60) + minutes;
+  hoursText = `Timmar måste vara mellan 0-3`;
+  if (hours > 3) return true;
+  hoursText = `Maxlängden på ett pass är 3:30`;
+  if (totTime > 210) return true;
+  return totTime < 0 || totTime > 210;
+}
 
-const invalidMinutes = (str: string) => {
-  const val = parseInt(str, 10);
-  if (Number.isNaN(val)) return true;
-  return val < 0 || val > 59;
+const invalidMinutes = (time: Array<string>) => {
+  const hours = parseInt(time[0], 10);
+  const minutes = parseInt(time[1], 10);
+
+  minutesText = `Minuter måste vara mellan 0-59`;
+  if (minutes > 59 && minutes < 0 || minutes > 59) return true;
+
+  minutesText = `Ett pass behöver vara minst 15 minuter`;
+  if (hours < 1 && minutes < 15) return true;
+  return minutes < 0 || minutes > 59; 
 };
 
 const invalidParticipants = (str: string) => {
@@ -79,10 +90,10 @@ interface FormValues {
   message: string;
 }
 
-const useValidate = (values: FormValues): FormValidation<FormValues> => {
+const useValidate = (values: FormValues): FormValidation<FormValues> => { 
   const validate = {
-    hours: useFormValidation(values.hours, hoursText, invalidHours),
-    minutes: useFormValidation(values.minutes, minutesText, invalidMinutes),
+    hours: useFormValidation([values.hours, values.minutes], hoursText, invalidHoursTotTime),
+    minutes: useFormValidation([values.hours, values.minutes], minutesText, invalidMinutes),
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
     maxParticipants: useFormValidation(
@@ -246,20 +257,20 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             <FormLabel sx={{ marginBottom: padding.minimal }} required component="legend">
               Längd på passet
             </FormLabel>
-            <Box sx={{ display: 'flex', gridGap: padding.standard }}>
+            <Box sx={{ display: 'flex', gridGap: padding.standard }} >
               <TextField
-                {...validate.hours}
+                {...validate.hours}                
                 sx={{ gridArea: 'hours' }}
                 onChange={handleChange}
                 value={values.hours}
                 label="Timmar"
                 name="hours"
                 type="number"
-                InputProps={{ inputProps: { min: 0 } }}
+                InputProps={{ inputProps: { min: 0, max: 3 } }}
                 variant="outlined"
-              />
+              />     
               <TextField
-                {...validate.minutes}
+                {...validate.minutes}             
                 sx={{ gridArea: 'minutes' }}
                 onChange={handleChange}
                 value={values.minutes}
@@ -267,7 +278,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
                 name="minutes"
                 type="number"
                 InputProps={{ inputProps: { min: 0, max: 59 } }}
-                variant="outlined"
+                variant="outlined"          
               />
             </Box>
           </div>
