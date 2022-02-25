@@ -10,10 +10,10 @@ import {
   TextField,
 } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
-import { Lecture, Event  } from '../../lib/Types';
+import { useAppSelector } from '../../lib/Lib';
+import { Event, Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import LectureIdea from '../lecture/Lecture';
-import { useAppSelector } from '../../lib/Lib';
 
 const formControlStyle: SxProps = {
   marginBottom: padding.standard,
@@ -36,8 +36,7 @@ const handleSort = (value: string, lectures: Lecture[]): Lecture[] => {
 };
 
 // Show cards that is scheduled for the future.
-const findFutureEvent = (events: Event[]) => 
-  events.find(e => e.startAt > new Date())?.id;
+const findFutureEvent = (events: Event[]) => events.find((e) => e.startAt > new Date())?.id;
 
 // filter the "Filtrera" - dropdown
 const handleFilters = (value: string, sorted: Lecture[], events: Event[]): Lecture[] => {
@@ -48,7 +47,8 @@ const handleFilters = (value: string, sorted: Lecture[], events: Event[]): Lectu
       return sorted.filter((lecture) => lecture.lecturer === null);
     default:
       return sorted.filter((lecture) => lecture.eventID === findFutureEvent(events));
-  }};
+  }
+};
 
 // searchbar filtering based on title and description
 const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
