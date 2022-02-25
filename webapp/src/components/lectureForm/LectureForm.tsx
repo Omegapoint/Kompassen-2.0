@@ -13,6 +13,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { format } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -194,6 +196,12 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     return `${orgName} - ${time}`;
   };
 
+  const getEventDeadline = (eventId: string) => {
+    const evnt = events.find((e) => e.id === eventId) as Event;
+    const deadline = format(evnt.registrationEnd, 'dd MMM HH:mm', { locale: sv });
+    return `Deadline för att anmäla pass är ${deadline}`;
+  };
+
   return (
     <form>
       <Paper
@@ -272,6 +280,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             </Box>
           </div>
         </Box>
+        {values.eventID.length > 0 ? <h5> {getEventDeadline(values.eventID)}</h5> : <p> </p>}
         <TextField
           fullWidth
           onChange={handleChange}
