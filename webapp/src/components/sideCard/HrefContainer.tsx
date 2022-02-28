@@ -17,7 +17,7 @@ const HrefContainer = ({ href, hrefText, hrefBarColor }: LinkContainerProps): Re
       gridAutoFlow: 'column',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
+      borderRadius: [0, `${borderRadius.small} ${borderRadius.small} 0 0`],
       padding: `${padding.small} ${padding.small}`,
       background: hrefBarColor,
     }}

@@ -7,6 +7,7 @@ import PublishIdea from '../../components/publishIdea/PublishIdea';
 import SideCard from '../../components/sideCard/SideCard';
 import WordCloud from '../../components/wordCloud/WordCloud';
 import useBoolean from '../../hooks/UseBoolean';
+import useDeviceDetect from '../../hooks/UseDeviceDetect';
 import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
@@ -55,6 +56,7 @@ const useLectureIdeasWS = () => {
 const Home = (): ReactElement => {
   const [active, { off, on }] = useBoolean();
   const lectureIdeas = useLectureIdeasWS();
+  const { mobile, currentWidth } = useDeviceDetect();
 
   return (
     <Box
@@ -65,6 +67,7 @@ const Home = (): ReactElement => {
         gridTemplateRows: 'max-content auto auto auto auto',
         gridGap: `${padding.medium} ${padding.large}`,
         padding: '0 20px',
+        alignContent: 'start',
       }}
     >
       <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
@@ -75,6 +78,8 @@ const Home = (): ReactElement => {
           display: 'grid',
           gridGap: padding.standard,
           alignContent: 'start',
+          gridColumn: ['span 2', 'span 1'],
+          order: [2, 1],
         }}
       >
         {active && <PublishIdea cancel={off} />}
@@ -109,6 +114,7 @@ const Home = (): ReactElement => {
           width: '320px',
           gridGap: padding.standard,
           alignContent: 'start',
+          order: [1, 2],
         }}
       >
         {isAdmin() && (
@@ -130,9 +136,11 @@ const Home = (): ReactElement => {
         >
           <LatestLectures />
         </SideCard>
-        <SideCard title="Trendar just nu">
-          <WordCloud />
-        </SideCard>
+        {!mobile && (
+          <SideCard title="Trendar just nu">
+            <WordCloud />
+          </SideCard>
+        )}
         {/* TODO: Add some content to this */}
         {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
         {/*  <Interested /> */}

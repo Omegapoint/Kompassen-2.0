@@ -14,7 +14,7 @@ const Content = ({ children }: ContentProps): ReactElement => (
       alignContent: 'start',
       minWidth: '200px',
       minHeight: `calc(100vh - ${constants.headerHeight})`,
-      padding: '20px',
+      padding: [0, '20px'],
       '& > div': { width: '100%' },
     }}
   >

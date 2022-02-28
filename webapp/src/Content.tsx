@@ -73,7 +73,7 @@ const Content = (): ReactElement => {
           sx={{
             display: 'grid',
             width: '100%',
-            padding: padding.standard,
+            padding: [0, padding.standard],
             maxWidth: '1500px',
             justifySelf: 'center',
           }}

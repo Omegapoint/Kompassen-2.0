@@ -10,6 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
+import useDeviceDetect from '../../hooks/UseDeviceDetect';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import LectureIdea from '../lecture/Lecture';
@@ -58,6 +59,7 @@ const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
 
 const Filter = ({ lectures }: FilterProps): ReactElement => {
   const [filteredLectures, setLectures] = useState(lectures);
+  const { mobile, currentWidth } = useDeviceDetect();
 
   const [options, setOptions] = useState({
     sort: '',
@@ -85,7 +87,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
           gridAutoFlow: 'column',
           alignItems: 'top',
           gridTemplateColumns: 'initial initial auto',
-          columnGap: padding.standard,
+          columnGap: [padding.small, padding.standard],
         }}
       >
         <FormControl variant="filled" sx={formControlStyle}>
@@ -136,7 +138,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
       <Box
         sx={{
           display: 'grid',
-          gridGap: padding.standard,
+          gridGap: [padding.minimal, padding.standard],
           alignContent: 'start',
         }}
       >

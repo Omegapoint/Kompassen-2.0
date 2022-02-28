@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
+import useDeviceDetect from '../../hooks/UseDeviceDetect';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import DayPicker from './DayPicker';
@@ -16,6 +17,7 @@ const CompetenceDays = (): ReactElement => {
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
   const navigate = useNavigate();
   const [ind, setInd] = useState(0);
+  const { mobile } = useDeviceDetect();
 
   if (isLoading || !data) return <SmallLoader />;
   if (!data.length) return <Typography>Här var det tomt</Typography>;
@@ -25,7 +27,7 @@ const CompetenceDays = (): ReactElement => {
       {data && (
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
-          <DaysToGo />
+          {!mobile && <DaysToGo />}
           <Button
             type="button"
             color="success"
@@ -35,7 +37,7 @@ const CompetenceDays = (): ReactElement => {
           >
             Schema och anmälan
           </Button>
-          <LectureStats />
+          {!mobile && <LectureStats />}
         </Box>
       )}
     </EventContext.Provider>

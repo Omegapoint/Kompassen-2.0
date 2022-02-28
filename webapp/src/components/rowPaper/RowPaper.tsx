@@ -14,7 +14,7 @@ const RowPaper = ({ children, color = colors.blue, sx = {} }: RowPaperProps): Re
       sx={{
         background: color,
         width: '6px',
-        borderRadius: `${borderRadius.standard} 0 0 ${borderRadius.standard}`,
+        borderRadius: [0, `${borderRadius.standard} 0 0 ${borderRadius.standard}`],
       }}
     />
     <Paper sx={{ ...sx, padding: padding.small }}>{children}</Paper>
