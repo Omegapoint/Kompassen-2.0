@@ -91,7 +91,6 @@ const LectureCard = ({
         </Box>
 
         <Box sx={{ display: 'grid', alignItems: 'end' }}>
-
           {edit && admin && (
             <Button
               variant={lecture.approved ? undefined : 'contained'}

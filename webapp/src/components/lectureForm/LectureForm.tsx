@@ -286,7 +286,11 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             </Box>
           </div>
         </Box>
-            {values.eventID.length > 0 ? <Typography>{getEventDeadline(values.eventID)}</Typography> : <p> </p>}
+        {values.eventID.length > 0 ? (
+          <Typography>{getEventDeadline(values.eventID)}</Typography>
+        ) : (
+          <p> </p>
+        )}
         <TextField
           fullWidth
           onChange={handleChange}
