@@ -68,7 +68,6 @@ const LectureCard = ({
             />
             <Typography variant="h6">{lecture.title}</Typography>
           </Box>
-
           <Typography>
             {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
           </Typography>
