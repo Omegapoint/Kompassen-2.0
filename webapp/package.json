@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build": "react-scripts build",
-    "format:check": "prettier --check 'src/**/*' '!**/__snapshots__/**' '!**/.DS_Store/**' '!src/**/*.svg'",
-    "format:write": "prettier --write 'src/**/*' '!**/__snapshots__/**' '!**/.DS_Store/**' '!src/**/*.svg'",
+    "format:check": "prettier --check \"src/**/*\" \"!**/__snapshots__/**\" \"!**/.DS_Store/**\" \"!src/**/*.svg\"",
+    "format:write": "prettier --write \"src/**/*\" \"!**/__snapshots__/**\" \"!**/.DS_Store/**\" \"!src/**/*.svg\"",
     "lint:check": "eslint --max-warnings 0 'src/**/*'",
     "start": "react-scripts start",
     "test": "echo 'Running tests... 🧪'"
