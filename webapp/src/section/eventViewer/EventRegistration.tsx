@@ -133,7 +133,7 @@ const EventRegistration = ({
       <FormControlLabel
         control={
           <Switch
-            checked={values.remote}
+            {...values.remote}
             onChange={(e) => {
               handleChange(e);
               toggleOnlyRemote();

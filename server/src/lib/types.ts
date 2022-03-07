@@ -129,7 +129,7 @@ export interface UpdatedLectureIdea {
 }
 
 export interface NewLecture extends BaseLectureIdea {
-  remote: boolean | null;
+  remote: string | null;
   eventID: string | null;
   duration: number | null;
   maxParticipants: number | null;
