@@ -37,8 +37,7 @@ const EventViewer = (): ReactElement => {
 
   useEffect(() => {
     const filtered = onlyRemote
-      ? lectures.filter((e) => e.remote === 'hybrid' || e.remote === 'distance')
-      : lectures;
+      ? lectures.filter((e) => e.remote) : lectures;
     setFilteredLectures(filtered);
   }, [lectures, onlyRemote]);
 

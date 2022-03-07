@@ -35,13 +35,6 @@ const LectureCard = ({
     return `${s} - ${e}`;
   };
 
-  const setLocation = (location: string | null): string | null => {
-    if (location === 'local') return 'Endast på plats';
-    if (location === 'distance') return 'Endast på distans';
-    if (location === 'hybrid') return 'Både på plats och distans';
-    return '';
-  };
-
   return (
     <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
       <Box
@@ -75,9 +68,6 @@ const LectureCard = ({
             />
             <Typography variant="h6">{lecture.title}</Typography>
           </Box>
-
-          <Typography>{setLocation(lecture.remote)}</Typography>
-
           <Typography>
             {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
           </Typography>

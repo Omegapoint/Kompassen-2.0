@@ -23,7 +23,7 @@ const other = {
     .required(),
   categoryID: Joi.string().uuid().required(),
   maxParticipants: Joi.number().min(0).max(1000).allow(null),
-  remote: Joi.string().required(),
+  remote: Joi.boolean().required(),
   requirements: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),

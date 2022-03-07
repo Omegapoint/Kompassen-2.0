@@ -123,7 +123,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const navigate = useNavigate();
 
   const defaultFormValue = {
-    remote: data?.remote || '',
+    remote: (data?.remote || false).toString(),
     eventID: events.find((event) => event.id === data?.eventID)?.id || '',
     hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '0',
     minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '0',
@@ -156,7 +156,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             .filter((e) => e)
         ),
       ],
-      remote: values.remote,
+      remote: values.remote === 'true',
       eventID: values.eventID,
       duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
       categoryID: category.id,
@@ -221,16 +221,11 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-            På vilket sätt kan man delta?
+             Kan delta på distans
           </FormLabel>
           <RadioGroup name="remote" onChange={handleChange} value={values.remote}>
-            <FormControlLabel value="local" control={<Radio />} label="Endast på plats" />
-            <FormControlLabel value="distance" control={<Radio />} label="Endast på distans" />
-            <FormControlLabel
-              value="hybrid"
-              control={<Radio />}
-              label="Både på plats och distans"
-            />
+    <FormControlLabel value="true" control={<Radio />} label="Ja" />
+            <FormControlLabel value="false" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
         <Box
