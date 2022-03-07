@@ -42,24 +42,24 @@ const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken
 const invalidHoursTotTime = (time: Array<string>) => {
   const hours = parseInt(time[0], 10);
   const minutes = parseInt(time[1], 10);
-  const totTime = (hours*60) + minutes;
+  const totTime = hours * 60 + minutes;
   hoursText = `Timmar måste vara mellan 0-3`;
   if (hours > 3) return true;
   hoursText = `Maxlängden på ett pass är 3:30`;
   if (totTime > 210) return true;
   return totTime < 0 || totTime > 210;
-}
+};
 
 const invalidMinutes = (time: Array<string>) => {
   const hours = parseInt(time[0], 10);
   const minutes = parseInt(time[1], 10);
 
   minutesText = `Minuter måste vara mellan 0-59`;
-  if (minutes > 59 && minutes < 0 || minutes > 59) return true;
+  if ((minutes > 59 && minutes < 0) || minutes > 59) return true;
 
   minutesText = `Ett pass behöver vara minst 15 minuter`;
   if (hours < 1 && minutes < 15) return true;
-  return minutes < 0 || minutes > 59; 
+  return minutes < 0 || minutes > 59;
 };
 
 const invalidParticipants = (str: string) => {
@@ -92,7 +92,7 @@ interface FormValues {
 
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
-  hours: useFormValidation([values.hours, values.minutes], hoursText, invalidHoursTotTime),
+    hours: useFormValidation([values.hours, values.minutes], hoursText, invalidHoursTotTime),
     minutes: useFormValidation([values.hours, values.minutes], minutesText, invalidMinutes),
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
