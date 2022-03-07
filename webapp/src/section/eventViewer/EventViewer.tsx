@@ -36,8 +36,7 @@ const EventViewer = (): ReactElement => {
   const approvedLectures = lectures.filter((e) => e.approved);
 
   useEffect(() => {
-    const filtered = onlyRemote
-      ? lectures.filter((e) => e.remote) : lectures;
+    const filtered = onlyRemote ? lectures.filter((e) => e.remote) : lectures;
     setFilteredLectures(filtered);
   }, [lectures, onlyRemote]);
 

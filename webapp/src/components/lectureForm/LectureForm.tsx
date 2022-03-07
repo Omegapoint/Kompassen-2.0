@@ -221,10 +221,10 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-             Kan delta på distans
+            Kan delta på distans
           </FormLabel>
           <RadioGroup name="remote" onChange={handleChange} value={values.remote}>
-    <FormControlLabel value="true" control={<Radio />} label="Ja" />
+            <FormControlLabel value="true" control={<Radio />} label="Ja" />
             <FormControlLabel value="false" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
