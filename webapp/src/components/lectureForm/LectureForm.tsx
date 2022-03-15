@@ -121,7 +121,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const navigate = useNavigate();
 
   const defaultFormValue = {
-    remote: (data?.remote || false).toString(),
+    remote: data?.remote || '',
     eventID: events.find((event) => event.id === data?.eventID)?.id || '',
     hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '0',
     minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '0',
@@ -135,6 +135,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
     tags: data?.tags.reduce((s, e) => `${s} ${e}`, '') || '',
     message: data?.message || '',
   };
+
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
@@ -153,7 +154,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
             .filter((e) => e)
         ),
       ],
-      remote: values.remote === 'true',
+      remote: values.remote,
       eventID: values.eventID,
       duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
       categoryID: category.id,
@@ -212,11 +213,16 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-            Kan delta på distans
+            På vilket sätt kan man delta?
           </FormLabel>
           <RadioGroup name="remote" onChange={handleChange} value={values.remote}>
-            <FormControlLabel value="true" control={<Radio />} label="Ja" />
-            <FormControlLabel value="false" control={<Radio />} label="Nej" />
+            <FormControlLabel value="local" control={<Radio />} label="Endast på plats" />
+            <FormControlLabel value="distance" control={<Radio />} label="Endast på distans" />
+            <FormControlLabel
+              value="hybrid"
+              control={<Radio />}
+              label="Både på plats och distans"
+            />
           </RadioGroup>
         </div>
         <Box

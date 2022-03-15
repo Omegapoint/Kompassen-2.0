@@ -50,11 +50,18 @@ const LectureView = ({
   const [open, { on, off }] = useBoolean();
   const { name: createdBy } = useAzureUser(lecture.createdBy);
 
+  const setLocation = (location: string | null): string => {
+    if (location === 'local') return 'Endat på plats';
+    if (location === 'distance') return 'Endast på distans';
+    if (location === 'hybrid') return 'Både på plats och distans';
+    return '';
+  };
+
   const { mutateAsync } = useMutation(approveLecture);
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
     { name: 'Längd', value: ((lecture.duration || 0) / 60)?.toString().concat(' ', 'minuter') },
-    { name: 'Distans', value: lecture.remote ? 'Ja' : 'Nej' },
+    { name: 'Distans', value: setLocation(lecture.remote) },
     { name: 'Max antal', value: lecture.maxParticipants },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Beskrivning', value: lecture.description },
