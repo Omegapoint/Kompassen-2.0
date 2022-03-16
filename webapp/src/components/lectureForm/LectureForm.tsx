@@ -162,6 +162,8 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       requirements: values.requirements || null,
       preparations: values.preparations || null,
       message: values.message || null,
+      videoLink: 'test',
+      keyTakeaway: 'Test',
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });

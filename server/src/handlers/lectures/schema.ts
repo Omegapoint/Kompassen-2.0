@@ -28,6 +28,8 @@ const other = {
   preparations: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   message: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   draft: Joi.boolean(),
+  videoLink: Joi.string().allow(null),
+  keyTakeaway: Joi.string().allow(null),
 };
 
 const approve = Joi.object<Approved>({

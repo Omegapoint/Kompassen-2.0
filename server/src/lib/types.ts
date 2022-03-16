@@ -138,6 +138,8 @@ export interface NewLecture extends BaseLectureIdea {
   message: string | null;
   categoryID: string | null;
   draft: boolean;
+  videoLink: string | null;
+  keyTakeaway: string | null;
 }
 
 export interface DLecture extends NewLecture {

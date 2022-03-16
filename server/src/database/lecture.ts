@@ -30,6 +30,8 @@ export const SELECT_LECTURES = `
            l.created_by,
            l.updated_at,
            l.updated_by,
+           l.video_link,
+           l.key_takeaway,
            l.approved,
            l.draft,
            (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
@@ -71,8 +73,8 @@ const SELECT_LECTURE_BY_ID = `
 const INSERT_LECTURE = `
     INSERT INTO lectures(lecturer, lecturer_id, description, remote, event_id, duration, title,
                          category_id, max_participants, requirements, preparations, tags, message, idea, approved,
-                         draft, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $17)
+                         draft, video_link, key_takeaway, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $19)
     RETURNING id
 `;
 
@@ -92,8 +94,10 @@ const UPDATE_LECTURE = `
         tags             = $12,
         message          = $13,
         draft            = $14,
-        updated_by       = $15
-    WHERE id = $16
+        video_link       = $15,
+        key_takeaway     = $16,
+        updated_by       = $17
+    WHERE id = $18
     RETURNING id
 `;
 
@@ -188,6 +192,8 @@ const lecturesDB: LecturesDB = {
       lecture.idea,
       lecture.approved,
       lecture.draft,
+      lecture.videoLink,
+      lecture.keyTakeaway,
       userID,
     ]);
     return rows[0];
@@ -209,6 +215,8 @@ const lecturesDB: LecturesDB = {
       lecture.tags,
       lecture.message,
       lecture.draft,
+      lecture.videoLink,
+      lecture.keyTakeaway,
       userID,
       lecture.id,
     ]);

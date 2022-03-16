@@ -58,6 +58,8 @@ const lectures: Handlers = {
         message: null,
         approved: false,
         draft: true,
+        videoLink: null,
+        keyTakeaway: null,
       },
       userID
     );
