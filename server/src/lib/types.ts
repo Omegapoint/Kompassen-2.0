@@ -256,6 +256,12 @@ export interface Approved {
   id: string;
 }
 
+export interface LectureFeedback {
+  lectureId: string;
+  userID: string;
+  message: string;
+}
+
 export const reviver = (key: string, value: unknown): unknown => {
   const reISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}\.\d*)(?:Z|([+-])([\d|:]*))?$/;
   if (typeof value === 'string') {
