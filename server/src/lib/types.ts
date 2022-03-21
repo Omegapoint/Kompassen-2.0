@@ -64,6 +64,9 @@ export interface Notifications {
 
 // User
 interface BaseUser {
+  profilePictureLink: string;
+  speakerBio: string;
+  officeId: string;
   notifications: Notifications;
 }
 
