@@ -230,24 +230,27 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
           variant="h1"
         >
-          {data ? 'Redigera pass till OpKoKo VT-2022' : 'Anmäl pass till OpKoKo VT-2022'}
+          {data ? 'Redigera pass till OpKoKo VT-2022' : 'OpKoKo VT-2022 - Call for Proposals'}
         </Typography>
-        <p>Här kan du som ska med på höstens kompetenskonferens registrera dina bidrag.
-          Ämnen som har en tydlig koppling till Omegapoints verksamhet eller tidigare trendspaningar prioriteras.
-
-          Accept av bidrag kan ske löpande, väntar du för länge med din anmälan kan platserna vara slut.
-
-          Programutskottet förbehåller sig rätten att redigera och korta ner beskrivningar och texter för att passa in i programmet. Vår ambition är att kunna acceptera alla bidrag men hänsyn tas till plats i schema, ämnesval samt hur bra beskrivet, genomtänkt och förberett det inskickade förslaget är.
-
-          Tips från coachen:
-          - Prata hellre om något du vill prata om än något du tror andra vill höra om.
-          - Ni behöver inte ha en helt färdig presentation för att skicka in CFP, använd det som motivation till att sluta prokrastinera.
-          - Beskrivning och titel kan vara helt avgörande. Sälj in dig och ditt ämne.
-          - Ingen idé är för dum eller tokig, det värsta som kan hända är att du får feedback om hur det skulle kunna bli ännu bättre!
-          - Kör bara, det blir kul!
-
-
-          Deadline för registrering av bidrag är  kl. 23.59 den 23 oktober 2021!</p>
+        <Typography sx={{ paddingBottom: padding.large }}>
+          <p>Här kan du som ska med på höstens kompetenskonferens registrera dina bidrag.<br />
+            Ämnen som har en tydlig koppling till Omegapoints verksamhet eller tidigare trendspaningar prioriteras.<br />
+            <br />
+            Accept av bidrag kan ske löpande, väntar du för länge med din anmälan kan platserna vara slut.<br />
+            <br />
+            Programutskottet förbehåller sig rätten att redigera och korta ner beskrivningar och texter för att passa in i programmet. <br />
+            Vår ambition är att kunna acceptera alla bidrag men hänsyn tas till plats i schema, ämnesval samt hur bra beskrivet, genomtänkt och förberett det inskickade förslaget är.<br />
+            <br />
+            Tips från coachen:<br />
+            - Prata hellre om något du vill prata om än något du tror andra vill höra om.<br />
+            - Ni behöver inte ha en helt färdig presentation för att skicka in CFP, använd det som motivation till att sluta prokrastinera.<br />
+            - Beskrivning och titel kan vara helt avgörande. Sälj in dig och ditt ämne.<br />
+            - Ingen idé är för dum eller tokig, det värsta som kan hända är att du får feedback om hur det skulle kunna bli ännu bättre!<br />
+            - Kör bara, det blir kul!<br />
+            <br />
+            <br />
+            Deadline för registrering av bidrag är  kl. 23.59 den 23 oktober 2021!</p>
+        </Typography>
         <TextField
           fullWidth
           onChange={handleChange}
@@ -258,7 +261,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
         // {...validate.title}
         />
-        <p>Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn</p>
+        </Typography>
         <TextField
           fullWidth
           onChange={handleChange}
@@ -289,7 +294,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             ))}
           </RadioGroup>
         </div>
-        <p>Deltagarna ska kunna förstå ämnet utifrån titeln. Använd gärna en fyndig titel som väcker intresse men samtidigt förmedlar vad det handlar om</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Deltagarna ska kunna förstå ämnet utifrån titeln. Använd gärna en fyndig titel som väcker intresse men samtidigt förmedlar vad det handlar om</p>
+        </Typography>
         <TextField
           fullWidth
           onChange={handleChange}
@@ -300,7 +307,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           {...validate.title}
         />
-        <p>Beskrivningen kommer publiceras i programmet och på Omegapoint Academy webb. En beskrivning som deltagarna läser för att veta om passet passar dem. Håll det kärnfullt, intressant, sälj in det till publiken. Gärna under 100 ord</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Beskrivningen kommer publiceras i programmet och på Omegapoint Academy webb. En beskrivning som deltagarna läser för att veta om passet passar dem. Håll det kärnfullt, intressant, sälj in det till publiken. Gärna under 100 ord</p>
+        </Typography>
         <TextField
           {...validate.description}
           fullWidth
@@ -314,7 +323,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Innehåll"
           variant="outlined"
         />
-        <p>Om deltagarna bara minns en sak - vad är det då de ska komma ihåg i en mening</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Om deltagarna bara minns en sak - vad är det då de ska komma ihåg i en mening</p>
+        </Typography>
         <TextField
           {...validate.description}
           fullWidth
@@ -328,8 +339,10 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Take Away"
           variant="outlined"
         />
-        <p>En blixt är en kortare föreläsning där man kan belysa ett problem, visa en snygg lösning eller bara presentera någonting som inte kräver en hel föreläsning. Du har 15 minuter på dig och tiden går väldigt fort så klocka dig själv innan, se till att ha en äggklocka under dragningen och ta frågor och diskussioner efter presentationen eller på lunch-/fikarasten). Anmäler du en Workshop/Gruppdiskussion ange längd på ditt bidrag under &quot;Övrig information&quot;</p>
         <div>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>En blixt är en kortare föreläsning där man kan belysa ett problem, visa en snygg lösning eller bara presentera någonting som inte kräver en hel föreläsning. Du har 15 minuter på dig och tiden går väldigt fort så klocka dig själv innan, se till att ha en äggklocka under dragningen och ta frågor och diskussioner efter presentationen eller på lunch-/fikarasten). Anmäler du en Workshop/Gruppdiskussion ange längd på ditt bidrag under &quot;Övrig information&quot;</p>
+        </Typography>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Typ av pass
           </FormLabel>
@@ -350,7 +363,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           </RadioGroup>
         </div>
         <div>
-          <p>Kryssa i rutan nedan om ämnet är känsligt eller konfidentiellt och INTE får publiceras i programmet. Ange också under övrigt om endast Omegapoint-anställda får delta i presentationen</p>
+          <Typography sx={{ paddingTop: padding.large }}>
+            <p>Kryssa i rutan nedan om ämnet är känsligt eller konfidentiellt och INTE får publiceras i programmet. Ange också under övrigt om endast Omegapoint-anställda får delta i presentationen</p>
+          </Typography>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Intern presentation
           </FormLabel>
@@ -359,7 +374,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             <FormControlLabel value="no" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
-        <p>Vem eller vilka tror du uppskattar ditt pass mest?</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Vem eller vilka tror du uppskattar ditt pass mest?</p>
+        </Typography>
         <TextField
           {...validate.description}
           fullWidth
@@ -370,7 +387,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Målgrupp"
           variant="outlined"
         />
-        <p>Detta är viktigt! Kan en åhörare som är HELT nybörjare i ämnet ha utbyte av presentationen eller krävs det mer avancerade kunskaper? Tex, krävs grundläggande kunskaper i kod/matematiska formler? Ska man vara bekväm med docker eller kanske ha arbetat med Kanban?</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Detta är viktigt! Kan en åhörare som är HELT nybörjare i ämnet ha utbyte av presentationen eller krävs det mer avancerade kunskaper? Tex, krävs grundläggande kunskaper i kod/matematiska formler? Ska man vara bekväm med docker eller kanske ha arbetat med Kanban?</p>
+        </Typography>
         <TextField
           {...validate.requirements}
           fullWidth
@@ -380,7 +399,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.levelOfRequirements}
         />
-        <p>Ange om du har några restriktioner för storlek på grupp, t.ex. max 12 personer eller minst 6 personer. Lämnas tomt för vanliga föreläsningar och blixtar</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Ange om du har några restriktioner för storlek på grupp, t.ex. max 12 personer eller minst 6 personer. Lämnas tomt för vanliga föreläsningar och blixtar</p>
+        </Typography>
         <TextField
           {...validate.maxParticipants}
           fullWidth
@@ -400,6 +421,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.preparations}
         /> */}
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>Taggar som passar ditt pass </p>
+        </Typography>
         <TextField
           {...validate.tags}
           fullWidth
@@ -409,7 +433,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.tags}
         />
-        <p>OBS. Detta kommer inte att skrivas ut i programmet utan är enbart info till programutskottet. Sådant som är relevant för oss att känna till, ett sätt för dig att fråga oss något, be om extra stöd, förklara något av dina svar, beskriva upplägget eller kanske bara sälja in ditt bidrag lite extra</p>
+        <Typography sx={{ paddingTop: padding.large }}>
+          <p>OBS. Detta kommer inte att skrivas ut i programmet utan är enbart info till programutskottet. Sådant som är relevant för oss att känna till, ett sätt för dig att fråga oss något, be om extra stöd, förklara något av dina svar, beskriva upplägget eller kanske bara sälja in ditt bidrag lite extra</p>
+        </Typography>
         <TextField
           {...validate.message}
           fullWidth
