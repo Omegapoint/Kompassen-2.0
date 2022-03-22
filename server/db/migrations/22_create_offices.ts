@@ -8,6 +8,9 @@ export const up = async (knex: Knex): Promise<void> =>
     .createTable(table, (t) => {
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
       t.text('name').notNullable();
+      t.timestamps(true, true);
+      t.uuid('createdBy').notNullable();
+      t.uuid('updatedBy').notNullable();
     })
     .then(() => knex.raw(onUpdateTrigger(table)));
 
