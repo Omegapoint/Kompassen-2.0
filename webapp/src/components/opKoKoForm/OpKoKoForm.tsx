@@ -89,8 +89,8 @@ interface FormValues {
 
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
-    hours: useFormValidation(values.hours, hoursText, invalidHours),
-    minutes: useFormValidation(values.minutes, minutesText, invalidMinutes),
+    // hours: useFormValidation(values.hours, hoursText, invalidHours),
+    // minutes: useFormValidation(values.minutes, minutesText, invalidMinutes),
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
     maxParticipants: useFormValidation(
@@ -127,6 +127,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
+  
   const offices = [{ name: "Umeå", id: 1 }, { name: "Örebro", id: 2 }, { name: "Stockholm", id: 3 }, { name: "Malmö", id: 4 }, { name: "Göteborg", id: 5 }, { name: "Uppsala", id: 6 }];
   const typeOfLecture = [{ name: "Blixtföreläsning (15 min)", id: 1 }, { name: "Föreläsning / presentation (45 min)", id: 2 }, { name: "Gruppdiskussion", id: 3 }, { name: "Paneldiskussion (Även park-bänk, fishbowl, duell eller liknande)", id: 4 }, { name: "Workshop / labb ", id: 5 }, { name: "Co-creation - skapar något tillsammans under tiden", id: 6 }, { name: "Knäppt format jag själv kommit på och som inte har något namn än", id: 7 }, { name: "Annat", id: 8 }];
   const firstTime = [{ name: "Detta är min/vår första OPKoKo", id: 1 }, { name: "Nej", id: 2 }];
@@ -390,6 +391,15 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         <Typography sx={{ paddingTop: padding.large }}>
           <p>Detta är viktigt! Kan en åhörare som är HELT nybörjare i ämnet ha utbyte av presentationen eller krävs det mer avancerade kunskaper? Tex, krävs grundläggande kunskaper i kod/matematiska formler? Ska man vara bekväm med docker eller kanske ha arbetat med Kanban?</p>
         </Typography>
+        <div>
+          {/* <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
+          Detta är viktigt! Kan en åhörare som är HELT nybörjare i ämnet ha utbyte av presentationen eller krävs det mer avancerade kunskaper? Tex, krävs grundläggande kunskaper i kod/matematiska formler? Ska man vara bekväm med docker eller kanske ha arbetat med Kanban?
+          </FormLabel> */}
+          <RadioGroup name="category" onChange={handleChange} value={values.category}>
+            <FormControlLabel value="grundläggande" control={<Radio />} label="Grundläggande" />
+            <FormControlLabel value="avancerad" control={<Radio />} label="Avancerad" />
+          </RadioGroup>
+        </div>
         <TextField
           {...validate.requirements}
           fullWidth
@@ -412,15 +422,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           value={values.maxParticipants}
         />
-        {/* <TextField
-          {...validate.preparations}
-          fullWidth
-          onChange={handleChange}
-          name="preparations"
-          label="Förberedelser"
-          variant="outlined"
-          value={values.preparations}
-        /> */}
         <Typography sx={{ paddingTop: padding.large }}>
           <p>Taggar som passar ditt pass </p>
         </Typography>
