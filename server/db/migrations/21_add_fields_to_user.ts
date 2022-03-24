@@ -16,5 +16,5 @@ export const up = async (knex: Knex): Promise<void> =>
 export const down = async (knex: Knex): Promise<void> =>
   knex.schema.table('users', (t) => {
     t.dropColumn('speaker_bio');
-    t.uuid('office_id');
+    t.dropColumn('office_id');
   });

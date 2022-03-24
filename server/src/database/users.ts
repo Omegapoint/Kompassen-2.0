@@ -11,7 +11,7 @@ const SELECT_USER_BY_ID = `
 
 const INSERT_USER = `
     INSERT INTO users(id, speaker_bio, office_id, notifications)
-    VALUES ($1, $2)
+    VALUES ($1, $2, $3, $4)
     RETURNING id
 `;
 
