@@ -59,7 +59,7 @@ export const appRoutes: AppRoute[] = [
     Component: MyLectures,
   },
   {
-    name: 'Inställningar',
+    name: 'Min profil',
     path: '/settings',
     Component: Settings,
   },

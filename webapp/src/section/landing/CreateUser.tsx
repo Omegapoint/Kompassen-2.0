@@ -4,6 +4,7 @@ import { useMutation } from 'react-query';
 import { createUser } from '../../api/Api';
 import { padding } from '../../theme/Theme';
 import Notifications from '../settings/Notifications';
+import Profile from '../settings/Profile';
 
 const defaultNotifications = {
   newLecture: true,
@@ -42,7 +43,10 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
       }}
     >
       <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
-      <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
+      <Typography variant="h6">Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).</Typography>
+      <Typography variant="h6">Ange kompletterande information:</Typography>
+      <Profile/>
+      <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
       <Notifications handleChange={handleChange} checked={notifications} />
       <Button color="primary" variant="contained" onClick={handleSubmit}>
         Spara inställningarna

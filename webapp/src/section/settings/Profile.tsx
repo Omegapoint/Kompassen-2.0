@@ -37,7 +37,7 @@ const Profile = (): ReactElement => {
   const handleChange = (event: SelectChangeEvent<Office>) => {};
 
   return (
-    <Box
+    <><Box
       sx={{
         display: 'grid',
         gridGap: `${padding.minimal} ${padding.large}`,
@@ -49,21 +49,23 @@ const Profile = (): ReactElement => {
       <Typography>Namn</Typography>
       <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
       <Typography>Epost</Typography>
-      <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography>
-      <TextField fullWidth required name="Speaker bio" label="Speaker bio " variant="outlined" />
-      <FormControl fullWidth>
-        <InputLabel id="office-selector">Office</InputLabel>
-        <Select
-          labelId="office-selector"
-          value={offices.find((o) => user.officeId === o.id)}
-          label="Office"
-        >
-          {offices.map((office) => (
-            <MenuItem value={office.id}>{office.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+      <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography></Box>
+    <Box marginTop={0}>
+      <TextField fullWidth multiline minRows={7} required name="Speaker bio" label="Talarbio: (visas upp på dina kompetensbidrag, var tydlig med din roll och din kompetens!)" variant="outlined" />
+      </Box>
+    <Box marginTop={0} marginBottom={5}><FormControl fullWidth>
+      <InputLabel id="office-selector">Organisation:</InputLabel>
+      <Select
+        labelId="office-selector"
+        value={offices.find((o) => user.officeId === o.id)}
+        label="Office"
+      >
+        {offices.map((office) => (
+          <MenuItem value={office.id}>{office.name}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+      </Box></>
   );
 };
 export default Profile;

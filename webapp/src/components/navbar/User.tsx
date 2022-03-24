@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react';
-import { ArrowDropDown, Edit, ExitToApp, Settings } from '@mui/icons-material';
+import { ArrowDropDown, Edit, ExitToApp, Person } from '@mui/icons-material';
 import {
   Avatar,
   Divider,
@@ -64,9 +64,9 @@ const User = (): ReactElement => {
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <Person fontSize="small" />
             <ListItem sx={linkStyle} component={NavLink} to="/settings">
-              Inställningar
+              Min profil
             </ListItem>
           </ListItemIcon>
         </MenuItem>

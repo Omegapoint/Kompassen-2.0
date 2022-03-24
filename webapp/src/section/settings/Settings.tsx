@@ -38,10 +38,8 @@ const Settings = (): ReactElement => {
         padding: '0 20px',
       }}
     >
-      <Typography variant="h1">Inställningar</Typography>
+      <Typography variant="h1">Min profil</Typography>
       <Box sx={{ display: 'grid', gridGap: `${padding.small}` }}>
-        <Typography variant="h2">Min Profil</Typography>
-        <Divider />
         <Profile />
         <Typography variant="h2">Hantera Notiser</Typography>
         <Divider />
