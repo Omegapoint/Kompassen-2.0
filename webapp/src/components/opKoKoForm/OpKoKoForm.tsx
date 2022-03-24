@@ -21,13 +21,12 @@ import { useAppSelector } from '../../lib/Lib';
 import { Category, Event, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
+import { InfoText } from './InfoText';
 
 interface LectureFormProps {
   data?: Lecture;
 }
 
-const hoursText = `Timmar måste vara mellan 0-100`;
-const minutesText = `Minuter måste vara mellan 0-59`;
 const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 const maxParticipantsText = `Maxdeltagare måste vara mellan 0-100000 tecken långt`;
@@ -36,17 +35,6 @@ const preparationsText = `Förberedelser måste vara mellan 1-${LARGE_STRING_LEN
 const tagsText = `Du måste ha minst en tagg`;
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 
-const invalidHours = (str: string) => {
-  const val = parseInt(str, 10);
-  if (Number.isNaN(val)) return true;
-  return val < 0 || val > 100;
-};
-
-const invalidMinutes = (str: string) => {
-  const val = parseInt(str, 10);
-  if (Number.isNaN(val)) return true;
-  return val < 0 || val > 59;
-};
 
 const invalidParticipants = (str: string) => {
   if (!str) return false;
@@ -86,8 +74,6 @@ interface FormValues {
 
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
-    // hours: useFormValidation(values.hours, hoursText, invalidHours),
-    // minutes: useFormValidation(values.minutes, minutesText, invalidMinutes),
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
     maxParticipants: useFormValidation(
@@ -127,11 +113,12 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const offices = [
     { name: 'Umeå', id: 1 },
-    { name: 'Örebro', id: 2 },
-    { name: 'Stockholm', id: 3 },
-    { name: 'Malmö', id: 4 },
-    { name: 'Göteborg', id: 5 },
-    { name: 'Uppsala', id: 6 },
+    { name: 'Integrationsbolaget', id: 2 },
+    { name: 'Stockholm OP', id: 3 },
+    { name: 'Malmö OP', id: 4 },
+    { name: 'Göteborg OP', id: 5 },
+    { name: 'Uppsala OP', id: 6 },
+    { name: 'Molnbolaget', id: 7 },
   ];
   const typeOfLecture = [
     { name: 'Blixtföreläsning (15 min)', id: 1 },
@@ -247,45 +234,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
           variant="h1"
         >
-          {data ? 'Redigera pass till OpKoKo VT-2022' : 'OpKoKo VT-2022 - Call for Proposals'}
+          {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
         </Typography>
-        <Typography sx={{ paddingBottom: padding.large }}>
-          <p>
-            Här kan du som ska med på höstens kompetenskonferens registrera dina bidrag.
-            <br />
-            Ämnen som har en tydlig koppling till Omegapoints verksamhet eller tidigare
-            trendspaningar prioriteras.
-            <br />
-            <br />
-            Accept av bidrag kan ske löpande, väntar du för länge med din anmälan kan platserna vara
-            slut.
-            <br />
-            <br />
-            Programutskottet förbehåller sig rätten att redigera och korta ner beskrivningar och
-            texter för att passa in i programmet. <br />
-            Vår ambition är att kunna acceptera alla bidrag men hänsyn tas till plats i schema,
-            ämnesval samt hur bra beskrivet, genomtänkt och förberett det inskickade förslaget är.
-            <br />
-            <br />
-            Tips från coachen:
-            <br />
-            - Prata hellre om något du vill prata om än något du tror andra vill höra om.
-            <br />
-            - Ni behöver inte ha en helt färdig presentation för att skicka in CFP, använd det som
-            motivation till att sluta prokrastinera.
-            <br />
-            - Beskrivning och titel kan vara helt avgörande. Sälj in dig och ditt ämne.
-            <br />
-            - Ingen idé är för dum eller tokig, det värsta som kan hända är att du får feedback om
-            hur det skulle kunna bli ännu bättre!
-            <br />
-            - Kör bara, det blir kul!
-            <br />
-            <br />
-            <br />
-            Deadline för registrering av bidrag är kl. 23.59 den 23 oktober 2021!
-          </p>
-        </Typography>
+        <InfoText/>
         {/* <TextField
           fullWidth
           onChange={handleChange}
