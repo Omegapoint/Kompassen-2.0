@@ -8,6 +8,7 @@ import EventPlanner from '../section/eventPlanner/EventPlanner';
 import Events from '../section/events/Events';
 import EventViewer from '../section/eventViewer/EventViewer';
 import Home from '../section/home/Home';
+import HomeOpKoKo from '../section/home/HomeOpKoKo';
 import Lecture from '../section/lecture/Lecture';
 import OpKoKoLecture from '../section/lecture/OpKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
@@ -84,6 +85,11 @@ export const appRoutes: AppRoute[] = [
     name: 'Start',
     path: '/',
     Component: Home,
+  },
+  {
+    name: 'OpKoKo',
+    path: '/OpKoKo',
+    Component: HomeOpKoKo,
   },
   notFound,
 ];

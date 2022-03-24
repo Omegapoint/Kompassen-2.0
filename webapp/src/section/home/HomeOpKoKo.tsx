@@ -1,4 +1,4 @@
-import { Box, Button, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import Filter from '../../components/filter/Filter';
@@ -56,12 +56,6 @@ const Home = (): ReactElement => {
   const [active, { off, on }] = useBoolean();
   const lectureIdeas = useLectureIdeasWS();
 
-  const [alignment, setAlignment] = useState<string | null>('left');
-
-  const handleAlignment = (event: React.MouseEvent<HTMLElement>, newAlignment: string | null) => {
-    setAlignment(newAlignment);
-  };
-
   return (
     <Box
       sx={{
@@ -117,20 +111,6 @@ const Home = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        <ToggleButtonGroup
-          value={alignment}
-          exclusive
-          onChange={handleAlignment}
-          aria-label="text alignment"
-        >
-          <ToggleButton value="left" aria-label="left aligned">
-            Komeptensdagar
-          </ToggleButton>
-          <ToggleButton value="right" aria-label="right aligned">
-            OpKoKo
-          </ToggleButton>
-        </ToggleButtonGroup>
-
         {isAdmin() && (
           <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
         )}
