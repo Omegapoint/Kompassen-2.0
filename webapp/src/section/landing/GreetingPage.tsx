@@ -28,7 +28,7 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
         variant="body1"
         sx={{ fontFamily: fontFamilies.header, fontSize: '4rem' }}
       >
-        KomPass 2.0
+        OMEGAPOINT KOMPASSEN
       </Typography>
       <Typography color="secondary" variant="h2">
         Skapa bättre kompetensdagar

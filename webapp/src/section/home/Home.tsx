@@ -1,9 +1,9 @@
 import { Box,  ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ReactElement,  useState } from 'react';
 import { padding } from '../../theme/Theme';
-import HomeKompetensdag from './HomeKompetensdag';
+import HomeCompetenceDays from './HomeCompetenceDays';
 import HomeOPKoKo from './HomeOpKoKo';
-import SideMenuKompetensdag from './SideMenuKompetensdag';
+import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
 
 
@@ -30,7 +30,7 @@ const Home = (): ReactElement => {
         padding: '0 20px',
       }}
     >
-{alignment === "kompetensdag" && <HomeKompetensdag/>}
+{alignment === "kompetensdag" && <HomeCompetenceDays/>}
 {alignment==="opkoko" && <HomeOPKoKo/>}
       <Box
         sx={{
@@ -56,7 +56,7 @@ const Home = (): ReactElement => {
         </ToggleButtonGroup>
 
        
-        {alignment === "kompetensdag" && <SideMenuKompetensdag/>}
+        {alignment === "kompetensdag" && <SideMenuCompetenceDays/>}
         {alignment === "opkoko" && <SideMenuOPKoKo/>}
       </Box>
       </Box>

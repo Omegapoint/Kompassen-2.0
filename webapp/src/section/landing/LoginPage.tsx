@@ -24,7 +24,7 @@ const LoginPage = (): ReactElement => {
         variant="body1"
         sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
       >
-        KomPass 2.0
+        OMEGAPOINT KOMPASSEN
       </Typography>
       <Box sx={{ display: 'grid', gridGap: padding.standard }}>
         <Typography variant="h6" sx={{ fontSize: '1rem' }}>

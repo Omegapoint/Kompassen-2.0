@@ -6,7 +6,7 @@ import WordCloud from '../../components/wordCloud/WordCloud';
 import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
-const SideMenuKompetensdag = (): ReactElement => {
+const SideMenuCompetenceDays = (): ReactElement => {
 
   return (
        <> 
@@ -36,7 +36,7 @@ const SideMenuKompetensdag = (): ReactElement => {
         {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
         {/*  <Interested /> */}
         {/* </SideCard> */}
-        {/* <SideCard title="Snabbguide för KomPass 2.0"> */}
+        {/* <SideCard title="Snabbguide för Omegapoint Kompassen> */}
         {/*  <QuickGuide /> */}
         {/* </SideCard> */}
         {/* <SideCard title="Nuvarande planerare"> */}
@@ -46,4 +46,4 @@ const SideMenuKompetensdag = (): ReactElement => {
   );
 };
 
-export default SideMenuKompetensdag;
+export default SideMenuCompetenceDays;

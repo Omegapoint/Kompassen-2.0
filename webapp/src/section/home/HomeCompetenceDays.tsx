@@ -52,7 +52,7 @@ const useLectureIdeasWS = () => {
   return lectureIdeas;
 };
 
-const HomeKompetensdag = (): ReactElement => {
+const HomeCompetenceDays = (): ReactElement => {
   const [active, { off, on }] = useBoolean();
   const lectureIdeas = useLectureIdeasWS();
 
@@ -99,4 +99,4 @@ const HomeKompetensdag = (): ReactElement => {
   );
 };
 
-export default HomeKompetensdag;
+export default HomeCompetenceDays;
