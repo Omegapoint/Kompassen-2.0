@@ -28,7 +28,7 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
     setNotifications((old) => ({ ...old, [event.target.name]: event.target.checked }));
   };
 
-  const handleSubmit = async () => mutate({ notifications });
+  const handleSubmit = async () => mutate({ notifications, speakerBio: null, officeId: null });
 
   return (
     <Paper

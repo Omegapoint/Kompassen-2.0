@@ -16,7 +16,12 @@ const Settings = (): ReactElement => {
   const [checked, setChecked] = useState(user.notifications);
 
   useEffect(() => {
-    mutate({ id: user.id, notifications: checked });
+    mutate({
+      id: user.id,
+      notifications: checked,
+      speakerBio: null,
+      officeId: null,
+    });
   }, [checked, user.id, mutate]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

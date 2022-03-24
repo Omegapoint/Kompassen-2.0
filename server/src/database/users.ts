@@ -4,21 +4,23 @@ import { snakeToCamel } from '../lib/lib';
 import { IDParam, NewUser, UpdatedUser, User } from '../lib/types';
 
 const SELECT_USER_BY_ID = `
-    SELECT id, notifications, created_at, updated_at
+    SELECT id, speaker_bio, office_id, notifications, created_at, updated_at
     FROM users
     WHERE id = $1
 `;
 
 const INSERT_USER = `
-    INSERT INTO users(id, notifications)
-    VALUES ($1, $2)
+    INSERT INTO users(id, speaker_bio, office_id, notifications)
+    VALUES ($1, $2, $3, $4)
     RETURNING id
 `;
 
 const UPDATE_USER = `
     UPDATE users
     SET notifications = $1
-    WHERE id = $2
+        speaker_bio = $2
+        office_id = $3
+    WHERE id = $4
     RETURNING id
 `;
 
@@ -39,12 +41,22 @@ const usersDB: UserDB = {
   },
 
   async insert(user, id): Promise<IDParam> {
-    const { rows } = await db.query(INSERT_USER, [id, user.notifications]);
+    const { rows } = await db.query(INSERT_USER, [
+      id,
+      user.speakerBio,
+      user.officeId,
+      user.notifications,
+    ]);
     return rows[0];
   },
 
   async update(user, id): Promise<IDParam> {
-    const { rows } = await db.query(UPDATE_USER, [user.notifications, id]);
+    const { rows } = await db.query(UPDATE_USER, [
+      user.notifications,
+      user.speakerBio,
+      user.officeId,
+      id,
+    ]);
     return rows[0];
   },
 };

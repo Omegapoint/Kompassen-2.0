@@ -64,6 +64,8 @@ export interface Notifications {
 
 // User
 interface BaseUser {
+  speakerBio: string | null;
+  officeId: string | null;
   notifications: Notifications;
 }
 
@@ -77,6 +79,21 @@ export interface User extends BaseUser {
   id: string;
   createdAt: Date;
   updatedAt: Date | null;
+}
+
+// Office
+interface BaseOffice {
+  name: string;
+}
+
+export type NewOffice = BaseOffice;
+
+export interface UpdatedOffice extends BaseOffice {
+  id: string;
+}
+
+export interface Office extends BaseOffice, DefaultTime {
+  id: string;
 }
 
 // Organisation
