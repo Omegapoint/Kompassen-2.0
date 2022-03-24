@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
 import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
@@ -14,6 +15,12 @@ const SideMenuOPKoKo = (): ReactElement => {
           hrefBarColor={colors.orange}
           href="/lecture/OpKoKo/create"
         />
+        <SideCard
+          title="Mina senaste pass"
+          hrefText="Hantera mina anmälda pass "
+          href="/lecture/user"
+        >          <LatestLectures />
+        </SideCard>
     </>
   );
 };
