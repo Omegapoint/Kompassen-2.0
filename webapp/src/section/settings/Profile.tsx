@@ -69,7 +69,8 @@ const Profile = (): ReactElement => {
       )
         // eslint-disable-next-line no-console
         .catch((error) => console.log(error));
-      if (result instanceof Object && result.body !== null) {
+      console.log(result);
+      if (result instanceof Object && result.status === 200 && result.body !== null) {
         const reader = result.body.getReader();
         const test2 = await reader.read();
         if (test2.value !== undefined) {
@@ -109,6 +110,7 @@ const Profile = (): ReactElement => {
         }}
       >
         <Avatar src={`${test}`} sx={{ width: 210, height: 210 }} />
+        {test === '' && <Typography>Pleas upload a bild</Typography>}
         <Box sx={{ flexDirection: 'column', marginTop: '50px' }}>
           <Typography>Namn</Typography>
           <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
