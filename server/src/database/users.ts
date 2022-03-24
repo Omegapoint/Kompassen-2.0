@@ -17,8 +17,8 @@ const INSERT_USER = `
 
 const UPDATE_USER = `
     UPDATE users
-    SET notifications = $1
-        speaker_bio = $2
+    SET notifications = $1,
+        speaker_bio = $2,
         office_id = $3
     WHERE id = $4
     RETURNING id

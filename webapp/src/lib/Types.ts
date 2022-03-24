@@ -62,6 +62,17 @@ export interface Notifications {
   lectureTaken: boolean;
 }
 
+// Office
+interface BaseOffice {
+  name: string;
+}
+
+export type NewOffice = BaseOffice;
+
+export interface Office extends BaseOffice, DefaultTime {
+  id: string;
+}
+
 // User
 interface BaseUser {
   speakerBio: string | null;

@@ -1,6 +1,7 @@
 import { createCategory, deleteCategory, setCategories, updateCategory } from './categories';
 import { createEvent, deleteEvent, setEvents, updateEvent } from './events/actions';
 import { setLoginInfo } from './loginInfo/actions';
+import { createOffice, deleteOffice, setOffice, updateOffice } from './offices';
 import {
   createOrganisation,
   deleteOrganisation,
@@ -16,6 +17,12 @@ const actions = {
     update: updateCategory,
     delete: deleteCategory,
     create: createCategory,
+  },
+  offices: {
+    set: setOffice,
+    update: updateOffice,
+    delete: deleteOffice,
+    create: createOffice,
   },
   events: {
     set: setEvents,

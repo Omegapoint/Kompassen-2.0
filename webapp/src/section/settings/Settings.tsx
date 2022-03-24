@@ -19,10 +19,10 @@ const Settings = (): ReactElement => {
     mutate({
       id: user.id,
       notifications: checked,
-      speakerBio: null,
-      officeId: null,
+      speakerBio: user.speakerBio || null,
+      officeId: user.officeId || null,
     });
-  }, [checked, user.id, mutate]);
+  }, [checked, user.id, user.speakerBio, user.officeId, mutate]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setChecked({ ...checked, [event.target.name]: event.target.checked });

@@ -3,11 +3,13 @@ import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import { isAdmin } from '../lib/Lib';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
+import ConfirmLectureOpKoKo from '../section/confirmLecture/ConfirmLectureOpKoKo';
 import EventPlanner from '../section/eventPlanner/EventPlanner';
 import Events from '../section/events/Events';
 import EventViewer from '../section/eventViewer/EventViewer';
 import Home from '../section/home/Home';
 import Lecture from '../section/lecture/Lecture';
+import OpKoKoLecture from '../section/lecture/OpKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
 import Settings from '../section/settings/Settings';
@@ -32,6 +34,11 @@ export const appRoutes: AppRoute[] = [
     Component: Lecture,
   },
   {
+    name: 'Anmäl OpKoKo pass',
+    path: '/lecture/OpKoKo/create',
+    Component: OpKoKoLecture,
+  },
+  {
     name: 'Redigera pass',
     path: '/lecture/edit/:id',
     Component: Lecture,
@@ -40,6 +47,11 @@ export const appRoutes: AppRoute[] = [
     name: 'Passbekräftelse',
     path: '/lecture/:id/confirm',
     Component: ConfirmLecture,
+  },
+  {
+    name: 'Passbekräftelse-OpKoKo',
+    path: '/lecture/OpKoKo/:id/confirm',
+    Component: ConfirmLectureOpKoKo,
   },
   {
     name: 'Mina pass',

@@ -116,6 +116,11 @@ const Home = (): ReactElement => {
         )}
 
         <SideCard
+          hrefText="Anmäl pass till OpKoKo"
+          hrefBarColor={colors.orange}
+          href="/lecture/OpKoKo/create"
+        />
+        <SideCard
           title="Nästa kompetensdag"
           hrefText="Anmäl pass till kompetensdagar"
           hrefBarColor={colors.orange}
