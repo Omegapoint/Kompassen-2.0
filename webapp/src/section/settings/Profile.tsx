@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   FormControl,
   InputLabel,
@@ -63,7 +64,7 @@ const Profile = (): ReactElement => {
         },
       };
       const result = await fetch(
-        `https://graph.microsoft.com/v1.0/users/33ff501d-fd05-4e18-a318-12ad6608ef0b/photo/$value`,
+        `https://graph.microsoft.com/v1.0/users/${user.id}/photo/$value`,
         options
       )
         // eslint-disable-next-line no-console
@@ -81,6 +82,7 @@ const Profile = (): ReactElement => {
       }
     };
     getPhoto();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -96,21 +98,25 @@ const Profile = (): ReactElement => {
 
   return (
     <>
+    
       <Box
         sx={{
-          display: 'grid',
+          display: 'flex',
+          flexDirection: 'row',
           gridGap: `${padding.minimal} ${padding.large}`,
           paddingTop: padding.standard,
           paddingBottom: padding.large,
           gridTemplateColumns: 'max-content max-content',
         }}
       >
+        <Avatar src={`${test}`} sx={{ width: 210, height: 210 }}  />
+        <Box sx={{flexDirection: 'column', marginTop: '50px'}}>
         <Typography>Namn</Typography>
         <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
         <Typography>Epost</Typography>
-        <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography>
+        <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography></Box>
       </Box>
-      <img src={`${test}`} srcSet={`${test}`} alt="" loading="lazy" />
+      
       <Box marginTop={0}>
         <TextField
           fullWidth
