@@ -52,16 +52,15 @@ const useLectureIdeasWS = () => {
   return lectureIdeas;
 };
 
-const HomeOPKoKo = (): ReactElement => {
+const HomeKompetensdag = (): ReactElement => {
   const [active, { off, on }] = useBoolean();
   const lectureIdeas = useLectureIdeasWS();
 
   return (
 <>
-      <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
-        Har du en idé om något du vill höra på OPKoKo?
+<Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
+        Idéer till kompetensdagar
       </Typography>
-
       <Box
         sx={{
           display: 'grid',
@@ -71,7 +70,6 @@ const HomeOPKoKo = (): ReactElement => {
       >
         {active && <PublishIdea cancel={off} />}
         {!active && (
-          <>
           <Button
             onClick={on}
             sx={{ fontSize: '0.95rem', padding: padding.minimal }}
@@ -80,9 +78,6 @@ const HomeOPKoKo = (): ReactElement => {
           >
             Publicera ny idé
           </Button>
-                <Typography variant="h6">
-                Vi har enorm kompetens här på Omegapoint, och för att vi alla ska kunna förkovra oss så kan det vara en bra idé att hinta för dina kollegor om vad du vill utvecklas inom. Hjälp oss alla genom att lyfta dina önskade kompetenspass här, så kan vi alla tillsammans hjälpas åt att sprida sådan kompetens!
-              </Typography></>
         )}
         {lectureIdeas?.length ? (
           <Filter lectures={lectureIdeas} />
@@ -99,8 +94,9 @@ const HomeOPKoKo = (): ReactElement => {
           </Box>
         )}
       </Box>
+     
     </>
   );
 };
 
-export default HomeOPKoKo;
+export default HomeKompetensdag;

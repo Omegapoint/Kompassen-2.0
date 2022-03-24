@@ -1,69 +1,26 @@
-import { Box, Button, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { ReactElement, useEffect, useState } from 'react';
-import CompetenceDays from '../../components/competenceDays/CompetenceDays';
-import Filter from '../../components/filter/Filter';
-import LatestLectures from '../../components/latestLectures/LatestLectures';
-import PublishIdea from '../../components/publishIdea/PublishIdea';
-import SideCard from '../../components/sideCard/SideCard';
-import WordCloud from '../../components/wordCloud/WordCloud';
-import useBoolean from '../../hooks/UseBoolean';
-import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
-import { Lecture } from '../../lib/Types';
-import { colors, padding } from '../../theme/Theme';
+import { Box,  ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ReactElement,  useState } from 'react';
+import { padding } from '../../theme/Theme';
+import HomeKompetensdag from './HomeKompetensdag';
+import HomeOPKoKo from './HomeOpKoKo';
+import SideMenuKompetensdag from './SideMenuKompetensdag';
+import SideMenuOPKoKo from './SideMenuOPKoKo';
 
-const useLectureIdeasWS = () => {
-  const socket = useAppSelector((state) => state.session.socket);
-  const [lectureIdeas, setLectureIdeas] = useState<Lecture[]>([]);
-  const mounted = useUnmount();
 
-  useEffect(() => {
-    if (socket) {
-      socket.on('lectureIdeas', (lectures) => {
-        if (mounted.current) {
-          setLectureIdeas(formatDates(lectures));
-        }
-      });
-
-      socket.on('lectureIdeas/update', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) =>
-            ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
-          );
-        }
-      });
-
-      socket.on('lectureIdeas/create', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) => [formatDates(lecture), ...ideas]);
-        }
-      });
-
-      socket.on('lectureIdeas/delete', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) => ideas.filter((e) => e.id !== lecture.id));
-        }
-      });
-      socket.emit('lectureIdeas');
-    }
-    return () => {};
-  }, [mounted, socket]);
-
-  return lectureIdeas;
-};
 
 const Home = (): ReactElement => {
-  const [active, { off, on }] = useBoolean();
-  const lectureIdeas = useLectureIdeasWS();
-
-  const [alignment, setAlignment] = useState<string | null>('left');
+  const [alignment, setAlignment] = useState<string | null>('kompetensdag');
 
   const handleAlignment = (event: React.MouseEvent<HTMLElement>, newAlignment: string | null) => {
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+    }
     setAlignment(newAlignment);
   };
 
   return (
-    <Box
+
+<Box
       sx={{
         width: '100%',
         display: 'grid',
@@ -73,42 +30,8 @@ const Home = (): ReactElement => {
         padding: '0 20px',
       }}
     >
-      <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
-        Idéer till kompetensdagar
-      </Typography>
-      <Box
-        sx={{
-          display: 'grid',
-          gridGap: padding.standard,
-          alignContent: 'start',
-        }}
-      >
-        {active && <PublishIdea cancel={off} />}
-        {!active && (
-          <Button
-            onClick={on}
-            sx={{ fontSize: '0.95rem', padding: padding.minimal }}
-            variant="contained"
-            color="primary"
-          >
-            Publicera ny idé
-          </Button>
-        )}
-        {lectureIdeas?.length ? (
-          <Filter lectures={lectureIdeas} />
-        ) : (
-          <Box
-            sx={{
-              display: 'grid',
-              justifyContent: 'center',
-              alignContent: 'center',
-              minHeight: '300px',
-            }}
-          >
-            <Typography variant="h5">Här var det tomt.</Typography>
-          </Box>
-        )}
-      </Box>
+{alignment === "kompetensdag" && <HomeKompetensdag/>}
+{alignment==="opkoko" && <HomeOPKoKo/>}
       <Box
         sx={{
           display: 'grid',
@@ -120,56 +43,24 @@ const Home = (): ReactElement => {
         <ToggleButtonGroup
           value={alignment}
           exclusive
+          fullWidth
           onChange={handleAlignment}
-          aria-label="text alignment"
+          aria-label="Kompetensdagar eller OPKoKo"
         >
-          <ToggleButton value="left" aria-label="left aligned">
-            Komeptensdagar
+          <ToggleButton value="kompetensdag" aria-label="Kompetensdagar">
+            Kompetensdagar
           </ToggleButton>
-          <ToggleButton value="right" aria-label="right aligned">
-            OpKoKo
+          <ToggleButton value="opkoko" aria-label="OPKoKo">
+            OPKoKo
           </ToggleButton>
         </ToggleButtonGroup>
 
-        {isAdmin() && (
-          <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
-        )}
-
-        <SideCard
-          hrefText="Anmäl pass till OpKoKo"
-          hrefBarColor={colors.orange}
-          href="/lecture/OpKoKo/create"
-        />
-        <SideCard
-          title="Nästa kompetensdag"
-          hrefText="Anmäl pass till kompetensdagar"
-          hrefBarColor={colors.orange}
-          href="/lecture/create"
-        >
-          <CompetenceDays />
-        </SideCard>
-        <SideCard
-          title="Mina senaste pass"
-          hrefText="Hantera mina anmälda pass "
-          href="/lecture/user"
-        >
-          <LatestLectures />
-        </SideCard>
-        <SideCard title="Trendar just nu">
-          <WordCloud />
-        </SideCard>
-        {/* TODO: Add some content to this */}
-        {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
-        {/*  <Interested /> */}
-        {/* </SideCard> */}
-        {/* <SideCard title="Snabbguide för KomPass 2.0"> */}
-        {/*  <QuickGuide /> */}
-        {/* </SideCard> */}
-        {/* <SideCard title="Nuvarande planerare"> */}
-        {/*  <CurrentPlanner /> */}
-        {/* </SideCard> */}
+       
+        {alignment === "kompetensdag" && <SideMenuKompetensdag/>}
+        {alignment === "opkoko" && <SideMenuOPKoKo/>}
       </Box>
-    </Box>
+      </Box>
+    
   );
 };
 
