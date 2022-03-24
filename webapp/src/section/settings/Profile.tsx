@@ -98,7 +98,6 @@ const Profile = (): ReactElement => {
 
   return (
     <>
-    
       <Box
         sx={{
           display: 'flex',
@@ -109,14 +108,15 @@ const Profile = (): ReactElement => {
           gridTemplateColumns: 'max-content max-content',
         }}
       >
-        <Avatar src={`${test}`} sx={{ width: 210, height: 210 }}  />
-        <Box sx={{flexDirection: 'column', marginTop: '50px'}}>
-        <Typography>Namn</Typography>
-        <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
-        <Typography>Epost</Typography>
-        <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography></Box>
+        <Avatar src={`${test}`} sx={{ width: 210, height: 210 }} />
+        <Box sx={{ flexDirection: 'column', marginTop: '50px' }}>
+          <Typography>Namn</Typography>
+          <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
+          <Typography>Epost</Typography>
+          <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography>
+        </Box>
       </Box>
-      
+
       <Box marginTop={0}>
         <TextField
           fullWidth
