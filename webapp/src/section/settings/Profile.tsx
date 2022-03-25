@@ -45,7 +45,7 @@ export async function getAzureGraphImage(): Promise<string> {
 }
 
 const Profile = (): ReactElement => {
-  const [test, setTest] = useState('');
+  const [profileImgLink, setProfileImgLink] = useState('/broken-image.jpg');
   const offices = useAppSelector((state) => state.offices);
   const { azureUser } = useAppSelector((state) => state.session);
   const user = useAppSelector((state) => state.user);
@@ -78,7 +78,7 @@ const Profile = (): ReactElement => {
 
           const url = window.URL || window.webkitURL;
           const blobUrl = url.createObjectURL(test3);
-          setTest(blobUrl);
+          setProfileImgLink(blobUrl);
         }
       }
     };
@@ -109,12 +109,12 @@ const Profile = (): ReactElement => {
           gridTemplateColumns: 'max-content max-content',
         }}
       >
-        <Avatar src={`${test}`} sx={{ width: 210, height: 210 }} />
-        {test === '' && <Typography>Pleas upload a bild</Typography>}
-        <Box sx={{ flexDirection: 'column', marginTop: '50px' }}>
-          <Typography>Namn</Typography>
+{profileImgLink !== '/broken-image.jpg' &&  <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} />}
+        {profileImgLink === '/broken-image.jpg' &&  <Box sx={{ flexDirection: 'column' }}><Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} ><Typography sx={{ fontWeight: 400, fontSize: 60 }}>{azureUser.givenName[0] + azureUser.surname[0]}</Typography></Avatar><Typography sx={{textAlign: 'center', marginTop: 1, fontStyle: 'italic'}}>Ladda upp bild via Office</Typography></Box>}
+        <Box sx={{ flexDirection: 'column', marginTop: '40px' }}>
+          <Typography>NAMN</Typography>
           <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>
-          <Typography>Epost</Typography>
+          <Typography>EPOST</Typography>
           <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography>
         </Box>
       </Box>

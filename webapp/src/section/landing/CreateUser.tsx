@@ -44,7 +44,6 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
     >
       <Typography variant="h2">Välkommen till Omegapoint Kompassen!</Typography>
       <Typography variant="h6">Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).</Typography>
-      <Typography variant="h6">Ange kompletterande information:</Typography>
       <Profile/>
       <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
       <Notifications handleChange={handleChange} checked={notifications} />

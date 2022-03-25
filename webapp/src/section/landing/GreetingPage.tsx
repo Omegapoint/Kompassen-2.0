@@ -26,7 +26,7 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
       <Typography
         color="secondary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '4rem' }}
+        sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
       >
         OMEGAPOINT KOMPASSEN
       </Typography>
