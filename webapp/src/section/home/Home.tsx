@@ -1,12 +1,10 @@
-import { Box,  ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { ReactElement,  useState } from 'react';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ReactElement, useState } from 'react';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
 import HomeOPKoKo from './HomeOpKoKo';
 import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
-
-
 
 const Home = (): ReactElement => {
   const [alignment, setAlignment] = useState<string | null>('kompetensdag');
@@ -19,8 +17,7 @@ const Home = (): ReactElement => {
   };
 
   return (
-
-<Box
+    <Box
       sx={{
         width: '100%',
         display: 'grid',
@@ -30,8 +27,8 @@ const Home = (): ReactElement => {
         padding: '0 20px',
       }}
     >
-{alignment === "kompetensdag" && <HomeCompetenceDays/>}
-{alignment==="opkoko" && <HomeOPKoKo/>}
+      {alignment === 'kompetensdag' && <HomeCompetenceDays />}
+      {alignment === 'opkoko' && <HomeOPKoKo />}
       <Box
         sx={{
           display: 'grid',
@@ -55,12 +52,10 @@ const Home = (): ReactElement => {
           </ToggleButton>
         </ToggleButtonGroup>
 
-       
-        {alignment === "kompetensdag" && <SideMenuCompetenceDays/>}
-        {alignment === "opkoko" && <SideMenuOPKoKo/>}
+        {alignment === 'kompetensdag' && <SideMenuCompetenceDays />}
+        {alignment === 'opkoko' && <SideMenuOPKoKo />}
       </Box>
-      </Box>
-    
+    </Box>
   );
 };
 

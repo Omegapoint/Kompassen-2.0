@@ -1,16 +1,12 @@
 import { Box, Button, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
-import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import Filter from '../../components/filter/Filter';
-import LatestLectures from '../../components/latestLectures/LatestLectures';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
-import SideCard from '../../components/sideCard/SideCard';
-import WordCloud from '../../components/wordCloud/WordCloud';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
+import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
-import { colors, padding } from '../../theme/Theme';
+import { padding } from '../../theme/Theme';
 
 const useLectureIdeasWS = () => {
   const socket = useAppSelector((state) => state.session.socket);
@@ -57,7 +53,7 @@ const HomeOPKoKo = (): ReactElement => {
   const lectureIdeas = useLectureIdeasWS();
 
   return (
-<>
+    <>
       <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
         Har du en idé om något du vill höra på OPKoKo?
       </Typography>
@@ -72,17 +68,21 @@ const HomeOPKoKo = (): ReactElement => {
         {active && <PublishIdea cancel={off} opkoko />}
         {!active && (
           <>
-          <Button
-            onClick={on}
-            sx={{ fontSize: '0.95rem', padding: padding.minimal }}
-            variant="contained"
-            color="primary"
-          >
-            Publicera ny idé
-          </Button>
-                <Typography variant="h6">
-                Vi har enorm kompetens här på Omegapoint, och för att vi alla ska kunna förkovra oss så kan det vara en bra idé att hinta för dina kollegor om vad du vill utvecklas inom. Hjälp oss alla genom att lyfta dina önskade kompetenspass här, så kan vi alla tillsammans hjälpas åt att sprida sådan kompetens!
-              </Typography></>
+            <Button
+              onClick={on}
+              sx={{ fontSize: '0.95rem', padding: padding.minimal }}
+              variant="contained"
+              color="primary"
+            >
+              Publicera ny idé
+            </Button>
+            <Typography variant="h6">
+              Vi har enorm kompetens här på Omegapoint, och för att vi alla ska kunna förkovra oss
+              så kan det vara en bra idé att hinta för dina kollegor om vad du vill utvecklas inom.
+              Hjälp oss alla genom att lyfta dina önskade kompetenspass här, så kan vi alla
+              tillsammans hjälpas åt att sprida sådan kompetens!
+            </Typography>
+          </>
         )}
         {lectureIdeas?.length ? (
           <Filter lectures={lectureIdeas} />

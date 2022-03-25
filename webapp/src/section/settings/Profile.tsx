@@ -18,32 +18,6 @@ import { Office } from '../../lib/Types';
 import store from '../../reducers';
 import { padding } from '../../theme/Theme';
 
-export async function getAzureGraphImage(): Promise<string> {
-  const accessToken = store.getState().session.graphToken;
-  const options = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const result = await fetch(
-    `https://graph.microsoft.com/v1.0/users/33ff501d-fd05-4e18-a318-12ad6608ef0b/photo/$value`,
-    options
-  )
-    // eslint-disable-next-line no-console
-    .catch((error) => console.log(error));
-  if (result instanceof Object && result.body !== null) {
-    const reader = result.body.getReader();
-    const test2 = await reader.read();
-    if (test2.value !== undefined) {
-      return URL.createObjectURL(new Blob([test2.value], { type: 'image/png' } /* (1) */));
-    }
-    throw new Error();
-  }
-  throw new Error();
-}
-
 const Profile = (): ReactElement => {
   const [profileImgLink, setProfileImgLink] = useState('/broken-image.jpg');
   const offices = useAppSelector((state) => state.offices);
@@ -64,20 +38,19 @@ const Profile = (): ReactElement => {
         },
       };
       const result = await fetch(
-        `https://graph.microsoft.com/v1.0/users/${user.id}/photo/$value`,
+        `https://graph.microsoft.com/v1.0/users/${azureUser.id}/photo/$value`,
         options
       )
         // eslint-disable-next-line no-console
         .catch((error) => console.log(error));
-      console.log(result);
       if (result instanceof Object && result.status === 200 && result.body !== null) {
         const reader = result.body.getReader();
-        const test2 = await reader.read();
-        if (test2.value !== undefined) {
-          const test3 = new Blob([test2.value], { type: 'image/png' } /* (1) */);
+        const stream = await reader.read();
+        if (stream.value !== undefined) {
+          const blob = new Blob([stream.value], { type: 'image/png' } /* (1) */);
 
           const url = window.URL || window.webkitURL;
-          const blobUrl = url.createObjectURL(test3);
+          const blobUrl = url.createObjectURL(blob);
           setProfileImgLink(blobUrl);
         }
       }
@@ -109,8 +82,21 @@ const Profile = (): ReactElement => {
           gridTemplateColumns: 'max-content max-content',
         }}
       >
-{profileImgLink !== '/broken-image.jpg' &&  <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} />}
-        {profileImgLink === '/broken-image.jpg' &&  <Box sx={{ flexDirection: 'column' }}><Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} ><Typography sx={{ fontWeight: 400, fontSize: 60 }}>{azureUser.givenName[0] + azureUser.surname[0]}</Typography></Avatar><Typography sx={{textAlign: 'center', marginTop: 1, fontStyle: 'italic'}}>Ladda upp bild via Office</Typography></Box>}
+        {profileImgLink !== '/broken-image.jpg' && (
+          <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} />
+        )}
+        {profileImgLink === '/broken-image.jpg' && (
+          <Box sx={{ flexDirection: 'column' }}>
+            <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }}>
+              <Typography sx={{ fontWeight: 400, fontSize: 60 }}>
+                {azureUser.givenName[0] + azureUser.surname[0]}
+              </Typography>
+            </Avatar>
+            <Typography sx={{ textAlign: 'center', marginTop: 1, fontStyle: 'italic' }}>
+              Ladda upp bild via Office
+            </Typography>
+          </Box>
+        )}
         <Box sx={{ flexDirection: 'column', marginTop: '40px' }}>
           <Typography>NAMN</Typography>
           <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>

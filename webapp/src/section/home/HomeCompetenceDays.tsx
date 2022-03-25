@@ -1,16 +1,12 @@
 import { Box, Button, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
-import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import Filter from '../../components/filter/Filter';
-import LatestLectures from '../../components/latestLectures/LatestLectures';
 import PublishIdea from '../../components/publishIdea/PublishIdea';
-import SideCard from '../../components/sideCard/SideCard';
-import WordCloud from '../../components/wordCloud/WordCloud';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
+import { formatDates, useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
-import { colors, padding } from '../../theme/Theme';
+import { padding } from '../../theme/Theme';
 
 const useLectureIdeasWS = () => {
   const socket = useAppSelector((state) => state.session.socket);
@@ -57,8 +53,8 @@ const HomeCompetenceDays = (): ReactElement => {
   const lectureIdeas = useLectureIdeasWS();
 
   return (
-<>
-<Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
+    <>
+      <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
         Idéer till kompetensdagar
       </Typography>
       <Box
@@ -94,7 +90,6 @@ const HomeCompetenceDays = (): ReactElement => {
           </Box>
         )}
       </Box>
-     
     </>
   );
 };
