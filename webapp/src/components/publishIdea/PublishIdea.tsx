@@ -121,7 +121,7 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
             onChange={handleChange}
             required
             name="title"
-            label="Titel"
+            label="Ämne"
             variant="outlined"
           />
           <Box sx={{ gridArea: 'content', width: '100%' }}>
