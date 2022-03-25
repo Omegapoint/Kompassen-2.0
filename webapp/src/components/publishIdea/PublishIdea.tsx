@@ -24,6 +24,7 @@ import TextPanel from '../textPanel/TextPanel';
 
 interface PublishIdeaProps {
   cancel: () => void;
+  opkoko: boolean,
 }
 
 const defaultFormValue = {
@@ -56,7 +57,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
   };
 };
 // The simple lecture form on the homepage
-const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
+const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
   const { mutateAsync } = useMutation(createLectureIdea);
@@ -76,6 +77,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             .filter((e) => e)
         ),
       ],
+      
       lecturer: values.status === 'feedback_wanted' ? azureUser.displayName : null,
     });
     cancel();
@@ -133,7 +135,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               onChange={handleChange}
               required
               name="description"
-              label="Innehåll"
+              label="Vad är det du vill höra mer om? Beskriv så tydligt du kan!"
               variant="outlined"
             />
             <TextPanel handleEmojiClick={handleSmiley} />
@@ -145,10 +147,10 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             fullWidth
             onChange={handleChange}
             name="tags"
-            label="Taggar"
+            label="Taggar (minst 1)"
             variant="outlined"
           />
-
+{!opkoko &&
           <FormControl sx={{ gridArea: 'status' }} component="fieldset">
             <FormLabel sx={{ paddingTop: padding.minimal }} component="legend">
               Typ av idé
@@ -166,7 +168,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
               />
             </RadioGroup>
           </FormControl>
-
+}
           <IconButton
             sx={{ gridArea: 'cancel', padding: 0 }}
             onClick={cancel}
@@ -182,7 +184,7 @@ const PublishIdea = ({ cancel }: PublishIdeaProps): ReactElement => {
             variant="contained"
             color="primary"
           >
-            Publisera idé
+            Publicera idé
           </Button>
         </Paper>
       </Box>

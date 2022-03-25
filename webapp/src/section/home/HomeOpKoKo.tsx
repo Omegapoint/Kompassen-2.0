@@ -69,7 +69,7 @@ const HomeOPKoKo = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        {active && <PublishIdea cancel={off} />}
+        {active && <PublishIdea cancel={off} opkoko />}
         {!active && (
           <>
           <Button

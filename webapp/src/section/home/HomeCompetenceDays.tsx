@@ -68,7 +68,7 @@ const HomeCompetenceDays = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        {active && <PublishIdea cancel={off} />}
+        {active && <PublishIdea cancel={off} opkoko={false} />}
         {!active && (
           <Button
             onClick={on}
