@@ -14,6 +14,7 @@ import {
   NewLectureIdea,
   NewLectureRoom,
   NewUser,
+  Office,
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
@@ -126,3 +127,6 @@ export const unlikeLecture = apiURLParamsBuilder<Lecture[], IDParam>('/lecture/:
 
 export const listEvents = apiQueryBuilder<Event[], ListEventParams>('/event').get;
 export const getEvent = apiURLParamsBuilder<Event, IDParam>('/event/:id').get;
+
+export const listOffices = apiQueryBuilder<Office[], ListEventParams>('/office').get;
+export const getOffice = apiURLParamsBuilder<Office, IDParam>('/office/:id').get;

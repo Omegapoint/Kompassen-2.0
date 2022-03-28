@@ -1,10 +1,7 @@
-import { Button, Paper, Typography } from '@mui/material';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import { createUser } from '../../api/Api';
+import { Paper, Typography } from '@mui/material';
+import { ReactElement, useEffect, useState } from 'react';
 import { padding } from '../../theme/Theme';
-import Notifications from '../settings/Notifications';
-import Profile from '../settings/Profile';
+import Profile from '../Profile/Profile';
 
 const defaultNotifications = {
   newLecture: true,
@@ -18,18 +15,11 @@ interface CreateUserProps {
 }
 
 const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
-  const { mutate, isSuccess } = useMutation(createUser);
-  const [notifications, setNotifications] = useState(defaultNotifications);
+  const [createOrUpdateUserStatus, setState] = useState(false);
 
   useEffect(() => {
-    if (isSuccess) onFinish();
-  }, [isSuccess, onFinish]);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNotifications((old) => ({ ...old, [event.target.name]: event.target.checked }));
-  };
-
-  const handleSubmit = async () => mutate({ notifications, speakerBio: null, officeId: null });
+    if (createOrUpdateUserStatus) onFinish();
+  }, [createOrUpdateUserStatus, onFinish]);
 
   return (
     <Paper
@@ -43,13 +33,11 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
       }}
     >
       <Typography variant="h2">Välkommen till Omegapoint Kompassen!</Typography>
-      <Typography variant="h6">Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).</Typography>
-      <Profile/>
-      <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
-      <Notifications handleChange={handleChange} checked={notifications} />
-      <Button color="primary" variant="contained" onClick={handleSubmit}>
-        Spara inställningarna
-      </Button>
+      <Typography variant="h6">
+        Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade
+        aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).
+      </Typography>
+      <Profile createOrUpdateUserStatus={setState} />
     </Paper>
   );
 };

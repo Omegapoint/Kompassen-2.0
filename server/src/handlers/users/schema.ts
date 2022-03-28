@@ -3,7 +3,7 @@ import { NewUser, Notifications, UpdatedUser } from '../../lib/types';
 
 const defaultSchema = {
   speakerBio: Joi.string().allow(null),
-  officeId: Joi.string().uuid().allow(null),
+  officeID: Joi.string().uuid().allow(null),
   notifications: Joi.object<Notifications>({
     newLecture: Joi.boolean(),
     newComment: Joi.boolean(),

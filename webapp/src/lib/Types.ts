@@ -76,7 +76,7 @@ export interface Office extends BaseOffice, DefaultTime {
 // User
 interface BaseUser {
   speakerBio: string | null;
-  officeId: string | null;
+  officeID: string | null;
   notifications: Notifications;
 }
 

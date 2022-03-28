@@ -44,7 +44,7 @@ const usersDB: UserDB = {
     const { rows } = await db.query(INSERT_USER, [
       id,
       user.speakerBio,
-      user.officeId,
+      user.officeID,
       user.notifications,
     ]);
     return rows[0];
@@ -54,7 +54,7 @@ const usersDB: UserDB = {
     const { rows } = await db.query(UPDATE_USER, [
       user.notifications,
       user.speakerBio,
-      user.officeId,
+      user.officeID,
       id,
     ]);
     return rows[0];

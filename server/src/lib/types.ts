@@ -65,7 +65,7 @@ export interface Notifications {
 // User
 interface BaseUser {
   speakerBio: string | null;
-  officeId: string | null;
+  officeID: string | null;
   notifications: Notifications;
 }
 
@@ -157,6 +157,11 @@ export interface NewLecture extends BaseLectureIdea {
   draft: boolean;
   videoLink: string | null;
   keyTakeaway: string | null;
+  internalPresentation: boolean | null;
+  firstTimePresenting: boolean | null;
+  targetAudience: string | null;
+  formatID: string | null;
+  statusID: string | null;
 }
 
 export interface DLecture extends NewLecture {

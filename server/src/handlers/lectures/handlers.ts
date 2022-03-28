@@ -60,6 +60,11 @@ const lectures: Handlers = {
         draft: true,
         videoLink: null,
         keyTakeaway: null,
+        internalPresentation: null,
+        firstTimePresenting: null,
+        targetAudience: null,
+        formatID: null,
+        statusID: null,
       },
       userID
     );

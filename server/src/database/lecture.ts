@@ -35,7 +35,12 @@ export const SELECT_LECTURES = `
            l.approved,
            l.draft,
            (SELECT array_agg(lecture_likes.user_id) as likes FROM lecture_likes WHERE lecture_id = l.id),
-           l.category_id
+           l.category_id,
+           l.internal_presentation,
+           l.first_time_presenting,
+           l.target_audience,
+           l.format_id,
+           l.status_id
     FROM lectures l
 `;
 
@@ -73,8 +78,8 @@ const SELECT_LECTURE_BY_ID = `
 const INSERT_LECTURE = `
     INSERT INTO lectures(lecturer, lecturer_id, description, remote, event_id, duration, title,
                          category_id, max_participants, requirements, preparations, tags, message, idea, approved,
-                         draft, video_link, key_takeaway, created_by, updated_by)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $19)
+                         draft, video_link, key_takeaway, internal_presentation, first_time_presenting, target_audience, format_id, status_id, created_by, updated_by)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25)
     RETURNING id
 `;
 
@@ -96,8 +101,13 @@ const UPDATE_LECTURE = `
         draft            = $14,
         video_link       = $15,
         key_takeaway     = $16,
-        updated_by       = $17
-    WHERE id = $18
+        updated_by       = $17,
+        internal_presentation = $18,
+        first_time_presenting = $19,
+        target_audience  = $20,
+        format_id        = $21,
+        status_id        = $22,
+    WHERE id = $23
     RETURNING id
 `;
 
@@ -145,7 +155,6 @@ const lecturesDB: LecturesDB = {
       `${SELECT_LECTURES} ${whereClause} ${userClause} ORDER BY l.updated_at DESC`,
       [userID].filter((e) => e)
     );
-
     return snakeToCamel(rows) || [];
   },
 
@@ -194,6 +203,11 @@ const lecturesDB: LecturesDB = {
       lecture.draft,
       lecture.videoLink,
       lecture.keyTakeaway,
+      lecture.internalPresentation,
+      lecture.firstTimePresenting,
+      lecture.targetAudience,
+      lecture.formatID,
+      lecture.statusID,
       userID,
     ]);
     return rows[0];
@@ -218,6 +232,11 @@ const lecturesDB: LecturesDB = {
       lecture.videoLink,
       lecture.keyTakeaway,
       userID,
+      lecture.internalPresentation,
+      lecture.firstTimePresenting,
+      lecture.targetAudience,
+      lecture.formatID,
+      lecture.statusID,
       lecture.id,
     ]);
     return rows[0];
