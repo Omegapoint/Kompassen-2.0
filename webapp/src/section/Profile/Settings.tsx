@@ -146,7 +146,7 @@ const Settings = ({
                 label="Office"
               >
                 {allOffices.map((office) => (
-                  <MenuItem value={office.id}>{office.name}</MenuItem>
+                  <MenuItem key={office.id} value={office.id}>{office.name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
