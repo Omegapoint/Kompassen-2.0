@@ -51,7 +51,7 @@ const LectureView = ({
   const { name: createdBy } = useAzureUser(lecture.createdBy);
 
   const setLocation = (location: string | null): string => {
-    if (location === 'local') return 'Endat på plats';
+    if (location === 'local') return 'Endast på plats';
     if (location === 'distance') return 'Endast på distans';
     if (location === 'hybrid') return 'Både på plats och distans';
     return '';
