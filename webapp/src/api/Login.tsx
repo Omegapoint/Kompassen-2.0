@@ -46,6 +46,7 @@ export const graphConfig = {
     'https://graph.microsoft.com/v1.0/users/23a416c5-7dab-4c84-aff1-fd22ec61386d/photo/$value',
 };
 
+// Används aldrig
 export async function callMsGraph(accessToken: string): Promise<Response> {
   const headers = new Headers();
   const bearer = `Bearer ${accessToken}`;
