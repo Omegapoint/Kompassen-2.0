@@ -15,10 +15,10 @@ variable "client_id" {
 }
 
 variable "tenant_id_op" {
-   type string
+   type = string
 }
 
 variable "tenant_id_ib_mb" {
-   type string
+   type = string
 }
 
