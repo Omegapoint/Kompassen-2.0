@@ -57,7 +57,7 @@ const User = (): ReactElement => {
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
   const logout = () => instance.logoutPopup(logoutRequest);
-  
+
   useEffect(() => {
     const getPhoto = async () => {
       const accessToken = store.getState().session.graphToken;
@@ -111,8 +111,12 @@ const User = (): ReactElement => {
             height: '34px',
           }}
         >
-          {profileImgLink !== '/broken-image.jpg' &&  <Avatar src={`${profileImgLink}`}  />}
-        {profileImgLink === '/broken-image.jpg' &&  <Avatar src={`${profileImgLink}`} ><Typography>{azureUser.givenName[0] + azureUser.surname[0]}</Typography></Avatar>}
+          {profileImgLink !== '/broken-image.jpg' && <Avatar src={`${profileImgLink}`} />}
+          {profileImgLink === '/broken-image.jpg' && (
+            <Avatar src={`${profileImgLink}`}>
+              <Typography>{azureUser.givenName[0] + azureUser.surname[0]}</Typography>
+            </Avatar>
+          )}
         </Avatar>
         <ArrowDropDown htmlColor={colors.white} />
       </IconButton>
@@ -128,7 +132,7 @@ const User = (): ReactElement => {
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Person fontSize="small" />
-            <ListItem sx={linkStyle} component={NavLink} to="/settings">
+            <ListItem sx={linkStyle} component={NavLink} to="/profile">
               Min profil
             </ListItem>
           </ListItemIcon>
