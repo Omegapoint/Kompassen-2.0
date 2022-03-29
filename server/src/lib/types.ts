@@ -96,6 +96,22 @@ export interface Office extends BaseOffice, DefaultTime {
   id: string;
 }
 
+// Format
+interface BaseFormat {
+  name: string;
+  info: string | null;
+}
+
+export type NewFormat = BaseFormat;
+
+export interface UpdatedFormat extends BaseFormat {
+  id: string;
+}
+
+export interface Format extends BaseFormat, DefaultTime {
+  id: string;
+}
+
 // Organisation
 interface BaseOrganisation {
   name: string;

@@ -73,6 +73,18 @@ export interface Office extends BaseOffice, DefaultTime {
   id: string;
 }
 
+// Format
+interface BaseFormat {
+  name: string;
+  info: string | null;
+}
+
+export type NewFormat = BaseFormat;
+
+export interface Format extends BaseFormat, DefaultTime {
+  id: string;
+}
+
 // User
 interface BaseUser {
   speakerBio: string | null;
@@ -153,6 +165,10 @@ export interface NewLecture extends BaseLectureIdea {
   draft: boolean;
   videoLink: string | null;
   keyTakeaway: string | null;
+  internalPresentation: boolean | null;
+  firstTimePresenting: boolean | null;
+  targetAudience: string | null;
+  formatID: string | null;
 }
 
 export interface DLecture extends NewLecture {
@@ -175,6 +191,7 @@ export interface Lecture extends DLecture, DefaultTime {
   id: string;
   categoryID: string | null;
   likes: string[];
+  statusID: string | null;
 }
 
 // LectureLike

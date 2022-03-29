@@ -18,7 +18,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Event, Lecture } from '../../lib/Types';
+import { Category, Event, Format, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { formatEventTime } from '../competenceDays/DayPicker';
 import { InfoText } from './InfoText';
@@ -29,19 +29,8 @@ interface LectureFormProps {
 
 const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
-const maxParticipantsText = `Maxdeltagare måste vara mellan 0-100000 tecken långt`;
 const requirementsText = `Förkunskapskrav måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
-const preparationsText = `Förberedelser måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
-const tagsText = `Du måste ha minst en tagg`;
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
-
-
-const invalidParticipants = (str: string) => {
-  if (!str) return false;
-  const val = parseInt(str, 10);
-  if (Number.isNaN(val)) return true;
-  return val < 0 || val > 100000;
-};
 
 const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
 const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
@@ -49,25 +38,16 @@ const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN
 const invalidTags = (str: string) => !!str.split(' ').find((e) => e.length > 50);
 
 interface FormValues {
-  remote: string;
   eventID: string;
-  hours: string;
-  minutes: string;
   title: string;
-  email: string;
-  office: string;
-  firstTime: string;
-  takeAway: string;
-  category: string;
-  typeOfLecture: string;
-  targetGroup: string;
-  levelOfRequirements: string;
+  firstTimePresenting: string;
+  keyTakeAway: string;
+  categoryID: string;
+  formatID: string;
+  targetAudience: string;
   internal: string;
-  lecturer: string;
   description: string;
-  maxParticipants: string;
   requirements: string;
-  preparations: string;
   tags: string;
   message: string;
 }
@@ -76,22 +56,11 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
-    maxParticipants: useFormValidation(
-      values.maxParticipants,
-      maxParticipantsText,
-      invalidParticipants
-    ),
     requirements: useFormValidation(
       values.requirements,
       requirementsText,
       invalidNullableLongString
     ),
-    preparations: useFormValidation(
-      values.preparations,
-      preparationsText,
-      invalidNullableLongString
-    ),
-    tags: useFormValidation(values.tags, tagsText, invalidTags),
     message: useFormValidation(values.message, messageText, invalidNullableLongString),
   };
 
@@ -107,55 +76,23 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
   const events = useAppSelector((state) => state.events);
+  const formats = useAppSelector((state) => state.formats);
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
 
-  const offices = [
-    { name: 'Umeå', id: 1 },
-    { name: 'Integrationsbolaget', id: 2 },
-    { name: 'Stockholm OP', id: 3 },
-    { name: 'Malmö OP', id: 4 },
-    { name: 'Göteborg OP', id: 5 },
-    { name: 'Uppsala OP', id: 6 },
-    { name: 'Molnbolaget', id: 7 },
-  ];
-  const typeOfLecture = [
-    { name: 'Blixtföreläsning (15 min)', id: 1 },
-    { name: 'Föreläsning / presentation (45 min)', id: 2 },
-    { name: 'Gruppdiskussion', id: 3 },
-    { name: 'Paneldiskussion (Även park-bänk, fishbowl, duell eller liknande)', id: 4 },
-    { name: 'Workshop / labb ', id: 5 },
-    { name: 'Co-creation - skapar något tillsammans under tiden', id: 6 },
-    { name: 'Knäppt format jag själv kommit på och som inte har något namn än', id: 7 },
-    { name: 'Annat', id: 8 },
-  ];
-  const firstTime = [
-    { name: 'Detta är min/vår första OPKoKo', id: 1 },
-    { name: 'Nej', id: 2 },
-  ];
-
   const defaultFormValue = {
-    remote: data?.remote || '',
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
-    hours: data?.duration ? Math.floor(data.duration / 60 / 60).toString() : '0',
-    minutes: data?.duration ? ((data.duration / 60) % 60).toString() : '0',
     title: data?.title || '',
-    takeAway: '',
-    email: '',
-    office: offices[0].name,
-    firstTime: firstTime[0].name,
-    category: categories.find((cat) => cat.id === data?.categoryID)?.name || categories[0].name,
-    typeOfLecture: '',
-    targetGroup: '',
-    levelOfRequirements: '',
+    firstTimePresenting: 'no',
+    keyTakeAway: '',
+    categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
+    formatID: '',
+    targetAudience: '',
     internal: '',
-    lecturer: data?.lecturer || azureUser.displayName,
+    tags: '',
     description: data?.description || '',
-    maxParticipants: data?.maxParticipants?.toString() || '',
     requirements: data?.requirements || '',
-    preparations: data?.preparations || '',
-    tags: data?.tags.reduce((s, e) => `${s} ${e}`, '') || '',
     message: data?.message || '',
   };
 
@@ -164,29 +101,29 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
-    const category = categories.find((e) => e.name === values.category) as Category;
+    const category = categories.find((e) => e.id === values.categoryID) as Category;
+    const format = formats.find((e) => e.id === values.formatID) as Format;
     const formData = {
       title: values.title,
       description: values.description,
-      lecturer: values.lecturer,
-      tags: [
-        ...new Set(
-          values.tags
-            .split(' ')
-            .map((e) => e.trim())
-            .filter((e) => e)
-        ),
-      ],
-      remote: 'remote',
       eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
-      duration: (parseInt(values.hours, 10) * 60 + parseInt(values.minutes, 10)) * 60,
       categoryID: category.id,
-      maxParticipants: values.maxParticipants ? parseInt(values.maxParticipants, 10) : null,
+      keyTakeaway: values.keyTakeAway,
       requirements: values.requirements || null,
-      preparations: values.preparations || null,
       message: values.message || null,
+      internalPresentation: !values.internal,
+      firstTimePresenting: !values.firstTimePresenting,
+      targetAudience: values.targetAudience || null,
+      formatID: format.id || null,
+      lecturer: null,
+      statusID: null,
       videoLink: null,
-      keyTakeaway: null,
+      // Not applicable for OPKoKo lectures
+      remote: 'local',
+      tags: [],
+      duration: 0,
+      maxParticipants: null,
+      preparations: null,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
@@ -236,17 +173,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         >
           {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
         </Typography>
-        <InfoText/>
-        {/* <TextField
-          fullWidth
-          onChange={handleChange}
-          required
-          value={values.email}
-          name="email"
-          label="E-Postadess"
-          variant="outlined"
-          // {...validate.title}
-        /> */}
+        <InfoText />
         <Typography sx={{ paddingTop: padding.large }}>
           <p>
             Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår
@@ -254,7 +181,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             den/de du skall hålla det med. Vänligen ange både för- och efternamn
           </p>
         </Typography>
-        <TextField
+        {/* <TextField
           fullWidth
           onChange={handleChange}
           required
@@ -263,25 +190,14 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Talare "
           variant="outlined"
           // helperText="Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn"
-        />
-        {/* <div>
-          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-            Kontor
-          </FormLabel>
-          <RadioGroup name="office" onChange={handleChange}>
-            {offices.map((e) => (
-              <FormControlLabel key={e.id} value={e.name} control={<Radio />} label={e.name} />
-            ))}
-          </RadioGroup>
-        </div> */}
+        /> */}
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Deltar du eller någon av talarna på OPKoKo för första gången?
           </FormLabel>
           <RadioGroup name="firsTime" onChange={handleChange}>
-            {firstTime.map((e) => (
-              <FormControlLabel key={e.id} value={e.name} control={<Radio />} label={e.name} />
-            ))}
+            <FormControlLabel key="yes" value="yes" control={<Radio />} label="Ja" />
+            <FormControlLabel key="no" value="no" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
         <Typography sx={{ paddingTop: padding.large }}>
@@ -331,8 +247,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           maxRows={10}
           onChange={handleChange}
           required
-          value={values.takeAway}
-          name="takeAway"
+          value={values.keyTakeAway}
+          name="keyTakeAway"
           label="Take Away"
           variant="outlined"
         />
@@ -350,9 +266,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Typ av pass
           </FormLabel>
-          <RadioGroup name="typeOfLecture" onChange={handleChange} value={values.typeOfLecture}>
-            {typeOfLecture.map((e) => (
-              <FormControlLabel key={e.id} value={e.name} control={<Radio />} label={e.name} />
+          <RadioGroup name="formatID" onChange={handleChange} value={values.formatID}>
+            {formats.map((e) => (
+              <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
             ))}
           </RadioGroup>
         </div>
@@ -360,13 +276,13 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Kategori
           </FormLabel>
-          <RadioGroup name="category" onChange={handleChange} value={values.category}>
+          <RadioGroup name="categoryID" onChange={handleChange} value={values.categoryID}>
             {categories.map((e) => (
-              <FormControlLabel key={e.id} value={e.name} control={<Radio />} label={e.name} />
+              <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
             ))}
           </RadioGroup>
         </div>
-        {/* <div>
+        <div>
           <Typography sx={{ paddingTop: padding.large }}>
             <p>
               Kryssa i rutan nedan om ämnet är känsligt eller konfidentiellt och INTE får publiceras
@@ -377,25 +293,25 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Intern presentation
           </FormLabel>
-          <RadioGroup name="category" onChange={handleChange} value={values.category}>
+          <RadioGroup name="internal" onChange={handleChange} value={values.internal}>
             <FormControlLabel value="yes" control={<Radio />} label="Ja" />
             <FormControlLabel value="no" control={<Radio />} label="Nej" />
           </RadioGroup>
-        </div> */}
+        </div>
         <Typography sx={{ paddingTop: padding.large }}>
           <p>Vem eller vilka tror du uppskattar ditt pass mest?</p>
         </Typography>
         <TextField
-          {...validate.description}
+          {...validate.targetAudience}
           fullWidth
           onChange={handleChange}
           required
-          value={values.targetGroup}
-          name="targetGroup"
+          value={values.targetAudience}
+          name="targetAudience"
           label="Målgrupp"
           variant="outlined"
         />
-        {/* <Typography sx={{ paddingTop: padding.large }}>
+        <Typography sx={{ paddingTop: padding.large }}>
           <p>
             Detta är viktigt! Kan en åhörare som är HELT nybörjare i ämnet ha utbyte av
             presentationen eller krävs det mer avancerade kunskaper? Tex, krävs grundläggande
@@ -403,48 +319,14 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             arbetat med Kanban?
           </p>
         </Typography>
-        <div>
-          <RadioGroup name="category" onChange={handleChange} value={values.category}>
-            <FormControlLabel value="grundläggande" control={<Radio />} label="Grundläggande" />
-            <FormControlLabel value="avancerad" control={<Radio />} label="Avancerad" />
-          </RadioGroup>
-        </div> */}
         <TextField
           {...validate.requirements}
           fullWidth
           onChange={handleChange}
-          name="levelOfRequirements"
+          name="requirements"
           label="Nivå på presentationen"
           variant="outlined"
-          value={values.levelOfRequirements}
-        />
-        {/* <Typography sx={{ paddingTop: padding.large }}>
-          <p>
-            Ange om du har några restriktioner för storlek på grupp, t.ex. max 12 personer eller
-            minst 6 personer. Lämnas tomt för vanliga föreläsningar och blixtar
-          </p>
-        </Typography>
-        <TextField
-          {...validate.maxParticipants}
-          fullWidth
-          onChange={handleChange}
-          name="maxParticipants"
-          type="number"
-          label="Max antal deltagare"
-          variant="outlined"
-          value={values.maxParticipants}
-        /> */}
-        <Typography sx={{ paddingTop: padding.large }}>
-          <p>Taggar som passar ditt pass </p>
-        </Typography>
-        <TextField
-          {...validate.tags}
-          fullWidth
-          onChange={handleChange}
-          name="tags"
-          label="Taggar"
-          variant="outlined"
-          value={values.tags}
+          value={values.requirements}
         />
         <Typography sx={{ paddingTop: padding.large }}>
           <p>

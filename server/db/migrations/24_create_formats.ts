@@ -8,6 +8,7 @@ export const up = async (knex: Knex): Promise<void> =>
     .createTable(table, (t) => {
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
       t.text('name').notNullable();
+      t.text('info').nullable();
       t.boolean('archived').notNullable().defaultTo(false);
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();

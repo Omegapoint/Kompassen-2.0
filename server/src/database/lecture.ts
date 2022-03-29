@@ -209,6 +209,7 @@ const lecturesDB: LecturesDB = {
       lecture.formatID,
       lecture.statusID,
       userID,
+      userID,
     ]);
     return rows[0];
   },

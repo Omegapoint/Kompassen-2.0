@@ -1,6 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 import categories from './categories';
 import events from './events';
+import formats from './formats';
 import loginInfo from './loginInfo';
 import offices from './offices';
 import organisations from './organisations';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   events,
   loginInfo,
   offices,
+  formats,
 });
 
 const store = createStore(rootReducer);
