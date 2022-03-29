@@ -8,10 +8,10 @@ import jwt, {
 import jwksClient from 'jwks-rsa';
 import config, { logger } from '../config/config';
 
-const { clientID, tenantID } = config.oidc.azure;
+const { clientID, tenantIDOP, tenantIDIBMB } = config.oidc.azure;
 
 const client = jwksClient({
-  jwksUri: `https://login.microsoftonline.com/${tenantID}/discovery/keys?appid=${clientID}`,
+  jwksUri: `https://login.microsoftonline.com/${tenantIDOP}/discovery/keys?appid=${clientID}`,
 });
 
 function getKey(header: JwtHeader, cb: SigningKeyCallback) {
@@ -23,7 +23,6 @@ function getKey(header: JwtHeader, cb: SigningKeyCallback) {
 
 const options: VerifyOptions = {
   audience: clientID,
-  issuer: `https://sts.windows.net/${tenantID}/`,
   algorithms: ['RS256'],
 };
 
@@ -38,6 +37,15 @@ async function checkSession(accessToken: string): Promise<JwtPayload | null> {
           err ? reject(err) : resolve(decoded?.email)
       );
     });
+    const token = jwt.decode(accessToken) as JwtPayload;
+    const issuer = token.iss;
+    if (issuer !== undefined) {
+      const url = issuer.split('https://sts.windows.net/');
+      const id = url[1].replace('/', '');
+      if (id !== tenantIDOP && id !== tenantIDIBMB) {
+        throw new Error('Not valid issuer');
+      }
+    }
 
     return (await jwt.decode(accessToken)) as JwtPayload;
   } catch (e) {
