@@ -35,7 +35,7 @@ export const appRoutes: AppRoute[] = [
     Component: Lecture,
   },
   {
-    name: 'Anmäl OpKoKo pass',
+    name: 'Anmäl OPKoKo pass',
     path: '/lecture/OpKoKo/create',
     Component: OpKoKoLecture,
   },
@@ -87,7 +87,7 @@ export const appRoutes: AppRoute[] = [
     Component: Home,
   },
   {
-    name: 'OpKoKo',
+    name: 'OPKoKo',
     path: '/OpKoKo',
     Component: HomeOpKoKo,
   },

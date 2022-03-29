@@ -21,22 +21,23 @@ const ConfirmLectureOpKoKo = (): ReactElement => {
   return (
     <Box sx={{ display: 'grid', gridGap: padding.standard, maxWidth: '1000px' }}>
       <Typography variant="h5" color="primary">
-        Din anmälan av pass till OpKoKo är nu skickad!
+        Din anmälan av bidrag till OPKoKo är nu skickad!
       </Typography>
       <div>
-        <Typography>(text om vad som händer nu)</Typography>
-        <Typography>
+        <Typography>Som tack för ert bidrag kommer ni att bli inbjudna till en föreläsning kring presentationsteknik. Det kommer ut en kalenderinbjudan inom kort! Beslut om bidragets acceptans kommer att meddelas den 26 april 2022. </Typography>
+        <Box sx={{marginTop: '60px'}}><Typography>
           {'För att se dina anmälda pass gå till '}
           <Link sx={linkStyle} component={NavLink} to="/lecture/user">
             {buttonClick}
           </Link>
           .
         </Typography>
+        </Box>
       </div>
       <Typography>
         {'Känner du att du har mer att bidra med? '}
-        <Link sx={linkStyle} component={NavLink} to="/lecture/create">
-          Skicka in ett till pass!
+        <Link sx={linkStyle} component={NavLink} to="/lecture/OpKoKo/create">
+          Skicka in ett till bidrag!
         </Link>
       </Typography>
     </Box>
