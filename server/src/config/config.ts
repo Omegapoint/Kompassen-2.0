@@ -34,7 +34,7 @@ const config = {
     azure: {
       clientID: OIDC_CLIENT_ID || '7dbe946a-2e34-4739-9734-84768447312f',
       tenantIDOP: OIDC_TENANT_ID_OP || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
-      tenantIDIBMB: OIDC_TENANT_ID_IBMB || 'eb7b2ab3-ac72-410a-ba09-83b026505835',
+      tenantIDIBMB: OIDC_TENANT_ID_IBMB || '2db9b5b0-add1-47fc-a0ca-147745edf2f9',
       redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
     },
   },
