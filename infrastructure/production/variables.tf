@@ -14,7 +14,11 @@ variable "client_id" {
   type = string
 }
 
-variable "tenant_id" {
-  type = string
+variable "tenant_id_op" {
+   type string
+}
+
+variable "tenant_id_ib_mb" {
+   type string
 }
 

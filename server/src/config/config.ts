@@ -9,7 +9,8 @@ const {
   PG_SSL,
   PORT,
   OIDC_CLIENT_ID,
-  OIDC_TENANT_ID,
+  OIDC_TENANT_ID_OP,
+  OIDC_TENANT_ID_IBMB,
   OIDC_REDIRECT_URL,
 } = process.env;
 
@@ -32,7 +33,8 @@ const config = {
   oidc: {
     azure: {
       clientID: OIDC_CLIENT_ID || '7dbe946a-2e34-4739-9734-84768447312f',
-      tenantID: OIDC_TENANT_ID || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
+      tenantIDOP: OIDC_TENANT_ID_OP || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
+      tenantIDIBMB: OIDC_TENANT_ID_IBMB || 'eb7b2ab3-ac72-410a-ba09-83b026505835',
       redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
     },
   },
