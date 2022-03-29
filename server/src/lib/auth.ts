@@ -47,7 +47,7 @@ async function checkSession(accessToken: string): Promise<JwtPayload | null> {
       }
     }
 
-    https: return (await jwt.decode(accessToken)) as JwtPayload;
+    return (await jwt.decode(accessToken)) as JwtPayload;
   } catch (e) {
     logger.error(e);
     return null;
