@@ -18,9 +18,8 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Event, Format, Lecture } from '../../lib/Types';
+import { Category,  Format, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
-import { formatEventTime } from '../competenceDays/DayPicker';
 import { InfoText } from './InfoText';
 
 interface LectureFormProps {
@@ -35,7 +34,6 @@ const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken
 const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
 const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
 const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN;
-const invalidTags = (str: string) => !!str.split(' ').find((e) => e.length > 50);
 
 interface FormValues {
   eventID: string;
@@ -72,10 +70,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 // The more complex form to create a new lecture
 const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const allCategories = useAppSelector((state) => state.categories);
-  const allOrganisations = useAppSelector((state) => state.organisations);
   const categories = allCategories.filter((e) => e.name !== 'Information');
-  const { azureUser } = useAppSelector((state) => state.session);
-  const events = useAppSelector((state) => state.events);
   const formats = useAppSelector((state) => state.formats);
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
@@ -143,19 +138,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       navigate(`/lecture/OpKoKo/${createLectureRequest.data?.id}/confirm`);
     }
   }, [navigate, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
-
-  // User can not register lecture to an event that has already started/happened
-  const findEvent = (id: string, cond: (d: Date) => boolean) => {
-    const event = events.find((e1) => id === e1.id);
-    return event ? cond(event.startAt) : undefined;
-  };
-  const futureEvents = events.filter((e) => findEvent(e.id, (d) => d > new Date()));
-
-  const getEventName = (e: Event) => {
-    const orgName = allOrganisations.find((e1) => e1.id === e.organisationID)?.name;
-    const time = formatEventTime(e);
-    return `${orgName} - ${time}`;
-  };
 
   return (
     <form>

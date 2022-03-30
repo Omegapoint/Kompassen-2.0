@@ -135,7 +135,7 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
               onChange={handleChange}
               required
               name="description"
-              label="Vad är det du vill höra mer om? Beskriv så tydligt du kan!"
+              label={opkoko ? "Vad är det du vill höra mer om? Beskriv så tydligt du kan för att underlätta för dina kollegor att plocka idén!" :"Innehåll"}
               variant="outlined"
             />
             <TextPanel handleEmojiClick={handleSmiley} />
@@ -153,18 +153,18 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
 {!opkoko &&
           <FormControl sx={{ gridArea: 'status' }} component="fieldset">
             <FormLabel sx={{ paddingTop: padding.minimal }} component="legend">
-              Typ av idé
+              Typ
             </FormLabel>
             <RadioGroup name="status" onChange={handleChange} value={values.status}>
               <FormControlLabel
                 value="lecturer_wanted"
                 control={<Radio />}
-                label="Passhållare sökes"
+                label="Öppen idé"
               />
               <FormControlLabel
                 value="feedback_wanted"
                 control={<Radio />}
-                label="Endast feedback önskas"
+                label="Jag vill hålla passet, söker feedback"
               />
             </RadioGroup>
           </FormControl>

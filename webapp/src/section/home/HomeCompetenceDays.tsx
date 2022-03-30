@@ -66,6 +66,7 @@ const HomeCompetenceDays = (): ReactElement => {
       >
         {active && <PublishIdea cancel={off} opkoko={false} />}
         {!active && (
+          <>
           <Button
             onClick={on}
             sx={{ fontSize: '0.95rem', padding: padding.minimal }}
@@ -74,6 +75,13 @@ const HomeCompetenceDays = (): ReactElement => {
           >
             Publicera ny idé
           </Button>
+          <Typography variant="h6">
+          Vi har enorm kompetens här på Omegapoint, och för att vi alla ska kunna förkovra oss
+          så kan det vara en bra idé att hinta för dina kollegor om vad du vill utvecklas inom.
+          Hjälp oss alla genom att lyfta dina önskade kompetenspass här, så kan vi alla
+          tillsammans hjälpas åt att sprida sådan kompetens!
+        </Typography>
+        </>
         )}
         {lectureIdeas?.length ? (
           <Filter lectures={lectureIdeas} />

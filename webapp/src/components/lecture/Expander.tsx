@@ -16,21 +16,30 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   return (
     <>
       {lecture.lecturer ? (
-        <Box sx={{ gridArea: 'registerButton', maxWidth: '190px' }}>
+        <Box sx={{ gridArea: 'registerButton', maxWidth: '510px' }}>
           <Typography variant="body2" sx={{ justifySelf: 'flex-end' }}>
             {`${lecture.lecturer} har ställt upp som passhållare`}
           </Typography>
         </Box>
       ) : (
-        <Button
+        <Box><Button
           component={NavLink}
           to={`/lecture/edit/${lecture.id}`}
-          sx={{ gridArea: 'registerButton', maxWidth: '190px' }}
+          sx={{  maxWidth: '260px', marginRight: '10px'}}
           variant="contained"
           color="primary"
         >
-          Ta passet
+         Anmäl som kompetensdagspass
         </Button>
+        <Button
+        component={NavLink}
+        to={`/lecture/OpKoKo/edit/${lecture.id}`}
+        sx={{ maxWidth: '240px' }}
+        variant="contained"
+        color="primary"
+      >
+        Anmäl som OPKoKobidrag
+      </Button></Box>
       )}
 
       <Box

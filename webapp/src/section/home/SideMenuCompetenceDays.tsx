@@ -6,8 +6,7 @@ import WordCloud from '../../components/wordCloud/WordCloud';
 import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
-const SideMenuCompetenceDays = (): ReactElement => {
-  return (
+const SideMenuCompetenceDays = (): ReactElement => 
     <>
       {isAdmin() && (
         <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
@@ -42,7 +41,5 @@ const SideMenuCompetenceDays = (): ReactElement => {
       {/*  <CurrentPlanner /> */}
       {/* </SideCard> */}
     </>
-  );
-};
-
+    
 export default SideMenuCompetenceDays;

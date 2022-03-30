@@ -73,7 +73,7 @@ const User = (): ReactElement => {
       )
         // eslint-disable-next-line no-console
         .catch((error) => console.log(error));
-      console.log(result);
+
       if (result instanceof Object && result.status === 200 && result.body !== null) {
         const reader = result.body.getReader();
         const test2 = await reader.read();

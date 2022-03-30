@@ -4,8 +4,7 @@ import SideCard from '../../components/sideCard/SideCard';
 import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
-const SideMenuOPKoKo = (): ReactElement => {
-  return (
+const SideMenuOPKoKo = (): ReactElement => 
     <>
       {' '}
       {isAdmin() && (
@@ -25,7 +24,5 @@ const SideMenuOPKoKo = (): ReactElement => {
         <LatestLectures />
       </SideCard>
     </>
-  );
-};
 
 export default SideMenuOPKoKo;
