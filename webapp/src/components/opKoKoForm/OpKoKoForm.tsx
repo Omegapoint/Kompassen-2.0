@@ -14,6 +14,7 @@ import { FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
+import { searchAzureUsers } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
@@ -75,6 +76,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
+  const testUserSearch = searchAzureUsers("a");
 
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
