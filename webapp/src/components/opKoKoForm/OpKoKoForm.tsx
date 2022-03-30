@@ -166,22 +166,23 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           justifyItems: 'start',
           rowGap: padding.medium,
         }}
-      >      
-          
+      >
         <Typography
           sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
           variant="h1"
         >
           {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
           <Typography
-          sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
-          variant="h6"
-        >Anmälan stänger kl 23.59 17 april 2022</Typography>
+            sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
+            variant="h6"
+          >
+            Anmälan stänger kl 23.59 17 april 2022
+          </Typography>
         </Typography>
         <InfoText />
 
         {/* <Typography sx={{ paddingTop: padding.minimal }}/> */}
-                {/* <TextField
+        {/* <TextField
           fullWidth
           onChange={handleChange}
           required
@@ -196,12 +197,16 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
             Deltar någon av talarna på OPKoKo för första gången?
           </FormLabel>
-          
-          <RadioGroup name="firsTime" onChange={handleChange}>
+
+          <RadioGroup
+            name="firstTimePresenting"
+            onChange={handleChange}
+            value={values.firstTimePresenting}
+          >
             <FormControlLabel key="yes" value="yes" control={<Radio />} label="Ja" />
             <FormControlLabel key="no" value="no" control={<Radio />} label="Nej" />
           </RadioGroup>
-          </div>
+        </div>
         <TextField
           fullWidth
           onChange={handleChange}
@@ -246,13 +251,19 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Format (för speciellt önskemål om längd på formatet, ange i sista rutan i formuläret)
           </FormLabel>
           <RadioGroup name="formatID" onChange={handleChange} value={values.formatID}>
-            {formats.map((e) => (
-              e.name === "Blixtföreläsning " ? 
-              // eslint-disable-next-line
-              <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name + ' (15min)'} />
-              :
-              <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
-            ))}
+            {formats.map((e) =>
+              e.name === 'Blixtföreläsning ' ? (
+                <FormControlLabel
+                  key={e.id}
+                  value={e.id}
+                  control={<Radio />}
+                  // eslint-disable-next-line
+                  label={e.name + ' (15min)'}
+                />
+              ) : (
+                <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
+              )
+            )}
           </RadioGroup>
         </div>
         <div>
@@ -271,7 +282,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           </FormLabel>
           <RadioGroup name="internal" onChange={handleChange} value={values.internal}>
             <FormControlLabel value="yes" control={<Radio />} label="Ja" />
-            <FormControlLabel value="no" control={<Radio />} label="Nej"  />
+            <FormControlLabel value="no" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
         <TextField
@@ -342,7 +353,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             </Button>
           </Box>
         </Box>
-       
       </Paper>
     </form>
   );

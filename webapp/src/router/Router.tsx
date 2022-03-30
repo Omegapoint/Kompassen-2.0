@@ -45,6 +45,11 @@ export const appRoutes: AppRoute[] = [
     Component: Lecture,
   },
   {
+    name: 'Redigera OPKoKo pass',
+    path: '/lecture/OpKoKo/edit/:id',
+    Component: OpKoKoLecture,
+  },
+  {
     name: 'Passbekräftelse',
     path: '/lecture/:id/confirm',
     Component: ConfirmLecture,

@@ -12,6 +12,7 @@ export interface ExpanderProps {
 
 const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const { lecture } = useContext(LectureContext);
+
   return (
     <>
       {lecture.lecturer ? (

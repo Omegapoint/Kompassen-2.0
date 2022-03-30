@@ -44,6 +44,7 @@ const LectureView = ({
   const event = events.find((e) => e.id === lecture.eventID);
   const organisations = useAppSelector((state) => state.organisations);
   const organisation = organisations.find((e) => e.id === event?.organisationID);
+  const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
@@ -157,7 +158,7 @@ const LectureView = ({
                   <EditIcon />
                 </IconButton>
               ) : (
-                <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`} size="large">
+                <IconButton component={NavLink} to={`${editLink}${lecture.id}`} size="large">
                   <EditIcon />
                 </IconButton>
               ))}
