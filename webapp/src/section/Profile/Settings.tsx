@@ -79,7 +79,7 @@ const Settings = ({
 
   const defaultFormValue = {
     speakerBio: user?.speakerBio || '', 
-    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || '',  
+    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,  
   };
 
   const { values, handleChange } = useForm(defaultFormValue);
