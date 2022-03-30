@@ -1,3 +1,4 @@
+import { StaticDatePicker } from '@mui/lab';
 import {
   Box,
   Button,
@@ -22,6 +23,7 @@ import { useAppSelector } from '../../lib/Lib';
 import { Category,  Format, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
 import { InfoText } from './InfoText';
+import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
 
 interface LectureFormProps {
   data?: Lecture;
@@ -76,11 +78,11 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
-  const testUserSearch = searchAzureUsers("a");
 
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
+    lecturer: azureUser.displayName,
     firstTimePresenting: 'no',
     keyTakeAway: '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
@@ -165,8 +167,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <InfoText />
 
-        {/* <Typography sx={{ paddingTop: padding.minimal }}/> */}
-        {/* <TextField
+        <Typography sx={{ paddingTop: padding.minimal }}/>
+        <TextField
           fullWidth
           onChange={handleChange}
           required
@@ -175,7 +177,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Talare "
           variant="outlined"
           // helperText="Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn"
-        /> */}
+        />
+        <MultipleSelectBox/>
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">

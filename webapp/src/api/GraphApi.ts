@@ -51,5 +51,8 @@ export async function getAzureUser(userID: string): Promise<AzureUser> {
 export async function searchAzureUsers(searchString: string): Promise<AzureUser[]> {
   const responseBody = await getAzureGraphMultipleUsers(`/users?$filter=startswith(displayName,'${searchString}')&$orderby=displayName&$count=true&$top=5`);
   const responseList: AzureUser[] = responseBody.value;
+  if (!responseList) {
+    return []
+  } 
   return responseList;
 }
