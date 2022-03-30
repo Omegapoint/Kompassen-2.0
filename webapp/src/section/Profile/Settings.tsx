@@ -32,7 +32,7 @@ interface FormValues {
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
-    speakerBio: useFormValidation(values.speakerBio, messageText, invalidLongString),
+    speakerBio: useFormValidation(values.speakerBio, messageText, invalidNullableLongString),
   };
   return {
     validate,
@@ -89,7 +89,7 @@ const Settings = ({
     evt.preventDefault();
     const office = allOffices.find((o) => o.id === values.officeID) as Office;
     const formData = {
-      speakerBio: values.speakerBio,
+      speakerBio: values.speakerBio || null,
       officeID: office.id,
     };
     if (user.id !== undefined) {
@@ -128,10 +128,9 @@ const Settings = ({
               minRows={10}
               maxRows={20}
               onChange={handleChange}
-              required
               value={values.speakerBio}
               name="speakerBio"
-              label="Innehåll"
+              label="Talarbiografi"
               variant="outlined"
             />
           </Box>
