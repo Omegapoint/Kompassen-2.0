@@ -154,7 +154,6 @@ const Settings = ({
           <Divider />
           <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
           <Notifications handleChange={handleNotificationsChange} checked={notifications} />
-          <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
           <Button color="primary" variant="contained" onClick={(e) => handleSubmit(e, false)}>
             Spara inställningarna
           </Button>
