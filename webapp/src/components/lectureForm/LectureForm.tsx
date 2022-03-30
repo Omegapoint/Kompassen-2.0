@@ -165,8 +165,8 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       // Not applicable for Kompetensdag lectures
       videoLink: null,
       keyTakeaway: null,
-      internalPresentation: null,
-      firstTimePresenting: null,
+      internalPresentation: false,
+      firstTimePresenting: false,
       targetAudience: null,
       formatID: null,
       statusID: null,
