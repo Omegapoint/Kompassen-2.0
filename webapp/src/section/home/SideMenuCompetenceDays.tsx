@@ -26,9 +26,10 @@ const SideMenuCompetenceDays = (): ReactElement =>
       >
         <LatestLectures />
       </SideCard>
-      <SideCard title="Trendar just nu">
+      
+      {/* <SideCard title="Trendar just nu">
         <WordCloud />
-      </SideCard>
+      </SideCard> */}
 
       {/* TODO: Add some content to this */}
       {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
