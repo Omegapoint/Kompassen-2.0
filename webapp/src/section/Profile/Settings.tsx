@@ -78,8 +78,8 @@ const Settings = ({
   const navigate = useNavigate();
 
   const defaultFormValue = {
-    speakerBio: user?.speakerBio || '',
-    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,
+    speakerBio: user?.speakerBio || '', 
+    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || '',  
   };
 
   const { values, handleChange } = useForm(defaultFormValue);
@@ -141,7 +141,7 @@ const Settings = ({
               <Select
                 labelId="office-selector"
                 onChange={handleChange}
-                value={allOffices.find((o) => user.officeID === o.id)}
+                value={values.officeID} 
                 name="officeID"
                 label="Office"
               >
