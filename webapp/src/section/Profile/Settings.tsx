@@ -140,6 +140,7 @@ const Settings = ({
               <Select
                 labelId="office-selector"
                 onChange={handleChange}
+                required
                 value={values.officeID} 
                 name="officeID"
                 label="Office"
