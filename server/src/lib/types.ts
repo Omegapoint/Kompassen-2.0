@@ -112,6 +112,38 @@ export interface Format extends BaseFormat, DefaultTime {
   id: string;
 }
 
+// Status
+interface BaseStatus {
+  name: string;
+}
+
+export type NewStatus = BaseStatus;
+
+export interface UpdatedStatus extends BaseStatus {
+  id: string;
+}
+
+export interface Status extends BaseStatus, DefaultTime {
+  id: string;
+}
+
+// LectureStatus
+interface BaseLectureStatus {
+  name: string;
+  lecture_id: string;
+  status_id: string;
+}
+
+export type NewLectureStatus = BaseLectureStatus;
+
+export interface UpdatedLectureStatus extends BaseLectureStatus {
+  id: string;
+}
+
+export interface LectureStatus extends BaseLectureStatus, DefaultTime {
+  id: string;
+}
+
 // Organisation
 interface BaseOrganisation {
   name: string;

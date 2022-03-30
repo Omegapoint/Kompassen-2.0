@@ -38,6 +38,7 @@ const lectures: Handlers = {
       { ...body, lecturerID: userID, approved: false, idea: false },
       userID
     );
+    // const item = await lectureStatusDb.inser
     res.send(item);
   },
   async createIdea({ body }, res) {

@@ -18,7 +18,7 @@ const SELECT_FORMATS = `
 
 const SELECT_FORMATS_BY_ID = `
     SELECT id, name, info
-    FROM offices
+    FROM formats
     WHERE id = $1
 `;
 
