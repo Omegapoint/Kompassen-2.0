@@ -15,11 +15,11 @@ interface CreateUserProps {
 }
 
 const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
-  const [createOrUpdateUserStatus, setState] = useState(false);
+  const [userUpdated, setUserUpdated] = useState(false);
 
   useEffect(() => {
-    if (createOrUpdateUserStatus) onFinish();
-  }, [createOrUpdateUserStatus, onFinish]);
+    if (userUpdated) onFinish();
+  }, [userUpdated, onFinish]);
 
   return (
     <Paper
@@ -37,7 +37,7 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
         Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade
         aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).
       </Typography>
-      <Profile createOrUpdateUserStatus={setState} />
+      <Profile setUserUpdated={setUserUpdated} />
     </Paper>
   );
 };

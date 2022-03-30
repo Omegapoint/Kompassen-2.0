@@ -13,7 +13,7 @@ import Lecture from '../section/lecture/Lecture';
 import OpKoKoLecture from '../section/lecture/OpKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
-import Profile from '../section/Profile/Profile';
+import ProfileWrapper from '../section/Profile/ProfileWrapper';
 
 export interface AppRoute {
   name: string;
@@ -62,7 +62,7 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Min profil',
     path: '/profile',
-    Component: Profile,
+    Component: ProfileWrapper,
   },
   {
     name: 'Planera event',

@@ -40,8 +40,16 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
   };
 };
 
+interface SetUserUpdated {
+  setUserUpdated: (status: boolean) => void;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Settings = ({ createOrUpdateUserStatus }: any): ReactElement => {
+const Settings = ({
+  setUserUpdated,
+}: {
+  setUserUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+}): ReactElement => {
   const user = useAppSelector((state) => state.user);
 
   const defaultNotifications = {
@@ -93,11 +101,11 @@ const Settings = ({ createOrUpdateUserStatus }: any): ReactElement => {
 
   useEffect(() => {
     if (createUserRequest.isSuccess) {
-      createOrUpdateUserStatus(true);
+      setUserUpdated(true);
     } else if (updateUserRequest.isSuccess) {
-      createOrUpdateUserStatus(true);
+      setUserUpdated(true);
     }
-  }, [createUserRequest.isSuccess, updateUserRequest.isSuccess, createOrUpdateUserStatus]);
+  }, [createUserRequest.isSuccess, updateUserRequest.isSuccess, setUserUpdated]);
 
   return (
     <Box

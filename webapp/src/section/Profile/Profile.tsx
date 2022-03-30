@@ -1,12 +1,16 @@
 import { Box, Typography } from '@mui/material';
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { useAppSelector } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
 import ProfileImage from './Image';
 import Settings from './Settings';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Profile = ({ createOrUpdateUserStatus }: any): ReactElement => {
+const Profile = ({
+  setUserUpdated,
+}: {
+  setUserUpdated: React.Dispatch<React.SetStateAction<boolean>>;
+}): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
 
   return (
@@ -29,7 +33,7 @@ const Profile = ({ createOrUpdateUserStatus }: any): ReactElement => {
           <Typography sx={{ fontWeight: 400 }}>{azureUser.mail}</Typography>
         </Box>
       </Box>
-      <Settings createOrUpdateUserStatus={createOrUpdateUserStatus} />
+      <Settings setUserUpdated={setUserUpdated} />
     </>
   );
 };
