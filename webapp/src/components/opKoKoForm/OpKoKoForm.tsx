@@ -1,4 +1,3 @@
-import { StaticDatePicker } from '@mui/lab';
 import {
   Box,
   Button,
@@ -15,15 +14,14 @@ import { FormEvent, ReactElement, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
-import { searchAzureUsers } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category,  Format, Lecture } from '../../lib/Types';
+import { Category, Format, Lecture } from '../../lib/Types';
 import { colors, padding } from '../../theme/Theme';
-import { InfoText } from './InfoText';
 import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
+import { InfoText } from './InfoText';
 
 interface LectureFormProps {
   data?: Lecture;
@@ -74,6 +72,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const allCategories = useAppSelector((state) => state.categories);
   const categories = allCategories.filter((e) => e.name !== 'Information');
+  const { azureUser } = useAppSelector((state) => state.session);
   const formats = useAppSelector((state) => state.formats);
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
@@ -167,7 +166,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <InfoText />
 
-        <Typography sx={{ paddingTop: padding.minimal }}/>
+        <Typography sx={{ paddingTop: padding.minimal }} />
         <TextField
           fullWidth
           onChange={handleChange}
@@ -178,7 +177,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           variant="outlined"
           // helperText="Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn"
         />
-        <MultipleSelectBox/>
+        <MultipleSelectBox />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
