@@ -51,9 +51,10 @@ const Home = (): ReactElement => {
             OPKoKo
           </ToggleButton>
         </ToggleButtonGroup>
-
+        <Box sx={{width:'320px'}}>
         {alignment === 'kompetensdag' && <SideMenuCompetenceDays />}
         {alignment === 'opkoko' && <SideMenuOPKoKo />}
+        </Box>
       </Box>
     </Box>
   );
