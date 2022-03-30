@@ -14,12 +14,12 @@ const defaultSchema = {
 
 const newUser = Joi.object<NewUser>({
   ...defaultSchema,
-});
+}).options({ presence: 'required' });
 
 const updateUser = Joi.object<UpdatedUser>({
   ...defaultSchema,
-  id: Joi.string().uuid().required(),
-});
+  id: Joi.string().uuid(),
+}).options({ presence: 'required' });
 
 const users = {
   newUser,
