@@ -40,6 +40,8 @@ const LectureView = ({
 }: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
+  const formats = useAppSelector((state) => state.formats);
+  const formatName = formats.find((e) => e.id === lecture.formatID);
   const events = useAppSelector((state) => state.events);
   const event = events.find((e) => e.id === lecture.eventID);
   const organisations = useAppSelector((state) => state.organisations);
@@ -70,6 +72,19 @@ const LectureView = ({
     { name: 'Förberedelser', value: lecture.preparations },
     { name: 'Taggar', value: lecture.tags.reduce((s, e) => `${s} ${e}`, '') },
   ].map((e) => ({ ...e, value: e.value || '-' }));
+
+  const opkokoTable = [
+    { name: 'Talare', value: lecture.lecturer },
+    { name: 'Titel', value: lecture.title },
+    { name: 'Beskrivning', value: lecture.description },
+    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej'},
+    { name: 'Key take away', value: lecture.keyTakeaway },
+    { name: 'Format', value: formatName?.name },
+    { name: 'Målgrupp', value: lecture.targetAudience },
+    { name: 'Förkunskapskrav', value: lecture.requirements },
+    { name: 'Meddelande', value: lecture.message },
+  ].map((e) => ({ ...e, value: e.value || '-' }));
+
 
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
@@ -181,7 +196,12 @@ const LectureView = ({
             gridGap: padding.minimal,
           }}
         >
-          {table.map((e) => (
+          {organisation?.name !== 'OpKoKo' ? table.map((e) => (
+            <Fragment key={e.name}>
+              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+            </Fragment>
+          )) : opkokoTable.map((e) => (
             <Fragment key={e.name}>
               <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
               <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>

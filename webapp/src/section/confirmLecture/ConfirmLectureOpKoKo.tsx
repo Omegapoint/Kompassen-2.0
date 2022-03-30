@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { getLecture } from '../../api/Api';
+import LectureView from '../../components/lectureView/LectureView';
 import BigLoader from '../../components/loader/BigLoader';
 import { colors, padding } from '../../theme/Theme';
 
@@ -40,6 +41,7 @@ const ConfirmLectureOpKoKo = (): ReactElement => {
           Skicka in ett till bidrag!
         </Link>
       </Typography>
+      <LectureView lecture={data} />
     </Box>
   );
 };
