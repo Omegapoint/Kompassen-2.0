@@ -1,6 +1,6 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
@@ -16,10 +16,18 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox= (
-  onChange : any, 
-  onKeyUp: any,
-  options: AzureUser[]) => {
+const MultipleSelectBox = ({ onChange }: any) => {
+  const { azureUser } = useAppSelector((state) => state.session);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [options, setOptions] = useState<readonly AzureUser[]>([]);
+
+  const onKeyUp = async (e: any) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    if (term.length >= 3) {
+      setOptions(await searchAzureUsers(searchTerm));
+    }
+  };
 
   return (
     <Autocomplete

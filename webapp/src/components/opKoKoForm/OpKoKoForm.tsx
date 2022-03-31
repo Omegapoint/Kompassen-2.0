@@ -109,17 +109,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const [options, setOptions] = useState<AzureUser[]>([...fixedLecturers]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
 
-  // OnKeyUp function to search for new term
-  const updateSearchTerm = (e: any) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (term.length >= 3) {
-      searchAzureUsers(searchTerm).then(value => setOptions(value))
-    }
-
-  };
-
-  // OnChange function for lecturers
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedLecturers,
@@ -204,8 +193,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
         <MultipleSelectBox 
           onChange={onLecturerChange}
-          onKeyUp={updateSearchTerm} 
-          options={options}
         />
 
         <div>
