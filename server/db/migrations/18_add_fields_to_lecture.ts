@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> =>
       t.boolean('first_time_presenting');
       t.text('target_audience');
       t.uuid('format_id');
-      t.uuid('status_id');
+      t.uuid('lecture_status_id');
     })
     .then(() =>
       knex.schema.alterTable('lectures', (t) => {
@@ -19,7 +19,7 @@ export const up = async (knex: Knex): Promise<void> =>
         t.boolean('first_time_presenting').nullable().alter();
         t.text('target_audience').nullable().alter();
         t.uuid('format_id').nullable().alter();
-        t.uuid('status_id').nullable().alter();
+        t.uuid('lecture_status_id').nullable().alter();
       })
     );
 
@@ -31,5 +31,5 @@ export const down = async (knex: Knex): Promise<void> =>
     t.dropColumn('first_time_presenting');
     t.dropColumn('target_audience');
     t.dropColumn('format_id');
-    t.dropColumn('status_id');
+    t.dropColumn('lecture_status_id');
   });

@@ -33,9 +33,10 @@ const other = {
   internalPresentation: Joi.boolean().default(false),
   firstTimePresenting: Joi.boolean().default(false),
   targetAudience: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
-  status: Joi.string().valid('Unhandled', 'Denied', 'Accepted', 'Feedback'),
   formatID: Joi.string().uuid().allow(null),
-  statusID: Joi.string().uuid().allow(null),
+  lectureStatusID: Joi.string().uuid().allow(null),
+  lecturers: Joi.array().items(Joi.string()).allow(null),
+  lecturerID: Joi.string().uuid().allow(null),
 };
 
 const approve = Joi.object<Approved>({

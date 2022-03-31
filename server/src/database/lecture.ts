@@ -40,7 +40,8 @@ export const SELECT_LECTURES = `
            l.first_time_presenting,
            l.target_audience,
            l.format_id,
-           l.status_id
+           l.lecture_status_id,
+           (SELECT array_agg(lecture_lecturers.user_id) as lectureLecturers FROM lecture_lecturers WHERE lecture_id = l.id)
     FROM lectures l
 `;
 
@@ -78,7 +79,7 @@ const SELECT_LECTURE_BY_ID = `
 const INSERT_LECTURE = `
     INSERT INTO lectures(lecturer, lecturer_id, description, remote, event_id, duration, title,
                          category_id, max_participants, requirements, preparations, tags, message, idea, approved,
-                         draft, video_link, key_takeaway, internal_presentation, first_time_presenting, target_audience, format_id, status_id, created_by, updated_by)
+                         draft, video_link, key_takeaway, internal_presentation, first_time_presenting, target_audience, format_id, lecture_status_id, created_by, updated_by)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25)
     RETURNING id
 `;
@@ -106,7 +107,7 @@ const UPDATE_LECTURE = `
         first_time_presenting = $19,
         target_audience  = $20,
         format_id        = $21,
-        status_id        = $22,
+        lecture_status_id        = $22,
     WHERE id = $23
     RETURNING id
 `;
@@ -117,6 +118,13 @@ const UPDATE_LECTURE_IDEA = `
         description = $2,
         tags        = $3
     WHERE id = $4
+    RETURNING id
+`;
+
+const UPDATE_LECTURE_STATUS = `
+    UPDATE lectures
+    SET lecture_status_id = $1
+    WHERE id = $2
     RETURNING id
 `;
 
@@ -144,6 +152,7 @@ interface LecturesDB {
   update: (lecture: UpdatedDBLecture, id: string) => Promise<IDParam>;
   updateIdea: (lecture: UpdatedLectureIdea) => Promise<IDParam>;
   approve: (approved: boolean, id: string) => Promise<IDParam>;
+  setStatus: (lectureStatusID: string, lectureId: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
 
@@ -207,7 +216,7 @@ const lecturesDB: LecturesDB = {
       lecture.firstTimePresenting,
       lecture.targetAudience,
       lecture.formatID,
-      lecture.statusID,
+      lecture.lectureStatusID,
       userID,
       userID,
     ]);
@@ -237,7 +246,7 @@ const lecturesDB: LecturesDB = {
       lecture.firstTimePresenting,
       lecture.targetAudience,
       lecture.formatID,
-      lecture.statusID,
+      lecture.lectureStatusID,
       lecture.id,
     ]);
     return rows[0];
@@ -250,6 +259,11 @@ const lecturesDB: LecturesDB = {
       lecture.tags,
       lecture.id,
     ]);
+    return rows[0];
+  },
+
+  async setStatus(lectureStatusID, lectureId): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_LECTURE_STATUS, [lectureStatusID, lectureId]);
     return rows[0];
   },
 

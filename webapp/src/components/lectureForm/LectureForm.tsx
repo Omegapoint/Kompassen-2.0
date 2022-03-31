@@ -146,6 +146,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       title: values.title,
       description: values.description,
       lecturer: values.lecturer,
+      lecturerID: azureUser.id,
       tags: [
         ...new Set(
           values.tags
@@ -169,7 +170,8 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       firstTimePresenting: false,
       targetAudience: null,
       formatID: null,
-      statusID: null,
+      lectureStatusID: null,
+      lecturers: null,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });

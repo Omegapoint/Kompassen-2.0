@@ -192,7 +192,7 @@ export interface UpdatedLectureIdea {
   tags: string[];
 }
 
-export interface NewLecture extends BaseLectureIdea {
+export interface BaseNewLecture extends BaseLectureIdea {
   remote: string | null;
   eventID: string | null;
   duration: number | null;
@@ -208,7 +208,11 @@ export interface NewLecture extends BaseLectureIdea {
   firstTimePresenting: boolean | null;
   targetAudience: string | null;
   formatID: string | null;
-  statusID: string | null;
+  lectureStatusID: string | null;
+}
+
+export interface NewLecture extends BaseNewLecture {
+  lecturers: string[] | null;
 }
 
 export interface DLecture extends NewLecture {
@@ -225,12 +229,18 @@ export interface UpdatedDBLecture extends UpdatedLecture {
   lecturerID: string | null;
 }
 
-export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
+export interface DBLecture extends BaseNewLecture, DefaultTime {
+  id: string;
+  idea: boolean;
+  lecturerID: string | null;
+  approved: boolean;
+}
 
 export interface Lecture extends DLecture, DefaultTime {
   id: string;
   categoryID: string | null;
   likes: string[];
+  lecturelecturers: string[] | null;
 }
 
 // LectureLike
@@ -256,9 +266,7 @@ interface BaseLectureLecturer {
 
 export type NewLectureLecturer = BaseLectureLecturer;
 
-export interface NewDBLectureLecturer extends BaseLectureLecturer {}
-
-export interface LectureLecturer extends NewDBLectureLecturer, DefaultTime {
+export interface LectureLecturer extends BaseLectureLecturer, DefaultTime {
   id: string;
 }
 
