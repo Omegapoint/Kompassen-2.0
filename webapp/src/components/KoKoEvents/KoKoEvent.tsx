@@ -1,21 +1,21 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
+import DayPicker from '../competenceDays/DayPicker';
+import DaysToGo from '../competenceDays/DaysToGo';
+import EventContext from '../competenceDays/EventContext';
+import LectureStats from '../competenceDays/LectureStats';
 import SmallLoader from '../loader/SmallLoader';
-import DayPicker from './DayPicker';
-import DaysToGo from './DaysToGo';
-import EventContext from './EventContext';
-import LectureStats from './LectureStats';
 
 const listNewEvents = () =>
   listEvents({ filter: 'new' }).then((events) =>
-    events.filter((event) => event.organisationID !== 'dff5e789-b4e0-43c2-95c2-ac6c87242f34')
+    events.filter((event) => event.organisationID === 'dff5e789-b4e0-43c2-95c2-ac6c87242f34')
   );
 
-const CompetenceDays = (): ReactElement => {
+const KoKoEvent = (): ReactElement => {
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
   const navigate = useNavigate();
   const [ind, setInd] = useState(0);
@@ -29,15 +29,6 @@ const CompetenceDays = (): ReactElement => {
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
           <DaysToGo />
-          <Button
-            type="button"
-            color="success"
-            variant="contained"
-            size="large"
-            onClick={() => navigate(`/events/view/${data[ind].id}`)}
-          >
-            Schema och anmälan
-          </Button>
           <LectureStats />
         </Box>
       )}
@@ -45,4 +36,4 @@ const CompetenceDays = (): ReactElement => {
   );
 };
 
-export default CompetenceDays;
+export default KoKoEvent;
