@@ -3,10 +3,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Fragment, ReactElement } from 'react';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import { getAzureUser } from '../../api/GraphApi';
 import useAzureUser from '../../hooks/UseAzureUser';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
@@ -48,6 +49,19 @@ const LectureView = ({
   const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
+  const [lecturers, setLecturers] = useState(['']);
+
+  useEffect(() => {
+    async function fetchMyAPI(lecturer: string) {
+      return await getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
+    }
+
+    if (lecture.lecturelecturers !== null && lecture.lecturelecturers !== undefined) {
+      const lecturers = lecture.lecturelecturers.map((lecturer) => await fetchMyAPI(lecturer));
+      setLecturers(lecturers);
+    }
+  }, [lecture.lecturelecturers]);
+
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
   const [open, { on, off }] = useBoolean();
@@ -74,17 +88,16 @@ const LectureView = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   const opkokoTable = [
-    { name: 'Talare', value: lecture.lecturer },
+    { name: 'Talare', value: lecturers },
     { name: 'Titel', value: lecture.title },
     { name: 'Beskrivning', value: lecture.description },
-    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej'},
+    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej' },
     { name: 'Key take away', value: lecture.keyTakeaway },
     { name: 'Format', value: formatName?.name },
     { name: 'Målgrupp', value: lecture.targetAudience },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
   ].map((e) => ({ ...e, value: e.value || '-' }));
-
 
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
@@ -196,17 +209,19 @@ const LectureView = ({
             gridGap: padding.minimal,
           }}
         >
-          {organisation?.name !== 'OpKoKo' ? table.map((e) => (
-            <Fragment key={e.name}>
-              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-            </Fragment>
-          )) : opkokoTable.map((e) => (
-            <Fragment key={e.name}>
-              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-            </Fragment>
-          ))}
+          {organisation?.name !== 'OpKoKo'
+            ? table.map((e) => (
+                <Fragment key={e.name}>
+                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                </Fragment>
+              ))
+            : opkokoTable.map((e) => (
+                <Fragment key={e.name}>
+                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                </Fragment>
+              ))}
           <Box sx={{ gridColumn: 'span 2' }} />
           {!isUnpublishedIdea && !admin && (
             <Typography sx={{ gridColumn: 'span 1' }}>
