@@ -16,7 +16,7 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox = (onChange: ((event: React.SyntheticEvent<Element, Event>, value: AzureUser[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<AzureUser> | undefined) => void) | undefined) => {  
+const MultipleSelectBox = onChange => {  
   const { azureUser } = useAppSelector((state) => state.session);
   const [searchTerm, setSearchTerm] = useState('');
   const [options, setOptions] = useState<readonly AzureUser[]>([]);
