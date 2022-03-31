@@ -39,7 +39,7 @@ const ProfileImage = (): ReactElement => {
   }, []);
 
   return (
-    <>
+    <Box sx={{marginLeft: '20px'}}>
       {profileImgLink !== '/broken-image.jpg' && (
         <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} />
       )}
@@ -55,7 +55,7 @@ const ProfileImage = (): ReactElement => {
           </Typography>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 export default ProfileImage;
