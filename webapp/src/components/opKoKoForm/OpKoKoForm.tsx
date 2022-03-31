@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FormEvent, ReactElement, useEffect } from 'react';
+import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
@@ -19,6 +19,7 @@ import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/Us
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { Category, Format, Lecture } from '../../lib/Types';
+import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
 import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
 import { InfoText } from './InfoText';
@@ -51,6 +52,8 @@ interface FormValues {
   message: string;
 }
 
+
+
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     title: useFormValidation(values.title, titleText, invalidShortString),
@@ -78,7 +81,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
 
-  console.log(data?.firstTimePresenting?.toString());
+  // console.log(data?.firstTimePresenting?.toString());
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
@@ -97,6 +100,17 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
+
+  // Lecturers
+  const [lecturers, setLecturers] = useState<AzureUser[]>([]);
+  const fixedLecturers: AzureUser[] = [azureUser];
+
+  const onLecturerChange = (event, newValue: AzureUser[]) => {
+    setLecturers([
+      ...fixedLecturers,
+      ...newValue.filter((option) => fixedLecturers.indexOf(option) === -1),
+    ]);
+  }
 
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
@@ -167,7 +181,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <InfoText />
 
-        <MultipleSelectBox />
+        <MultipleSelectBox onChange={onLecturerChange} />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">

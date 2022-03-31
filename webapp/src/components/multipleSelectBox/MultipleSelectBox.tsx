@@ -1,9 +1,9 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { AutocompleteChangeDetails, AutocompleteChangeReason } from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { searchAzureUsers } from '../../api/GraphApi';
 import { useAppSelector } from '../../lib/Lib';
 import { AzureUser } from '../../reducers/session/actions';
@@ -16,17 +16,12 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox = () => {
+const MultipleSelectBox = (onChange: ((event: React.SyntheticEvent<Element, Event>, value: AzureUser[], reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<AzureUser> | undefined) => void) | undefined) => {  
   const { azureUser } = useAppSelector((state) => state.session);
   const [searchTerm, setSearchTerm] = useState('');
   const [options, setOptions] = useState<readonly AzureUser[]>([]);
-  const [value, setValue] = useState<AzureUser[]>([]);
-
-  const fixedOptions = [azureUser];
 
   const onKeyDown = async (e: any) => {
-    console.log(value);
-
     const term = e.target.value;
     setSearchTerm(term);
     if (term.length >= 3) {
@@ -41,12 +36,7 @@ const MultipleSelectBox = () => {
       className="multiSelectBox"
       fullWidth
       options={options}
-      onChange={(event, newValue) => {
-        setValue([
-          ...fixedOptions,
-          ...newValue.filter((option) => fixedOptions.indexOf(option) === -1),
-        ]);
-      }}
+      onChange={onChange}
       onKeyUp={onKeyDown}
       disableCloseOnSelect
       getOptionLabel={(option) => option.displayName}
