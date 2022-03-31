@@ -118,7 +118,7 @@ const Settings = ({
       }}
     >
       <form>
-      <Box marginTop={user.id !== undefined ? -20 : -25} height={115} marginBottom={5} marginLeft={50}>
+      <Box marginTop={-20} height={115} marginBottom={5} marginLeft={50}>
             <FormControl>
               <InputLabel id="office-selector">Organisation:</InputLabel>
               <Select
