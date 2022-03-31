@@ -49,10 +49,10 @@ const MultipleSelectBox = ({ onChange }: any) => {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option.displayName}
+          {option.displayName} <small style={{position:'relative', top:'2px', padding: '4px'}}>{option.mail}</small>
         </li>
       )}
-      renderInput={(params) => <TextField {...params} label="Talare" placeholder="" />}
+      renderInput={(params) => <TextField {...params} label="Talare (utöver dig själv)" placeholder="" />}
     />
   );
 };
