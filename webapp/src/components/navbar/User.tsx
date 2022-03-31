@@ -125,7 +125,7 @@ const User = (): ReactElement => {
           <ListItemIcon>
             <Edit fontSize="small" />
             <ListItem sx={linkStyle} component={NavLink} to="/lecture/user">
-              Hantera mina pass
+              Hantera mina inskickade bidrag
             </ListItem>
           </ListItemIcon>
         </MenuItem>
