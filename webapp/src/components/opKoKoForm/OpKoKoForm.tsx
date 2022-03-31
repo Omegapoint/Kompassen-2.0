@@ -53,8 +53,6 @@ interface FormValues {
   message: string;
 }
 
-
-
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     title: useFormValidation(values.title, titleText, invalidShortString),
@@ -103,7 +101,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const fixedLecturer: string = azureUser.id;
   const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
 
-  const onLectureChange = (event: any, newValue: AzureUser[]) => {
+  const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       fixedLecturer,
       ...newValue.filter((option) => fixedLecturer !== option.id).map(option => option.id),
@@ -200,7 +198,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         />
 
         <MultipleSelectBox 
-          onChange={onLectureChange}
+          onChange={onLecturerChange}
           fixedLecturer={fixedLecturer}
         />
 
