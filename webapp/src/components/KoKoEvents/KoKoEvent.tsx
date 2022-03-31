@@ -21,7 +21,7 @@ const KoKoEvent = (): ReactElement => {
   const [ind, setInd] = useState(0);
 
   if (isLoading || !data) return <SmallLoader />;
-  if (!data.length) return <Typography>Här var det tomt</Typography>;
+  if (!data.length) return <Typography>Finns inga planerade just nu</Typography>;
 
   return (
     <EventContext.Provider value={{ events: data, event: data[ind], ind, setInd }}>

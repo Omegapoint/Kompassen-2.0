@@ -1,4 +1,5 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { orange } from '@mui/material/colors';
 import { ReactElement, useState } from 'react';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
@@ -38,6 +39,7 @@ const Home = (): ReactElement => {
       >
         <ToggleButtonGroup
           value={alignment}
+          color='warning'
           exclusive
           fullWidth
           onChange={handleAlignment}
