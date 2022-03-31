@@ -211,7 +211,7 @@ const LectureView = ({
           <Box sx={{ gridColumn: 'span 2' }} />
           {!isUnpublishedIdea && !admin && (
             <Typography sx={{ gridColumn: 'span 1' }}>
-              {lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}
+              {lecture.approved ? 'Godkänd' : 'Bidraget är inskickat till urval'}
             </Typography>
           )}
           {admin && (

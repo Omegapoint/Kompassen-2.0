@@ -9,7 +9,7 @@ import { colors, padding } from '../../theme/Theme';
 
 const linkStyle: SxProps = { color: colors.black, textDecoration: 'underline' };
 
-const buttonClick = '"Hantera mina anmälda pass"';
+const buttonClick = '"Hantera mina inskickade bidrag"';
 
 const ConfirmLectureOpKoKo = (): ReactElement => {
   const { id } = useParams<'id'>();
@@ -22,12 +22,13 @@ const ConfirmLectureOpKoKo = (): ReactElement => {
   return (
     <Box sx={{ display: 'grid', gridGap: padding.standard, maxWidth: '1000px' }}>
       <Typography variant="h5" color="primary">
-        Din anmälan av bidrag till OPKoKo är nu skickad!
+        Bidraget är nu inskickat till urval för OPKoKo!
       </Typography>
       <div>
-        <Typography>Som tack för ert bidrag kommer ni att bli inbjudna till en föreläsning kring presentationsteknik. Det kommer ut en kalenderinbjudan inom kort! Beslut om bidragets acceptans kommer att meddelas den 26 april 2022. </Typography>
+        <Typography>Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till en digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Det kommer ut en kalenderinbjudan inom kort! <br/><br/>
+        Beslut om bidragets acceptans kommer att meddelas den 26 april 2022. </Typography>
         <Box sx={{marginTop: '60px'}}><Typography>
-          {'För att se dina anmälda pass gå till '}
+          {'För att se dina bidrag gå till '}
           <Link sx={linkStyle} component={NavLink} to="/lecture/user">
             {buttonClick}
           </Link>
