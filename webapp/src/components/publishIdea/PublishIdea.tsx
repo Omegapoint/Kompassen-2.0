@@ -24,7 +24,7 @@ import TextPanel from '../textPanel/TextPanel';
 
 interface PublishIdeaProps {
   cancel: () => void;
-  opkoko: boolean,
+  opkoko: boolean;
 }
 
 const defaultFormValue = {
@@ -77,8 +77,7 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
             .filter((e) => e)
         ),
       ],
-      
-      lecturer: values.status === 'feedback_wanted' ? azureUser.displayName : null,
+      lecturer: null,
     });
     cancel();
   };
@@ -135,7 +134,11 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
               onChange={handleChange}
               required
               name="description"
-              label={opkoko ? "Vad är det du vill höra mer om? Beskriv så tydligt du kan för att underlätta för dina kollegor att plocka idén!" :"Innehåll"}
+              label={
+                opkoko
+                  ? 'Vad är det du vill höra mer om? Beskriv så tydligt du kan för att underlätta för dina kollegor att plocka idén!'
+                  : 'Innehåll'
+              }
               variant="outlined"
             />
             <TextPanel handleEmojiClick={handleSmiley} />
@@ -150,25 +153,21 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
             label="Taggar (minst 1)"
             variant="outlined"
           />
-{!opkoko &&
-          <FormControl sx={{ gridArea: 'status' }} component="fieldset">
-            <FormLabel sx={{ paddingTop: padding.minimal }} component="legend">
-              Typ
-            </FormLabel>
-            <RadioGroup name="status" onChange={handleChange} value={values.status}>
-              <FormControlLabel
-                value="lecturer_wanted"
-                control={<Radio />}
-                label="Öppen idé"
-              />
-              <FormControlLabel
-                value="feedback_wanted"
-                control={<Radio />}
-                label="Jag vill hålla passet, söker feedback"
-              />
-            </RadioGroup>
-          </FormControl>
-}
+          {!opkoko && (
+            <FormControl sx={{ gridArea: 'status' }} component="fieldset">
+              <FormLabel sx={{ paddingTop: padding.minimal }} component="legend">
+                Typ
+              </FormLabel>
+              <RadioGroup name="status" onChange={handleChange} value={values.status}>
+                <FormControlLabel value="lecturer_wanted" control={<Radio />} label="Öppen idé" />
+                <FormControlLabel
+                  value="feedback_wanted"
+                  control={<Radio />}
+                  label="Jag vill hålla passet, söker feedback"
+                />
+              </RadioGroup>
+            </FormControl>
+          )}
           <IconButton
             sx={{ gridArea: 'cancel', padding: 0 }}
             onClick={cancel}

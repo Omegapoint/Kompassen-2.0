@@ -80,7 +80,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
 
-  // console.log(data?.firstTimePresenting?.toString());
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
@@ -149,7 +148,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       targetAudience: values.targetAudience || null,
       formatID: format.id,
       lecturer: null,
-      statusID: null,
+      lecturerID: azureUser.id,
+      lectureStatusID: null,
       videoLink: null,
       // Not applicable for OPKoKo lectures
       remote: 'local',
@@ -157,6 +157,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       duration: 0,
       maxParticipants: null,
       preparations: null,
+      lecturers: ['93cfdfd6-10f3-4be0-8bf2-ccae09ae3e82', 'f7ea0926-4b60-48aa-a698-c1b0fd17f874'],
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });

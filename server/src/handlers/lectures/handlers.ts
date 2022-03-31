@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
+import lectureLecturerDb from '../../database/lectureLecturers';
 import lectureStatusDb from '../../database/lectureStatus';
 import { httpError } from '../../lib/lib';
 import {
@@ -38,7 +39,7 @@ const lectures: Handlers = {
     const { userID } = res.locals;
 
     const item = await lecturesDB.insert(
-      { ...body, lecturerID: userID, approved: false, idea: false, statusID: unhandledStatusID },
+      { ...body, lecturerID: userID, approved: false, idea: false },
       userID
     );
     const newLectureStatus = await lectureStatusDb.insert(
@@ -48,8 +49,11 @@ const lectures: Handlers = {
       },
       userID
     );
-
-    const lectureLecturersStatus = res.send(item);
+    const updateLectureWithStatusRef = await lecturesDB.setStatus(newLectureStatus.id, item.id);
+    const lectureLecturersStatus = body.lecturers?.map((lecturer) =>
+      lectureLecturerDb.insert({ lectureID: item.id, userID: lecturer }, userID)
+    );
+    res.send(item);
   },
   async createIdea({ body }, res) {
     const { userID } = res.locals;
@@ -75,7 +79,8 @@ const lectures: Handlers = {
         firstTimePresenting: null,
         targetAudience: null,
         formatID: null,
-        statusID: null,
+        lectureStatusID: null,
+        lecturers: null,
       },
       userID
     );
