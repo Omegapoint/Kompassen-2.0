@@ -12,6 +12,7 @@ import HomeOpKoKo from '../section/home/HomeOpKoKo';
 import Lecture from '../section/lecture/Lecture';
 import OpKoKoLecture from '../section/lecture/OpKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
+import OpKoKoInfo from '../section/opkokoinfo/OpKoKoInfo';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
 import ProfileWrapper from '../section/Profile/ProfileWrapper';
 
@@ -95,6 +96,11 @@ export const appRoutes: AppRoute[] = [
     name: 'OPKoKo',
     path: '/OpKoKo',
     Component: HomeOpKoKo,
+  },
+  {
+    name: 'OPKoKoInfo',
+    path: '/opkokoinfo',
+    Component: OpKoKoInfo,
   },
   notFound,
 ];
