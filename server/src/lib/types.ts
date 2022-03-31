@@ -129,7 +129,6 @@ export interface Status extends BaseStatus, DefaultTime {
 
 // LectureStatus
 interface BaseLectureStatus {
-  name: string;
   lecture_id: string;
   status_id: string;
 }
@@ -247,6 +246,20 @@ export interface NewDBLectureLike extends BaseLectureLike {
 
 export interface LectureLike extends NewDBLectureLike, IDParam {
   createdAt: Date;
+}
+
+// LectureLecturer
+interface BaseLectureLecturer {
+  lectureID: string;
+  userID: string;
+}
+
+export type NewLectureLecturer = BaseLectureLecturer;
+
+export interface NewDBLectureLecturer extends BaseLectureLecturer {}
+
+export interface LectureLecturer extends NewDBLectureLecturer, DefaultTime {
+  id: string;
 }
 
 export interface NewLectureMessage {

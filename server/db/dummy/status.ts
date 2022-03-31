@@ -6,7 +6,7 @@ const date = new Date();
 const statuses: Status[] = [
   {
     id: 'ea399f36-1c38-4fd7-b838-c89fb663f818',
-    name: 'Unhandled ',
+    name: 'Unhandled',
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,
