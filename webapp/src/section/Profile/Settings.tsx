@@ -118,9 +118,9 @@ const Settings = ({
       }}
     >
       <form>
-      <Box marginTop={-20} height={115} marginBottom={5} marginLeft={50}>
-            <FormControl>
-              <InputLabel id="office-selector">Organisation:</InputLabel>
+      <Box marginTop={-20} height={115} marginBottom={5} marginLeft={70} width={250}>
+            <FormControl fullWidth>
+              <InputLabel id="office-selector">Organisation: </InputLabel>
               <Select
                 labelId="office-selector"
                 onChange={handleChange}
