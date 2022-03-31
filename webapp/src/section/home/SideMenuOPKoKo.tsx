@@ -1,13 +1,17 @@
 import { Image } from '@mui/icons-material';
 import { Avatar, Box, Link, Typography } from '@mui/material';
 import { ReactElement } from 'react';
+import { useQuery } from 'react-query';
+import { listLectures } from '../../api/Api';
 import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
 import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
-const SideMenuOPKoKo = (): ReactElement => (
+const SideMenuOPKoKo = (): ReactElement => {
+  const { data, isLoading } = useQuery(`listMyLectures`, () => listLectures({ mine: 'true' }));
+  return (
   <>
     {' '}
     {isAdmin() && <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events" />}
@@ -28,11 +32,12 @@ const SideMenuOPKoKo = (): ReactElement => (
         Eventyr: <Link href="mailto:omegapoint@eventyr.se">omegapoint@eventyr.se</Link><br/>
       </Typography>
     </SideCard>
-    <SideCard title="Mina inskickade bidrag" hrefText="Hantera mina inskickade bidrag" href="/lecture/user">
+    <SideCard title={data === undefined || data.length > 0 ? "Mina inskickade bidrag" : ""} hrefText="Hantera mina inskickade bidrag" href="/lecture/user">
       {' '}
       <LatestLectures />
     </SideCard>
   </>
-);
+  )
+  };
 
 export default SideMenuOPKoKo;
