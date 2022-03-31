@@ -3,10 +3,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Fragment, ReactElement } from 'react';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import { getAzureUser } from '../../api/GraphApi';
 import useAzureUser from '../../hooks/UseAzureUser';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
@@ -48,6 +49,19 @@ const LectureView = ({
   const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
+  const [lecturers, setLecturers] = useState(['']);
+
+  useEffect(() => {
+    async function fetchMyAPI(lecturer: string) {
+      return await getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
+    }
+
+    if (lecture.lecturelecturers !== null && lecture.lecturelecturers !== undefined) {
+      const lecturers = lecture.lecturelecturers.map((lecturer) => await fetchMyAPI(lecturer));
+      setLecturers(lecturers);
+    }
+  }, [lecture.lecturelecturers]);
+
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
   const [open, { on, off }] = useBoolean();
@@ -74,7 +88,7 @@ const LectureView = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   const opkokoTable = [
-    { name: 'Talare', value: lecture.lecturer },
+    { name: 'Talare', value: lecturers },
     { name: 'Titel', value: lecture.title },
     { name: 'Beskrivning', value: lecture.description },
     { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej' },
