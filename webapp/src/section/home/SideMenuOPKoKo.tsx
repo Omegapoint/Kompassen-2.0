@@ -21,9 +21,9 @@ const SideMenuOPKoKo = (): ReactElement => (
     </SideCard>
     <SideCard hrefText='Information om OPKoKo' href="/opkokoinfo" title="Information">
       <Typography variant="body1">
-        <Link href="https://www.lyyti.fi/p/OpKoKo2022/se">Anmäl dig som konferensdeltagare</Link>        <br/>
+        <Link href="https://www.lyyti.fi/p/OpKoKo2022/se" target="_blank" rel="noopener">Anmäl dig som konferensdeltagare</Link>        <br/>
         Har du frågor?<br/>
-        Slack: <Link href="https://opchat.slack.com/archives/C0CFJCZ50">#opkoko</Link><br/>
+        Slack: <Link href="https://opchat.slack.com/archives/C0CFJCZ50" target="_blank" rel="noopener">#opkoko</Link><br/>
         Mail: <Link href="mailto:opkoko@omegapoint.se">opkoko@omegapoint.se</Link><br/>
         Eventyr: <Link href="mailto:omegapoint@eventyr.se">omegapoint@eventyr.se</Link><br/>
       </Typography>
