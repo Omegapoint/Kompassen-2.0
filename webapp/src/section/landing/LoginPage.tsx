@@ -22,7 +22,7 @@ const LoginPage = (): ReactElement => {
       <Typography
         color="primary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
+        sx={{ fontFamily: fontFamilies.header, fontSize: '2.0rem' }}
       >
         OMEGAPOINT KOMPASSEN
       </Typography>

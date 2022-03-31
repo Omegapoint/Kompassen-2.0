@@ -118,24 +118,8 @@ const Settings = ({
       }}
     >
       <form>
-        {user.id !== undefined && <Typography variant="h1">Min profil</Typography>}
-        <Box sx={{ display: 'grid', gridGap: `${padding.small}` }}>
-          <Box marginTop={0}>
-            <TextField
-              {...validate.speakerBio}
-              fullWidth
-              multiline
-              minRows={10}
-              maxRows={20}
-              onChange={handleChange}
-              value={values.speakerBio}
-              name="speakerBio"
-              label="Talarbiografi"
-              variant="outlined"
-            />
-          </Box>
-          <Box marginTop={0} marginBottom={5}>
-            <FormControl fullWidth>
+      <Box marginTop={user.id !== undefined ? -23 : -25} height={115} marginBottom={5} marginLeft={50}>
+            <FormControl>
               <InputLabel id="office-selector">Organisation:</InputLabel>
               <Select
                 labelId="office-selector"
@@ -151,14 +135,27 @@ const Settings = ({
               </Select>
             </FormControl>
           </Box>
-          {user.id !== undefined && <Typography variant="h2">Hantera Notiser</Typography>}
+        <Box sx={{ display: 'flex', paddingBottom: `${padding.small}` }}>
+            <TextField
+              {...validate.speakerBio}
+              fullWidth
+              multiline
+              minRows={4}
+              maxRows={8}
+              onChange={handleChange}
+              value={values.speakerBio}
+              name="speakerBio"
+              label="Talarbiografi"
+              variant="outlined"
+            />
+          </Box>
           <Divider />
-          <Typography variant="h6">Ange önskade notifikationsinställningar:</Typography>
+          <Typography variant="h6" sx={{paddingTop: `${padding.small}`}}>Ange önskade notifikationsinställningar:</Typography>
           <Notifications handleChange={handleNotificationsChange} checked={notifications} />
           <Button color="primary" variant="contained" onClick={(e) => handleSubmit(e, false)}>
             Spara inställningarna
           </Button>
-        </Box>
+      
       </form>
     </Box>
   );

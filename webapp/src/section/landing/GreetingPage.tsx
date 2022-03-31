@@ -26,12 +26,12 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
       <Typography
         color="secondary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
+        sx={{ fontFamily: fontFamilies.header, fontSize: '2.0rem' }}
       >
         OMEGAPOINT KOMPASSEN
       </Typography>
       <Typography color="secondary" variant="h2">
-        Skapa bättre kompetensdagar
+        Skapa bättre kompetensutveckling
       </Typography>
     </Box>
     <Box

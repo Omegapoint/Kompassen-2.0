@@ -33,9 +33,9 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
       }}
     >
       <Typography variant="h2">Välkommen till Omegapoint Kompassen!</Typography>
-      <Typography variant="h6">
+      <Typography variant="body1">
         Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade
-        aktiviteter. Här finns information om kompetensdagar och kompetenskonferenser (OPKoKo).
+        aktiviteter. Här finns information och anmälan för kompetensdagar och kompetenskonferenser (OPKoKo).
       </Typography>
       <Profile setUserUpdated={setUserUpdated} />
     </Paper>
