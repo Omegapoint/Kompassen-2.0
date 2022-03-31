@@ -16,18 +16,10 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox = ({ onChange }: any) => {
-  const { azureUser } = useAppSelector((state) => state.session);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [options, setOptions] = useState<readonly AzureUser[]>([]);
-
-  const onKeyDown = async (e: any) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (term.length >= 3) {
-      setOptions(await searchAzureUsers(searchTerm));
-    }
-  };
+const MultipleSelectBox= (
+  onChange : any, 
+  onKeyUp: any,
+  options: AzureUser[]) => {
 
   return (
     <Autocomplete
@@ -37,7 +29,8 @@ const MultipleSelectBox = ({ onChange }: any) => {
       fullWidth
       options={options}
       onChange={onChange}
-      onKeyUp={onKeyDown}
+      onKeyUp={onKeyUp}
+      isOptionEqualToValue={(option,value) => option.id === value.id}
       disableCloseOnSelect
       getOptionLabel={(option) => option.displayName}
       renderOption={(props, option, { selected }) => (

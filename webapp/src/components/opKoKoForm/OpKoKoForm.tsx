@@ -14,6 +14,7 @@ import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
+import { getAzureUser, getMyUser, searchAzureUsers } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
@@ -99,21 +100,40 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
-  // Lecturers
-  const [lecturers, setLecturers] = useState<AzureUser[]>([]);
-  const fixedLecturers: AzureUser[] = [azureUser];
+  // ---- Lecturers ----
+  // Sets the pre-defined lecturers (the current user)
+  const fixedLecturers: AzureUser[] = [];
+  getMyUser().then((value) => fixedLecturers.push(value));
+  const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
+  
+  // Set the initial options list (with the fixed Lecturers) and initial search term
+  const [options, setOptions] = useState<AzureUser[]>([...fixedLecturers]);
+  const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
 
+  // OnKeyUp function to search for new term
+  const updateSearchTerm = (e: any) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    if (term.length >= 3) {
+      searchAzureUsers(searchTerm).then(value => setOptions(value))
+    }
+
+  };
+
+  // OnChange function for lecturers
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedLecturers,
       ...newValue.filter((option) => fixedLecturers.indexOf(option) === -1),
     ]);
     // Den funkar! Typ ish första användaren man lägger till funkar inte....
-    console.log(lecturers);
+    // values.lecturers = lecturers
   };
-
+ 
+  // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
+    console.log(lecturers);
     const category = categories.find((e) => e.id === values.categoryID) as Category;
     const format = formats.find((e) => e.id === values.formatID) as Format;
     const formData = {
@@ -181,7 +201,11 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <InfoText />
 
-        <MultipleSelectBox onChange={onLecturerChange} />
+        <MultipleSelectBox 
+          onChange={onLecturerChange}
+          onKeyUp={updateSearchTerm} 
+          options={options}
+        />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
