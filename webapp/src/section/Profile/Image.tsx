@@ -17,7 +17,7 @@ const ProfileImage = (): ReactElement => {
         },
       };
       const result = await fetch(
-        `https://graph.microsoft.com/v1.0/users/33ff501d-fd05-4e18-a318-12ad6608ef0b/photo/$value`,
+        `https://graph.microsoft.com/v1.0/users/${azureUser.id}/photo/$value`,
         options
       )
         // eslint-disable-next-line no-console
