@@ -1,7 +1,7 @@
 import { Image } from '@mui/icons-material';
 import { Avatar, Box, Link, Typography } from '@mui/material';
 import { ReactElement } from 'react';
-import KoKoEvent from '../../components/KoKoEvents/KoKoEvent';
+import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
 import { isAdmin } from '../../lib/Lib';
@@ -17,7 +17,7 @@ const SideMenuOPKoKo = (): ReactElement => (
       href="/lecture/OpKoKo/create"
       title="Nästa OPKoKo"
     >
-      <KoKoEvent />
+      <KoKoEvents />
     </SideCard>
     <SideCard hrefText='Information om OPKoKo' href="/opkokoinfo" title="Information">
       <Typography variant="body1">

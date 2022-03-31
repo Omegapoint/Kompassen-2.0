@@ -1,7 +1,7 @@
-import { Format } from 'logform';
 import { logger } from '../config/config';
 import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
+import { IDParam, LectureLecturer, NewLectureLecturer } from '../lib/types';
 
 const SELECT_LECTURELECTURERS = `
     SELECT id, 
@@ -19,9 +19,16 @@ const SELECT_LECTURELECTURER_BY_ID = `
     WHERE id = $1
 `;
 
+const INSERT_LECTURELECTURER = `
+    INSERT INTO lecture_lecturers(lecture_id, user_id, created_by, updated_by)
+    VALUES ($1, $2, $3, $3)
+    RETURNING id
+`;
+
 interface LectureLecturerDb {
-  list: () => Promise<Format[]>;
-  getByID: (id: string) => Promise<Format | null>;
+  list: () => Promise<LectureLecturer[]>;
+  getByID: (id: string) => Promise<LectureLecturer | null>;
+  insert: (lectureLecturer: NewLectureLecturer, id: string) => Promise<IDParam>;
 }
 
 const lectureLecturerDb: LectureLecturerDb = {
@@ -36,6 +43,14 @@ const lectureLecturerDb: LectureLecturerDb = {
       return null;
     }
     return snakeToCamel(rows[0]);
+  },
+  async insert(lectureLecturer, userId): Promise<IDParam> {
+    const { rows } = await db.query(INSERT_LECTURELECTURER, [
+      lectureLecturer.lectureID,
+      lectureLecturer.userID,
+      userId,
+    ]);
+    return rows[0];
   },
 };
 
