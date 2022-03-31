@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
+import lectureStatusDb from '../../database/lectureStatus';
 import { httpError } from '../../lib/lib';
 import {
   Approved,
@@ -33,13 +34,22 @@ interface Handlers {
 
 const lectures: Handlers = {
   async create({ body }, res) {
+    const unhandledStatusID = 'ea399f36-1c38-4fd7-b838-c89fb663f818';
     const { userID } = res.locals;
+
     const item = await lecturesDB.insert(
-      { ...body, lecturerID: userID, approved: false, idea: false },
+      { ...body, lecturerID: userID, approved: false, idea: false, statusID: unhandledStatusID },
       userID
     );
-    // const item = await lectureStatusDb.inser
-    res.send(item);
+    const newLectureStatus = await lectureStatusDb.insert(
+      {
+        lecture_id: item.id,
+        status_id: unhandledStatusID,
+      },
+      userID
+    );
+
+    const lectureLecturersStatus = res.send(item);
   },
   async createIdea({ body }, res) {
     const { userID } = res.locals;
