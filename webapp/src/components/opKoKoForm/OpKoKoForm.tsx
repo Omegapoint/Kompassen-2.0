@@ -78,17 +78,18 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
 
+  console.log(data?.firstTimePresenting?.toString());
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
     lecturer: azureUser.displayName,
-    firstTimePresenting: 'no',
-    keyTakeAway: '',
+    firstTimePresenting: data?.firstTimePresenting?.toString() || 'false',
+    keyTakeAway: data?.keyTakeaway || '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
     formatID: formats.find((format) => format.id === data?.formatID)?.id || formats[0].id,
-    targetAudience: '',
-    internal: 'no',
-    tags: '',
+    targetAudience: data?.targetAudience || '',
+    internal: data?.internalPresentation?.toString() || 'false',
+    tags: data?.tags?.toString() || '',
     description: data?.description || '',
     requirements: data?.requirements || '',
     message: data?.message || '',
@@ -166,17 +167,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </Typography>
         <InfoText />
 
-        <Typography sx={{ paddingTop: padding.minimal }} />
-        <TextField
-          fullWidth
-          onChange={handleChange}
-          required
-          value={values.lecturer}
-          name="lecturer"
-          label="Talare "
-          variant="outlined"
-          // helperText="Vem eller vilka kommer att hålla i passet. Det är du som anmäler bidraget som är vår kontaktperson. Det är ditt ansvar att förmedla information/frågor angående bidraget till den/de du skall hålla det med. Vänligen ange både för- och efternamn"
-        />
         <MultipleSelectBox />
 
         <div>
@@ -189,8 +179,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             onChange={handleChange}
             value={values.firstTimePresenting}
           >
-            <FormControlLabel key="yes" value="yes" control={<Radio />} label="Ja" />
-            <FormControlLabel key="no" value="no" control={<Radio />} label="Nej" />
+            <FormControlLabel key="true" value="true" control={<Radio />} label="Ja" />
+            <FormControlLabel key="false" value="false" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
         <TextField
@@ -267,8 +257,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Intern presentation (ämnet känsligt/konfidentiellt)
           </FormLabel>
           <RadioGroup name="internal" onChange={handleChange} value={values.internal}>
-            <FormControlLabel value="yes" control={<Radio />} label="Ja" />
-            <FormControlLabel value="no" control={<Radio />} label="Nej" />
+            <FormControlLabel key="true" value="true" control={<Radio />} label="Ja" />
+            <FormControlLabel key="false" value="false" control={<Radio />} label="Nej" />
           </RadioGroup>
         </div>
         <TextField

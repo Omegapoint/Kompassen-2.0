@@ -10,7 +10,10 @@ import DaysToGo from './DaysToGo';
 import EventContext from './EventContext';
 import LectureStats from './LectureStats';
 
-const listNewEvents = () => listEvents({ filter: 'new' });
+const listNewEvents = () =>
+  listEvents({ filter: 'new' }).then((events) =>
+    events.filter((event) => event.organisationID === 'OpKoKo')
+  );
 
 const CompetenceDays = (): ReactElement => {
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
