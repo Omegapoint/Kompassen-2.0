@@ -52,8 +52,6 @@ interface FormValues {
   message: string;
 }
 
-
-
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     title: useFormValidation(values.title, titleText, invalidShortString),
@@ -105,12 +103,14 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const [lecturers, setLecturers] = useState<AzureUser[]>([]);
   const fixedLecturers: AzureUser[] = [azureUser];
 
-  const onLecturerChange = (event, newValue: AzureUser[]) => {
+  const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedLecturers,
       ...newValue.filter((option) => fixedLecturers.indexOf(option) === -1),
     ]);
-  }
+    // Den funkar! Typ ish första användaren man lägger till funkar inte....
+    console.log(lecturers);
+  };
 
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();

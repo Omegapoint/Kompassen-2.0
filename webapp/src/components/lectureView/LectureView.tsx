@@ -77,14 +77,13 @@ const LectureView = ({
     { name: 'Talare', value: lecture.lecturer },
     { name: 'Titel', value: lecture.title },
     { name: 'Beskrivning', value: lecture.description },
-    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej'},
+    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej' },
     { name: 'Key take away', value: lecture.keyTakeaway },
     { name: 'Format', value: formatName?.name },
     { name: 'Målgrupp', value: lecture.targetAudience },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
   ].map((e) => ({ ...e, value: e.value || '-' }));
-
 
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
@@ -196,17 +195,19 @@ const LectureView = ({
             gridGap: padding.minimal,
           }}
         >
-          {organisation?.name !== 'OpKoKo' ? table.map((e) => (
-            <Fragment key={e.name}>
-              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-            </Fragment>
-          )) : opkokoTable.map((e) => (
-            <Fragment key={e.name}>
-              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-            </Fragment>
-          ))}
+          {organisation?.name !== 'OpKoKo'
+            ? table.map((e) => (
+                <Fragment key={e.name}>
+                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                </Fragment>
+              ))
+            : opkokoTable.map((e) => (
+                <Fragment key={e.name}>
+                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                </Fragment>
+              ))}
           <Box sx={{ gridColumn: 'span 2' }} />
           {!isUnpublishedIdea && !admin && (
             <Typography sx={{ gridColumn: 'span 1' }}>
