@@ -103,11 +103,10 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const onLectureChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
-      ...fixedLecturers,
-      ...newValue.filter((option) => fixedLecturers.indexOf(option) === -1),
+      fixedLecturer,
+      ...newValue.filter((option) => fixedLecturer.id !== option.id),
     ]);
-    // Den funkar! Typ ish första användaren man lägger till funkar inte....
-    // values.lecturers = lecturers
+    // Spara lecturers till values så det submittas med formen: values.lecturers = lecturers
   };
  
   // ----- Handle Form Submit ----
