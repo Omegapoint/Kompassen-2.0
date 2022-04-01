@@ -50,8 +50,11 @@ const LectureView = ({
   const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
   const [lecturers, setLecturers] = useState(['']);
+  
   useEffect(() => {
     const lecturersName: string[] = [];
+
+    const lecturersName = [''];
     async function fetchMyAPI(lecturer: string) {
       return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
     }
