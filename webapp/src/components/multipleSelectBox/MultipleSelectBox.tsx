@@ -16,7 +16,7 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
+const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
@@ -25,8 +25,8 @@ const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
     const term = e.target.value;
     setSearchTerm(term);
     if (term.length >= 3) {
-      searchAzureUsers(searchTerm).then(value => {
-        setOptions(value.filter((user) => user.mail && user.mail.includes('omegapoint.se')));        
+      searchAzureUsers(searchTerm).then((value) => {
+        setOptions(value.filter((user) => user.mail && user.mail.includes('omegapoint.se')));
       });
     }
   };
@@ -40,10 +40,10 @@ const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
       options={options}
       onChange={onChange}
       onKeyUp={onKeyUp}
-      isOptionEqualToValue={(option,value) => option.id === value.id}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
       disableCloseOnSelect
       getOptionLabel={(option) => option.displayName}
-      noOptionsText='Start searching for options...'
+      noOptionsText="Start searching for options..."
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
@@ -53,10 +53,13 @@ const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option.displayName} <small style={{position:'relative', top:'2px', padding: '4px'}}>{option.mail}</small>
+          {option.displayName}{' '}
+          <small style={{ position: 'relative', top: '2px', padding: '4px' }}>{option.mail}</small>
         </li>
       )}
-      renderInput={(params) => <TextField {...params} label="Talare (utöver dig själv)" placeholder="" />}
+      renderInput={(params) => (
+        <TextField {...params} label="Talare (utöver dig själv)" placeholder="" />
+      )}
     />
   );
 };
