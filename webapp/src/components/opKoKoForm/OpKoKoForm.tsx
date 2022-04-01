@@ -98,18 +98,10 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
+  const fixedLecturer: AzureUser = azureUser;
+  const [lecturers, setLecturers] = useState<AzureUser[]>([fixedLecturer]);
 
-  // ---- Lecturers ----
-  // Sets the pre-defined lecturers (the current user)
-  const fixedLecturers: AzureUser[] = [];
-  getMyUser().then((value) => fixedLecturers.push(value));
-  const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
-  
-  // Set the initial options list (with the fixed Lecturers) and initial search term
-  const [options, setOptions] = useState<AzureUser[]>([...fixedLecturers]);
-  const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
-
-  const onLecturerChange = (event: any, newValue: AzureUser[]) => {
+  const onLectureChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedLecturers,
       ...newValue.filter((option) => fixedLecturers.indexOf(option) === -1),
@@ -196,7 +188,8 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         <InfoText />
 
         <MultipleSelectBox 
-          onChange={onLecturerChange}
+          onChange={onLectureChange}
+          fixedLecturer={fixedLecturer}
         />
 
         <div>

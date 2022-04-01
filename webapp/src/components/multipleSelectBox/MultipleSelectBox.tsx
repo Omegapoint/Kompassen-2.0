@@ -16,10 +16,10 @@ interface SearchableAzureUser {
   id: string;
 }
 
-const MultipleSelectBox = ({ onChange }: any) => {
+const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
   const { azureUser } = useAppSelector((state) => state.session);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [options, setOptions] = useState<readonly AzureUser[]>([]);
+  const [options, setOptions] = useState<AzureUser[]>([]);
+  const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
 
   const onKeyUp = async (e: any) => {
     const term = e.target.value;
@@ -41,6 +41,7 @@ const MultipleSelectBox = ({ onChange }: any) => {
       isOptionEqualToValue={(option,value) => option.id === value.id}
       disableCloseOnSelect
       getOptionLabel={(option) => option.displayName}
+      noOptionsText='Start searching for options...'
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
