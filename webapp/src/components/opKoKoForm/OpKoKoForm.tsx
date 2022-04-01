@@ -10,15 +10,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { FormEvent, ReactElement, useEffect } from 'react';
+import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
+import { getAzureUser, getMyUser, searchAzureUsers } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { Category, Format, Lecture } from '../../lib/Types';
+import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
 import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
 import { InfoText } from './InfoText';
@@ -81,7 +83,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
-    lecturer: azureUser.displayName,
+    lecturers: azureUser.displayName,
     firstTimePresenting: data?.firstTimePresenting?.toString() || 'false',
     keyTakeAway: data?.keyTakeaway || '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
@@ -96,7 +98,18 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
+  const fixedLecturer: string = azureUser.id;
+  const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
 
+  const onLecturerChange = (event: any, newValue: AzureUser[]) => {
+    setLecturers([
+      fixedLecturer,
+      ...newValue.filter((option) => fixedLecturer !== option.id).map(option => option.id),
+    ]);
+    // values.lecturers = lecturers; // Spara lecturers till values så det submittas med formen
+  };
+ 
+  // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
     const category = categories.find((e) => e.id === values.categoryID) as Category;
@@ -123,7 +136,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       duration: 0,
       maxParticipants: null,
       preparations: null,
-      lecturers: ['93cfdfd6-10f3-4be0-8bf2-ccae09ae3e82', 'f7ea0926-4b60-48aa-a698-c1b0fd17f874'],
+      lecturers,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
@@ -154,21 +167,40 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           rowGap: padding.medium,
         }}
       >
-        <Typography
-          sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
-          variant="h1"
+        <div 
+          style={{display: 'grid', justifySelf: 'center'}}
         >
-          {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
+          <Typography
+            sx={{ display: 'grid', justifySelf: 'center', color: colors.orange}}
+            variant="h1"
+          >
+            {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
+          </Typography>
           <Typography
             sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
-            variant="h6"
+            variant="subtitle1"
           >
             Anmälan stänger kl 23.59 17 april 2022
           </Typography>
-        </Typography>
+        </div>
         <InfoText />
 
-        <MultipleSelectBox />
+        <TextField
+          id="outlined-read-only-input"
+          label="Huvudtalare"
+          required
+          disabled
+          defaultValue={`${azureUser.displayName}: ${azureUser.mail}` }
+          sx={{width: 500}}
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+
+        <MultipleSelectBox 
+          onChange={onLecturerChange}
+          fixedLecturer={fixedLecturer}
+        />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
