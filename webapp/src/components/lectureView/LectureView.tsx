@@ -50,15 +50,16 @@ const LectureView = ({
   const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
   const [lecturers, setLecturers] = useState(['']);
-
+  const space = " ";
   useEffect(() => {
+    const lecturersName = [''];
     async function fetchMyAPI(lecturer: string) {
-      return await getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
+      return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
     }
 
     if (lecture.lecturelecturers !== null && lecture.lecturelecturers !== undefined) {
-      const lecturers = lecture.lecturelecturers.map((lecturer) => await fetchMyAPI(lecturer));
-      setLecturers(lecturers);
+      lecture.lecturelecturers.map((lecturer) => fetchMyAPI(lecturer).then((value) => lecturersName.push(value)));
+      setLecturers(lecturersName);
     }
   }, [lecture.lecturelecturers]);
 
@@ -88,7 +89,7 @@ const LectureView = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   const opkokoTable = [
-    { name: 'Talare', value: lecturers },
+    { name: 'Talare', value: lecturers.map((lecturer) => lecturer + space) },
     { name: 'Titel', value: lecture.title },
     { name: 'Beskrivning', value: lecture.description },
     { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej' },
