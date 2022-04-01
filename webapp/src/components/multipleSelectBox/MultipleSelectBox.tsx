@@ -21,11 +21,13 @@ const MultipleSelectBox = ( {onChange}: any, fixedLecturer: AzureUser) => {
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
 
-  const onKeyUp = async (e: any) => {
+  const onKeyUp = (e: any) => {
     const term = e.target.value;
     setSearchTerm(term);
     if (term.length >= 3) {
-      setOptions(await searchAzureUsers(searchTerm));
+      searchAzureUsers(searchTerm).then(value => {
+        setOptions(value.filter((user) => user.mail && user.mail.includes('omegapoint.se')));        
+      });
     }
   };
 
