@@ -186,6 +186,18 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </div>
         <InfoText />
 
+        <TextField
+          id="outlined-read-only-input"
+          label="Huvudtalare"
+          required
+          disabled
+          defaultValue={`${azureUser.displayName}: ${azureUser.mail}` }
+          sx={{width: 500}}
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+
         <MultipleSelectBox 
           onChange={onLectureChange}
           fixedLecturer={fixedLecturer}
