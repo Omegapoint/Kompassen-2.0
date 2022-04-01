@@ -177,18 +177,22 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           rowGap: padding.medium,
         }}
       >
-        <Typography
-          sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
-          variant="h1"
+        <div 
+          style={{display: 'grid', justifySelf: 'center'}}
         >
-          {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
+          <Typography
+            sx={{ display: 'grid', justifySelf: 'center', color: colors.orange}}
+            variant="h1"
+          >
+            {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
+          </Typography>
           <Typography
             sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
-            variant="h6"
+            variant="subtitle1"
           >
             Anmälan stänger kl 23.59 17 april 2022
           </Typography>
-        </Typography>
+        </div>
         <InfoText />
 
         <MultipleSelectBox 
