@@ -107,7 +107,6 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       ...newValue.filter((option) => fixedLecturer !== option.id).map(option => option.id),
     ]);
     // values.lecturers = lecturers; // Spara lecturers till values så det submittas med formen
-    console.log(lecturers)
   };
  
   // ----- Handle Form Submit ----
