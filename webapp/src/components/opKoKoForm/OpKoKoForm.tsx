@@ -83,7 +83,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
-    lecturer: azureUser.displayName,
+    lecturers: azureUser.displayName,
     firstTimePresenting: data?.firstTimePresenting?.toString() || 'false',
     keyTakeAway: data?.keyTakeaway || '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
@@ -98,21 +98,21 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
-  const fixedLecturer: AzureUser = azureUser;
-  const [lecturers, setLecturers] = useState<AzureUser[]>([fixedLecturer]);
+  const fixedLecturer: string = azureUser.id;
+  const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
 
   const onLectureChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       fixedLecturer,
-      ...newValue.filter((option) => fixedLecturer.id !== option.id),
+      ...newValue.filter((option) => fixedLecturer !== option.id).map(option => option.id),
     ]);
-    // Spara lecturers till values så det submittas med formen: values.lecturers = lecturers
+    // values.lecturers = lecturers; // Spara lecturers till values så det submittas med formen
+    console.log(lecturers)
   };
  
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
-    console.log(lecturers);
     const category = categories.find((e) => e.id === values.categoryID) as Category;
     const format = formats.find((e) => e.id === values.formatID) as Format;
     const formData = {
@@ -137,7 +137,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       duration: 0,
       maxParticipants: null,
       preparations: null,
-      lecturers: ['93cfdfd6-10f3-4be0-8bf2-ccae09ae3e82', 'f7ea0926-4b60-48aa-a698-c1b0fd17f874'],
+      lecturers,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
