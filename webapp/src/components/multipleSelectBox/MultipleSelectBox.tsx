@@ -38,7 +38,7 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
               (user.mail.includes('omegapoint.se') ||
                 user.mail.includes('integrationsbolaget.se') ||
                 user.mail.includes('molnbolaget.se'))
-          )
+          ).filter((user) => user.displayName !== azureUser.displayName)
         );
       });
     }
