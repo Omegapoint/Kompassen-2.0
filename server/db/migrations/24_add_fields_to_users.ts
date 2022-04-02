@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> =>
     .then(() =>
       knex.schema.alterTable('users', (t) => {
         t.text('speaker_bio').nullable().alter();
-        t.uuid('office_id').nullable().alter();
+        t.uuid('office_id').references('offices.id').nullable().alter();
       })
     );
 

@@ -212,7 +212,7 @@ const LectureView = ({
             gridGap: padding.minimal,
           }}
         >
-          {organisation?.name !== 'OpKoKo'
+          {organisation?.name !== 'OPKoKo'
             ? table.map((e) => (
                 <Fragment key={e.name}>
                   <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>

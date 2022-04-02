@@ -18,8 +18,8 @@ export const up = async (knex: Knex): Promise<void> =>
         t.boolean('internal_presentation').nullable().alter();
         t.boolean('first_time_presenting').nullable().alter();
         t.text('target_audience').nullable().alter();
-        t.uuid('format_id').nullable().alter();
-        t.uuid('lecture_status_id').nullable().alter();
+        t.uuid('format_id').references('formats.id').nullable().alter();
+        t.uuid('lecture_status_id').references('lecture_status.id').nullable().alter();
       })
     );
 
