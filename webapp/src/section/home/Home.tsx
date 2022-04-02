@@ -1,9 +1,8 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { orange } from '@mui/material/colors';
 import { ReactElement, useState } from 'react';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
-import HomeOPKoKo from './HomeOpKoKo';
+import HomeOPKoKo from './HomeOPKoKo';
 import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
 
@@ -39,7 +38,7 @@ const Home = (): ReactElement => {
       >
         <ToggleButtonGroup
           value={alignment}
-          color='warning'
+          color="warning"
           exclusive
           fullWidth
           onChange={handleAlignment}
@@ -52,9 +51,9 @@ const Home = (): ReactElement => {
             Kompetensdagar
           </ToggleButton>
         </ToggleButtonGroup>
-        <Box sx={{width:'320px', gridGap: padding.standard,}}>
-        {alignment === 'kompetensdag' && <SideMenuCompetenceDays />}
-        {alignment === 'opkoko' && <SideMenuOPKoKo />}
+        <Box sx={{ width: '320px', gridGap: padding.standard }}>
+          {alignment === 'kompetensdag' && <SideMenuCompetenceDays />}
+          {alignment === 'opkoko' && <SideMenuOPKoKo />}
         </Box>
       </Box>
     </Box>

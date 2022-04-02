@@ -30,6 +30,8 @@ interface LectureFormProps {
 
 const titleText = `Titeln måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const descriptionText = `Innehållet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const keyTakeawayText = `Key take away måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
+const targetAudienceyText = `Målgrupp måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const requirementsText = `Förkunskapskrav måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 
@@ -56,6 +58,12 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
   const validate = {
     title: useFormValidation(values.title, titleText, invalidShortString),
     description: useFormValidation(values.description, descriptionText, invalidLongString),
+    keyTakeAway: useFormValidation(values.keyTakeAway, keyTakeawayText, invalidShortString),
+    targetAudience: useFormValidation(
+      values.targetAudience,
+      targetAudienceyText,
+      invalidShortString
+    ),
     requirements: useFormValidation(
       values.requirements,
       requirementsText,
@@ -70,7 +78,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
   };
 };
 // The more complex form to create a new lecture
-const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
+const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const allCategories = useAppSelector((state) => state.categories);
   const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
@@ -117,14 +125,14 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       description: values.description,
       eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
       categoryID: category.id,
-      keyTakeaway: values.keyTakeAway || null,
+      keyTakeaway: values.keyTakeAway,
       requirements: values.requirements || null,
       message: values.message || null,
       internalPresentation: !!values.internal,
       firstTimePresenting: !!values.firstTimePresenting,
-      targetAudience: values.targetAudience || null,
+      targetAudience: values.targetAudience,
       formatID: format.id,
-      lecturer: null,
+      lecturer: azureUser.displayName,
       lecturerID: azureUser.id,
       lectureStatusID: null,
       videoLink: null,
@@ -146,13 +154,13 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   useEffect(() => {
     if (updateLectureRequest.isSuccess) {
-      navigate(`/lecture/OpKoKo/${updateLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/OPKoKo/${updateLectureRequest.data?.id}/confirm`);
     }
   }, [navigate, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
 
   useEffect(() => {
     if (createLectureRequest.isSuccess) {
-      navigate(`/lecture/OpKoKo/${createLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/OPKoKo/${createLectureRequest.data?.id}/confirm`);
     }
   }, [navigate, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 
@@ -361,4 +369,4 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   );
 };
 
-export default OpKoKoForm;
+export default OPKoKoForm;

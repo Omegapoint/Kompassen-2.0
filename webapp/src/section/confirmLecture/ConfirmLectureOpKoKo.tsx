@@ -11,7 +11,7 @@ const linkStyle: SxProps = { color: colors.black, textDecoration: 'underline' };
 
 const buttonClick = '"Hantera mina inskickade bidrag"';
 
-const ConfirmLectureOpKoKo = (): ReactElement => {
+const ConfirmLectureOPKoKo = (): ReactElement => {
   const { id } = useParams<'id'>();
   const { data, isLoading } = useQuery(`lecture-${id}`, () =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -25,20 +25,26 @@ const ConfirmLectureOpKoKo = (): ReactElement => {
         Bidraget är nu inskickat till urval för OPKoKo!
       </Typography>
       <div>
-        <Typography>Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till en digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Det kommer ut en kalenderinbjudan inom kort! <br/><br/>
-        Beslut om bidragets acceptans kommer att meddelas den 26 april 2022. </Typography>
-        <Box sx={{marginTop: '60px'}}><Typography>
-          {'För att se dina bidrag gå till '}
-          <Link sx={linkStyle} component={NavLink} to="/lecture/user">
-            {buttonClick}
-          </Link>
-          .
+        <Typography>
+          Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till en
+          digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Det kommer
+          ut en kalenderinbjudan inom kort! <br />
+          <br />
+          Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
         </Typography>
+        <Box sx={{ marginTop: '60px' }}>
+          <Typography>
+            {'För att se dina bidrag gå till '}
+            <Link sx={linkStyle} component={NavLink} to="/lecture/user">
+              {buttonClick}
+            </Link>
+            .
+          </Typography>
         </Box>
       </div>
       <Typography>
         {'Känner du att du har mer att bidra med? '}
-        <Link sx={linkStyle} component={NavLink} to="/lecture/OpKoKo/create">
+        <Link sx={linkStyle} component={NavLink} to="/lecture/OPKoKo/create">
           Skicka in ett till bidrag!
         </Link>
       </Typography>
@@ -47,4 +53,4 @@ const ConfirmLectureOpKoKo = (): ReactElement => {
   );
 };
 
-export default ConfirmLectureOpKoKo;
+export default ConfirmLectureOPKoKo;

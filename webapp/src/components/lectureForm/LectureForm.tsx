@@ -115,7 +115,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const allOrganisations = useAppSelector((state) => state.organisations);
   const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
-  const events = useAppSelector((state) => state.events);
+  const events = useAppSelector((state) =>
+    state.events.filter(
+      (event) =>
+        event.organisationID !==
+        allOrganisations.find((organisation) => organisation?.name === 'OPKoKo')?.id
+    )
+  );
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();

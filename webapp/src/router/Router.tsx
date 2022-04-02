@@ -3,16 +3,16 @@ import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import { isAdmin } from '../lib/Lib';
 import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
-import ConfirmLectureOpKoKo from '../section/confirmLecture/ConfirmLectureOpKoKo';
+import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
 import EventPlanner from '../section/eventPlanner/EventPlanner';
 import Events from '../section/events/Events';
 import EventViewer from '../section/eventViewer/EventViewer';
 import Home from '../section/home/Home';
-import HomeOpKoKo from '../section/home/HomeOpKoKo';
+import HomeOPKoKo from '../section/home/HomeOPKoKo';
 import Lecture from '../section/lecture/Lecture';
-import OpKoKoLecture from '../section/lecture/OpKoKoLecture';
+import OPKoKoLecture from '../section/lecture/OPKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
-import OpKoKoInfo from '../section/opkokoinfo/OpKoKoInfo';
+import OPKoKoInfo from '../section/OPKoKoInfo/OPKoKoInfo';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
 import ProfileWrapper from '../section/Profile/ProfileWrapper';
 
@@ -37,8 +37,8 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Anmäl OPKoKo-bidrag',
-    path: '/lecture/OpKoKo/create',
-    Component: OpKoKoLecture,
+    path: '/lecture/OPKoKo/create',
+    Component: OPKoKoLecture,
   },
   {
     name: 'Redigera kompetensdagsbidrag',
@@ -47,8 +47,8 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Redigera bidrag',
-    path: '/lecture/OpKoKo/edit/:id',
-    Component: OpKoKoLecture,
+    path: '/lecture/OPKoKo/edit/:id',
+    Component: OPKoKoLecture,
   },
   {
     name: 'Inskickat bidrag till kompetensdag',
@@ -57,8 +57,8 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Inskickat bidrag till OPKoKo',
-    path: '/lecture/OpKoKo/:id/confirm',
-    Component: ConfirmLectureOpKoKo,
+    path: '/lecture/OPKoKo/:id/confirm',
+    Component: ConfirmLectureOPKoKo,
   },
   {
     name: 'Mina inskickade bidrag',
@@ -94,13 +94,13 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'OPKoKo',
-    path: '/OpKoKo',
-    Component: HomeOpKoKo,
+    path: '/OPKoKo',
+    Component: HomeOPKoKo,
   },
   {
     name: 'OPKoKoInfo',
-    path: '/opkokoinfo',
-    Component: OpKoKoInfo,
+    path: '/OPKoKoinfo',
+    Component: OPKoKoInfo,
   },
   notFound,
 ];
