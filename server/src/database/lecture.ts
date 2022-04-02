@@ -41,7 +41,7 @@ export const SELECT_LECTURES = `
            l.target_audience,
            l.format_id,
            l.lecture_status_id,
-           (SELECT array_agg(lecture_lecturers.user_id) as lectureLecturers FROM lecture_lecturers WHERE lecture_id = l.id)
+           (SELECT array_agg(lecture_lecturers.user_id) as lecturers FROM lecture_lecturers WHERE lecture_id = l.id)
     FROM lectures l
 `;
 

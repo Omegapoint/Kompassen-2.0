@@ -102,7 +102,6 @@ const lectures: Handlers = {
   },
   async update({ body }, res) {
     const { userID, role } = res.locals;
-
     const currentLecture = await lecturesDB.getByID(body.id);
 
     if (!currentLecture) {
@@ -115,6 +114,9 @@ const lectures: Handlers = {
     }
 
     const lecturerID = currentLecture?.lecturer ? currentLecture.lecturerID : userID;
+
+    if (currentLecture.idea === true) {
+    }
 
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
