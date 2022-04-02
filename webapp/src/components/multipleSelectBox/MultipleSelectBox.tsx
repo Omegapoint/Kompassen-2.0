@@ -11,11 +11,6 @@ import { AzureUser } from '../../reducers/session/actions';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-interface SearchableAzureUser {
-  displayName: string;
-  id: string;
-}
-
 const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);

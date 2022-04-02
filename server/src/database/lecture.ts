@@ -107,7 +107,7 @@ const UPDATE_LECTURE = `
         first_time_presenting = $19,
         target_audience  = $20,
         format_id        = $21,
-        lecture_status_id        = $22,
+        lecture_status_id = $22
     WHERE id = $23
     RETURNING id
 `;
