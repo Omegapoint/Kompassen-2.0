@@ -77,7 +77,7 @@ resource "azurerm_container_registry" "acr" {
 }
 
 resource "random_password" "password" {
-  length           = 42
+  length           = 41
   special          = true
   override_special = "_%@"
 }
