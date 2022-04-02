@@ -26,7 +26,15 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
     setSearchTerm(term);
     if (term.length >= 3) {
       searchAzureUsers(searchTerm).then((value) => {
-        setOptions(value.filter((user) => user.mail && user.mail.includes('omegapoint.se')));
+        setOptions(
+          value.filter(
+            (user) =>
+              user.mail &&
+              (user.mail.includes('omegapoint.se') ||
+                user.mail.includes('integrationsbolaget.se') ||
+                user.mail.includes('molnbolaget.se'))
+          )
+        );
       });
     }
   };

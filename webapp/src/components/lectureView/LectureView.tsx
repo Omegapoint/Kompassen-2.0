@@ -50,7 +50,6 @@ const LectureView = ({
   const editLink = organisation?.name === 'OpKoKo' ? '/lecture/OpKoKo/edit/' : '/lecture/edit/';
 
   const [lecturers, setLecturers] = useState(['']);
-  const space = ' ';
   useEffect(() => {
     const lecturersName: string[] = [];
 

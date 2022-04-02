@@ -14,7 +14,6 @@ import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
-import { getAzureUser, getMyUser, searchAzureUsers } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
@@ -104,11 +103,10 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       fixedLecturer,
-      ...newValue.filter((option) => fixedLecturer !== option.id).map(option => option.id),
+      ...newValue.filter((option) => fixedLecturer !== option.id).map((option) => option.id),
     ]);
-    // values.lecturers = lecturers; // Spara lecturers till values så det submittas med formen
   };
- 
+
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
@@ -141,6 +139,7 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
+      console.log(lecturers);
       createLectureRequest.mutate({ ...formData, draft });
     }
   };
@@ -167,11 +166,9 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           rowGap: padding.medium,
         }}
       >
-        <div 
-          style={{display: 'grid', justifySelf: 'center'}}
-        >
+        <div style={{ display: 'grid', justifySelf: 'center' }}>
           <Typography
-            sx={{ display: 'grid', justifySelf: 'center', color: colors.orange}}
+            sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
             variant="h1"
           >
             {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
@@ -190,17 +187,14 @@ const OpKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           label="Huvudtalare"
           required
           disabled
-          defaultValue={`${azureUser.displayName}: ${azureUser.mail}` }
-          sx={{width: 500}}
+          defaultValue={`${azureUser.displayName}: ${azureUser.mail}`}
+          sx={{ width: 500 }}
           InputProps={{
             readOnly: true,
           }}
         />
 
-        <MultipleSelectBox 
-          onChange={onLecturerChange}
-          fixedLecturer={fixedLecturer}
-        />
+        <MultipleSelectBox onChange={onLecturerChange} fixedLecturer={fixedLecturer} />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
