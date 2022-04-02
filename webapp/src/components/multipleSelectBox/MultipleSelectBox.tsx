@@ -25,6 +25,7 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
       ...fixedOption,
       ...newValue.filter((option) => fixedOption.indexOf(option) === -1),
     ]);
+    onChange(event, newValue);
   };
   const onKeyUp = (e: any) => {
     const term = e.target.value;
