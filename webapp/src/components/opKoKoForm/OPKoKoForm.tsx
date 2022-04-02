@@ -190,18 +190,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </div>
         <InfoText />
 
-        <TextField
-          id="outlined-read-only-input"
-          label="Huvudtalare"
-          required
-          disabled
-          defaultValue={`${azureUser.displayName}: ${azureUser.mail}`}
-          sx={{ width: 500 }}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-
         <MultipleSelectBox onChange={onLecturerChange} fixedLecturer={fixedLecturer} />
 
         <div>
@@ -323,9 +311,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           fullWidth
           onChange={handleChange}
           name="message"
-          label="Meddelande till planerare: publiceras ej med bidraget, detta är enbart info till
-          programutskottet. Be om extra stöd, förklara något av dina svar, beskriv upplägget mer eller
-          kanske bara sälja in bidraget lite extra."
+          label="Meddelande: publiceras ej med bidraget, enbart info till
+          programutskottet. Be om extra stöd, beskriv upplägget mer etc. Anmäler du ett bidrag åt en gäst? Skriv det här! "
           multiline
           minRows={3}
           maxRows={6}

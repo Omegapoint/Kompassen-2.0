@@ -28,7 +28,7 @@ const LoginPage = (): ReactElement => {
       </Typography>
       <Box sx={{ display: 'grid', gridGap: padding.standard }}>
         <Typography variant="h6" sx={{ fontSize: '1rem' }}>
-          Logga in på Kompassen2
+          Logga in på Kompassen
         </Typography>
         <Button color="primary" variant="contained" onClick={login}>
           Logga in med Azure AD
