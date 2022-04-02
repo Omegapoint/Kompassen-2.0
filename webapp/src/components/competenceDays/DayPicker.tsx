@@ -60,7 +60,11 @@ const DayPicker = (): ReactElement => {
       >
         <TinyArrow width={10} height={10} transform="rotate(180)" />
       </Button>
-      <Typography>{`${organisation} ${formatEventTime(event)}`}</Typography>
+      {organisation === 'OPKoKo' ? (
+        <Typography>{`${event.comment} ${formatEventTime(event)}`}</Typography>
+      ) : (
+        <Typography>{`${organisation} ${formatEventTime(event)}`}</Typography>
+      )}
       <Button
         color="primary"
         variant="contained"
