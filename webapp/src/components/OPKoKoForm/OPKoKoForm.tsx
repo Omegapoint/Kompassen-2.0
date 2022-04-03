@@ -77,6 +77,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
     invalid: formIsInvalid(validate),
   };
 };
+
 // The more complex form to create a new lecture
 const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const allCategories = useAppSelector((state) => state.categories);
@@ -111,6 +112,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   data?.lecturers?.filter((lecturer) => lecturer.firstTimePresenting ?? getAzureUser(lecturer.userID).then((user) => priorRookies.push(user)));
   const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       fixedLecturer,

@@ -14,6 +14,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface MultipleSelectBoxProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: any;
   onRookiesChange: (arg0: AzureUser[]) => void;
   fixedLecturers?: NewLectureLecturer[] | null;
@@ -49,6 +50,7 @@ const MultipleSelectBox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedLecturers, azureUser]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedOption,
@@ -71,7 +73,7 @@ const MultipleSelectBox = ({
   };
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onKeyUp = (e: any) => {
     const term = e.target.value;
     setSearchTerm(term);

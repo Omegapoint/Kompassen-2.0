@@ -2,8 +2,8 @@ import { Box, Link, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import { padding } from '../../theme/Theme';
 
-const OPKoKoInfo = (): ReactElement => {
-  return (
+const OPKoKoInfo = (): ReactElement => 
+  (
     <Box
       sx={{
         width: '80%',
@@ -47,6 +47,6 @@ const OPKoKoInfo = (): ReactElement => {
       </Typography>
     </Box>
   );
-};
+
 
 export default OPKoKoInfo;

@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { ReactElement } from "react";
 import { padding } from "../../theme/Theme";
 
-export const InfoText = (): ReactElement => 
+export const InfoText = (): ReactElement => (
      <Typography sx={{ paddingBottom: padding.large }}>
         <Box sx={{display: 'flex'}}>
             <p>Här kan du som ska med på kommande kompetenskonferens registrera dina bidrag.
@@ -34,4 +34,4 @@ export const InfoText = (): ReactElement =>
             </p>
             </Box>
         </Box>
-    </Typography>;
+    </Typography>);
