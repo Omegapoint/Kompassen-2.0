@@ -57,13 +57,13 @@ const LectureView = ({
       return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
     }
 
-    if (lecture.lecturelecturers !== null && lecture.lecturelecturers !== undefined) {
-      lecture.lecturelecturers.map((lecturer) =>
+    if (lecture.lecturers) {
+      lecture.lecturers.map((lecturer) =>
         fetchMyAPI(lecturer).then((value) => lecturersName.push(value))
       );
       setLecturers(lecturersName);
     }
-  }, [lecture.lecturelecturers]);
+  }, [lecture.lecturers]);
 
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);

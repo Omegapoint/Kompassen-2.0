@@ -1,6 +1,6 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { Chip, colors, Typography } from '@mui/material';
+import { Chip, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
@@ -12,8 +12,11 @@ import { AzureUser } from '../../reducers/session/actions';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-
-const MultipleSelectBox = ({ onChange }: any,  onRookiesChange: (arg0: AzureUser[]) => void, fixedLecturer: AzureUser) => {
+const MultipleSelectBox = (
+  { onChange }: any,
+  onRookiesChange: (arg0: AzureUser[]) => void,
+  fixedLecturer: AzureUser
+) => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
@@ -30,14 +33,13 @@ const MultipleSelectBox = ({ onChange }: any,  onRookiesChange: (arg0: AzureUser
   };
 
   const handleClick = (lecturer: AzureUser) => {
-    if(rookies.indexOf(lecturer) === -1){
+    if (rookies.indexOf(lecturer) === -1) {
       setRookies([...rookies, lecturer]);
-    }
-    else{
-      const withoutDeletedOption = rookies.filter((value) => value !== lecturer)
+    } else {
+      const withoutDeletedOption = rookies.filter((value) => value !== lecturer);
       setRookies(withoutDeletedOption);
     }
-    console.log({onRookiesChange});
+    console.log({ onRookiesChange });
     onRookiesChange(rookies);
   };
 
@@ -47,13 +49,15 @@ const MultipleSelectBox = ({ onChange }: any,  onRookiesChange: (arg0: AzureUser
     if (term.length >= 3) {
       searchAzureUsers(searchTerm).then((value) => {
         setOptions(
-          value.filter(
-            (user) =>
-              user.mail &&
-              (user.mail.includes('omegapoint.se') ||
-                user.mail.includes('integrationsbolaget.se') ||
-                user.mail.includes('molnbolaget.se'))
-          ).filter((user) => user.displayName !== azureUser.displayName)
+          value
+            .filter(
+              (user) =>
+                user.mail &&
+                (user.mail.includes('omegapoint.se') ||
+                  user.mail.includes('integrationsbolaget.se') ||
+                  user.mail.includes('molnbolaget.se'))
+            )
+            .filter((user) => user.displayName !== azureUser.displayName)
         );
       });
     }
@@ -61,47 +65,52 @@ const MultipleSelectBox = ({ onChange }: any,  onRookiesChange: (arg0: AzureUser
 
   return (
     <>
-    <Typography>Markera de talare som är Rookies - en person som talar på sitt första deltagande på en OPKoKo. </Typography>
-    <Autocomplete
-      multiple
-      value={lecturers}
-      filterOptions={(x) => x}
-      className="multiSelectBox"
-      fullWidth
-      options={options}
-      onChange={onLecturerChange}
-      onKeyUp={onKeyUp}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      disableCloseOnSelect
-      renderTags={(tagValue, getTagProps) =>
-        tagValue.map((option, index) => (
-          <Chip
-            label={option.displayName}
-            {...getTagProps({ index })}
-            onClick={() => handleClick(option)}
-            color={rookies.indexOf(option) !== -1 ? "primary" : "default"}
-          />
-        ))
-      }
-      getOptionLabel={(option) => option.displayName}
-      noOptionsText="Start searching for options..."
-      renderOption={(props, option, { selected }) => (
-        <li {...props}>
-          <Checkbox
-            icon={icon}
-            checkedIcon={checkedIcon}
-            value
-            style={{ marginRight: 8 }}
-            checked={selected}
-          />
-          {option.displayName}{' '}
-          <small style={{ position: 'relative', top: '2px', padding: '4px' }}>{option.mail}</small>
-        </li>
-      )}
-      renderInput={(params) => (
-        <TextField {...params} label="Talare, markera talare som är Rookies" placeholder="" />
-      )}
-    />
+      <Typography>
+        Markera de talare som är Rookies - en person som talar på sitt första deltagande på en
+        OPKoKo.{' '}
+      </Typography>
+      <Autocomplete
+        multiple
+        value={lecturers}
+        filterOptions={(x) => x}
+        className="multiSelectBox"
+        fullWidth
+        options={options}
+        onChange={onLecturerChange}
+        onKeyUp={onKeyUp}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        disableCloseOnSelect
+        renderTags={(tagValue, getTagProps) =>
+          tagValue.map((option, index) => (
+            <Chip
+              label={option.displayName}
+              {...getTagProps({ index })}
+              onClick={() => handleClick(option)}
+              color={rookies.indexOf(option) !== -1 ? 'primary' : 'default'}
+            />
+          ))
+        }
+        getOptionLabel={(option) => option.displayName}
+        noOptionsText="Start searching for options..."
+        renderOption={(props, option, { selected }) => (
+          <li {...props}>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              value
+              style={{ marginRight: 8 }}
+              checked={selected}
+            />
+            {option.displayName}{' '}
+            <small style={{ position: 'relative', top: '2px', padding: '4px' }}>
+              {option.mail}
+            </small>
+          </li>
+        )}
+        renderInput={(params) => (
+          <TextField {...params} label="Talare, markera talare som är Rookies" placeholder="" />
+        )}
+      />
     </>
   );
 };

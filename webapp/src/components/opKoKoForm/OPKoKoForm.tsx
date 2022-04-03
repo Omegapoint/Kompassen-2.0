@@ -105,6 +105,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
+
   const fixedLecturer: string = azureUser.id;
   const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
   const [rookies, setRookies] = useState<AzureUser[]>([]);
@@ -195,7 +196,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </div>
         <InfoText />
 
-        <MultipleSelectBox onChange={onLecturerChange} onRookiesChange={onRookiesChange} fixedLecturer={fixedLecturer} />
+        <MultipleSelectBox
+          onChange={onLecturerChange}
+          onRookiesChange={onRookiesChange}
+          fixedLecturer={fixedLecturer}
+        />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
