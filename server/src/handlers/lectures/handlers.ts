@@ -125,18 +125,42 @@ const lectures: Handlers = {
 
     const lecture = await lecturesDB.getByID(item.id);
 
-    lecture?.lecturers?.forEach((lecturer) => {
-      if (!body.lecturers?.includes(lecturer)) {
-        // delete
+    body.lecturers?.forEach((newLecturers) => {
+      if (!lecture?.lecturers?.some((lecture) => lecture.userID === newLecturers.userID)) {
+        lectureLecturersDb.insert(
+          {
+            lectureID: item.id,
+            userID: newLecturers.userID,
+            firstTimePresenting: newLecturers.firstTimePresenting,
+          },
+          userID
+        );
+      } else {
+        const storedLecture = lecture.lecturers.find(
+          (lecture) => lecture.userID === newLecturers.userID
+        );
+        if (storedLecture?.lectureID) {
+          lectureLecturersDb.update(
+            storedLecture?.lectureID,
+            storedLecture?.userID,
+            newLecturers.firstTimePresenting
+          );
+        }
       }
-      lectureLecturersDb.insert(
-        {
-          lectureID: item.id,
-          userID: lecturer.userID,
-          firstTimePresenting: lecturer.firstTimePresenting,
-        },
-        userID
-      );
+    });
+
+    lecture?.lecturers?.forEach(async (storedLecture) => {
+      if (!body.lecturers?.some((lecture) => lecture.userID === storedLecture.userID)) {
+        if (storedLecture.lectureID) {
+          const dbLecture = await lectureLecturersDb.getByUserIDAndLectureID(
+            storedLecture.userID,
+            storedLecture.lectureID
+          );
+          if (dbLecture?.id) {
+            lectureLecturersDb.delete(dbLecture?.id);
+          }
+        }
+      }
     });
 
     if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);

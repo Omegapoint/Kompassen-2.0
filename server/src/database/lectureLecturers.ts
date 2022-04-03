@@ -35,12 +35,29 @@ const INSERT_LECTURELECTURER = `
     RETURNING id
 `;
 
+const UPDATE_LECTURELECTURER = `
+    UPDATE lecture_lecturers
+    SET first_time_presenting = $1,
+        updated_by            = $2
+    user_id = $3 AND lecture_id = $4
+    RETURNING id
+`;
+
+const DELETE_LECTURELECTURER = `
+    DELETE
+    FROM lecture_lecturers
+    WHERE id = $1
+    RETURNING id
+`;
+
 interface LectureLecturersDb {
   list: () => Promise<LectureLecturer[]>;
   getByID: (id: string) => Promise<LectureLecturer | null>;
   getByLectureID: (id: string) => Promise<LectureLecturer[] | null>;
   getByUserIDAndLectureID: (userID: string, lectureID: string) => Promise<LectureLecturer | null>;
   insert: (lectureLecturer: NewLectureLecturer, id: string) => Promise<IDParam>;
+  update: (lectureID: string, userID: string, firstTimePresenting: boolean) => Promise<IDParam>;
+  delete: (id: string) => Promise<IDParam>;
 }
 
 const lectureLecturersDb: LectureLecturersDb = {
@@ -80,6 +97,19 @@ const lectureLecturersDb: LectureLecturersDb = {
       lectureLecturer.firstTimePresenting,
       userId,
     ]);
+    return rows[0];
+  },
+  async update(lectureID, userID, firstTimePresenting): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_LECTURELECTURER, [
+      firstTimePresenting,
+      userID,
+      userID,
+      lectureID,
+    ]);
+    return rows[0];
+  },
+  async delete(id): Promise<IDParam> {
+    const { rows } = await db.query(DELETE_LECTURELECTURER, [id]);
     return rows[0];
   },
 };
