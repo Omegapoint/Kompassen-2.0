@@ -14,6 +14,7 @@ import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
+import { getAzureUser } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
@@ -106,7 +107,9 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const fixedLecturer: string = azureUser.id;
   const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
-  const [rookies, setRookies] = useState<AzureUser[]>([]);
+  const priorRookies: AzureUser[] | (() => AzureUser[]) = [];
+  data?.lecturers?.filter((lecturer) => lecturer.firstTimePresenting ?? getAzureUser(lecturer.userID).then((user) => priorRookies.push(user)));
+  const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
@@ -117,7 +120,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
     setRookies(newRookies);
-    console.log(newRookies);
   };
 
   // ----- Handle Form Submit ----
@@ -330,23 +332,13 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Avbryt
           </Link>
           <Box sx={{ gridArea: 'buttons', display: 'flex', gridGap: padding.standard }}>
-            {!data?.draft && (
-              <Button
-                variant="contained"
-                disabled={invalid}
-                color="primary"
-                onClick={(e) => handleSubmit(e, true)}
-              >
-                Spara utkast
-              </Button>
-            )}
             <Button
               variant="contained"
               disabled={invalid}
               color="primary"
               onClick={(e) => handleSubmit(e, false)}
             >
-              Anmäl pass
+              Skicka in bidrag till urval
             </Button>
           </Box>
         </Box>

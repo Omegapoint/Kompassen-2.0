@@ -108,7 +108,6 @@ const MultipleSelectBox = ({
         onChange={onLecturerChange}
         onKeyUp={onKeyUp}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        disableCloseOnSelect
         renderTags={(tagValue, getTagProps) =>
           tagValue.map((option, index) => (
             <Chip
