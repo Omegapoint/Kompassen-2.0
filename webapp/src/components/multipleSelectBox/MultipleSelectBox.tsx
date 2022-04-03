@@ -32,7 +32,7 @@ const MultipleSelectBox = ({onChange, onRookiesChange, fixedLecturers
   useEffect(()=>{
     if(fixedLecturers){
       const alreadyLecturers: AzureUser | AzureUser[] = [];
-      fixedLecturers.map((user) => getAzureUser(user).then((lecturer) => alreadyLecturers.push(lecturer)));
+      fixedLecturers.map((user) => getAzureUser(user).then((lecturer) => {if(lecturer !== azureUser){alreadyLecturers.push(lecturer)}}));
       setLecturers(alreadyLecturers);
     }
   },

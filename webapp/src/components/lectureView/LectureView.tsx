@@ -109,7 +109,7 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <Box
+    <><Box
       sx={{
         display: 'grid',
         borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
@@ -118,11 +118,11 @@ const LectureView = ({
       <UpdateLectureIdea
         open={open}
         close={() => {
-          if (onSuccess) onSuccess();
+          if (onSuccess)
+            onSuccess();
           off();
-        }}
-        lecture={lecture}
-      />
+        } }
+        lecture={lecture} />
       <Box
         sx={{
           display: 'grid',
@@ -136,7 +136,9 @@ const LectureView = ({
           },
         }}
       >
-        {isUnpublishedIdea ? (
+        {
+          // eslint-disable-next-line 
+        isUnpublishedIdea ? (
           <>
             <Typography
               sx={{
@@ -148,8 +150,8 @@ const LectureView = ({
             </Typography>
           </>
         ) : (
-          <>
-            {eventDay !== undefined && (
+           organisation?.name !== "OPKoKo" ? (
+            <>{eventDay !== undefined && (
               <Typography
                 sx={{
                   background: colors.darkTeal,
@@ -159,20 +161,41 @@ const LectureView = ({
                 {formatDayTime(eventDay)}
               </Typography>
             )}
-            <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
-            <Typography
-              sx={{
-                borderRadius: `0 ${borderRadius.standard} 0 0`,
-                background: category?.color,
-              }}
-            >
-              {category?.name}
-            </Typography>
-          </>
-        )}
-      </Box>
+              <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
+              <Typography
+                sx={{
+                  borderRadius: `0 ${borderRadius.standard} 0 0`,
+                  background: category?.color,
+                }}
+              >
+                {category?.name}
+              </Typography>
+            </>
+          ) : (
+            <>{eventDay !== undefined && (
+              <Typography
+                sx={{
+                  background: colors.darkTeal,
+                  borderRadius: `${borderRadius.standard} 0 0 0`,
+                }}
+              >
+                {organisation?.name}
+              </Typography>
+            )}
+              <Typography sx={{ background: colors.blue }}>{event?.comment}</Typography>
+              <Typography
+                sx={{
+                  borderRadius: `0 ${borderRadius.standard} 0 0`,
+                  background: category?.color,
+                }}
+              >
+                {category?.name}
+              </Typography>
+            </>)
+      )
 
-      <Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
+              }
+    </Box><Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
         <Box
           sx={{
             display: 'grid',
@@ -214,17 +237,17 @@ const LectureView = ({
         >
           {organisation?.name !== 'OPKoKo'
             ? table.map((e) => (
-                <Fragment key={e.name}>
-                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-                </Fragment>
-              ))
+              <Fragment key={e.name}>
+                <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+              </Fragment>
+            ))
             : opkokoTable.map((e) => (
-                <Fragment key={e.name}>
-                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-                  <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-                </Fragment>
-              ))}
+              <Fragment key={e.name}>
+                <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+              </Fragment>
+            ))}
           <Box sx={{ gridColumn: 'span 2' }} />
           {!isUnpublishedIdea && !admin && (
             <Typography sx={{ gridColumn: 'span 1' }}>
@@ -244,8 +267,9 @@ const LectureView = ({
         </Box>
         {showAttendance && <LectureAttendanceList lecture={lecture} />}
       </Paper>
-    </Box>
+    </Box></>
   );
 };
+
 
 export default LectureView;
