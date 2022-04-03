@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
-import lectureLecturerDb from '../../database/lectureLecturers';
+import lectureLecturersDb from '../../database/lectureLecturers';
 import lectureStatusDb from '../../database/lectureStatus';
 import { httpError } from '../../lib/lib';
 import {
@@ -49,9 +49,9 @@ const lectures: Handlers = {
       },
       userID
     );
-    const updateLectureWithStatusRef = await lecturesDB.setStatus(newLectureStatus.id, item.id);
-    const lectureLecturersStatus = body.lecturers?.map((lecturer) =>
-      lectureLecturerDb.insert({ lectureID: item.id, userID: lecturer }, userID)
+    await lecturesDB.setStatus(newLectureStatus.id, item.id);
+    body.lecturers?.map((lecturer) =>
+      lectureLecturersDb.insert({ lectureID: item.id, userID: lecturer }, userID)
     );
     res.send(item);
   },
@@ -121,6 +121,15 @@ const lectures: Handlers = {
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
+
+    body.lecturers?.map((lecturer) => {});
+
+    lecture?.lecturers?.map((lecturer) => {
+      if (!body.lecturers?.includes(lecturer)) {
+        // delete
+      }
+      lectureLecturersDb.insert({ lectureID: item.id, userID: lecturer }, userID);
+    });
 
     if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
     onEventLectureUpdate(lecture as Lecture);
