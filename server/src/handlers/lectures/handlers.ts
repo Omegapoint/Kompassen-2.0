@@ -125,7 +125,7 @@ const lectures: Handlers = {
 
     const lecture = await lecturesDB.getByID(item.id);
 
-    lecture?.lecturers?.map((lecturer) => {
+    lecture?.lecturers?.forEach((lecturer) => {
       if (!body.lecturers?.includes(lecturer)) {
         // delete
       }
