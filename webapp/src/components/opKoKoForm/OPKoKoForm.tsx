@@ -18,7 +18,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Format, Lecture } from '../../lib/Types';
+import { Category, Format, Lecture, NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
 import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
@@ -42,7 +42,6 @@ const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN
 interface FormValues {
   eventID: string;
   title: string;
-  firstTimePresenting: string;
   keyTakeAway: string;
   categoryID: string;
   formatID: string;
@@ -91,7 +90,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
     lecturers: azureUser.displayName,
-    firstTimePresenting: data?.firstTimePresenting?.toString() || 'false',
     keyTakeAway: data?.keyTakeaway || '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
     formatID: formats.find((format) => format.id === data?.formatID)?.id || formats[0].id,
@@ -124,8 +122,15 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
+    console.log(rookies);
+    console.log(lecturers);
     const category = categories.find((e) => e.id === values.categoryID) as Category;
     const format = formats.find((e) => e.id === values.formatID) as Format;
+    const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
+      userID: lecturer,
+      lectureID: null,
+      firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer),
+    }));
     const formData = {
       title: values.title,
       description: values.description,
@@ -135,7 +140,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       requirements: values.requirements || null,
       message: values.message || null,
       internalPresentation: !!values.internal,
-      firstTimePresenting: !!values.firstTimePresenting,
       targetAudience: values.targetAudience,
       formatID: format.id,
       lecturer: azureUser.displayName,
@@ -148,12 +152,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       duration: 0,
       maxParticipants: null,
       preparations: null,
-      lecturers,
+      lecturers: submitLecturers,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
-      console.log(lecturers);
       createLectureRequest.mutate({ ...formData, draft });
     }
   };
@@ -202,20 +205,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           fixedLecturers={data?.lecturers}
         />
 
-        <div>
-          <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">
-            Deltar någon av talarna på OPKoKo för första gången?
-          </FormLabel>
-
-          <RadioGroup
-            name="firstTimePresenting"
-            onChange={handleChange}
-            value={values.firstTimePresenting}
-          >
-            <FormControlLabel key="true" value="true" control={<Radio />} label="Ja" />
-            <FormControlLabel key="false" value="false" control={<Radio />} label="Nej" />
-          </RadioGroup>
-        </div>
         <TextField
           fullWidth
           onChange={handleChange}

@@ -51,7 +51,14 @@ const lectures: Handlers = {
     );
     await lecturesDB.setStatus(newLectureStatus.id, item.id);
     body.lecturers?.map((lecturer) =>
-      lectureLecturersDb.insert({ lectureID: item.id, userID: lecturer }, userID)
+      lectureLecturersDb.insert(
+        {
+          lectureID: item.id,
+          userID: lecturer.userID,
+          firstTimePresenting: lecturer.firstTimePresenting,
+        },
+        userID
+      )
     );
     res.send(item);
   },
@@ -76,7 +83,6 @@ const lectures: Handlers = {
         videoLink: null,
         keyTakeaway: null,
         internalPresentation: null,
-        firstTimePresenting: null,
         targetAudience: null,
         formatID: null,
         lectureStatusID: null,
@@ -128,7 +134,14 @@ const lectures: Handlers = {
       if (!body.lecturers?.includes(lecturer)) {
         // delete
       }
-      lectureLecturersDb.insert({ lectureID: item.id, userID: lecturer }, userID);
+      lectureLecturersDb.insert(
+        {
+          lectureID: item.id,
+          userID: lecturer.userID,
+          firstTimePresenting: lecturer.firstTimePresenting,
+        },
+        userID
+      );
     });
 
     if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
@@ -150,12 +163,17 @@ const lectures: Handlers = {
       httpError(res, 404, 'Lecture not found');
       return;
     }
+    item?.lecturers ? await lectureLecturersDb.getByLectureID(item?.id) : null;
+    console.log(item.lecturers);
     res.send(item);
   },
   async list(req, res) {
     const { userID } = res.locals;
     const mine = req.query.mine === 'true';
     const items = await lecturesDB.list(false, mine ? userID : null);
+    items.map(async (lecture) => {
+      lecture?.lecturers ? await lectureLecturersDb.getByLectureID(lecture?.id) : null;
+    });
     res.send(items);
   },
   async listTags(req, res) {

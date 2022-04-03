@@ -9,6 +9,7 @@ export const up = async (knex: Knex): Promise<void> =>
       t.uuid('id').primary().defaultTo(knex.raw(GENERATE_UUID));
       t.uuid('lecture_id').references('lectures.id').onDelete('CASCADE').notNullable();
       t.uuid('user_id').notNullable();
+      t.boolean('first_time_presenting').notNullable().defaultTo(false);
       t.timestamps(true, true);
       t.uuid('createdBy').notNullable();
       t.uuid('updatedBy').notNullable();

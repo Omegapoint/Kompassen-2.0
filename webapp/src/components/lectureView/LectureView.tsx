@@ -59,7 +59,7 @@ const LectureView = ({
 
     if (lecture.lecturers) {
       lecture.lecturers.map((lecturer) =>
-        fetchMyAPI(lecturer).then((value) => lecturersName.push(value))
+        fetchMyAPI(lecturer.userID).then((value) => lecturersName.push(value))
       );
       setLecturers(lecturersName);
     }

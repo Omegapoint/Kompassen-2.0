@@ -31,11 +31,10 @@ const other = {
   videoLink: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   keyTakeaway: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   internalPresentation: Joi.boolean().default(false),
-  firstTimePresenting: Joi.boolean().default(false),
   targetAudience: Joi.string().min(STRING_MIN_LEN).max(LARGE_STRING_LEN).allow(null),
   formatID: Joi.string().uuid().allow(null),
   lectureStatusID: Joi.string().uuid().allow(null),
-  lecturers: Joi.array().items(Joi.string()).allow(null),
+  lecturers: Joi.array().items().allow(null),
   lecturerID: Joi.string().uuid().allow(null),
 };
 

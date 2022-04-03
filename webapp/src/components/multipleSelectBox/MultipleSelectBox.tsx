@@ -7,36 +7,44 @@ import TextField from '@mui/material/TextField';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { getAzureUser, searchAzureUsers } from '../../api/GraphApi';
 import { useAppSelector } from '../../lib/Lib';
+import { NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface MultipleSelectBoxProps {
-  onChange: any,
-  onRookiesChange: (arg0: AzureUser[]) => void,
-  fixedLecturers?: string[] | null
+  onChange: any;
+  onRookiesChange: (arg0: AzureUser[]) => void;
+  fixedLecturers?: NewLectureLecturer[] | null;
 }
 
-const MultipleSelectBox = ({onChange, onRookiesChange, fixedLecturers
-}:MultipleSelectBoxProps): ReactElement => {
+const MultipleSelectBox = ({
+  onChange,
+  onRookiesChange,
+  fixedLecturers,
+}: MultipleSelectBoxProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
   const fixedOption = [azureUser];
-  
+
   const [lecturers, setLecturers] = React.useState([...fixedOption]);
   const [rookies, setRookies] = useState<AzureUser[]>([]);
 
-  
-  useEffect(()=>{
-    if(fixedLecturers){
+  useEffect(() => {
+    if (fixedLecturers) {
       const alreadyLecturers: AzureUser | AzureUser[] = [];
-      fixedLecturers.map((user) => getAzureUser(user).then((lecturer) => {if(lecturer !== azureUser){alreadyLecturers.push(lecturer)}}));
+      fixedLecturers.map((user) =>
+        getAzureUser(user.userID).then((lecturer) => {
+          if (lecturer !== azureUser) {
+            alreadyLecturers.push(lecturer);
+          }
+        })
+      );
       setLecturers(alreadyLecturers);
     }
-  },
-  [fixedLecturers, azureUser])
+  }, [fixedLecturers, azureUser]);
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedOption,
@@ -73,8 +81,8 @@ const MultipleSelectBox = ({onChange, onRookiesChange, fixedLecturers
             .filter((user) => user.displayName !== azureUser.displayName)
         );
       });
-    }}
-  
+    }
+  };
 
   return (
     <>

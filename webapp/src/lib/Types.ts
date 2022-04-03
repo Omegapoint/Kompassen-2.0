@@ -205,14 +205,13 @@ export interface BaseNewLecture extends BaseLectureIdea {
   videoLink: string | null;
   keyTakeaway: string | null;
   internalPresentation: boolean | null;
-  firstTimePresenting: boolean | null;
   targetAudience: string | null;
   formatID: string | null;
   lectureStatusID: string | null;
 }
 
 export interface NewLecture extends BaseNewLecture {
-  lecturers: string[] | null;
+  lecturers: BaseLectureLecturer[] | null;
 }
 
 export interface DLecture extends NewLecture {
@@ -260,8 +259,9 @@ export interface LectureLike extends NewDBLectureLike, IDParam {
 
 // LectureLecturer
 interface BaseLectureLecturer {
-  lectureID: string;
+  lectureID: string | null;
   userID: string;
+  firstTimePresenting: boolean;
 }
 
 export type NewLectureLecturer = BaseLectureLecturer;
