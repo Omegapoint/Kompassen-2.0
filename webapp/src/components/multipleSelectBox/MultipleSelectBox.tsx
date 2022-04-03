@@ -4,26 +4,39 @@ import { Chip, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import React, { useState } from 'react';
-import { searchAzureUsers } from '../../api/GraphApi';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { getAzureUser, searchAzureUsers } from '../../api/GraphApi';
 import { useAppSelector } from '../../lib/Lib';
 import { AzureUser } from '../../reducers/session/actions';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-const MultipleSelectBox = (
-  { onChange }: any,
+interface MultipleSelectBoxProps {
+  onChange: any,
   onRookiesChange: (arg0: AzureUser[]) => void,
-  fixedLecturer: AzureUser
-) => {
+  fixedLecturers?: string[] | null
+}
+
+const MultipleSelectBox = ({onChange, onRookiesChange, fixedLecturers
+}:MultipleSelectBoxProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
   const fixedOption = [azureUser];
+  
   const [lecturers, setLecturers] = React.useState([...fixedOption]);
   const [rookies, setRookies] = useState<AzureUser[]>([]);
 
+  
+  useEffect(()=>{
+    if(fixedLecturers){
+      const alreadyLecturers: AzureUser | AzureUser[] = [];
+      fixedLecturers.map((user) => getAzureUser(user).then((lecturer) => alreadyLecturers.push(lecturer)));
+      setLecturers(alreadyLecturers);
+    }
+  },
+  [fixedLecturers, azureUser])
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedOption,
@@ -60,8 +73,8 @@ const MultipleSelectBox = (
             .filter((user) => user.displayName !== azureUser.displayName)
         );
       });
-    }
-  };
+    }}
+  
 
   return (
     <>

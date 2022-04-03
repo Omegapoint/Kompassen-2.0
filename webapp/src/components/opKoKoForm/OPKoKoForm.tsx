@@ -199,7 +199,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         <MultipleSelectBox
           onChange={onLecturerChange}
           onRookiesChange={onRookiesChange}
-          fixedLecturer={fixedLecturer}
+          fixedLecturers={data?.lecturers}
         />
 
         <div>
