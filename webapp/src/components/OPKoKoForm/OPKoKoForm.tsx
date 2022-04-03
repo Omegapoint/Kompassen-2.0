@@ -109,7 +109,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const fixedLecturer: string = azureUser.id;
   const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
   const priorRookies: AzureUser[] | (() => AzureUser[]) = [];
-  data?.lecturers?.filter((lecturer) => lecturer.firstTimePresenting ?? getAzureUser(lecturer.userID).then((user) => priorRookies.push(user)));
+  data?.lecturers?.filter(
+    (lecturer) =>
+      lecturer.firstTimePresenting ??
+      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user))
+  );
   const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,7 +136,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
       userID: lecturer,
       lectureID: null,
-      firstTimePresenting: rookies.some((rookie) =>   rookie.id === lecturer),
+      firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer),
     }));
     const formData = {
       title: values.title,

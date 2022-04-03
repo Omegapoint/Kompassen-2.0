@@ -88,7 +88,7 @@ resource "azurerm_postgresql_server" "ps" {
   resource_group_name = var.name
 
   administrator_login          = "pgadmin"
-  administrator_login_password = random_password.password.result
+  administrator_login_password = "KCLTkabykQLZ5bnRUh9LV2i6VL"
 
   sku_name   = "B_Gen5_1"
   version    = "11"
