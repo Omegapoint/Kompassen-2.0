@@ -121,14 +121,9 @@ const lectures: Handlers = {
 
     const lecturerID = currentLecture?.lecturer ? currentLecture.lecturerID : userID;
 
-    if (currentLecture.idea === true) {
-    }
-
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
-
-    body.lecturers?.map((lecturer) => {});
 
     lecture?.lecturers?.map((lecturer) => {
       if (!body.lecturers?.includes(lecturer)) {
@@ -172,10 +167,11 @@ const lectures: Handlers = {
     const mine = req.query.mine === 'true';
     const items = await lecturesDB.list(false, mine ? userID : null);
     const returnItems = await Promise.all(
-      items.map(async (element) => {
-        const lecturers = await lectureLecturersDb.getByLectureID(element?.id);
-        element.lecturers = lecturers;
-        return element;
+      items.map(async (lecture) => {
+        const newLecture = lecture;
+        const lecturers = await lectureLecturersDb.getByLectureID(lecture?.id);
+        newLecture.lecturers = lecturers;
+        return newLecture;
       })
     );
     res.send(returnItems);
