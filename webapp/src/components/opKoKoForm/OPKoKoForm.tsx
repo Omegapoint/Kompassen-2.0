@@ -107,12 +107,17 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const { validate, invalid } = useValidate(values);
   const fixedLecturer: string = azureUser.id;
   const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
+  const [rookies, setRookies] = useState<AzureUser[]>([]);
 
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       fixedLecturer,
       ...newValue.filter((option) => fixedLecturer !== option.id).map((option) => option.id),
     ]);
+  };
+
+  const onRookiesChange = (newRookies: AzureUser[]) => {
+    setRookies(newRookies);
   };
 
   // ----- Handle Form Submit ----
@@ -190,7 +195,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </div>
         <InfoText />
 
-        <MultipleSelectBox onChange={onLecturerChange} fixedLecturer={fixedLecturer} />
+        <MultipleSelectBox onChange={onLecturerChange} onRookiesChange={onRookiesChange} fixedLecturer={fixedLecturer} />
 
         <div>
           <FormLabel sx={{ paddingTop: padding.minimal }} required component="legend">

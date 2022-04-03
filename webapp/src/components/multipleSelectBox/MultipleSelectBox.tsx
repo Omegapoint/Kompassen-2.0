@@ -1,6 +1,6 @@
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { Chip } from '@mui/material';
+import { Chip, colors, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
@@ -13,20 +13,34 @@ const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 
-const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
+const MultipleSelectBox = ({ onChange }: any,  onRookiesChange: (arg0: AzureUser[]) => void, fixedLecturer: AzureUser) => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
   const fixedOption = [azureUser];
-  const [v, setV] = React.useState([...fixedOption]);
+  const [lecturers, setLecturers] = React.useState([...fixedOption]);
+  const [rookies, setRookies] = useState<AzureUser[]>([]);
 
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
-    setV([
+    setLecturers([
       ...fixedOption,
       ...newValue.filter((option) => fixedOption.indexOf(option) === -1),
     ]);
     onChange(event, newValue);
   };
+
+  const handleClick = (lecturer: AzureUser) => {
+    if(rookies.indexOf(lecturer) === -1){
+      setRookies([...rookies, lecturer]);
+    }
+    else{
+      const withoutDeletedOption = rookies.filter((value) => value !== lecturer)
+      setRookies(withoutDeletedOption);
+    }
+    console.log({onRookiesChange});
+    onRookiesChange(rookies);
+  };
+
   const onKeyUp = (e: any) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -46,9 +60,11 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
   };
 
   return (
+    <>
+    <Typography>Markera de talare som är Rookies - en person som talar på sitt första deltagande på en OPKoKo. </Typography>
     <Autocomplete
       multiple
-      value={v}
+      value={lecturers}
       filterOptions={(x) => x}
       className="multiSelectBox"
       fullWidth
@@ -62,7 +78,8 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
           <Chip
             label={option.displayName}
             {...getTagProps({ index })}
-            disabled={fixedOption.indexOf(option) !== -1}
+            onClick={() => handleClick(option)}
+            color={rookies.indexOf(option) !== -1 ? "primary" : "default"}
           />
         ))
       }
@@ -82,9 +99,10 @@ const MultipleSelectBox = ({ onChange }: any, fixedLecturer: AzureUser) => {
         </li>
       )}
       renderInput={(params) => (
-        <TextField {...params} label="Talare" placeholder="" />
+        <TextField {...params} label="Talare, markera talare som är Rookies" placeholder="" />
       )}
     />
+    </>
   );
 };
 
