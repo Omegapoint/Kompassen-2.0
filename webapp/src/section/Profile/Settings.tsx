@@ -11,18 +11,15 @@ import {
 } from '@mui/material';
 import { ChangeEvent, FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { createUser, updateUser } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
-import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
+import { LARGE_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { Office } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import Notifications from './Notifications';
 
-const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
-const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
 const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN;
 
 interface FormValues {
@@ -39,10 +36,6 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
     invalid: formIsInvalid(validate),
   };
 };
-
-interface SetUserUpdated {
-  setUserUpdated: (status: boolean) => void;
-}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Settings = ({
@@ -75,17 +68,16 @@ const Settings = ({
   ];
   const createUserRequest = useMutation(createUser);
   const updateUserRequest = useMutation(updateUser);
-  const navigate = useNavigate();
 
   const defaultFormValue = {
-    speakerBio: user?.speakerBio || '', 
-    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,  
+    speakerBio: user?.speakerBio || '',
+    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,
   };
 
   const { values, handleChange } = useForm(defaultFormValue);
-  const { validate, invalid } = useValidate(values);
+  const { validate } = useValidate(values);
 
-  const handleSubmit = (evt: FormEvent, draft: boolean) => {
+  const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     const office = allOffices.find((o) => o.id === values.officeID) as Office;
     const formData = {
@@ -118,44 +110,47 @@ const Settings = ({
       }}
     >
       <form>
-      <Box marginTop={-20} height={115} marginBottom={5} marginLeft={70} width={250}>
-            <FormControl fullWidth>
-              <InputLabel id="office-selector">Organisation: </InputLabel>
-              <Select
-                labelId="office-selector"
-                onChange={handleChange}
-                required
-                value={values.officeID} 
-                name="officeID"
-                label="Office"
-              >
-                {allOffices.map((office) => (
-                  <MenuItem key={office.id} value={office.id}>{office.name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        <Box sx={{ display: 'flex', paddingBottom: `${padding.small}` }}>
-            <TextField
-              {...validate.speakerBio}
-              fullWidth
-              multiline
-              minRows={4}
-              maxRows={8}
+        <Box marginTop={-20} height={115} marginBottom={5} marginLeft={70} width={250}>
+          <FormControl fullWidth>
+            <InputLabel id="office-selector">Organisation: </InputLabel>
+            <Select
+              labelId="office-selector"
               onChange={handleChange}
-              value={values.speakerBio}
-              name="speakerBio"
-              label="Talarbiografi"
-              variant="outlined"
-            />
-          </Box>
-          <Divider />
-          <Typography variant="h6" sx={{paddingTop: `${padding.small}`}}>Ange önskade notifikationsinställningar:</Typography>
-          <Notifications handleChange={handleNotificationsChange} checked={notifications} />
-          <Button color="primary" variant="contained" onClick={(e) => handleSubmit(e, false)}>
-            Spara inställningarna
-          </Button>
-      
+              required
+              value={values.officeID}
+              name="officeID"
+              label="Office"
+            >
+              {allOffices.map((office) => (
+                <MenuItem key={office.id} value={office.id}>
+                  {office.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ display: 'flex', paddingBottom: `${padding.small}` }}>
+          <TextField
+            {...validate.speakerBio}
+            fullWidth
+            multiline
+            minRows={4}
+            maxRows={8}
+            onChange={handleChange}
+            value={values.speakerBio}
+            name="speakerBio"
+            label="Talarbiografi"
+            variant="outlined"
+          />
+        </Box>
+        <Divider />
+        <Typography variant="h6" sx={{ paddingTop: `${padding.small}` }}>
+          Ange önskade notifikationsinställningar:
+        </Typography>
+        <Notifications handleChange={handleNotificationsChange} checked={notifications} />
+        <Button color="primary" variant="contained" onClick={(e) => handleSubmit(e)}>
+          Spara inställningarna
+        </Button>
       </form>
     </Box>
   );

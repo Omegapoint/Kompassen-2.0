@@ -56,14 +56,14 @@ const LectureView = ({
     async function fetchMyAPI(lecturer: string) {
       return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
     }
-
     if (lecture.lecturers) {
       lecture.lecturers.map((lecturer) =>
         fetchMyAPI(lecturer.userID).then((value) => lecturersName.push(value))
       );
       setLecturers(lecturersName);
     }
-  }, [lecture.lecturers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
@@ -78,6 +78,7 @@ const LectureView = ({
   };
 
   const { mutateAsync } = useMutation(approveLecture);
+  console.log(lecturers);
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
     { name: 'Längd', value: ((lecture.duration || 0) / 60)?.toString().concat(' ', 'minuter') },
@@ -109,167 +110,169 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <><Box
-      sx={{
-        display: 'grid',
-        borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
-      }}
-    >
-      <UpdateLectureIdea
-        open={open}
-        close={() => {
-          if (onSuccess)
-            onSuccess();
-          off();
-        } }
-        lecture={lecture} />
+    <>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
-          justifyItems: 'center',
-          '& *': {
-            width: '100%',
-            color: colors.white,
-            textAlign: 'center',
-            padding: `3px ${padding.medium}`,
-          },
+          borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
         }}
       >
-        {
-          // eslint-disable-next-line 
-        isUnpublishedIdea ? (
-          <>
-            <Typography
-              sx={{
-                background: colors.darkTeal,
-                borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
-              }}
-            >
-              Idé
-            </Typography>
-          </>
-        ) : (
-           organisation?.name !== "OPKoKo" ? (
-            <>{eventDay !== undefined && (
-              <Typography
-                sx={{
-                  background: colors.darkTeal,
-                  borderRadius: `${borderRadius.standard} 0 0 0`,
-                }}
-              >
-                {formatDayTime(eventDay)}
-              </Typography>
-            )}
-              <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
-              <Typography
-                sx={{
-                  borderRadius: `0 ${borderRadius.standard} 0 0`,
-                  background: category?.color,
-                }}
-              >
-                {category?.name}
-              </Typography>
-            </>
-          ) : (
-            <>{eventDay !== undefined && (
-              <Typography
-                sx={{
-                  background: colors.darkTeal,
-                  borderRadius: `${borderRadius.standard} 0 0 0`,
-                }}
-              >
-                {organisation?.name}
-              </Typography>
-            )}
-              <Typography sx={{ background: colors.blue }}>{event?.comment}</Typography>
-              <Typography
-                sx={{
-                  borderRadius: `0 ${borderRadius.standard} 0 0`,
-                  background: category?.color,
-                }}
-              >
-                {category?.name}
-              </Typography>
-            </>)
-      )
-
-              }
-    </Box><Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
+        <UpdateLectureIdea
+          open={open}
+          close={() => {
+            if (onSuccess) onSuccess();
+            off();
+          }}
+          lecture={lecture}
+        />
         <Box
           sx={{
             display: 'grid',
-            gridAutoFlow: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            gridTemplateColumns: isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
+            justifyItems: 'center',
+            '& *': {
+              width: '100%',
+              color: colors.white,
+              textAlign: 'center',
+              padding: `3px ${padding.medium}`,
+            },
           }}
         >
-          <Typography variant="h5">{lecture.title}</Typography>
-          <div>
-            {editIcon &&
-              (isUnpublishedIdea ? (
-                <IconButton onClick={on} size="large">
-                  <EditIcon />
+          {
+            // eslint-disable-next-line
+            isUnpublishedIdea ? (
+              <>
+                <Typography
+                  sx={{
+                    background: colors.darkTeal,
+                    borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
+                  }}
+                >
+                  Idé
+                </Typography>
+              </>
+            ) : organisation?.name !== 'OPKoKo' ? (
+              <>
+                {eventDay !== undefined && (
+                  <Typography
+                    sx={{
+                      background: colors.darkTeal,
+                      borderRadius: `${borderRadius.standard} 0 0 0`,
+                    }}
+                  >
+                    {formatDayTime(eventDay)}
+                  </Typography>
+                )}
+                <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
+                <Typography
+                  sx={{
+                    borderRadius: `0 ${borderRadius.standard} 0 0`,
+                    background: category?.color,
+                  }}
+                >
+                  {category?.name}
+                </Typography>
+              </>
+            ) : (
+              <>
+                {eventDay !== undefined && (
+                  <Typography
+                    sx={{
+                      background: colors.darkTeal,
+                      borderRadius: `${borderRadius.standard} 0 0 0`,
+                    }}
+                  >
+                    {organisation?.name}
+                  </Typography>
+                )}
+                <Typography sx={{ background: colors.blue }}>{event?.comment}</Typography>
+                <Typography
+                  sx={{
+                    borderRadius: `0 ${borderRadius.standard} 0 0`,
+                    background: category?.color,
+                  }}
+                >
+                  {category?.name}
+                </Typography>
+              </>
+            )
+          }
+        </Box>
+        <Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridAutoFlow: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h5">{lecture.title}</Typography>
+            <div>
+              {editIcon &&
+                (isUnpublishedIdea ? (
+                  <IconButton onClick={on} size="large">
+                    <EditIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton component={NavLink} to={`${editLink}${lecture.id}`} size="large">
+                    <EditIcon />
+                  </IconButton>
+                ))}
+              {deleteIcon && (
+                <IconButton onClick={handleDelete} size="large">
+                  <DeleteIcon />
                 </IconButton>
-              ) : (
-                <IconButton component={NavLink} to={`${editLink}${lecture.id}`} size="large">
-                  <EditIcon />
-                </IconButton>
-              ))}
-            {deleteIcon && (
-              <IconButton onClick={handleDelete} size="large">
-                <DeleteIcon />
-              </IconButton>
+              )}
+            </div>
+          </Box>
+          <Typography sx={{ marginBottom: padding.standard }}>
+            {lecture.lecturer
+              ? `Anmäld av ${lecture.lecturer} den ${time}`
+              : `Skapad av ${createdBy} den ${time}`}
+          </Typography>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content 1fr max-content',
+              gridGap: padding.minimal,
+            }}
+          >
+            {organisation?.name !== 'OPKoKo'
+              ? table.map((e) => (
+                  <Fragment key={e.name}>
+                    <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                    <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                  </Fragment>
+                ))
+              : opkokoTable.map((e) => (
+                  <Fragment key={e.name}>
+                    <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                    <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                  </Fragment>
+                ))}
+            <Box sx={{ gridColumn: 'span 2' }} />
+            {!isUnpublishedIdea && !admin && (
+              <Typography sx={{ gridColumn: 'span 1' }}>
+                {lecture.approved ? 'Godkänd' : 'Bidraget är inskickat till urval'}
+              </Typography>
             )}
-          </div>
-        </Box>
-        <Typography sx={{ marginBottom: padding.standard }}>
-          {lecture.lecturer
-            ? `Anmäld av ${lecture.lecturer} den ${time}`
-            : `Skapad av ${createdBy} den ${time}`}
-        </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'max-content 1fr max-content',
-            gridGap: padding.minimal,
-          }}
-        >
-          {organisation?.name !== 'OPKoKo'
-            ? table.map((e) => (
-              <Fragment key={e.name}>
-                <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-                <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-              </Fragment>
-            ))
-            : opkokoTable.map((e) => (
-              <Fragment key={e.name}>
-                <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-                <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-              </Fragment>
-            ))}
-          <Box sx={{ gridColumn: 'span 2' }} />
-          {!isUnpublishedIdea && !admin && (
-            <Typography sx={{ gridColumn: 'span 1' }}>
-              {lecture.approved ? 'Godkänd' : 'Bidraget är inskickat till urval'}
-            </Typography>
-          )}
-          {admin && (
-            <Button
-              sx={{ gridColumn: 'span 1' }}
-              variant={lecture.approved ? undefined : 'contained'}
-              color={lecture.approved ? undefined : 'primary'}
-              onClick={handleApprove}
-            >
-              {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
-            </Button>
-          )}
-        </Box>
-        {showAttendance && <LectureAttendanceList lecture={lecture} />}
-      </Paper>
-    </Box></>
+            {admin && (
+              <Button
+                sx={{ gridColumn: 'span 1' }}
+                variant={lecture.approved ? undefined : 'contained'}
+                color={lecture.approved ? undefined : 'primary'}
+                onClick={handleApprove}
+              >
+                {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
+              </Button>
+            )}
+          </Box>
+          {showAttendance && <LectureAttendanceList lecture={lecture} />}
+        </Paper>
+      </Box>
+    </>
   );
 };
-
 
 export default LectureView;

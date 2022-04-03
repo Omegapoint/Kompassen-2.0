@@ -163,18 +163,22 @@ const lectures: Handlers = {
       httpError(res, 404, 'Lecture not found');
       return;
     }
-    item?.lecturers ? await lectureLecturersDb.getByLectureID(item?.id) : null;
-    console.log(item.lecturers);
+    const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
+    item.lecturers = lecturers;
     res.send(item);
   },
   async list(req, res) {
     const { userID } = res.locals;
     const mine = req.query.mine === 'true';
     const items = await lecturesDB.list(false, mine ? userID : null);
-    items.map(async (lecture) => {
-      lecture?.lecturers ? await lectureLecturersDb.getByLectureID(lecture?.id) : null;
-    });
-    res.send(items);
+    const returnItems = await Promise.all(
+      items.map(async (element) => {
+        const lecturers = await lectureLecturersDb.getByLectureID(element?.id);
+        element.lecturers = lecturers;
+        return element;
+      })
+    );
+    res.send(returnItems);
   },
   async listTags(req, res) {
     const items = await lecturesDB.listTags();
