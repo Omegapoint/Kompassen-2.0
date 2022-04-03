@@ -126,7 +126,7 @@ const lectures: Handlers = {
     const lecture = await lecturesDB.getByID(item.id);
 
     body.lecturers?.forEach((newLecturers) => {
-      if (!lecture?.lecturers?.some((lecture) => lecture.userID === newLecturers.userID)) {
+      if (!lecture?.lecturers?.some((l) => l.userID === newLecturers.userID)) {
         lectureLecturersDb.insert(
           {
             lectureID: item.id,
@@ -136,9 +136,7 @@ const lectures: Handlers = {
           userID
         );
       } else {
-        const storedLecture = lecture.lecturers.find(
-          (lecture) => lecture.userID === newLecturers.userID
-        );
+        const storedLecture = lecture.lecturers.find((l) => l.userID === newLecturers.userID);
         if (storedLecture?.lectureID) {
           lectureLecturersDb.update(
             storedLecture?.lectureID,
@@ -150,7 +148,7 @@ const lectures: Handlers = {
     });
 
     lecture?.lecturers?.forEach(async (storedLecture) => {
-      if (!body.lecturers?.some((lecture) => lecture.userID === storedLecture.userID)) {
+      if (!body.lecturers?.some((l) => l.userID === storedLecture.userID)) {
         if (storedLecture.lectureID) {
           const dbLecture = await lectureLecturersDb.getByUserIDAndLectureID(
             storedLecture.userID,

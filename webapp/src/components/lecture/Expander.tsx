@@ -22,24 +22,26 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
           </Typography>
         </Box>
       ) : (
-        <Box><Button
-          component={NavLink}
-          to={`/lecture/edit/${lecture.id}`}
-          sx={{  maxWidth: '260px', marginRight: '10px'}}
-          variant="contained"
-          color="primary"
-        >
-         Anmäl som kompetensdagspass
-        </Button>
-        <Button
-        component={NavLink}
-        to={`/lecture/OpKoKo/edit/${lecture.id}`}
-        sx={{ maxWidth: '240px' }}
-        variant="contained"
-        color="primary"
-      >
-        Anmäl som OPKoKobidrag
-      </Button></Box>
+        <Box>
+          <Button
+            component={NavLink}
+            to={`/lecture/edit/${lecture.id}`}
+            sx={{ maxWidth: '260px', marginRight: '10px' }}
+            variant="contained"
+            color="primary"
+          >
+            Anmäl som kompetensdagspass
+          </Button>
+          <Button
+            component={NavLink}
+            to={`/lecture/OPKoKo/edit/${lecture.id}`}
+            sx={{ maxWidth: '240px' }}
+            variant="contained"
+            color="primary"
+          >
+            Anmäl som OPKoKobidrag
+          </Button>
+        </Box>
       )}
 
       <Box

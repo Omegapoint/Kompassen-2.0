@@ -17,7 +17,9 @@ const useLectureIdeasWS = () => {
     if (socket) {
       socket.on('lectureIdeas', (lectures) => {
         if (mounted.current) {
-          setLectureIdeas(formatDates(lectures).filter((ideas: { lecturer: null; })=> ideas.lecturer === null));
+          setLectureIdeas(
+            formatDates(lectures).filter((ideas: { lecturer: null }) => ideas.lecturer === null)
+          );
         }
       });
 

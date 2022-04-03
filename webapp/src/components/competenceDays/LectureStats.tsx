@@ -72,7 +72,7 @@ const LectureStats = (): ReactElement => {
                   <Fragment key={e.title}>
                     <img alt="icon" width="12" height="12" src={formatImgAsSVG(e.title!)} />
                     <Typography>{e.desc}</Typography>
-                    <Typography/>
+                    <Typography />
                   </Fragment>
                 ))}
               </Box>

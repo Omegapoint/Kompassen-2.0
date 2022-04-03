@@ -59,21 +59,19 @@ const MultipleSelectBox = ({
     onChange(event, newValue);
   };
 
-
   const handleClick = (lecturer: AzureUser) => {
     if (rookiesFromCurrentEdit.indexOf(lecturer) === -1) {
       rookiesFromCurrentEdit.push(lecturer);
       setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
     } else {
-      const index = rookiesFromCurrentEdit.indexOf(lecturer)
-         rookiesFromCurrentEdit.splice(index, 1);
-         setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
+      const index = rookiesFromCurrentEdit.indexOf(lecturer);
+      rookiesFromCurrentEdit.splice(index, 1);
+      setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
     }
     onRookiesChange(rookiesFromCurrentEdit);
   };
 
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onKeyUp = (e: any) => {
     const term = e.target.value;
     setSearchTerm(term);
