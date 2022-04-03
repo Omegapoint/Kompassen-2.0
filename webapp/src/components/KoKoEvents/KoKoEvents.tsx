@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
@@ -17,7 +16,6 @@ const listNewEvents = () =>
 
 const KoKoEvent = (): ReactElement => {
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
-  const navigate = useNavigate();
   const [ind, setInd] = useState(0);
 
   if (isLoading || !data) return <SmallLoader />;

@@ -122,8 +122,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
-    console.log(rookies);
-    console.log(lecturers);
     const category = categories.find((e) => e.id === values.categoryID) as Category;
     const format = formats.find((e) => e.id === values.formatID) as Format;
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({

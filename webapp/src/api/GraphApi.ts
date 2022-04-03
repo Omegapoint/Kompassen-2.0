@@ -22,6 +22,7 @@ export async function getAzureGraphSingleUser(path: string): Promise<AzureUser> 
 export async function getAzureGraphMultipleUsers(
   path: string,
   consistencyLevel = `eventual`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const accessToken = store.getState().session.graphToken;
 
@@ -35,6 +36,7 @@ export async function getAzureGraphMultipleUsers(
 
   return (
     fetch(`https://graph.microsoft.com/v1.0${path}`, options)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((response: any) => response.json())
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error))

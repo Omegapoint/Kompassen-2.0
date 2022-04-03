@@ -78,7 +78,6 @@ const LectureView = ({
   };
 
   const { mutateAsync } = useMutation(approveLecture);
-  console.log(lecturers);
   const table = [
     { name: 'Passhållare', value: lecture.lecturer },
     { name: 'Längd', value: ((lecture.duration || 0) / 60)?.toString().concat(' ', 'minuter') },

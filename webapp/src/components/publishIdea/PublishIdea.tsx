@@ -18,7 +18,6 @@ import { createLectureIdea } from '../../api/Api';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
-import { useAppSelector } from '../../lib/Lib';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import TextPanel from '../textPanel/TextPanel';
 
@@ -61,7 +60,6 @@ const PublishIdea = ({ cancel, opkoko }: PublishIdeaProps): ReactElement => {
   const { values, handleChange, appendChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
   const { mutateAsync } = useMutation(createLectureIdea);
-  const { azureUser } = useAppSelector((state) => state.session);
 
   const handleSubmit = async (evt: FormEvent) => {
     evt.preventDefault();

@@ -9,7 +9,7 @@ import { isAdmin } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
 const SideMenuOPKoKo = (): ReactElement => {
-  const { data, isLoading } = useQuery(`listMyLectures`, () => listLectures({ mine: 'true' }));
+  const { data } = useQuery(`listMyLectures`, () => listLectures({ mine: 'true' }));
   return (
     <>
       {' '}
