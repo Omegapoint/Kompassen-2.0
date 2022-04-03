@@ -117,6 +117,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
     setRookies(newRookies);
+    console.log(newRookies);
   };
 
   // ----- Handle Form Submit ----
@@ -127,7 +128,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
       userID: lecturer,
       lectureID: null,
-      firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer),
+      firstTimePresenting: rookies.some((rookie) =>   rookie.id === lecturer),
     }));
     const formData = {
       title: values.title,
@@ -201,6 +202,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           onChange={onLecturerChange}
           onRookiesChange={onRookiesChange}
           fixedLecturers={data?.lecturers}
+          rookies={rookies}
         />
 
         <TextField

@@ -17,12 +17,14 @@ interface MultipleSelectBoxProps {
   onChange: any;
   onRookiesChange: (arg0: AzureUser[]) => void;
   fixedLecturers?: NewLectureLecturer[] | null;
+  rookies?: AzureUser[];
 }
 
 const MultipleSelectBox = ({
   onChange,
   onRookiesChange,
   fixedLecturers,
+  rookies,
 }: MultipleSelectBoxProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
@@ -30,7 +32,7 @@ const MultipleSelectBox = ({
   const fixedOption = [azureUser];
 
   const [lecturers, setLecturers] = React.useState([...fixedOption]);
-  const [rookies, setRookies] = useState<AzureUser[]>([]);
+  const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   useEffect(() => {
     if (fixedLecturers) {
@@ -44,7 +46,9 @@ const MultipleSelectBox = ({
       );
       setLecturers(alreadyLecturers);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedLecturers, azureUser]);
+
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedOption,
@@ -53,16 +57,20 @@ const MultipleSelectBox = ({
     onChange(event, newValue);
   };
 
+
   const handleClick = (lecturer: AzureUser) => {
-    if (rookies.indexOf(lecturer) === -1) {
-      setRookies([...rookies, lecturer]);
+    if (rookiesFromCurrentEdit.indexOf(lecturer) === -1) {
+      rookiesFromCurrentEdit.push(lecturer);
+      setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
     } else {
-      const withoutDeletedOption = rookies.filter((value) => value !== lecturer);
-      setRookies(withoutDeletedOption);
+      const index = rookiesFromCurrentEdit.indexOf(lecturer)
+         rookiesFromCurrentEdit.splice(index, 1);
+         setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
     }
-    console.log({ onRookiesChange });
-    onRookiesChange(rookies);
+    onRookiesChange(rookiesFromCurrentEdit);
   };
+
+
 
   const onKeyUp = (e: any) => {
     const term = e.target.value;
@@ -78,7 +86,7 @@ const MultipleSelectBox = ({
                   user.mail.includes('integrationsbolaget.se') ||
                   user.mail.includes('molnbolaget.se'))
             )
-            .filter((user) => user.displayName !== azureUser.displayName)
+            .filter((user) => user !== azureUser)
         );
       });
     }
@@ -107,7 +115,7 @@ const MultipleSelectBox = ({
               label={option.displayName}
               {...getTagProps({ index })}
               onClick={() => handleClick(option)}
-              color={rookies.indexOf(option) !== -1 ? 'primary' : 'default'}
+              color={rookiesFromCurrentEdit.indexOf(option) !== -1 ? 'primary' : 'default'}
             />
           ))
         }
