@@ -5,6 +5,7 @@ import { reviver } from '../lib/types';
 import attendantsRoutes from './attendants/routes';
 import categoriesRoutes from './categories/routes';
 import eventsRoutes from './events/routes';
+import formatsRoutes from './formats/routes';
 import lectureLikesRoutes from './lectureLikes/routes';
 import lectureRoomsRoutes from './lectureRooms/routes';
 import lecturesRoutes from './lectures/routes';
@@ -41,6 +42,7 @@ const setupExpress = (): Express => {
     lectureRoomsRoutes,
     officesRoutes,
     statusRoutes,
+    formatsRoutes,
   ];
   routes.forEach((fn) => fn(app));
   return app;

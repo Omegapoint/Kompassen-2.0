@@ -5,6 +5,7 @@ import { UpdatedEvent } from '../lib/types';
 import attendants from './attendants/schema';
 import categories from './categories/schema';
 import events from './events/schema';
+import formats from './formats/schemas';
 import lectureRooms from './lectureRooms/schema';
 import lectures from './lectures/schema';
 import offices from './offices/schemas';
@@ -43,6 +44,7 @@ const schema = {
   uuidParam,
   offices,
   status,
+  formats,
 };
 
 export default schema;
