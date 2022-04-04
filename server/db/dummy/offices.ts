@@ -78,7 +78,7 @@ const offices: Office[] = [
   },
   {
     id: 'de3801d5-acd2-4bc8-a9fd-6953f5ebe235',
-    name: 'Innovative Security',
+    name: 'Innovate Security',
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,

@@ -67,7 +67,7 @@ const Settings = ({
     { id: '91adb151-e047-468e-9d06-e6e37589fa2f', name: 'Omegapoint Köpenhamn' },
     { id: '35c9cd57-c909-4ab7-9aa2-78f3ba957c26', name: 'Integrationsbolaget' },
     { id: '76cc967f-35ed-4d7a-ad2e-4830d98bdf79', name: 'Molnbolaget' },
-    { id: 'de3801d5-acd2-4bc8-a9fd-6953f5ebe235', name: 'Innovative Security' },
+    { id: 'de3801d5-acd2-4bc8-a9fd-6953f5ebe235', name: 'Innovate Security' },
     { id: 'e4409858-3aa6-4284-a464-2beef6ea8cc9', name: 'Elicit' },
   ];
   const createUserRequest = useMutation(createUser);

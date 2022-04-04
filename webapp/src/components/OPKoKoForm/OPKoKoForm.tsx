@@ -172,7 +172,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       keyTakeaway: values.keyTakeAway,
       requirements: values.requirements || null,
       message: values.message || null,
-      internalPresentation: !!values.internal,
+      internalPresentation: values.internal === 'true',
       targetAudience: values.targetAudience,
       formatID: format.id,
       lecturer: azureUser.displayName,
@@ -187,6 +187,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       preparations: null,
       lecturers: submitLecturers,
     };
+    console.log(formData);
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
