@@ -32,7 +32,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
           >
             Anmäl som kompetensdagspass
           </Button>
-          {/* <Button
+          <Button
             component={NavLink}
             to={`/lecture/OPKoKo/edit/${lecture.id}`}
             sx={{ maxWidth: '240px' }}
@@ -40,7 +40,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
             color="primary"
           >
             Anmäl som OPKoKobidrag
-          </Button> */}
+          </Button>
         </Box>
       )}
 
