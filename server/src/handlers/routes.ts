@@ -11,6 +11,7 @@ import lecturesRoutes from './lectures/routes';
 import loginRoutes from './login/routes';
 import officesRoutes from './offices/routes';
 import organisationRoutes from './organisations/routes';
+import statusRoutes from './status/routes';
 import userRoutes from './users/routes';
 
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -39,6 +40,7 @@ const setupExpress = (): Express => {
     lectureLikesRoutes,
     lectureRoomsRoutes,
     officesRoutes,
+    statusRoutes,
   ];
   routes.forEach((fn) => fn(app));
   return app;

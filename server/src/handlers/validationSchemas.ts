@@ -9,6 +9,7 @@ import lectureRooms from './lectureRooms/schema';
 import lectures from './lectures/schema';
 import offices from './offices/schemas';
 import organisations from './organisations/schema';
+import status from './status/schemas';
 import users from './users/schema';
 
 type KeyType = 'body' | 'params' | 'query';
@@ -41,6 +42,7 @@ const schema = {
   attendants,
   uuidParam,
   offices,
+  status,
 };
 
 export default schema;
