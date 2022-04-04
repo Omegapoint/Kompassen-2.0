@@ -15,24 +15,25 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 interface MultipleSelectBoxProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onChange: any;
+  onLecturerChange: (event: any, arg1: AzureUser[]) => void;
   onRookiesChange: (arg0: AzureUser[]) => void;
   fixedLecturers?: NewLectureLecturer[] | null;
+  setLecturers: (arg0: AzureUser[]) => void;
+  lecturers?: AzureUser[];
   rookies?: AzureUser[];
 }
 
 const MultipleSelectBox = ({
-  onChange,
+  onLecturerChange,
   onRookiesChange,
   fixedLecturers,
+  lecturers,
+  setLecturers,
   rookies,
 }: MultipleSelectBoxProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
-  const [searchTerm, setSearchTerm] = useState(''); // TRY: Could try setting the search term to azureUser.displayName?
-  const fixedOption = [azureUser];
-
-  const [lecturers, setLecturers] = React.useState([...fixedOption]);
+  const [searchTerm, setSearchTerm] = useState(''); 
   const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   useEffect(() => {
@@ -51,13 +52,13 @@ const MultipleSelectBox = ({
   }, [fixedLecturers, azureUser]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onLecturerChange = (event: any, newValue: AzureUser[]) => {
-    setLecturers([
-      ...fixedOption,
-      ...newValue.filter((option) => fixedOption.indexOf(option) === -1),
-    ]);
-    onChange(event, newValue);
-  };
+  // const onLecturerChange = (event: any, newValue: AzureUser[]) => {
+  //   setLecturers([
+  //     ...fixedOption,
+  //     ...newValue.filter((option) => fixedOption.findIndex((fixedOption) => fixedOption.id === option.id) === -1),
+  //   ]);
+  //   onChange(event, newValue);
+  // };
 
   const handleClick = (lecturer: AzureUser) => {
     if (rookiesFromCurrentEdit.indexOf(lecturer) === -1) {

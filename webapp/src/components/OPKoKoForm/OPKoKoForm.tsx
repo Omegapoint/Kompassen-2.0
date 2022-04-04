@@ -106,26 +106,29 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
-  const fixedLecturer: string = azureUser.id;
-  const [lecturers, setLecturers] = useState<string[]>([fixedLecturer]);
+  const fixedLecturer: AzureUser[] = [azureUser];
+  const [lecturers, setLecturers] = useState<AzureUser[]>(fixedLecturer);
   const priorRookies: AzureUser[] | (() => AzureUser[]) = [];
-  data?.lecturers?.filter(
+  data?.lecturers?.forEach( // varför gör vi en ny lista? Vi sparar den inte
     (lecturer) =>
       lecturer.firstTimePresenting ??
-      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user))
+      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user)) // Sätter inte denna att alla som har varit lecturers förut är prior rookies och alltså sätts till rookies??
   );
   const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
-      fixedLecturer,
-      ...newValue.filter((option) => fixedLecturer !== option.id).map((option) => option.id),
+      ...fixedLecturer,
+      ...newValue.filter((option) => fixedLecturer.findIndex((fixedOption) => fixedOption.id === option.id) === -1)
     ]);
+    console.log(lecturers);
   };
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
     setRookies(newRookies);
+    // console.log(rookies);
+    // console.log(newRookies);
   };
 
   // ----- Handle Form Submit ----
@@ -134,10 +137,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     const category = categories.find((e) => e.id === values.categoryID) as Category;
     const format = formats.find((e) => e.id === values.formatID) as Format;
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
-      userID: lecturer,
+      userID: lecturer.id,
       lectureID: null,
-      firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer),
+      firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer.id),
     }));
+    console.log(lecturers);
     const formData = {
       title: values.title,
       description: values.description,
@@ -207,9 +211,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         <InfoText />
 
         <MultipleSelectBox
-          onChange={onLecturerChange}
+          onLecturerChange={onLecturerChange}
           onRookiesChange={onRookiesChange}
           fixedLecturers={data?.lecturers}
+          lecturers={lecturers}
+          setLecturers={setLecturers}
           rookies={rookies}
         />
 
