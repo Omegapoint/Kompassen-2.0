@@ -7,7 +7,8 @@ import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
 
 const Home = (): ReactElement => {
-  const [alignment, setAlignment] = useState<string>('opkoko');
+  // Change to OPKoKo when live
+  const [alignment, setAlignment] = useState<string>('kompetensdag');
 
   const handleAlignment = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     if (newAlignment !== null) {
@@ -44,9 +45,9 @@ const Home = (): ReactElement => {
           onChange={handleAlignment}
           aria-label="Kompetensdagar eller OPKoKo"
         >
-          <ToggleButton value="opkoko" aria-label="OPKoKo">
+          {/* <ToggleButton value="opkoko" aria-label="OPKoKo">
             OPKoKo
-          </ToggleButton>
+          </ToggleButton> */}
           <ToggleButton value="kompetensdag" aria-label="Kompetensdagar">
             Kompetensdagar
           </ToggleButton>

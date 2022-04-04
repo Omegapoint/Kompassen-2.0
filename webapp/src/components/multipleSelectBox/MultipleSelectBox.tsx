@@ -33,7 +33,7 @@ const MultipleSelectBox = ({
 }: MultipleSelectBoxProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
-  const [searchTerm, setSearchTerm] = useState(''); 
+  const [searchTerm, setSearchTerm] = useState('');
   const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   useEffect(() => {
@@ -70,14 +70,13 @@ const MultipleSelectBox = ({
     if (term.length >= 3) {
       searchAzureUsers(searchTerm).then((value) => {
         setOptions(
-          value
-            .filter(
-              (user) =>
-                user.mail &&
-                (user.mail.includes('omegapoint.se') ||
-                  user.mail.includes('integrationsbolaget.se') ||
-                  user.mail.includes('molnbolaget.se'))
-            )
+          value.filter(
+            (user) =>
+              user.mail &&
+              (user.mail.includes('omegapoint.se') ||
+                user.mail.includes('integrationsbolaget.se') ||
+                user.mail.includes('molnbolaget.se'))
+          )
         );
       });
     }
