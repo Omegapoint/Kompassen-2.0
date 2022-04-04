@@ -9,6 +9,7 @@ import lectureLikesRoutes from './lectureLikes/routes';
 import lectureRoomsRoutes from './lectureRooms/routes';
 import lecturesRoutes from './lectures/routes';
 import loginRoutes from './login/routes';
+import officesRoutes from './offices/routes';
 import organisationRoutes from './organisations/routes';
 import userRoutes from './users/routes';
 
@@ -37,6 +38,7 @@ const setupExpress = (): Express => {
     attendantsRoutes,
     lectureLikesRoutes,
     lectureRoomsRoutes,
+    officesRoutes,
   ];
   routes.forEach((fn) => fn(app));
   return app;
