@@ -109,10 +109,10 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const fixedLecturer: AzureUser[] = [azureUser];
   const [lecturers, setLecturers] = useState<AzureUser[]>(fixedLecturer);
   const priorRookies: AzureUser[] | (() => AzureUser[]) = [];
-  data?.lecturers?.forEach( // varför gör vi en ny lista? Vi sparar den inte
+  data?.lecturers?.forEach(
     (lecturer) =>
       lecturer.firstTimePresenting ??
-      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user)) // Sätter inte denna att alla som har varit lecturers förut är prior rookies och alltså sätts till rookies??
+      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user))
   );
   const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
