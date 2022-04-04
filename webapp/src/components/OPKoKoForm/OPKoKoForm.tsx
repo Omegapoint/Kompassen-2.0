@@ -120,9 +120,10 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
       ...fixedLecturer,
-      ...newValue.filter((option) => fixedLecturer.findIndex((fixedOption) => fixedOption.id === option.id) === -1)
+      ...newValue.filter(
+        (option) => fixedLecturer.findIndex((fixedOption) => fixedOption.id === option.id) === -1
+      ),
     ]);
-    console.log(lecturers);
   };
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
@@ -141,7 +142,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       lectureID: null,
       firstTimePresenting: rookies.some((rookie) => rookie.id === lecturer.id),
     }));
-    console.log(lecturers);
     const formData = {
       title: values.title,
       description: values.description,
