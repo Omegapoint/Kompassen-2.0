@@ -74,24 +74,28 @@ const Settings = ({
   const updateUserRequest = useMutation(updateUser);
   const defaultFormValue = {
     speakerBio: user?.speakerBio || '',
-    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,
+    officeID: allOffices.find((office) => office.id === user?.officeID)?.id || 'null',
   };
 
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate } = useValidate(values);
+  const [invalidOffice, setInvalidOffice] = useState('');
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
-    const office = allOffices.find((o) => o.id === values.officeID) as Office;
-    const formData = {
-      speakerBio: values.speakerBio || null,
-      officeID: office.id,
-    };
-    if (user.id !== undefined) {
-      updateUserRequest.mutate({ id: user.id, ...formData, notifications });
-    } else {
-      createUserRequest.mutate({ ...formData, notifications });
+    if (values.officeID !== 'null') {
+      const office = allOffices.find((o) => o.id === values.officeID) as Office;
+      const formData = {
+        speakerBio: values.speakerBio || null,
+        officeID: office.id,
+      };
+      if (user.id !== undefined) {
+        updateUserRequest.mutate({ id: user.id, ...formData, notifications });
+      } else {
+        createUserRequest.mutate({ ...formData, notifications });
+      }
     }
+    setInvalidOffice('Test');
   };
 
   useEffect(() => {
@@ -130,6 +134,7 @@ const Settings = ({
                 </MenuItem>
               ))}
             </Select>
+            <Typography variant="h6"> {invalidOffice}</Typography>
           </FormControl>
         </Box>
         <Box sx={{ display: 'flex', paddingBottom: `${padding.small}` }}>

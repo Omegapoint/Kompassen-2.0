@@ -21,7 +21,7 @@ const organisations: Organisation[] = [
     updatedBy: users[0].id,
   },
   {
-    id: 'dff5e789-b4e0-43c2-95c2-ac6c87242f34',
+    id: 'c1a06b4b-9013-4f77-874f-438df1174a8c',
     name: 'OPKoKo',
     createdAt: date,
     createdBy: users[0].id,

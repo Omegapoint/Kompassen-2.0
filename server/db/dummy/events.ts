@@ -58,7 +58,7 @@ const events: DBEvent[] = [
     organisationID: organisations[2].id,
     startAt: add(startDate, { months: 1 }),
     endAt: add(endDate, { months: 1 }),
-    comment: 'OPKoKo 22.1',
+    comment: '22.1',
     registrationStart: add(date, { days: 5 }),
     registrationEnd: add(date, { days: 10 }),
     createdAt: date,
