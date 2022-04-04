@@ -17,7 +17,7 @@ import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/Us
 import { LARGE_STRING_LEN } from '../../lib/Constants';
 import { useAppSelector } from '../../lib/Lib';
 import { Office } from '../../lib/Types';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import Notifications from './Notifications';
 
 const invalidNullableLongString = (str: string) => str.length > LARGE_STRING_LEN;
@@ -94,8 +94,9 @@ const Settings = ({
       } else {
         createUserRequest.mutate({ ...formData, notifications });
       }
+    } else {
+      setInvalidOffice('Ange din organisation');
     }
-    setInvalidOffice('Test');
   };
 
   useEffect(() => {
@@ -134,7 +135,10 @@ const Settings = ({
                 </MenuItem>
               ))}
             </Select>
-            <Typography variant="h6"> {invalidOffice}</Typography>
+            <Typography color={colors.red} variant="subtitle1">
+              {' '}
+              {invalidOffice}
+            </Typography>
           </FormControl>
         </Box>
         <Box sx={{ display: 'flex', paddingBottom: `${padding.small}` }}>
