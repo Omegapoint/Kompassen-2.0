@@ -13,7 +13,13 @@ import { setSocket } from './reducers/session/actions';
 import { setUser } from './reducers/user/actions';
 import Router from './router/Router';
 import { padding } from './theme/Theme';
-import { useCategoriesWS, useEventsWS, useOrganisationsWS } from './ws/ReduxWS';
+import {
+  useCategoriesWS,
+  useEventsWS,
+  useFormatsWS,
+  useOfficesWS,
+  useOrganisationsWS,
+} from './ws/ReduxWS';
 
 function useFetchDispatch<Res>(
   key: string,
@@ -38,6 +44,8 @@ const useInit = () => {
   const categoriesReady = useCategoriesWS();
   const eventsReady = useEventsWS();
   const organisationsReady = useOrganisationsWS();
+  const officesReady = useOfficesWS();
+  const formatsReady = useFormatsWS();
   const user = useFetchDispatch('user', getUser, setUser);
 
   const dispatch = useAppDispatch();
@@ -53,7 +61,13 @@ const useInit = () => {
     })();
   }, [dispatch, apiToken]);
 
-  const finished = user.finished && categoriesReady && eventsReady && organisationsReady;
+  const finished =
+    user.finished &&
+    categoriesReady &&
+    eventsReady &&
+    organisationsReady &&
+    officesReady &&
+    formatsReady;
 
   return { error: user.error, loading: !finished };
 };

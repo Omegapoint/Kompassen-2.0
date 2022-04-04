@@ -7,5 +7,5 @@ export const up = async (knex: Knex): Promise<void> =>
 
 export const down = async (knex: Knex): Promise<void> =>
   knex.schema.table('lectures', (t) => {
-    t.boolean('remote').alter();
+    t.text('remote').alter();
   });

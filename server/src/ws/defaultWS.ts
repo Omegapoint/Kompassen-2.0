@@ -1,9 +1,11 @@
 import { Socket } from 'socket.io';
 import categoriesDB from '../database/categories';
 import eventsDB from '../database/events';
+import formatDb from '../database/formats';
 import lecturesDB from '../database/lecture';
+import officeDb from '../database/offices';
 import organisationsDB from '../database/organisations';
-import { Category, Event, IDParam, Lecture, Organisation } from '../lib/types';
+import { Category, Event, Format, IDParam, Lecture, Office, Organisation } from '../lib/types';
 import { users } from './types';
 
 function defaultWS<T>(name: string, setupFn: () => Promise<unknown>) {
@@ -39,3 +41,5 @@ export const lectureIdeasWS = defaultWS<Lecture>('lectureIdeas', () => lecturesD
 export const categoriesWS = defaultWS<Category>('categories', categoriesDB.list);
 export const eventsWS = defaultWS<Event>('events', eventsDB.list);
 export const organisationsWS = defaultWS<Organisation>('organisations', organisationsDB.list);
+export const officesWS = defaultWS<Office>('offices', officeDb.list);
+export const formatsWS = defaultWS<Format>('formats', formatDb.list);

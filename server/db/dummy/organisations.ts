@@ -20,6 +20,14 @@ const organisations: Organisation[] = [
     updatedAt: date,
     updatedBy: users[0].id,
   },
+  {
+    id: 'dff5e789-b4e0-43c2-95c2-ac6c87242f34',
+    name: 'OPKoKo',
+    createdAt: date,
+    createdBy: users[0].id,
+    updatedAt: date,
+    updatedBy: users[0].id,
+  },
 ];
 
 export default organisations;

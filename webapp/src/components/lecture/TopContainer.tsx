@@ -13,7 +13,7 @@ const iconContainerStyle = { display: 'flex', alignItems: 'center' };
 const iconStyle = { width: '20px', height: '20px' };
 
 const getAnnotation = (lecture: Lecture): string | undefined =>
-  lecture.lecturer === null ? 'Söker passhållare' : 'Feedback önskas';
+  lecture.lecturer === null ? 'Öppen idé' : 'Feedback önskas';
 
 const formatTags = (tags: string[]) =>
   tags.map((e) => (

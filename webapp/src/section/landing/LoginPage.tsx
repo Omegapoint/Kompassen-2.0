@@ -22,13 +22,13 @@ const LoginPage = (): ReactElement => {
       <Typography
         color="primary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '2.5rem' }}
+        sx={{ fontFamily: fontFamilies.header, fontSize: '2.0rem' }}
       >
-        KomPass 2.0
+        OMEGAPOINT KOMPASSEN
       </Typography>
       <Box sx={{ display: 'grid', gridGap: padding.standard }}>
         <Typography variant="h6" sx={{ fontSize: '1rem' }}>
-          Logga in på Kompassen2
+          Logga in på Kompassen
         </Typography>
         <Button color="primary" variant="contained" onClick={login}>
           Logga in med Azure AD

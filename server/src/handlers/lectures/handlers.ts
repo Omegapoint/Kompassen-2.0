@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
+import lectureLecturersDb from '../../database/lectureLecturers';
+import lectureStatusDb from '../../database/lectureStatus';
 import { httpError } from '../../lib/lib';
 import {
   Approved,
@@ -33,10 +35,30 @@ interface Handlers {
 
 const lectures: Handlers = {
   async create({ body }, res) {
+    const unhandledStatusID = 'ea399f36-1c38-4fd7-b838-c89fb663f818';
     const { userID } = res.locals;
+
     const item = await lecturesDB.insert(
       { ...body, lecturerID: userID, approved: false, idea: false },
       userID
+    );
+    const newLectureStatus = await lectureStatusDb.insert(
+      {
+        lecture_id: item.id,
+        status_id: unhandledStatusID,
+      },
+      userID
+    );
+    await lecturesDB.setStatus(newLectureStatus.id, item.id);
+    body.lecturers?.map((lecturer) =>
+      lectureLecturersDb.insert(
+        {
+          lectureID: item.id,
+          userID: lecturer.userID,
+          firstTimePresenting: lecturer.firstTimePresenting,
+        },
+        userID
+      )
     );
     res.send(item);
   },
@@ -58,6 +80,13 @@ const lectures: Handlers = {
         message: null,
         approved: false,
         draft: true,
+        videoLink: null,
+        keyTakeaway: null,
+        internalPresentation: null,
+        targetAudience: null,
+        formatID: null,
+        lectureStatusID: null,
+        lecturers: null,
       },
       userID
     );
@@ -79,7 +108,6 @@ const lectures: Handlers = {
   },
   async update({ body }, res) {
     const { userID, role } = res.locals;
-
     const currentLecture = await lecturesDB.getByID(body.id);
 
     if (!currentLecture) {
@@ -96,6 +124,42 @@ const lectures: Handlers = {
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
+
+    body.lecturers?.forEach((newLecturers) => {
+      if (!lecture?.lecturers?.some((l) => l.userID === newLecturers.userID)) {
+        lectureLecturersDb.insert(
+          {
+            lectureID: item.id,
+            userID: newLecturers.userID,
+            firstTimePresenting: newLecturers.firstTimePresenting,
+          },
+          userID
+        );
+      } else {
+        const storedLecture = lecture.lecturers.find((l) => l.userID === newLecturers.userID);
+        if (storedLecture?.lectureID) {
+          lectureLecturersDb.update(
+            storedLecture?.lectureID,
+            storedLecture?.userID,
+            newLecturers.firstTimePresenting
+          );
+        }
+      }
+    });
+
+    lecture?.lecturers?.forEach(async (storedLecture) => {
+      if (!body.lecturers?.some((l) => l.userID === storedLecture.userID)) {
+        if (storedLecture.lectureID) {
+          const dbLecture = await lectureLecturersDb.getByUserIDAndLectureID(
+            storedLecture.userID,
+            storedLecture.lectureID
+          );
+          if (dbLecture?.id) {
+            lectureLecturersDb.delete(dbLecture?.id);
+          }
+        }
+      }
+    });
 
     if (lecture?.idea) lectureIdeasWS.onUpdated(lecture as Lecture);
     onEventLectureUpdate(lecture as Lecture);
@@ -116,13 +180,23 @@ const lectures: Handlers = {
       httpError(res, 404, 'Lecture not found');
       return;
     }
+    const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
+    item.lecturers = lecturers;
     res.send(item);
   },
   async list(req, res) {
     const { userID } = res.locals;
     const mine = req.query.mine === 'true';
     const items = await lecturesDB.list(false, mine ? userID : null);
-    res.send(items);
+    const returnItems = await Promise.all(
+      items.map(async (lecture) => {
+        const newLecture = lecture;
+        const lecturers = await lectureLecturersDb.getByLectureID(lecture?.id);
+        newLecture.lecturers = lecturers;
+        return newLecture;
+      })
+    );
+    res.send(returnItems);
   },
   async listTags(req, res) {
     const items = await lecturesDB.listTags();

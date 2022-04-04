@@ -1,34 +1,18 @@
-import { Button, Paper, Typography } from '@mui/material';
-import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import { createUser } from '../../api/Api';
+import { Paper, Typography } from '@mui/material';
+import { ReactElement, useEffect, useState } from 'react';
 import { padding } from '../../theme/Theme';
-import Notifications from '../settings/Notifications';
-
-const defaultNotifications = {
-  newLecture: true,
-  newComment: true,
-  adminRead: true,
-  lectureTaken: true,
-};
+import Profile from '../Profile/Profile';
 
 interface CreateUserProps {
   onFinish: () => void;
 }
 
 const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
-  const { mutate, isSuccess } = useMutation(createUser);
-  const [notifications, setNotifications] = useState(defaultNotifications);
+  const [userUpdated, setUserUpdated] = useState(false);
 
   useEffect(() => {
-    if (isSuccess) onFinish();
-  }, [isSuccess, onFinish]);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNotifications((old) => ({ ...old, [event.target.name]: event.target.checked }));
-  };
-
-  const handleSubmit = async () => mutate({ notifications });
+    if (userUpdated) onFinish();
+  }, [userUpdated, onFinish]);
 
   return (
     <Paper
@@ -41,12 +25,13 @@ const CreateUser = ({ onFinish }: CreateUserProps): ReactElement => {
         },
       }}
     >
-      <Typography variant="h2">Välkommen till Kompass 2.0</Typography>
-      <Typography variant="h6">Ställ in dina notifikationsinställningar</Typography>
-      <Notifications handleChange={handleChange} checked={notifications} />
-      <Button color="primary" variant="contained" onClick={handleSubmit}>
-        Spara inställningarna
-      </Button>
+      <Typography variant="h2">Välkommen till Omegapoint Kompassen!</Typography>
+      <Typography variant="body1">
+        Kompassen är Omegapoints egna internt utvecklade verktyg för att hantera kompetensrelaterade
+        aktiviteter. Här finns information och anmälan för kompetensdagar och kompetenskonferenser
+        (OPKoKo).
+      </Typography>
+      <Profile setUserUpdated={setUserUpdated} />
     </Paper>
   );
 };

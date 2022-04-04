@@ -11,7 +11,7 @@ const Logo = (): ReactElement => (
       letterSpacing="1px"
       color="white"
     >
-      KomPass 2.0
+      OMEGAPOINT KOMPASSEN
     </Typography>
     <Typography
       variant="h2"

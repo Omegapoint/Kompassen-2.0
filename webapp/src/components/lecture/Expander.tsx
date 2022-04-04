@@ -12,24 +12,36 @@ export interface ExpanderProps {
 
 const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
   const { lecture } = useContext(LectureContext);
+
   return (
     <>
       {lecture.lecturer ? (
-        <Box sx={{ gridArea: 'registerButton', maxWidth: '190px' }}>
+        <Box sx={{ gridArea: 'registerButton', maxWidth: '510px' }}>
           <Typography variant="body2" sx={{ justifySelf: 'flex-end' }}>
             {`${lecture.lecturer} har ställt upp som passhållare`}
           </Typography>
         </Box>
       ) : (
-        <Button
-          component={NavLink}
-          to={`/lecture/edit/${lecture.id}`}
-          sx={{ gridArea: 'registerButton', maxWidth: '190px' }}
-          variant="contained"
-          color="primary"
-        >
-          Ta passet
-        </Button>
+        <Box>
+          <Button
+            component={NavLink}
+            to={`/lecture/edit/${lecture.id}`}
+            sx={{ maxWidth: '260px', marginRight: '10px' }}
+            variant="contained"
+            color="primary"
+          >
+            Anmäl som kompetensdagspass
+          </Button>
+          <Button
+            component={NavLink}
+            to={`/lecture/OPKoKo/edit/${lecture.id}`}
+            sx={{ maxWidth: '240px' }}
+            variant="contained"
+            color="primary"
+          >
+            Anmäl som OPKoKobidrag
+          </Button>
+        </Box>
       )}
 
       <Box

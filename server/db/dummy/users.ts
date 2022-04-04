@@ -5,6 +5,8 @@ const date = new Date();
 const users: User[] = [
   {
     id: '4a612d67-31e3-4ad3-b503-93543ec54c27',
+    speakerBio: null,
+    officeID: null,
     notifications: {
       newLecture: true,
       newComment: true,
@@ -16,6 +18,8 @@ const users: User[] = [
   },
   {
     id: '23a416c5-7dab-4c84-aff1-fd22ec61386d',
+    speakerBio: null,
+    officeID: null,
     notifications: {
       newLecture: true,
       newComment: true,
@@ -27,6 +31,8 @@ const users: User[] = [
   },
   {
     id: 'f45202d2-5a25-4053-8754-20b1814d92c2',
+    speakerBio: null,
+    officeID: null,
     notifications: {
       newLecture: true,
       newComment: true,

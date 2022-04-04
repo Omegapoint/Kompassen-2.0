@@ -112,7 +112,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
             displayEmpty
           >
             <MenuItem value="">&nbsp;</MenuItem>
-            <MenuItem value="null">Söker passhållare</MenuItem>
+            <MenuItem value="null">Öppen idé</MenuItem>
             <MenuItem value="lecturer">Söker feedback</MenuItem>
           </Select>
         </FormControl>

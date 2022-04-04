@@ -115,7 +115,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
   const allOrganisations = useAppSelector((state) => state.organisations);
   const categories = allCategories.filter((e) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
-  const events = useAppSelector((state) => state.events);
+  const events = useAppSelector((state) =>
+    state.events.filter(
+      (event) =>
+        event.organisationID !==
+        allOrganisations.find((organisation) => organisation?.name === 'OPKoKo')?.id
+    )
+  );
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
@@ -146,6 +152,7 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       title: values.title,
       description: values.description,
       lecturer: values.lecturer,
+      lecturerID: azureUser.id,
       tags: [
         ...new Set(
           values.tags
@@ -162,6 +169,15 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       requirements: values.requirements || null,
       preparations: values.preparations || null,
       message: values.message || null,
+      // Not applicable for Kompetensdag lectures
+      videoLink: null,
+      keyTakeaway: null,
+      internalPresentation: false,
+      firstTimePresenting: false,
+      targetAudience: null,
+      formatID: null,
+      lectureStatusID: null,
+      lecturers: null,
     };
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });

@@ -3,10 +3,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Fragment, ReactElement } from 'react';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
+import { getAzureUser } from '../../api/GraphApi';
 import useAzureUser from '../../hooks/UseAzureUser';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
@@ -40,10 +41,29 @@ const LectureView = ({
 }: LectureViewProps): ReactElement => {
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
+  const formats = useAppSelector((state) => state.formats);
+  const formatName = formats.find((e) => e.id === lecture.formatID);
   const events = useAppSelector((state) => state.events);
   const event = events.find((e) => e.id === lecture.eventID);
   const organisations = useAppSelector((state) => state.organisations);
   const organisation = organisations.find((e) => e.id === event?.organisationID);
+  const editLink = organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/edit/';
+
+  const [lecturers, setLecturers] = useState(['']);
+  useEffect(() => {
+    const lecturersName: string[] = [];
+
+    async function fetchMyAPI(lecturer: string) {
+      return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
+    }
+    if (lecture.lecturers) {
+      lecture.lecturers.map((lecturer) =>
+        fetchMyAPI(lecturer.userID).then((value) => lecturersName.push(value))
+      );
+      setLecturers(lecturersName);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
@@ -51,7 +71,7 @@ const LectureView = ({
   const { name: createdBy } = useAzureUser(lecture.createdBy);
 
   const setLocation = (location: string | null): string => {
-    if (location === 'local') return 'Endat på plats';
+    if (location === 'local') return 'Endast på plats';
     if (location === 'distance') return 'Endast på distans';
     if (location === 'hybrid') return 'Både på plats och distans';
     return '';
@@ -70,6 +90,18 @@ const LectureView = ({
     { name: 'Taggar', value: lecture.tags.reduce((s, e) => `${s} ${e}`, '') },
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
+  const opkokoTable = [
+    { name: 'Talare', value: lecturers.join(', ') },
+    { name: 'Titel', value: lecture.title },
+    { name: 'Beskrivning', value: lecture.description },
+    { name: 'Intern presentation', value: lecture.internalPresentation ? 'Ja' : 'Nej' },
+    { name: 'Key take away', value: lecture.keyTakeaway },
+    { name: 'Format', value: formatName?.name },
+    { name: 'Målgrupp', value: lecture.targetAudience },
+    { name: 'Förkunskapskrav', value: lecture.requirements },
+    { name: 'Meddelande', value: lecture.message },
+  ].map((e) => ({ ...e, value: e.value || '-' }));
+
   const handleApprove = async () => {
     await mutateAsync({ approved: !lecture.approved, id: lecture.id });
     if (close) close();
@@ -77,135 +109,168 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
-      }}
-    >
-      <UpdateLectureIdea
-        open={open}
-        close={() => {
-          if (onSuccess) onSuccess();
-          off();
-        }}
-        lecture={lecture}
-      />
+    <>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
-          justifyItems: 'center',
-          '& *': {
-            width: '100%',
-            color: colors.white,
-            textAlign: 'center',
-            padding: `3px ${padding.medium}`,
-          },
+          borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
         }}
       >
-        {isUnpublishedIdea ? (
-          <>
-            <Typography
-              sx={{
-                background: colors.darkTeal,
-                borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
-              }}
-            >
-              Idé
-            </Typography>
-          </>
-        ) : (
-          <>
-            {eventDay !== undefined && (
-              <Typography
-                sx={{
-                  background: colors.darkTeal,
-                  borderRadius: `${borderRadius.standard} 0 0 0`,
-                }}
-              >
-                {formatDayTime(eventDay)}
+        <UpdateLectureIdea
+          open={open}
+          close={() => {
+            if (onSuccess) onSuccess();
+            off();
+          }}
+          lecture={lecture}
+        />
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: isUnpublishedIdea ? '1fr' : 'max-content max-content 1fr',
+            justifyItems: 'center',
+            '& *': {
+              width: '100%',
+              color: colors.white,
+              textAlign: 'center',
+              padding: `3px ${padding.medium}`,
+            },
+          }}
+        >
+          {
+            // eslint-disable-next-line
+            isUnpublishedIdea ? (
+              <>
+                <Typography
+                  sx={{
+                    background: colors.darkTeal,
+                    borderRadius: `${borderRadius.standard} ${borderRadius.standard} 0 0`,
+                  }}
+                >
+                  Idé
+                </Typography>
+              </>
+            ) : organisation?.name !== 'OPKoKo' ? (
+              <>
+                {eventDay !== undefined && (
+                  <Typography
+                    sx={{
+                      background: colors.darkTeal,
+                      borderRadius: `${borderRadius.standard} 0 0 0`,
+                    }}
+                  >
+                    {formatDayTime(eventDay)}
+                  </Typography>
+                )}
+                <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
+                <Typography
+                  sx={{
+                    borderRadius: `0 ${borderRadius.standard} 0 0`,
+                    background: category?.color,
+                  }}
+                >
+                  {category?.name}
+                </Typography>
+              </>
+            ) : (
+              <>
+                {eventDay !== undefined && (
+                  <Typography
+                    sx={{
+                      background: colors.darkTeal,
+                      borderRadius: `${borderRadius.standard} 0 0 0`,
+                    }}
+                  >
+                    {organisation?.name}
+                  </Typography>
+                )}
+                <Typography sx={{ background: colors.blue }}>{event?.comment}</Typography>
+                <Typography
+                  sx={{
+                    borderRadius: `0 ${borderRadius.standard} 0 0`,
+                    background: category?.color,
+                  }}
+                >
+                  {category?.name}
+                </Typography>
+              </>
+            )
+          }
+        </Box>
+        <Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridAutoFlow: 'column',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h5">{lecture.title}</Typography>
+            <div>
+              {editIcon &&
+                (isUnpublishedIdea ? (
+                  <IconButton onClick={on} size="large">
+                    <EditIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton component={NavLink} to={`${editLink}${lecture.id}`} size="large">
+                    <EditIcon />
+                  </IconButton>
+                ))}
+              {deleteIcon && (
+                <IconButton onClick={handleDelete} size="large">
+                  <DeleteIcon />
+                </IconButton>
+              )}
+            </div>
+          </Box>
+          <Typography sx={{ marginBottom: padding.standard }}>
+            {lecture.lecturer
+              ? `Anmäld av ${lecture.lecturer} den ${time}`
+              : `Skapad av ${createdBy} den ${time}`}
+          </Typography>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content 1fr max-content',
+              gridGap: padding.minimal,
+            }}
+          >
+            {organisation?.name !== 'OPKoKo'
+              ? table.map((e) => (
+                  <Fragment key={e.name}>
+                    <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                    <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                  </Fragment>
+                ))
+              : opkokoTable.map((e) => (
+                  <Fragment key={e.name}>
+                    <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                    <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
+                  </Fragment>
+                ))}
+            <Box sx={{ gridColumn: 'span 2' }} />
+            {!isUnpublishedIdea && !admin && (
+              <Typography sx={{ gridColumn: 'span 1' }}>
+                {lecture.approved ? 'Godkänd' : 'Bidraget är inskickat till urval'}
               </Typography>
             )}
-            <Typography sx={{ background: colors.blue }}>{organisation?.name}</Typography>
-            <Typography
-              sx={{
-                borderRadius: `0 ${borderRadius.standard} 0 0`,
-                background: category?.color,
-              }}
-            >
-              {category?.name}
-            </Typography>
-          </>
-        )}
-      </Box>
-
-      <Paper sx={{ display: 'grid', padding: padding.standard, height: 'auto' }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridAutoFlow: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography variant="h5">{lecture.title}</Typography>
-          <div>
-            {editIcon &&
-              (isUnpublishedIdea ? (
-                <IconButton onClick={on} size="large">
-                  <EditIcon />
-                </IconButton>
-              ) : (
-                <IconButton component={NavLink} to={`/lecture/edit/${lecture.id}`} size="large">
-                  <EditIcon />
-                </IconButton>
-              ))}
-            {deleteIcon && (
-              <IconButton onClick={handleDelete} size="large">
-                <DeleteIcon />
-              </IconButton>
+            {admin && (
+              <Button
+                sx={{ gridColumn: 'span 1' }}
+                variant={lecture.approved ? undefined : 'contained'}
+                color={lecture.approved ? undefined : 'primary'}
+                onClick={handleApprove}
+              >
+                {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
+              </Button>
             )}
-          </div>
-        </Box>
-        <Typography sx={{ marginBottom: padding.standard }}>
-          {lecture.lecturer
-            ? `Anmäld av ${lecture.lecturer} den ${time}`
-            : `Skapad av ${createdBy} den ${time}`}
-        </Typography>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'max-content 1fr max-content',
-            gridGap: padding.minimal,
-          }}
-        >
-          {table.map((e) => (
-            <Fragment key={e.name}>
-              <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-              <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
-            </Fragment>
-          ))}
-          <Box sx={{ gridColumn: 'span 2' }} />
-          {!isUnpublishedIdea && !admin && (
-            <Typography sx={{ gridColumn: 'span 1' }}>
-              {lecture.approved ? 'Godkänd' : 'Väntar på godkännande'}
-            </Typography>
-          )}
-          {admin && (
-            <Button
-              sx={{ gridColumn: 'span 1' }}
-              variant={lecture.approved ? undefined : 'contained'}
-              color={lecture.approved ? undefined : 'primary'}
-              onClick={handleApprove}
-            >
-              {lecture.approved ? 'Återkalla godkännande' : 'Godkänn'}
-            </Button>
-          )}
-        </Box>
-        {showAttendance && <LectureAttendanceList lecture={lecture} />}
-      </Paper>
-    </Box>
+          </Box>
+          {showAttendance && <LectureAttendanceList lecture={lecture} />}
+        </Paper>
+      </Box>
+    </>
   );
 };
 

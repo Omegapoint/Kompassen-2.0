@@ -31,7 +31,7 @@ const LectureStats = (): ReactElement => {
   return (
     <Box sx={{ display: 'grid', gridGap: padding.small }}>
       <div>
-        <Typography color="primary">Inskickade Pass</Typography>
+        <Typography color="primary">Kategorifördelning över inskickade bidrag</Typography>
         <Divider />
       </div>
       {isLoading ? (
@@ -72,7 +72,7 @@ const LectureStats = (): ReactElement => {
                   <Fragment key={e.title}>
                     <img alt="icon" width="12" height="12" src={formatImgAsSVG(e.title!)} />
                     <Typography>{e.desc}</Typography>
-                    <Typography>{e.value}</Typography>
+                    <Typography />
                   </Fragment>
                 ))}
               </Box>

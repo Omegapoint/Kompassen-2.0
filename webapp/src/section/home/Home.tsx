@@ -1,60 +1,20 @@
-import { Box, Button, Typography } from '@mui/material';
-import { ReactElement, useEffect, useState } from 'react';
-import CompetenceDays from '../../components/competenceDays/CompetenceDays';
-import Filter from '../../components/filter/Filter';
-import LatestLectures from '../../components/latestLectures/LatestLectures';
-import PublishIdea from '../../components/publishIdea/PublishIdea';
-import SideCard from '../../components/sideCard/SideCard';
-import WordCloud from '../../components/wordCloud/WordCloud';
-import useBoolean from '../../hooks/UseBoolean';
-import useUnmount from '../../hooks/UseUnmount';
-import { formatDates, isAdmin, useAppSelector } from '../../lib/Lib';
-import { Lecture } from '../../lib/Types';
-import { colors, padding } from '../../theme/Theme';
-
-const useLectureIdeasWS = () => {
-  const socket = useAppSelector((state) => state.session.socket);
-  const [lectureIdeas, setLectureIdeas] = useState<Lecture[]>([]);
-  const mounted = useUnmount();
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('lectureIdeas', (lectures) => {
-        if (mounted.current) {
-          setLectureIdeas(formatDates(lectures));
-        }
-      });
-
-      socket.on('lectureIdeas/update', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) =>
-            ideas.map((e) => (e.id === lecture.id ? formatDates(lecture) : e))
-          );
-        }
-      });
-
-      socket.on('lectureIdeas/create', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) => [formatDates(lecture), ...ideas]);
-        }
-      });
-
-      socket.on('lectureIdeas/delete', (lecture: Lecture) => {
-        if (mounted.current) {
-          setLectureIdeas((ideas) => ideas.filter((e) => e.id !== lecture.id));
-        }
-      });
-      socket.emit('lectureIdeas');
-    }
-    return () => {};
-  }, [mounted, socket]);
-
-  return lectureIdeas;
-};
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ReactElement, useState } from 'react';
+import { padding } from '../../theme/Theme';
+import HomeCompetenceDays from './HomeCompetenceDays';
+import HomeOPKoKo from './HomeOPKoKo';
+import SideMenuCompetenceDays from './SideMenuCompetenceDays';
+import SideMenuOPKoKo from './SideMenuOPKoKo';
 
 const Home = (): ReactElement => {
-  const [active, { off, on }] = useBoolean();
-  const lectureIdeas = useLectureIdeasWS();
+  // Change to OPKoKo when live
+  const [alignment, setAlignment] = useState<string>('kompetensdag');
+
+  const handleAlignment = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+    }
+  };
 
   return (
     <Box
@@ -67,42 +27,8 @@ const Home = (): ReactElement => {
         padding: '0 20px',
       }}
     >
-      <Typography variant="h1" sx={{ gridColumn: 'span 2' }}>
-        Idéer till kompetensdagar
-      </Typography>
-      <Box
-        sx={{
-          display: 'grid',
-          gridGap: padding.standard,
-          alignContent: 'start',
-        }}
-      >
-        {active && <PublishIdea cancel={off} />}
-        {!active && (
-          <Button
-            onClick={on}
-            sx={{ fontSize: '0.95rem', padding: padding.minimal }}
-            variant="contained"
-            color="primary"
-          >
-            Publicera ny idé
-          </Button>
-        )}
-        {lectureIdeas?.length ? (
-          <Filter lectures={lectureIdeas} />
-        ) : (
-          <Box
-            sx={{
-              display: 'grid',
-              justifyContent: 'center',
-              alignContent: 'center',
-              minHeight: '300px',
-            }}
-          >
-            <Typography variant="h5">Här var det tomt.</Typography>
-          </Box>
-        )}
-      </Box>
+      {alignment === 'kompetensdag' && <HomeCompetenceDays />}
+      {alignment === 'opkoko' && <HomeOPKoKo />}
       <Box
         sx={{
           display: 'grid',
@@ -111,38 +37,25 @@ const Home = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        {isAdmin() && (
-          <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events" />
-        )}
-
-        <SideCard
-          title="Nästa kompetensdag"
-          hrefText="Anmäl pass till kompetensdagar"
-          hrefBarColor={colors.orange}
-          href="/lecture/create"
+        <ToggleButtonGroup
+          value={alignment}
+          color="warning"
+          exclusive
+          fullWidth
+          onChange={handleAlignment}
+          aria-label="Kompetensdagar eller OPKoKo"
         >
-          <CompetenceDays />
-        </SideCard>
-        <SideCard
-          title="Mina senaste pass"
-          hrefText="Hantera mina anmälda pass "
-          href="/lecture/user"
-        >
-          <LatestLectures />
-        </SideCard>
-        <SideCard title="Trendar just nu">
-          <WordCloud />
-        </SideCard>
-        {/* TODO: Add some content to this */}
-        {/* <SideCard title="Funderar på att hålla i ett pass?"> */}
-        {/*  <Interested /> */}
-        {/* </SideCard> */}
-        {/* <SideCard title="Snabbguide för KomPass 2.0"> */}
-        {/*  <QuickGuide /> */}
-        {/* </SideCard> */}
-        {/* <SideCard title="Nuvarande planerare"> */}
-        {/*  <CurrentPlanner /> */}
-        {/* </SideCard> */}
+          {/* <ToggleButton value="opkoko" aria-label="OPKoKo">
+            OPKoKo
+          </ToggleButton> */}
+          <ToggleButton value="kompetensdag" aria-label="Kompetensdagar">
+            Kompetensdagar
+          </ToggleButton>
+        </ToggleButtonGroup>
+        <Box sx={{ width: '320px', gridGap: padding.standard }}>
+          {alignment === 'kompetensdag' && <SideMenuCompetenceDays />}
+          {alignment === 'opkoko' && <SideMenuOPKoKo />}
+        </Box>
       </Box>
     </Box>
   );

@@ -53,6 +53,20 @@ const events: DBEvent[] = [
     updatedBy: users[0].id,
     published: false,
   },
+  {
+    id: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
+    organisationID: organisations[2].id,
+    startAt: add(startDate, { months: 1 }),
+    endAt: add(endDate, { months: 1 }),
+    comment: 'OPKoKo 22.1',
+    registrationStart: add(date, { days: 5 }),
+    registrationEnd: add(date, { days: 10 }),
+    createdAt: date,
+    createdBy: users[0].id,
+    updatedAt: date,
+    updatedBy: users[0].id,
+    published: false,
+  },
 ];
 
 export default events;

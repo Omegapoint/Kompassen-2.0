@@ -64,6 +64,8 @@ export interface Notifications {
 
 // User
 interface BaseUser {
+  speakerBio: string | null;
+  officeID: string | null;
   notifications: Notifications;
 }
 
@@ -77,6 +79,68 @@ export interface User extends BaseUser {
   id: string;
   createdAt: Date;
   updatedAt: Date | null;
+}
+
+// Office
+interface BaseOffice {
+  name: string;
+}
+
+export type NewOffice = BaseOffice;
+
+export interface UpdatedOffice extends BaseOffice {
+  id: string;
+}
+
+export interface Office extends BaseOffice, DefaultTime {
+  id: string;
+}
+
+// Format
+interface BaseFormat {
+  name: string;
+  info: string | null;
+}
+
+export type NewFormat = BaseFormat;
+
+export interface UpdatedFormat extends BaseFormat {
+  id: string;
+}
+
+export interface Format extends BaseFormat, DefaultTime {
+  id: string;
+}
+
+// Status
+interface BaseStatus {
+  name: string;
+}
+
+export type NewStatus = BaseStatus;
+
+export interface UpdatedStatus extends BaseStatus {
+  id: string;
+}
+
+export interface Status extends BaseStatus, DefaultTime {
+  id: string;
+}
+
+// LectureStatus
+interface BaseLectureStatus {
+  lecture_id: string;
+  status_id: string;
+}
+
+export type NewLectureStatus = BaseLectureStatus;
+
+export interface UpdatedLectureStatus extends BaseLectureStatus {
+  id: string;
+}
+
+export interface LectureStatus extends BaseLectureStatus, DefaultTime {
+  id: string;
 }
 
 // Organisation
@@ -128,7 +192,7 @@ export interface UpdatedLectureIdea {
   tags: string[];
 }
 
-export interface NewLecture extends BaseLectureIdea {
+export interface BaseNewLecture extends BaseLectureIdea {
   remote: string | null;
   eventID: string | null;
   duration: number | null;
@@ -138,6 +202,16 @@ export interface NewLecture extends BaseLectureIdea {
   message: string | null;
   categoryID: string | null;
   draft: boolean;
+  videoLink: string | null;
+  keyTakeaway: string | null;
+  internalPresentation: boolean | null;
+  targetAudience: string | null;
+  formatID: string | null;
+  lectureStatusID: string | null;
+}
+
+export interface NewLecture extends BaseNewLecture {
+  lecturers: BaseLectureLecturer[] | null;
 }
 
 export interface DLecture extends NewLecture {
@@ -154,12 +228,18 @@ export interface UpdatedDBLecture extends UpdatedLecture {
   lecturerID: string | null;
 }
 
-export interface DBLecture extends UpdatedLecture, DLecture, DefaultTime {}
+export interface DBLecture extends BaseNewLecture, DefaultTime {
+  id: string;
+  idea: boolean;
+  lecturerID: string | null;
+  approved: boolean;
+}
 
 export interface Lecture extends DLecture, DefaultTime {
   id: string;
   categoryID: string | null;
   likes: string[];
+  lecturelecturers: string[] | null;
 }
 
 // LectureLike
@@ -175,6 +255,19 @@ export interface NewDBLectureLike extends BaseLectureLike {
 
 export interface LectureLike extends NewDBLectureLike, IDParam {
   createdAt: Date;
+}
+
+// LectureLecturer
+interface BaseLectureLecturer {
+  lectureID: string | null;
+  userID: string;
+  firstTimePresenting: boolean;
+}
+
+export type NewLectureLecturer = BaseLectureLecturer;
+
+export interface LectureLecturer extends BaseLectureLecturer, DefaultTime {
+  id: string;
 }
 
 export interface NewLectureMessage {
@@ -252,6 +345,12 @@ export interface IOK {
 export interface Approved {
   approved: boolean;
   id: string;
+}
+
+export interface LectureFeedback {
+  lectureId: string;
+  userID: string;
+  message: string;
 }
 
 export const reviver = (key: string, value: unknown): unknown => {

@@ -10,7 +10,7 @@ const Footer = (): ReactElement => (
       padding: padding.standard,
     }}
   >
-    <Typography>© Copyright 2021 Omegapoint Group AB</Typography>
+    <Typography>© Copyright {new Date().getUTCFullYear()} Omegapoint Group AB</Typography>
   </Box>
 );
 
