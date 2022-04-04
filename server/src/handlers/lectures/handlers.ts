@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import lecturesDB from '../../database/lecture';
 import lectureLecturersDb from '../../database/lectureLecturers';
 import lectureStatusDb from '../../database/lectureStatus';
+import statusDb from '../../database/status';
 import { httpError } from '../../lib/lib';
 import {
   Approved,
@@ -35,7 +36,12 @@ interface Handlers {
 
 const lectures: Handlers = {
   async create({ body }, res) {
-    const unhandledStatusID = 'ea399f36-1c38-4fd7-b838-c89fb663f818';
+    const unhandledStatus = await statusDb.getByName('Unhandled');
+    if (unhandledStatus === null) {
+      httpError(res, 500, 'No status with that name exists');
+      return;
+    }
+
     const { userID } = res.locals;
 
     const item = await lecturesDB.insert(
@@ -45,7 +51,7 @@ const lectures: Handlers = {
     const newLectureStatus = await lectureStatusDb.insert(
       {
         lecture_id: item.id,
-        status_id: unhandledStatusID,
+        status_id: unhandledStatus.id,
       },
       userID
     );
