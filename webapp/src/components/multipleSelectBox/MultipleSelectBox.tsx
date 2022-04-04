@@ -86,7 +86,6 @@ const MultipleSelectBox = ({
                   user.mail.includes('integrationsbolaget.se') ||
                   user.mail.includes('molnbolaget.se'))
             )
-            .filter((user) => user !== azureUser)
         );
       });
     }
