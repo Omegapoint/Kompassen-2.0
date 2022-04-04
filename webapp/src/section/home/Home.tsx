@@ -7,7 +7,7 @@ import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
 
 const Home = (): ReactElement => {
-  const [alignment, setAlignment] = useState<string>('OPKoKo');
+  const [alignment, setAlignment] = useState<string>('opkoko');
 
   const handleAlignment = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
     if (newAlignment !== null) {
