@@ -106,30 +106,54 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const { values, handleChange } = useForm(defaultFormValue);
   const { validate, invalid } = useValidate(values);
 
-  const fixedLecturer: AzureUser[] = [azureUser];
-  const [lecturers, setLecturers] = useState<AzureUser[]>(fixedLecturer);
-  const priorRookies: AzureUser[] | (() => AzureUser[]) = [];
-  data?.lecturers?.forEach(
-    (lecturer) =>
-      lecturer.firstTimePresenting ??
-      getAzureUser(lecturer.userID).then((user) => priorRookies.push(user))
-  );
+  // Set/load lecturers
+  const fixedLecturers: AzureUser[] = [azureUser];
+  const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
+  const previouslySetLecturers: NewLectureLecturer[] | null | undefined = data?.lecturers;
+  
+  useEffect(() => {
+    if (previouslySetLecturers) {
+      const alreadyLecturers: AzureUser | AzureUser[] = [];
+      previouslySetLecturers.map((usr) =>
+        getAzureUser(usr.userID).then((lecturer) => {
+          if (lecturer !== azureUser) {
+            alreadyLecturers.push(lecturer);
+          }
+        })
+      );
+      setLecturers(alreadyLecturers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  // Set/load rookies 
+  const priorRookies: AzureUser[] = [];
+  useEffect(() => {
+    previouslySetLecturers?.forEach((lecturer) => {
+      if (lecturer.firstTimePresenting) {
+        getAzureUser(lecturer.userID).then((user) => {
+          console.log(`User ${user.displayName} was added as a rookie`);
+          priorRookies.push(user);
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
     setLecturers([
-      ...fixedLecturer,
+      ...fixedLecturers,
       ...newValue.filter(
-        (option) => fixedLecturer.findIndex((fixedOption) => fixedOption.id === option.id) === -1
+        (option) => fixedLecturers.findIndex((fixedOption) => fixedOption.id === option.id) === -1
       ),
     ]);
   };
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
-    setRookies(newRookies);
-    // console.log(rookies);
-    // console.log(newRookies);
+    setRookies(newRookies.filter((option) => rookies.findIndex((o) => o.id === option.id) === -1));
+    console.log(rookies);
   };
 
   // ----- Handle Form Submit ----
@@ -213,10 +237,11 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         <MultipleSelectBox
           onLecturerChange={onLecturerChange}
           onRookiesChange={onRookiesChange}
-          fixedLecturers={data?.lecturers}
+          previouslySetLecturers={previouslySetLecturers}
           lecturers={lecturers}
           setLecturers={setLecturers}
           rookies={rookies}
+          setRookies={setRookies}
         />
 
         <TextField
