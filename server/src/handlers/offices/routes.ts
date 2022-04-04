@@ -1,11 +1,12 @@
 import { Express } from 'express';
-import { locked } from '../auth';
+import { admin } from '../auth';
 import schema, { validate } from '../validationSchemas';
 import offices from './handlers';
 
-const categoriesRoutes = (app: Express): void => {
-  app.get('/office', locked, offices.list);
-  app.get('/office/:id', locked, validate(schema.uuidParam, 'params'), offices.getByID);
+const officesRoutes = (app: Express): void => {
+  app.post('/office', admin, validate(schema.offices.newOffice), offices.create);
+  app.get('/office', offices.list);
+  app.get('/office/:id', admin, validate(schema.uuidParam, 'params'), offices.getByID);
 };
 
-export default categoriesRoutes;
+export default officesRoutes;

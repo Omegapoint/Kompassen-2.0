@@ -4,9 +4,8 @@ import { Chip, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { getAzureUser, searchAzureUsers } from '../../api/GraphApi';
-import { useAppSelector } from '../../lib/Lib';
+import React, { ReactElement, useState } from 'react';
+import { searchAzureUsers } from '../../api/GraphApi';
 import { NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 
@@ -17,50 +16,33 @@ interface MultipleSelectBoxProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLecturerChange: (event: any, arg1: AzureUser[]) => void;
   onRookiesChange: (arg0: AzureUser[]) => void;
-  fixedLecturers?: NewLectureLecturer[] | null;
+
+  previouslySetLecturers?: NewLectureLecturer[] | null;
   setLecturers: (arg0: AzureUser[]) => void;
-  lecturers?: AzureUser[];
-  rookies?: AzureUser[];
+  lecturers: AzureUser[] | [];
+  rookies: AzureUser[];
+  setRookies: (arg0: AzureUser[]) => void;
 }
 
 const MultipleSelectBox = ({
   onLecturerChange,
-  onRookiesChange,
-  fixedLecturers,
   lecturers,
-  setLecturers,
   rookies,
+  setRookies,
 }: MultipleSelectBoxProps): ReactElement => {
-  const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
-
-  useEffect(() => {
-    if (fixedLecturers) {
-      const alreadyLecturers: AzureUser | AzureUser[] = [];
-      fixedLecturers.map((user) =>
-        getAzureUser(user.userID).then((lecturer) => {
-          if (lecturer !== azureUser) {
-            alreadyLecturers.push(lecturer);
-          }
-        })
-      );
-      setLecturers(alreadyLecturers);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fixedLecturers, azureUser]);
+  // const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   const handleClick = (lecturer: AzureUser) => {
-    if (rookiesFromCurrentEdit.indexOf(lecturer) === -1) {
-      rookiesFromCurrentEdit.push(lecturer);
-      setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
+    if (rookies.findIndex((rookie) => lecturer.id === rookie.id) === -1) {
+      setRookies([...rookies, lecturer]);
     } else {
-      const index = rookiesFromCurrentEdit.indexOf(lecturer);
-      rookiesFromCurrentEdit.splice(index, 1);
-      setRookiesFromCurrentEdit(rookiesFromCurrentEdit);
+      const index = rookies.findIndex((rookie) => lecturer.id === rookie.id);
+      const newRookies = rookies;
+      newRookies.splice(index, 1);
+      setRookies(newRookies);
     }
-    onRookiesChange(rookiesFromCurrentEdit);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -104,7 +86,11 @@ const MultipleSelectBox = ({
               label={option.displayName}
               {...getTagProps({ index })}
               onClick={() => handleClick(option)}
-              color={rookiesFromCurrentEdit.indexOf(option) !== -1 ? 'primary' : 'default'}
+              color={
+                rookies.findIndex((rookie) => rookie.id === option.id) !== -1
+                  ? 'primary'
+                  : 'default'
+              }
             />
           ))
         }
