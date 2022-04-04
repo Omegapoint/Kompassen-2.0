@@ -110,7 +110,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const fixedLecturers: AzureUser[] = [azureUser];
   const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
   const previouslySetLecturers: NewLectureLecturer[] | null | undefined = data?.lecturers;
-  
+
   useEffect(() => {
     if (previouslySetLecturers) {
       const alreadyLecturers: AzureUser | AzureUser[] = [];
@@ -125,14 +125,13 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
-  // Set/load rookies 
+
+  // Set/load rookies
   const priorRookies: AzureUser[] = [];
   useEffect(() => {
     previouslySetLecturers?.forEach((lecturer) => {
       if (lecturer.firstTimePresenting) {
         getAzureUser(lecturer.userID).then((user) => {
-          console.log(`User ${user.displayName} was added as a rookie`);
           priorRookies.push(user);
         });
       }
@@ -153,7 +152,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
 
   const onRookiesChange = (newRookies: AzureUser[]) => {
     setRookies(newRookies.filter((option) => rookies.findIndex((o) => o.id === option.id) === -1));
-    console.log(rookies);
   };
 
   // ----- Handle Form Submit ----

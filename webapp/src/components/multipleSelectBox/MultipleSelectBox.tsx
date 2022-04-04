@@ -6,7 +6,6 @@ import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import React, { ReactElement, useState } from 'react';
 import { searchAzureUsers } from '../../api/GraphApi';
-import { useAppSelector } from '../../lib/Lib';
 import { NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 
@@ -26,30 +25,22 @@ interface MultipleSelectBoxProps {
 
 const MultipleSelectBox = ({
   onLecturerChange,
-  onRookiesChange,
   lecturers,
-  setLecturers,
   rookies,
-  setRookies
+  setRookies,
 }: MultipleSelectBoxProps): ReactElement => {
-  const { azureUser } = useAppSelector((state) => state.session);
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   // const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   const handleClick = (lecturer: AzureUser) => {
-    if (rookies.findIndex(rookie => lecturer.id === rookie.id) === -1) {
-      setRookies([
-        ...rookies,
-        lecturer
-      ]);
-      console.log(`${lecturer.displayName} set as a rookie`);
+    if (rookies.findIndex((rookie) => lecturer.id === rookie.id) === -1) {
+      setRookies([...rookies, lecturer]);
     } else {
-      const index = rookies.findIndex(rookie => lecturer.id === rookie.id); 
+      const index = rookies.findIndex((rookie) => lecturer.id === rookie.id);
       const newRookies = rookies;
       newRookies.splice(index, 1);
       setRookies(newRookies);
-      console.log(`${lecturer.displayName} removed as a rookie`);
     }
   };
 
@@ -94,7 +85,11 @@ const MultipleSelectBox = ({
               label={option.displayName}
               {...getTagProps({ index })}
               onClick={() => handleClick(option)}
-              color={rookies.findIndex(rookie => rookie.id === option.id) !== -1 ? 'primary' : 'default'}
+              color={
+                rookies.findIndex((rookie) => rookie.id === option.id) !== -1
+                  ? 'primary'
+                  : 'default'
+              }
             />
           ))
         }
