@@ -173,7 +173,6 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
       videoLink: null,
       keyTakeaway: null,
       internalPresentation: false,
-      firstTimePresenting: false,
       targetAudience: null,
       formatID: null,
       lectureStatusID: null,

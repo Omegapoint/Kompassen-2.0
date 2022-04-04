@@ -167,7 +167,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     const formData = {
       title: values.title,
       description: values.description,
-      eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
+      eventID: '2a752f77-c5d7-4e1a-9c8b-d232282d6d2b',
       categoryID: category.id,
       keyTakeaway: values.keyTakeAway,
       requirements: values.requirements || null,
