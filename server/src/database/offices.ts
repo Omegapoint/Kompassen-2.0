@@ -21,7 +21,9 @@ const SELECT_OFFICE_BY_ID = `
 
 const INSERT_OFFICE = `
     INSERT INTO offices(name, created_by, updated_by)
+
     VALUES ($1, $2, $2)
+
     RETURNING id
 `;
 

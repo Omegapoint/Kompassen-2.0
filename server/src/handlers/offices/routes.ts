@@ -9,4 +9,4 @@ const officesRoutes = (app: Express): void => {
   app.get('/office/:id', admin, validate(schema.uuidParam, 'params'), offices.getByID);
 };
 
-export default officesRoutes;
+

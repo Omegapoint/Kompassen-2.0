@@ -16,6 +16,7 @@ interface MultipleSelectBoxProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLecturerChange: (event: any, arg1: AzureUser[]) => void;
   onRookiesChange: (arg0: AzureUser[]) => void;
+
   previouslySetLecturers?: NewLectureLecturer[] | null;
   setLecturers: (arg0: AzureUser[]) => void;
   lecturers: AzureUser[] | [];
@@ -42,6 +43,7 @@ const MultipleSelectBox = ({
       newRookies.splice(index, 1);
       setRookies(newRookies);
     }
+
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

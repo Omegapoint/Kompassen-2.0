@@ -30,6 +30,7 @@ const ConfirmLectureOPKoKo = (): ReactElement => {
           digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Boka upp
           detta i din kalender! Den faktiska Teams-inbjudan kommer den 18/4 när CfP har stängt.{' '}
           <br />
+
           <br />
           Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
         </Typography>

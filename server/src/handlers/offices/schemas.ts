@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/constants';
+import { FILE_LEN, SHORT_STRING_LEN, STRING_MIN_LEN } from '../../lib/constants';
 import { NewOffice, UpdatedOffice } from '../../lib/types';
 
 const defaultSchema = {
