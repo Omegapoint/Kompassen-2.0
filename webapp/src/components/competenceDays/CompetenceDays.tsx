@@ -12,7 +12,7 @@ import LectureStats from './LectureStats';
 
 const listNewEvents = () =>
   listEvents({ filter: 'new' }).then((events) =>
-    events.filter((event) => event.organisationID !== 'dff5e789-b4e0-43c2-95c2-ac6c87242f34')
+    events.filter((event) => event.organisationID !== 'c1a06b4b-9013-4f77-874f-438df1174a8c')
   );
 
 const CompetenceDays = (): ReactElement => {

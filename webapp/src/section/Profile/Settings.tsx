@@ -58,17 +58,20 @@ const Settings = ({
   };
 
   const allOffices = [
-    { id: 'ea399f36-1c38-4fd7-b838-c89fb663f818', name: 'Stockholm OP' },
-    { id: 'd55d094a-f582-467d-bc83-9da6f891343b', name: 'Uppsala OP' },
-    { id: '3e0be5ad-1768-48a3-b2b9-b6b10a079be1', name: 'Malmö OP' },
-    { id: 'a249f431-5e4a-4a9a-a97c-a846f4ff61d2', name: 'Umeå OP' },
-    { id: '192cf114-0279-4eba-b969-b15e32d2475f', name: 'Göteborg OP' },
-    { id: '06bc8d77-8e73-4803-9465-cfb461e6cf5c', name: 'Integrationsbolaget' },
-    { id: '6a9812cb-57ec-4053-88d9-6e709a9460cf', name: 'Molnbolaget' },
+    { id: 'cccb273a-2ae3-4551-8d2c-3fd209aec5e5', name: 'Omegapoint Group' },
+    { id: '6ff57b3b-0149-45f3-9544-24c69ab65cf1', name: 'Omegapoint Stockholm' },
+    { id: '652b8b34-d83b-479c-b795-fbcfc035946e', name: 'Omegapoint Umeå' },
+    { id: '7dc62022-5aed-4590-9a4f-a9520fcb4efd', name: 'Omegapoint Malmö' },
+    { id: '1d7214e6-1487-4e2f-980e-ea12d090c7eb', name: 'Omegapoint Göteborg' },
+    { id: 'd8706225-df9b-49a8-9f97-fcc92cddc558', name: 'Omegapoint Uppsala' },
+    { id: '91adb151-e047-468e-9d06-e6e37589fa2f', name: 'Omegapoint Köpenhamn' },
+    { id: '35c9cd57-c909-4ab7-9aa2-78f3ba957c26', name: 'Integrationsbolaget' },
+    { id: '76cc967f-35ed-4d7a-ad2e-4830d98bdf79', name: 'Molnbolaget' },
+    { id: 'de3801d5-acd2-4bc8-a9fd-6953f5ebe235', name: 'Innovative Security' },
+    { id: 'e4409858-3aa6-4284-a464-2beef6ea8cc9', name: 'Elicit' },
   ];
   const createUserRequest = useMutation(createUser);
   const updateUserRequest = useMutation(updateUser);
-
   const defaultFormValue = {
     speakerBio: user?.speakerBio || '',
     officeID: allOffices.find((office) => office.id === user?.officeID)?.id || allOffices[0].id,
