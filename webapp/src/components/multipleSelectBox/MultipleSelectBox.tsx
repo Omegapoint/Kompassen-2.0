@@ -51,15 +51,6 @@ const MultipleSelectBox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedLecturers, azureUser]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const onLecturerChange = (event: any, newValue: AzureUser[]) => {
-  //   setLecturers([
-  //     ...fixedOption,
-  //     ...newValue.filter((option) => fixedOption.findIndex((fixedOption) => fixedOption.id === option.id) === -1),
-  //   ]);
-  //   onChange(event, newValue);
-  // };
-
   const handleClick = (lecturer: AzureUser) => {
     if (rookiesFromCurrentEdit.indexOf(lecturer) === -1) {
       rookiesFromCurrentEdit.push(lecturer);
