@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import officeDb from '../../database/offices';
 import { httpError } from '../../lib/lib';
-
 import { IDParam, NewOffice } from '../../lib/types';
 
 interface Handlers {

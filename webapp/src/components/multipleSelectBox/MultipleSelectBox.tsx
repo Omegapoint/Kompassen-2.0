@@ -43,7 +43,6 @@ const MultipleSelectBox = ({
       newRookies.splice(index, 1);
       setRookies(newRookies);
     }
-
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
