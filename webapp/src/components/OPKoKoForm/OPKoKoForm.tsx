@@ -91,7 +91,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
-    lecturers: azureUser.displayName,
     keyTakeAway: data?.keyTakeaway || '',
     categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
     formatID: formats.find((format) => format.id === data?.formatID)?.id || formats[0].id,
@@ -112,7 +111,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const previouslySetLecturers: NewLectureLecturer[] | null | undefined = data?.lecturers;
 
   useEffect(() => {
-    if (previouslySetLecturers) {
+    if (previouslySetLecturers && !data?.idea) {
       const alreadyLecturers: AzureUser | AzureUser[] = [];
       previouslySetLecturers.map((usr) =>
         getAzureUser(usr.userID).then((lecturer) => {
@@ -187,7 +186,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       preparations: null,
       lecturers: submitLecturers,
     };
-    console.log(formData);
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
