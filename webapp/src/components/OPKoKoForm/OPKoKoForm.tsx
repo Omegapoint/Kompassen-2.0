@@ -186,7 +186,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       preparations: null,
       lecturers: submitLecturers,
     };
-    console.log(formData);
     if (data) {
       updateLectureRequest.mutate({ id: data.id, draft, ...formData });
     } else {
