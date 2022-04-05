@@ -53,9 +53,10 @@ const LectureView = ({
   useEffect(() => {
     const lecturersName: string[] = [];
 
-    async function fetchMyAPI(lecturer: string) {
-      return getAzureUser(lecturer).then((azureUser) => azureUser.displayName);
+    async function fetchMyAPI(userID: string) {
+      return getAzureUser(userID).then((azureUser) => azureUser.displayName);
     }
+
     if (lecture.lecturers) {
       lecture.lecturers.map((lecturer) =>
         fetchMyAPI(lecturer.userID).then((value) => lecturersName.push(value))
