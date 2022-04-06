@@ -1,1 +1,6 @@
-{}
+{
+    "eslint.workingDirectories": [
+        "server",
+        "webapp"
+    ]
+}
