@@ -3,7 +3,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { ReactElement } from 'react';
 import { matchPath, NavLink, useLocation } from 'react-router-dom';
-import { isAdmin } from '../../lib/Lib';
+import { checkAccess, ROLE } from '../../lib/Lib';
 import { AppRoute, appRoutes, notFound } from '../../router/Router';
 
 const sortedRoutes = [...appRoutes].sort((e, e1) => (e.path.length > e1.path.length ? 1 : -1));
@@ -14,7 +14,7 @@ const findCurrentPaths = (
   foundRoutes: AppRoute[]
 ): AppRoute[] => {
   const found = routes
-    .filter((route) => (route.admin && isAdmin()) || !route.admin)
+    .filter((route) => (route.admin && checkAccess(ROLE.ADMIN)) || !route.admin)
     .find((route) => {
       if (route.name === notFound.name) return false;
       const isStart = path.startsWith(route.path) || matchPath(route.path, path);

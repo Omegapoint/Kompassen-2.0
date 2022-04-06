@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
-import { isAdmin } from '../lib/Lib';
+import { checkAccess, isAdmin, ROLE } from '../lib/Lib';
 import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
 import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
@@ -84,7 +84,7 @@ export const appRoutes: AppRoute[] = [
     name: 'Hantera Kompetensdag',
     path: '/events/competenceday/:id',
     Component: CompetencedayPlanner,
-    admin: true,
+    admin: true
   },
   {
     name: 'Hantera Kompetensdagar',
@@ -96,6 +96,7 @@ export const appRoutes: AppRoute[] = [
     name: 'Hantera OPKoKos',
     path: '/events/opkokos',
     Component: OPKoKoPlanner,
+    admin: true
   },
   {
     name: 'OPKoKoInfo',
@@ -108,7 +109,7 @@ export const appRoutes: AppRoute[] = [
 const Router = (): ReactElement => (
   <Routes>
     {appRoutes
-      .filter((route) => (route.admin && isAdmin()) || !route.admin)
+      .filter((route) => (route.admin && checkAccess(ROLE.ADMIN)) || !route.admin)
       .map((route) => (
         <Route
           path={route.path}
