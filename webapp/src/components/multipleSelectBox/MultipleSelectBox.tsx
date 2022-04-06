@@ -15,9 +15,6 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />;
 interface MultipleSelectBoxProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLecturerChange: (event: any, arg1: AzureUser[]) => void;
-  onRookiesChange: (arg0: AzureUser[]) => void;
-
-  previouslySetLecturers?: NewLectureLecturer[] | null;
   setLecturers: (arg0: AzureUser[]) => void;
   lecturers: AzureUser[] | [];
   rookies: AzureUser[];
@@ -28,20 +25,17 @@ const MultipleSelectBox = ({
   onLecturerChange,
   lecturers,
   rookies,
-  setRookies,
+  setRookies
 }: MultipleSelectBoxProps): ReactElement => {
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  // const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
 
   const handleClick = (lecturer: AzureUser) => {
     if (rookies.findIndex((rookie) => lecturer.id === rookie.id) === -1) {
       setRookies([...rookies, lecturer]);
     } else {
-      const index = rookies.findIndex((rookie) => lecturer.id === rookie.id);
-      const newRookies = rookies;
-      newRookies.splice(index, 1);
-      setRookies(newRookies);
+      const filteredRookies = rookies.filter((o) => lecturer.id !== o.id);
+      setRookies(filteredRookies);
     }
   };
 
