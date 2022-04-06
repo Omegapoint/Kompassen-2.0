@@ -130,35 +130,47 @@ const lectures: Handlers = {
     const item = await lecturesDB.update({ ...body, lecturerID }, userID);
 
     const lecture = await lecturesDB.getByID(item.id);
+    const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
+    // eslint-disable-next-line
+    lecture!.lecturers = lecturers;
 
-    body.lecturers?.forEach((newLecturers) => {
-      if (!lecture?.lecturers?.some((l) => l.userID === newLecturers.userID)) {
-        lectureLecturersDb.insert(
-          {
-            lectureID: item.id,
-            userID: newLecturers.userID,
-            firstTimePresenting: newLecturers.firstTimePresenting,
-          },
-          userID
+    body.lecturers?.forEach((incomingLecturers) => {
+      if (
+        lecture?.lecturers?.some(
+          (lecturerFromDb) => lecturerFromDb.userID === incomingLecturers.userID
+        )
+      ) {
+        const storedLecture = lecture?.lecturers?.find(
+          (l) => l.userID === incomingLecturers.userID
         );
-      } else {
-        const storedLecture = lecture.lecturers.find((l) => l.userID === newLecturers.userID);
         if (storedLecture?.lectureID) {
           lectureLecturersDb.update(
             storedLecture?.lectureID,
             storedLecture?.userID,
-            newLecturers.firstTimePresenting
+            incomingLecturers.firstTimePresenting
           );
         }
+      } else {
+        lectureLecturersDb.insert(
+          {
+            lectureID: item.id,
+            userID: incomingLecturers.userID,
+            firstTimePresenting: incomingLecturers.firstTimePresenting,
+          },
+          userID
+        );
       }
     });
-
-    lecture?.lecturers?.forEach(async (storedLecture) => {
-      if (!body.lecturers?.some((l) => l.userID === storedLecture.userID)) {
-        if (storedLecture.lectureID) {
+    lecture?.lecturers?.forEach(async (lecturerFromDb) => {
+      if (
+        body.lecturers?.every(
+          (incomingLecturers) => incomingLecturers.userID !== lecturerFromDb.userID
+        )
+      ) {
+        if (lecturerFromDb.lectureID) {
           const dbLecture = await lectureLecturersDb.getByUserIDAndLectureID(
-            storedLecture.userID,
-            storedLecture.lectureID
+            lecturerFromDb.userID,
+            lecturerFromDb.lectureID
           );
           if (dbLecture?.id) {
             lectureLecturersDb.delete(dbLecture?.id);

@@ -39,6 +39,7 @@ const UPDATE_LECTURELECTURER = `
     UPDATE lecture_lecturers
     SET first_time_presenting = $1,
         updated_by            = $2
+    WHERE
     user_id = $3 AND lecture_id = $4
     RETURNING id
 `;
