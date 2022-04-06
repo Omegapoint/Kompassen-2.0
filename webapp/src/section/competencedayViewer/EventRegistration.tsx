@@ -20,7 +20,7 @@ import SmallLoader from '../../components/loader/SmallLoader';
 import useForm from '../../hooks/UseForm';
 import { useAppSelector } from '../../lib/Lib';
 import { Event, Lecture } from '../../lib/Types';
-import SmallLectureCard from '../eventPlanner/SmallLectureCard';
+import SmallLectureCard from '../competencedayPlanner/SmallLectureCard';
 
 const defaultFormValue: FormValue = {
   lectures: [],

@@ -1,16 +1,16 @@
 import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
+import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
 import { isAdmin } from '../lib/Lib';
-import ConfirmLecture from '../section/confirmLecture/ConfirmLecture';
+import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
 import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
-import EventPlanner from '../section/eventPlanner/EventPlanner';
-import Events from '../section/events/Events';
-import EventViewer from '../section/eventViewer/EventViewer';
+import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
+import CompetenceDays from '../section/competenceDays/CompetenceDays';
+import CompetencedayViewer from '../section/competencedayViewer/CompetencedayViewer';
 import Home from '../section/home/Home';
-import HomeOPKoKo from '../section/home/HomeOPKoKo';
-import Lecture from '../section/lecture/Lecture';
-import OPKoKoLecture from '../section/lecture/OPKoKoLecture';
+import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
+import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
 import OPKoKoInfo from '../section/OPKoKoInfo/OPKoKoInfo';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
@@ -31,9 +31,14 @@ export const notFound: AppRoute = {
 
 export const appRoutes: AppRoute[] = [
   {
+    name: 'Start',
+    path: '/',
+    Component: Home,
+  },
+  {
     name: 'Anmäl kompetensdagsbidrag',
-    path: '/lecture/create',
-    Component: Lecture,
+    path: '/lecture/competenceday/create',
+    Component: CompetencedayLecture,
   },
   {
     name: 'Anmäl OPKoKo-bidrag',
@@ -42,8 +47,8 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Redigera kompetensdagsbidrag',
-    path: '/lecture/edit/:id',
-    Component: Lecture,
+    path: '/lecture/competenceday/edit/:id',
+    Component: CompetencedayLecture,
   },
   {
     name: 'Redigera bidrag',
@@ -52,8 +57,8 @@ export const appRoutes: AppRoute[] = [
   },
   {
     name: 'Inskickat bidrag till kompetensdag',
-    path: '/lecture/:id/confirm',
-    Component: ConfirmLecture,
+    path: '/lecture/competenceday/:id/confirm',
+    Component: ConfirmLectureCompetenceday,
   },
   {
     name: 'Inskickat bidrag till OPKoKo',
@@ -71,31 +76,26 @@ export const appRoutes: AppRoute[] = [
     Component: ProfileWrapper,
   },
   {
-    name: 'Planera event',
-    path: '/events/view/:id',
-    Component: EventViewer,
+    name: 'Visa Kompetensdag',
+    path: '/events/competenceday/view/:id',
+    Component: CompetencedayViewer,
   },
   {
-    name: 'Planera event',
-    path: '/events/:id',
-    Component: EventPlanner,
+    name: 'Hantera Kompetensdag',
+    path: '/events/competenceday/:id',
+    Component: CompetencedayPlanner,
     admin: true,
   },
   {
-    name: 'Planering',
-    path: '/events',
-    Component: Events,
+    name: 'Hantera Kompetensdagar',
+    path: '/events/competencedays',
+    Component: CompetenceDays,
     admin: true,
   },
   {
-    name: 'Start',
-    path: '/',
-    Component: Home,
-  },
-  {
-    name: 'OPKoKo',
-    path: '/OPKoKo',
-    Component: HomeOPKoKo,
+    name: 'Hantera OPKoKos',
+    path: '/events/opkokos',
+    Component: OPKoKoPlanner
   },
   {
     name: 'OPKoKoInfo',

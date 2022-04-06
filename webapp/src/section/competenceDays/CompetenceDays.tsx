@@ -9,7 +9,7 @@ import CreateEvent from './CreateEvent';
 import EventRow from './EventRow';
 import EventTitles from './EventTitles';
 
-const Events = (): ReactElement => {
+const CompetenceDays = (): ReactElement => {
   const events = useAppSelector((state) => state.events);
   const today = new Date();
   const previous = events.filter((e) => e.endAt < today);
@@ -68,4 +68,4 @@ const Events = (): ReactElement => {
   );
 };
 
-export default Events;
+export default CompetenceDays;

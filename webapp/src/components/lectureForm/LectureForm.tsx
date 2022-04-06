@@ -187,13 +187,13 @@ const LectureForm = ({ data }: LectureFormProps): ReactElement => {
 
   useEffect(() => {
     if (updateLectureRequest.isSuccess) {
-      navigate(`/lecture/${updateLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/competenceday/${updateLectureRequest.data?.id}/confirm`);
     }
   }, [navigate, updateLectureRequest.data?.id, updateLectureRequest.isSuccess]);
 
   useEffect(() => {
     if (createLectureRequest.isSuccess) {
-      navigate(`/lecture/${createLectureRequest.data?.id}/confirm`);
+      navigate(`/lecture/competenceday/${createLectureRequest.data?.id}/confirm`);
     }
   }, [navigate, createLectureRequest.data?.id, createLectureRequest.isSuccess]);
 

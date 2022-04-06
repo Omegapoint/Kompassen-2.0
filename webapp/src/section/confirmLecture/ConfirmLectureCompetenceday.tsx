@@ -11,7 +11,7 @@ const linkStyle: SxProps = { color: colors.black, textDecoration: 'underline' };
 
 const buttonClick = '"Hantera mina anmälda pass"';
 
-const ConfirmLecture = (): ReactElement => {
+const ConfirmLectureCompetenceday = (): ReactElement => {
   const { id } = useParams<'id'>();
   const { data, isLoading } = useQuery(`lecture-${id}`, () =>
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -48,4 +48,4 @@ const ConfirmLecture = (): ReactElement => {
   );
 };
 
-export default ConfirmLecture;
+export default ConfirmLectureCompetenceday;

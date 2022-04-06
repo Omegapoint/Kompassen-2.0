@@ -25,7 +25,7 @@ const Expander = ({ isExpanded, expand }: ExpanderProps): ReactElement => {
         <Box>
           <Button
             component={NavLink}
-            to={`/lecture/edit/${lecture.id}`}
+            to={`/lecture/competenceday/edit/${lecture.id}`}
             sx={{ maxWidth: '260px', marginRight: '10px' }}
             variant="contained"
             color="primary"
