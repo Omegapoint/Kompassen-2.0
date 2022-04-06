@@ -22,7 +22,7 @@ import { useAppSelector } from '../../lib/Lib';
 import { Category, Format, Lecture, NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
-import MultipleSelectBox from '../multipleSelectBox/MultipleSelectBox';
+import LecturerSelectBox from '../lecturerSelectBox/LecturerSelectBox';
 import { InfoText } from './InfoText';
 
 interface LectureFormProps {
@@ -149,10 +149,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     ]);
   };
 
-  const onRookiesChange = (newRookies: AzureUser[]) => {
-    setRookies(newRookies.filter((option) => rookies.findIndex((o) => o.id === option.id) === -1));
-  };
-
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
@@ -231,10 +227,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         </div>
         <InfoText />
 
-        <MultipleSelectBox
+        <LecturerSelectBox
           onLecturerChange={onLecturerChange}
-          onRookiesChange={onRookiesChange}
-          previouslySetLecturers={previouslySetLecturers}
           lecturers={lecturers}
           setLecturers={setLecturers}
           rookies={rookies}

@@ -6,30 +6,26 @@ import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import React, { ReactElement, useState } from 'react';
 import { searchAzureUsers } from '../../api/GraphApi';
-import { NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-interface MultipleSelectBoxProps {
+interface LecturerSelectBoxProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onLecturerChange: (event: any, arg1: AzureUser[]) => void;
-  onRookiesChange: (arg0: AzureUser[]) => void;
-
-  previouslySetLecturers?: NewLectureLecturer[] | null;
   setLecturers: (arg0: AzureUser[]) => void;
   lecturers: AzureUser[] | [];
   rookies: AzureUser[];
   setRookies: (arg0: AzureUser[]) => void;
 }
 
-const MultipleSelectBox = ({
+const LecturerSelectBox = ({
   onLecturerChange,
   lecturers,
   rookies,
   setRookies,
-}: MultipleSelectBoxProps): ReactElement => {
+}: LecturerSelectBoxProps): ReactElement => {
   const [options, setOptions] = useState<AzureUser[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   // const [rookiesFromCurrentEdit, setRookiesFromCurrentEdit] = useState<AzureUser[]>(rookies ?? []);
@@ -38,10 +34,8 @@ const MultipleSelectBox = ({
     if (rookies.findIndex((rookie) => lecturer.id === rookie.id) === -1) {
       setRookies([...rookies, lecturer]);
     } else {
-      const index = rookies.findIndex((rookie) => lecturer.id === rookie.id);
-      const newRookies = rookies;
-      newRookies.splice(index, 1);
-      setRookies(newRookies);
+      const filteredRookies = rookies.filter((rookie) => lecturer.id !== rookie.id);
+      setRookies(filteredRookies);
     }
   };
 
@@ -119,4 +113,4 @@ const MultipleSelectBox = ({
   );
 };
 
-export default MultipleSelectBox;
+export default LecturerSelectBox;
