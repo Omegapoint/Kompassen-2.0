@@ -47,7 +47,8 @@ const LectureView = ({
   const event = events.find((e) => e.id === lecture.eventID);
   const organisations = useAppSelector((state) => state.organisations);
   const organisation = organisations.find((e) => e.id === event?.organisationID);
-  const editLink = organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
+  const editLink =
+    organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
 
   const [lecturers, setLecturers] = useState(['']);
   useEffect(() => {

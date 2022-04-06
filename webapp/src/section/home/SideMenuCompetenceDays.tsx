@@ -8,7 +8,11 @@ import { colors } from '../../theme/Theme';
 const SideMenuCompetenceDays = (): ReactElement => (
   <>
     {isAdmin() && (
-      <SideCard hrefText="Planera kompetensdagar" hrefBarColor={colors.blue} href="/events/competencedays" />
+      <SideCard
+        hrefText="Planera kompetensdagar"
+        hrefBarColor={colors.blue}
+        href="/events/competencedays"
+      />
     )}
     <SideCard
       title="Nästa kompetensdag"

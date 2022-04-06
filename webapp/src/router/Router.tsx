@@ -3,14 +3,14 @@ import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
 import { isAdmin } from '../lib/Lib';
-import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
-import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
+import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
+import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
 import CompetenceDays from '../section/competenceDays/CompetenceDays';
 import CompetencedayViewer from '../section/competencedayViewer/CompetencedayViewer';
+import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
+import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
 import Home from '../section/home/Home';
-import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
-import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import MyLectures from '../section/myLectures/MyLectures';
 import OPKoKoInfo from '../section/OPKoKoInfo/OPKoKoInfo';
 import PageNotFound from '../section/pageNotFound/PageNotFound';
@@ -95,7 +95,7 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Hantera OPKoKos',
     path: '/events/opkokos',
-    Component: OPKoKoPlanner
+    Component: OPKoKoPlanner,
   },
   {
     name: 'OPKoKoInfo',
