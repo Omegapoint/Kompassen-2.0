@@ -25,12 +25,9 @@ export const formatDates = (o: Body): any => {
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>();
 
-export const isAdmin = (): boolean => store.getState().session.role === 'Admin';
-
-export const checkAccess = (role: ROLE): boolean => {
-  // eslint-disable-next-line no-console
-  console.log(`Checking access is ${role} for user with role ${store.getState().session.role}`);
-  return store.getState().session.role === role;
+export const checkAccess = (roles: ROLE[]): boolean => {
+  const sessionRole = store.getState().session.role;
+  return roles.some((role) => role === sessionRole);
 };
 
 export const formatImgAsSVG = (img: string): string =>
