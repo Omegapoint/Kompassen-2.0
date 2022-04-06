@@ -149,8 +149,6 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     ]);
   };
 
-
-
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
