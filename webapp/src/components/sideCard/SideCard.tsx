@@ -1,26 +1,24 @@
 import { Paper, Typography } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import { colors, padding } from '../../theme/Theme';
-import HrefContainer from './HrefContainer';
+import SideCardHeader from './SideCardHeader';
 
 interface SideCardProps {
-  href?: string;
-  hrefText?: string;
+  headerText?: string;
   title?: string;
   children?: ReactNode;
-  hrefBarColor?: string;
+  bgColor?: string;
 }
 
 const SideCard = ({
-  hrefBarColor = colors.primary,
-  href,
-  hrefText,
+  bgColor = colors.primary,
+  headerText,
   title,
   children,
 }: SideCardProps): ReactElement => (
   <div>
-    {href && hrefText && (
-      <HrefContainer href={href} hrefText={hrefText} hrefBarColor={hrefBarColor} />
+    {headerText && (
+      <SideCardHeader headerText={headerText} bgColor={bgColor} />
     )}
     {title && (
       <Paper

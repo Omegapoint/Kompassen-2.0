@@ -14,17 +14,17 @@ const SideMenuOPKoKo = (): ReactElement => {
     <>
       {' '}
       {isAdmin() && (
-        <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events/opkokos" />
+        <SideCard headerText="Planera OPKoKo" bgColor={colors.blue} /* href="/events/opkokos" */ />
       )}
       <SideCard
-        hrefText="Skicka in bidrag till OPKoKo"
-        hrefBarColor={colors.orange}
-        href="/lecture/OPKoKo/create"
+        headerText="Skicka in bidrag till OPKoKo"
+        bgColor={colors.orange}
+        // href="/lecture/OPKoKo/create"
         title="Nästa OPKoKo"
       >
         <KoKoEvents />
       </SideCard>
-      <SideCard hrefText="Information om OPKoKo" href="/opkokoinfo" title="Information">
+      <SideCard headerText="Information om OPKoKo" /* href="/opkokoinfo" */ title="Information">
         <Typography variant="body1">
           <Link href="https://www.lyyti.fi/p/OPKoKo2022/se" target="_blank" rel="noopener">
             Anmäl dig som konferensdeltagare
@@ -45,8 +45,8 @@ const SideMenuOPKoKo = (): ReactElement => {
       </SideCard>
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}
-        hrefText="Hantera mina inskickade bidrag"
-        href="/lecture/user"
+        headerText="Hantera mina inskickade bidrag"
+        // href="/lecture/user"
       >
         {' '}
         <LatestLectures />

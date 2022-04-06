@@ -9,20 +9,18 @@ const SideMenuCompetenceDays = (): ReactElement => (
   <>
     {isAdmin() && (
       <SideCard
-        hrefText="Planera kompetensdagar"
-        hrefBarColor={colors.blue}
-        href="/events/competencedays"
+        headerText="Planera kompetensdagar"
+        bgColor={colors.blue}
       />
     )}
     <SideCard
       title="Nästa kompetensdag"
-      hrefText="Anmäl pass till kompetensdagar"
-      hrefBarColor={colors.orange}
-      href="/lecture/competenceday/create"
+      headerText="Anmäl pass till kompetensdagar"
+      bgColor={colors.orange}
     >
       <CompetenceDays />
     </SideCard>
-    <SideCard title="Mina senaste pass" hrefText="Hantera mina anmälda pass " href="/lecture/user">
+    <SideCard title="Mina senaste pass" headerText="Hantera mina anmälda pass " >
       <LatestLectures />
     </SideCard>
 
