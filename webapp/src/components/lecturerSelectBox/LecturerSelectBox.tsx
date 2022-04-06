@@ -6,7 +6,6 @@ import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import React, { ReactElement, useState } from 'react';
 import { searchAzureUsers } from '../../api/GraphApi';
-import { NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
