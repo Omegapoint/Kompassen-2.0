@@ -14,7 +14,7 @@ const SideMenuOPKoKo = (): ReactElement => {
     <>
       {' '}
       {isAdmin() && (
-        <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events" />
+        <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events/opkokos" />
       )}
       <SideCard
         hrefText="Skicka in bidrag till OPKoKo"

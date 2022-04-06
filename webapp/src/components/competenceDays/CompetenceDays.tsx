@@ -34,7 +34,7 @@ const CompetenceDays = (): ReactElement => {
             color="success"
             variant="contained"
             size="large"
-            onClick={() => navigate(`/events/view/${data[ind].id}`)}
+            onClick={() => navigate(`/events/competenceday/view/${data[ind].id}`)}
           >
             Schema och anmälan
           </Button>

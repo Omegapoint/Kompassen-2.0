@@ -8,10 +8,10 @@ import { useEvent, useOrganisation } from '../../hooks/UseReduxState';
 import { isAdmin } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
-import RegisteredLectures from '../eventPlanner/RegisteredLectures';
-import Schedule from '../eventPlanner/Schedule';
-import useEventLecturesWS from '../eventPlanner/UseEventLecturesWS';
-import CreateEvent from '../events/CreateEvent';
+import RegisteredLectures from '../competencedayPlanner/RegisteredLectures';
+import Schedule from '../competencedayPlanner/Schedule';
+import useEventLecturesWS from '../competencedayPlanner/UseEventLecturesWS';
+import CreateEvent from '../competenceDays/CreateEvent';
 import EventRegistration from './EventRegistration';
 import EventRegistrationNotification from './EventRegistrationNotification';
 

@@ -61,7 +61,7 @@ const EventRow = ({
     >
       <Link
         component={NavLink}
-        to={`/events/${event.id}`}
+        to={`/events/competenceday/${event.id}`}
         variant="body1"
         sx={{ color: colors.black }}
       >
@@ -69,7 +69,7 @@ const EventRow = ({
       </Link>
       <Link
         component={NavLink}
-        to={`/events/${event.id}`}
+        to={`/events/competenceday/${event.id}`}
         variant="body1"
         sx={{ color: colors.black }}
       >
