@@ -42,7 +42,7 @@ async function checkSession(accessToken: string): Promise<JwtPayload | null> {
     if (issuer !== undefined) {
       const url = issuer.split('https://sts.windows.net/');
       const id = url[1].replace('/', '');
-      if (id !== tenantIDOP && id !== 'eb7b2ab3-ac72-410a-ba09-83b026505835') {
+      if (id !== tenantIDOP && id !== tenantIDIBMB) {
         throw new Error('Not valid issuer');
       }
     }
