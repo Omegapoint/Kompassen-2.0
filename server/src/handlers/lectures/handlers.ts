@@ -131,15 +131,10 @@ const lectures: Handlers = {
 
     const lecture = await lecturesDB.getByID(item.id);
     const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
+    // eslint-disable-next-line
     lecture!.lecturers = lecturers;
 
     body.lecturers?.forEach((incomingLecturers) => {
-      console.log(lecture);
-      console.log(
-        lecture?.lecturers?.some(
-          (lecturerFromDb) => lecturerFromDb.userID === incomingLecturers.userID
-        )
-      );
       if (
         lecture?.lecturers?.some(
           (lecturerFromDb) => lecturerFromDb.userID === incomingLecturers.userID
