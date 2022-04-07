@@ -25,17 +25,25 @@ const ConfirmLectureOPKoKo = (): ReactElement => {
         Bidraget är nu inskickat till urval för OPKoKo!
       </Typography>
       <div>
-        <Box sx={{ display: 'flex'}}>
-        <Typography>
-          Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till en 
-          <b> digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00.</b> {' '}
-          <br/>Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
+        <Box sx={{ display: 'flex' }}>
+          <Typography>
+            Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till
+            en
+            <b>
+              {' '}
+              digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00.
+            </b>{' '}
+            <br />
+            Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
           </Typography>
-          <Button variant='contained' sx={{width: '300px', height: '50px', marginLeft: '20px'}} href="https://cdn.filesend.jp/private/sLiwLZS7ZnUQvq4CHKmuYDoWY9N3zXJlLBH56pVQBy9BavQy2dEHOEVTO4ilqFcU/Presentationstekniksfo%CC%88rela%CC%88sning%20Fredrik%20Berling.ics" download>Lägg till i din kalender</Button>
-         
-
-
-
+          <Button
+            variant="contained"
+            sx={{ width: '300px', height: '50px', marginLeft: '20px' }}
+            href="https://cdn.filesend.jp/private/sLiwLZS7ZnUQvq4CHKmuYDoWY9N3zXJlLBH56pVQBy9BavQy2dEHOEVTO4ilqFcU/Presentationstekniksfo%CC%88rela%CC%88sning%20Fredrik%20Berling.ics"
+            download
+          >
+            Lägg till i din kalender
+          </Button>
         </Box>
         <Box sx={{ marginTop: '20px' }}>
           <Typography>
