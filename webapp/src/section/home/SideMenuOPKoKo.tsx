@@ -13,17 +13,8 @@ const SideMenuOPKoKo = (): ReactElement => {
   return (
     <>
       {' '}
-      {/* {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
-        <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events/opkokos" />
-      )}
       <SideCard
-        hrefText="Skicka in bidrag till OPKoKo"
-        hrefBarColor={colors.orange}
-        href="/lecture/OPKoKo/create"
-        title="Nästa OPKoKo"
-      > */}
-      <SideCard
-        headerText="Nästa OPKoKo"
+        headerText="Kommande OPKoKos"
         bgColor={colors.blue}
       >
         <KoKoEvents />
