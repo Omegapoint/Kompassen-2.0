@@ -1,7 +1,6 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
@@ -18,7 +17,6 @@ const listNewEvents = () =>
 const KoKoEvent = (): ReactElement => {
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
   const [ind, setInd] = useState(0);
-  const navigate = useNavigate();
 
   if (isLoading || !data) return <SmallLoader />;
   if (!data.length) return <Typography>Finns inga planerade just nu</Typography>;
