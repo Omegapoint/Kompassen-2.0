@@ -28,15 +28,6 @@ const KoKoEvent = (): ReactElement => {
           <DayPicker />
           <DaysToGo />
           <Stack spacing={2}>
-            {/* <Button 
-              variant="contained" 
-              color="primary" 
-              sx={{ width:'100%'}}
-              href="/"
-              onClick={() => navigate(`/events/opkoko/view/${data[ind].id}`)}
-            >
-              Anmäl dig till pass
-            </Button> */}
             <Button 
               variant="contained" 
               color="secondary" 
