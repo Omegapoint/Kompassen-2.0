@@ -236,6 +236,7 @@ export interface DBLecture extends BaseNewLecture, DefaultTime {
 }
 
 export interface Lecture extends DLecture, DefaultTime {
+  lecture: Promise<LectureLecturer[] | null>;
   id: string;
   categoryID: string | null;
   likes: string[];

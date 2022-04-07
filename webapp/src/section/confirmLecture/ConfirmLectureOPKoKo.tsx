@@ -1,4 +1,4 @@
-import { Box, Link, SxProps, Typography } from '@mui/material';
+import { Box, Button, Link, SxProps, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { NavLink, useParams } from 'react-router-dom';
@@ -25,15 +25,27 @@ const ConfirmLectureOPKoKo = (): ReactElement => {
         Bidraget är nu inskickat till urval för OPKoKo!
       </Typography>
       <div>
-        <Typography>
-          Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till en
-          digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Boka upp
-          detta i din kalender! Den faktiska Teams-inbjudan kommer den 18/4 när CfP har stängt.{' '}
-          <br />
-          <br />
-          Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
-        </Typography>
-        <Box sx={{ marginTop: '60px' }}>
+        <Box sx={{ display: 'flex' }}>
+          <Typography>
+            Som tack för att ni vill bidra till vår kompetenskultur kommer ni att bli inbjudna till
+            en
+            <b>
+              {' '}
+              digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00.
+            </b>{' '}
+            <br />
+            Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{ width: '300px', height: '50px', marginLeft: '20px' }}
+            href="https://cdn.filesend.jp/private/sLiwLZS7ZnUQvq4CHKmuYDoWY9N3zXJlLBH56pVQBy9BavQy2dEHOEVTO4ilqFcU/Presentationstekniksfo%CC%88rela%CC%88sning%20Fredrik%20Berling.ics"
+            download
+          >
+            Lägg till i din kalender
+          </Button>
+        </Box>
+        <Box sx={{ marginTop: '20px' }}>
           <Typography>
             {'För att se dina bidrag gå till '}
             <Link sx={linkStyle} component={NavLink} to="/lecture/user">
