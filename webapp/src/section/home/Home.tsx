@@ -1,5 +1,6 @@
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, Button, ButtonGroup, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import { isAdmin } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
 import HomeOPKoKo from './HomeOPKoKo';
@@ -36,6 +37,15 @@ const Home = (): ReactElement => {
           alignContent: 'start',
         }}
       >
+        { isAdmin() && (
+          <ButtonGroup
+            fullWidth
+            variant="outlined"
+          >
+            <Button >Planera OPKoKo</Button>
+            <Button >Planera Kompetensdag</Button>
+          </ButtonGroup>
+        )}
         <ToggleButtonGroup
           value={alignment}
           color="warning"
