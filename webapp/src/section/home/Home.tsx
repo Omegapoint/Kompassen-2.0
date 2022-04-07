@@ -1,6 +1,6 @@
 import { Box, Button, ButtonGroup, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ReactElement, useState } from 'react';
-import { isAdmin } from '../../lib/Lib';
+import { checkAccess, ROLE } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
 import HomeOPKoKo from './HomeOPKoKo';
@@ -37,13 +37,17 @@ const Home = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        { isAdmin() && (
+        { checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
           <ButtonGroup
             fullWidth
             variant="outlined"
           >
-            <Button href="/events/opkokos" >Planera OPKoKo</Button>
-            <Button href="/events/competencedays" sx={{textAlign:'center'}}>Planera Kompetensdag</Button>
+            { checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
+              <Button href="/events/opkokos" >Planera OPKoKo</Button>
+            )}
+            { checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER]) && (
+              <Button href="/events/competencedays" sx={{textAlign:'center'}}>Planera Kompetensdag</Button>
+            )}
           </ButtonGroup>
         )}
         <ToggleButtonGroup
