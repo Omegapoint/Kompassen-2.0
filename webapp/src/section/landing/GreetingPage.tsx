@@ -21,12 +21,13 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
         display: 'grid',
         alignContent: 'center',
         justifyContent: 'center',
+        padding: 4
       }}
     >
       <Typography
         color="secondary"
         variant="body1"
-        sx={{ fontFamily: fontFamilies.header, fontSize: '2.0rem' }}
+        sx={{ fontFamily: fontFamilies.header, fontSize: '2.0rem'}}
       >
         OMEGAPOINT KOMPASSEN
       </Typography>
