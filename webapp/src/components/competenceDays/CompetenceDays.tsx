@@ -13,9 +13,9 @@ import LectureStats from './LectureStats';
 
 const listNewEvents = () =>
   listEvents({ filter: 'new' }).then((events) =>
-  events.filter((event) => {
-    const organisation = useOrganisation(event.organisationID)?.name;
-    return organisation !== 'OPKoKo';
+    events.filter((event) => {
+      const organisation = useOrganisation(event.organisationID)?.name;
+      return organisation !== 'OPKoKo';
     })
   );
 
