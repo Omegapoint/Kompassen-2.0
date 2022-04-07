@@ -2,7 +2,7 @@ import { Box, Button, Divider, Link, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { listEvents } from '../../api/Api';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
 import DaysToGo from '../competenceDays/DaysToGo';
 import EventContext from '../competenceDays/EventContext';
@@ -30,8 +30,10 @@ const KoKoEvent = (): ReactElement => {
           <Stack spacing={2}>
             <Button
               variant="contained"
-              color="secondary"
-              sx={{ width: '100%' }}
+              sx={{ 
+                backgroundColor: colors.orange,
+                borderColor: colors.orange
+              }}
               href="/lecture/OPKoKo/create"
             >
               Skicka in bidrag
