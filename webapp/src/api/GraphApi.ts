@@ -13,7 +13,12 @@ export async function getAzureGraphSingleUser(path: string): Promise<AzureUser> 
 
   return (
     fetch(`https://graph.microsoft.com/v1.0${path}`, options)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
       // eslint-disable-next-line no-console
       .catch((error) => console.log(error))
   );

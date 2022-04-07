@@ -10,7 +10,6 @@ interface IUseAzureUser {
 
 const useAzureUser = (id: string): IUseAzureUser => {
   const { error, data, isLoading } = useQuery(`azureUser-${id}`, () => getAzureUser(id));
-
   return {
     error,
     isLoading,
