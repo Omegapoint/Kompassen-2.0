@@ -3,6 +3,7 @@ import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
+import { useOrganisation } from '../../hooks/UseReduxState';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import DayPicker from './DayPicker';
@@ -12,7 +13,10 @@ import LectureStats from './LectureStats';
 
 const listNewEvents = () =>
   listEvents({ filter: 'new' }).then((events) =>
-    events.filter((event) => event.organisationID !== 'c1a06b4b-9013-4f77-874f-438df1174a8c')
+  events.filter((event) => {
+    const organisation = useOrganisation(event.organisationID)?.name;
+    return organisation !== 'OPKoKo';
+    })
   );
 
 const CompetenceDays = (): ReactElement => {
