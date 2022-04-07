@@ -17,13 +17,13 @@ const SideMenuOPKoKo = (): ReactElement => {
       </SideCard>
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}
-        headerText="Mina senaste inskickade bidrag"
+        headerText="Mina bidrag"
         bgColor={colors.blue}
       >
         {' '}
         <LatestLectures />
         <Button variant="contained" href="/lecture/user">
-          Hantera alla inskickade bidrag
+          Hantera inskickade bidrag
         </Button>
       </SideCard>
     </>

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { listLectures } from '../../api/Api';
@@ -18,9 +18,14 @@ const LatestLectures = (): ReactElement => {
 
   return (
     <Box sx={{ display: 'grid', gridGap: padding.standard }}>
-      {slicedLectureList.map((e) => (
+      { slicedLectureList.length <= 0 && (
+        slicedLectureList.map((e) => (
         <LectureInfo key={e.id} lecture={e} />
-      ))}
+      ))
+      )}
+      { slicedLectureList.length === 0 && (
+        <Typography>Inga bidrag inskickade</Typography>
+      )}
     </Box>
   );
 };
