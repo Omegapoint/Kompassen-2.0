@@ -2,6 +2,7 @@ import { Box, Button, Divider, Link, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { listEvents } from '../../api/Api';
+import { useAppSelector } from '../../lib/Lib';
 import { colors, padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
 import DaysToGo from '../competenceDays/DaysToGo';
@@ -9,12 +10,14 @@ import EventContext from '../competenceDays/EventContext';
 import LectureStats from '../competenceDays/LectureStats';
 import SmallLoader from '../loader/SmallLoader';
 
-const listNewEvents = () =>
-  listEvents({ filter: 'new' }).then((events) =>
-    events.filter((event) => event.organisationID === 'c1a06b4b-9013-4f77-874f-438df1174a8c')
-  );
-
 const KoKoEvent = (): ReactElement => {
+  const organisations = useAppSelector((state) => state.organisations);
+  const listNewEvents = () =>
+    listEvents({ filter: 'new' }).then((events) =>
+      events.filter((event) =>
+        organisations.some((org) => org.id === event.organisationID && org.name === 'OPKoKo')
+      )
+    );
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
   const [ind, setInd] = useState(0);
 

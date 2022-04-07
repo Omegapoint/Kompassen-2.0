@@ -3,7 +3,7 @@ import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
-import { useOrganisation } from '../../hooks/UseReduxState';
+import { useAppSelector } from '../../lib/Lib';
 import { padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import DayPicker from './DayPicker';
@@ -11,15 +11,14 @@ import DaysToGo from './DaysToGo';
 import EventContext from './EventContext';
 import LectureStats from './LectureStats';
 
-const listNewEvents = () =>
-  listEvents({ filter: 'new' }).then((events) =>
-    events.filter((event) => {
-      const organisation = useOrganisation(event.organisationID)?.name;
-      return organisation !== 'OPKoKo';
-    })
-  );
-
 const CompetenceDays = (): ReactElement => {
+  const organisations = useAppSelector((state) => state.organisations);
+  const listNewEvents = () =>
+    listEvents({ filter: 'new' }).then((events) =>
+      events.filter((event) =>
+        organisations.some((org) => org.id === event.organisationID && org.name !== 'OPKoKo')
+      )
+    );
   const { data, isLoading } = useQuery('newEvents', listNewEvents);
   const navigate = useNavigate();
   const [ind, setInd] = useState(0);
