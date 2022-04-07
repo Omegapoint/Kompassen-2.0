@@ -61,7 +61,7 @@ const KoKoEvent = (): ReactElement => {
             Eventyr: <Link href="mailto:omegapoint@eventyr.se">omegapoint@eventyr.se</Link>
             <br />
           </Typography>
-          <Button size="small" variant="contained" href="OPKokoInfo">
+          <Button size="small" variant="outlined" href="OPKokoInfo">
             Mer info
           </Button>
         </Box>
