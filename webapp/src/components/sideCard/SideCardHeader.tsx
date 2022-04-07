@@ -1,6 +1,6 @@
 import { Paper, Typography } from '@mui/material';
 import { ReactElement } from 'react';
-import { borderRadius, padding } from '../../theme/Theme';
+import { borderRadius, colors, padding } from '../../theme/Theme';
 
 interface LinkContainerProps {
   headerText: string;
@@ -19,7 +19,7 @@ const SideCardHeader = ({ headerText, bgColor }: LinkContainerProps): ReactEleme
       background: bgColor,
     }}
   >
-    <Typography color="secondary" variant="subtitle1">
+    <Typography sx={{color: colors.white}} variant="subtitle1">
       {headerText}
     </Typography>
   </Paper>

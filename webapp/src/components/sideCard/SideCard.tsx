@@ -20,7 +20,6 @@ const SideCard = ({
     {headerText && (
       <SideCardHeader headerText={headerText} bgColor={bgColor} />
     )}
-    {title && (
       <Paper
         sx={{
           display: 'grid',
@@ -31,12 +30,13 @@ const SideCard = ({
           },
         }}
       >
+      {title && (
         <Typography variant="h6" color="primary">
           {title}
         </Typography>
+      )}
         {children}
       </Paper>
-    )}
   </div>
 );
 
