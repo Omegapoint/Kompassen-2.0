@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Divider, Link, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { listEvents } from '../../api/Api';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
 import DaysToGo from '../competenceDays/DaysToGo';
 import EventContext from '../competenceDays/EventContext';
@@ -27,7 +27,43 @@ const KoKoEvent = (): ReactElement => {
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
           <DaysToGo />
+          <Stack spacing={2}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: colors.orange,
+                borderColor: colors.orange,
+              }}
+              href="/lecture/OPKoKo/create"
+            >
+              Skicka in bidrag
+            </Button>
+          </Stack>
           <LectureStats />
+          <div>
+            <Typography color="primary">Information om OPKoKo</Typography>
+            <Divider />
+          </div>
+          <Typography variant="body1">
+            <Link href="https://www.lyyti.fi/p/OPKoKo2022/se" target="_blank" rel="noopener">
+              Anmäl dig som konferensdeltagare
+            </Link>{' '}
+            <br />
+            Har du frågor?
+            <br />
+            Slack:{' '}
+            <Link href="https://opchat.slack.com/archives/C0CFJCZ50" target="_blank" rel="noopener">
+              #opkoko
+            </Link>
+            <br />
+            Mail: <Link href="mailto:opkoko@omegapoint.se">opkoko@omegapoint.se</Link>
+            <br />
+            Eventyr: <Link href="mailto:omegapoint@eventyr.se">omegapoint@eventyr.se</Link>
+            <br />
+          </Typography>
+          <Button size="small" variant="outlined" href="OPKokoInfo">
+            Mer info
+          </Button>
         </Box>
       )}
     </EventContext.Provider>

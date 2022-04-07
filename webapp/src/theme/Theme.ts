@@ -121,7 +121,7 @@ export const theme = createTheme({
       contrastText: colors.white,
     },
     secondary: {
-      main: colors.white,
+      main: colors.white, //  TODO: Change to Orange, check where it's used (GreetingPage, Navbar)
       contrastText: colors.primary,
     },
   },

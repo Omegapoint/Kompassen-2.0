@@ -21,6 +21,7 @@ const GreetingPage = ({ children }: GreetingPageProps): ReactElement => (
         display: 'grid',
         alignContent: 'center',
         justifyContent: 'center',
+        padding: 4,
       }}
     >
       <Typography
