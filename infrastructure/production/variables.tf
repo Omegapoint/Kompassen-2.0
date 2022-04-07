@@ -22,3 +22,7 @@ variable "tenant_id_ib_mb" {
    type = string
 }
 
+variable "tenant_id_elicit" {
+   type = string
+}
+

@@ -8,7 +8,7 @@ import jwt, {
 import jwksClient from 'jwks-rsa';
 import config, { logger } from '../config/config';
 
-const { clientID, tenantIDOP, tenantIDIBMB } = config.oidc.azure;
+const { clientID, tenantIDOP, tenantIDIBMB, tenantIDElicit } = config.oidc.azure;
 
 const client = jwksClient({
   jwksUri: `https://login.microsoftonline.com/${tenantIDOP}/discovery/keys?appid=${clientID}`,
@@ -42,7 +42,7 @@ async function checkSession(accessToken: string): Promise<JwtPayload | null> {
     if (issuer !== undefined) {
       const url = issuer.split('https://sts.windows.net/');
       const id = url[1].replace('/', '');
-      if (id !== tenantIDOP && id !== tenantIDIBMB) {
+      if (id !== tenantIDOP && id !== tenantIDIBMB && id !== tenantIDElicit) {
         throw new Error('Not valid issuer');
       }
     }
