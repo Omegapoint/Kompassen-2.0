@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import useBoolean from '../../hooks/UseBoolean';
 import { useAppSelector } from '../../lib/Lib';
 import { Event } from '../../lib/Types';
@@ -19,10 +19,6 @@ const OPKoKoPlanner = (): ReactElement => {
   const current = events.filter((e) => e.endAt >= today);
   const [open, { on, off }] = useBoolean();
   const [currentEvent, setCurrentEvent] = useState<undefined | Event>();
-
-  useEffect(() => {
-    console.log(events);
-  });
 
   return (
     <Box
@@ -46,7 +42,6 @@ const OPKoKoPlanner = (): ReactElement => {
         </Button>
         <CreateEvent close={off} open={open} event={currentEvent} publishModal={false} />
         <EventTitles />
-        {/* filter by org.id, this removes opkoko events from the list  */}
         {current.map((e) => (
           <EventRow
             key={e.id}
