@@ -36,7 +36,7 @@ const config = {
       clientID: OIDC_CLIENT_ID || '7dbe946a-2e34-4739-9734-84768447312f',
       tenantIDOP: OIDC_TENANT_ID_OP || '3b68c6c1-04d4-4e86-875f-e48fa80b9529',
       tenantIDIBMB: OIDC_TENANT_ID_IBMB || '2db9b5b0-add1-47fc-a0ca-147745edf2f9',
-      tenantIDElicit: OIDC_TENANT_ID_ELICIT || 'OIDC_TENANT_ID_IBMB',
+      tenantIDElicit: OIDC_TENANT_ID_ELICIT || '4fcbc51c-c557-40e7-9c63-e30aad02408b',
       redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
     },
   },
