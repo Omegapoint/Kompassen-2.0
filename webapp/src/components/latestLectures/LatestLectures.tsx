@@ -18,14 +18,9 @@ const LatestLectures = (): ReactElement => {
 
   return (
     <Box sx={{ display: 'grid', gridGap: padding.standard }}>
-      { slicedLectureList.length <= 0 && (
-        slicedLectureList.map((e) => (
-        <LectureInfo key={e.id} lecture={e} />
-      ))
-      )}
-      { slicedLectureList.length === 0 && (
-        <Typography>Inga bidrag inskickade</Typography>
-      )}
+      {slicedLectureList.length <= 0 &&
+        slicedLectureList.map((e) => <LectureInfo key={e.id} lecture={e} />)}
+      {slicedLectureList.length === 0 && <Typography>Inga bidrag inskickade</Typography>}
     </Box>
   );
 };

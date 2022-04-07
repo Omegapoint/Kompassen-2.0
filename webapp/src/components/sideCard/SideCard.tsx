@@ -17,27 +17,25 @@ const SideCard = ({
   children,
 }: SideCardProps): ReactElement => (
   <div>
-    {headerText && (
-      <SideCardHeader headerText={headerText} bgColor={bgColor} />
-    )}
-      <Paper
-        sx={{
-          display: 'grid',
-          gridGap: padding.minimal,
-          padding: padding.small,
-          mb: 4,
-          '& h6': {
-            lineHeight: 1,
-          },
-        }}
-      >
+    {headerText && <SideCardHeader headerText={headerText} bgColor={bgColor} />}
+    <Paper
+      sx={{
+        display: 'grid',
+        gridGap: padding.minimal,
+        padding: padding.small,
+        mb: 4,
+        '& h6': {
+          lineHeight: 1,
+        },
+      }}
+    >
       {title && (
         <Typography variant="h6" color="primary">
           {title}
         </Typography>
       )}
-        {children}
-      </Paper>
+      {children}
+    </Paper>
   </div>
 );
 

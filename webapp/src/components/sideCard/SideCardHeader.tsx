@@ -19,7 +19,7 @@ const SideCardHeader = ({ headerText, bgColor }: LinkContainerProps): ReactEleme
       background: bgColor,
     }}
   >
-    <Typography sx={{color: colors.white}} variant="subtitle1">
+    <Typography sx={{ color: colors.white }} variant="subtitle1">
       {headerText}
     </Typography>
   </Paper>

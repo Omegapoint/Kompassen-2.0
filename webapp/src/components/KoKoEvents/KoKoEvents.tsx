@@ -30,9 +30,9 @@ const KoKoEvent = (): ReactElement => {
           <Stack spacing={2}>
             <Button
               variant="contained"
-              sx={{ 
+              sx={{
                 backgroundColor: colors.orange,
-                borderColor: colors.orange
+                borderColor: colors.orange,
               }}
               href="/lecture/OPKoKo/create"
             >
