@@ -25,6 +25,7 @@ const SideCard = ({
           display: 'grid',
           gridGap: padding.minimal,
           padding: padding.small,
+          mb: 4,
           '& h6': {
             lineHeight: 1,
           },
