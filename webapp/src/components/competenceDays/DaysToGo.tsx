@@ -60,7 +60,7 @@ const DaysToGo = (): ReactElement => {
                 background: colors.primary,
                 color: colors.white,
                 lineHeight: 1,
-                fontSize: '1.2rem',
+                fontSize: '0.8rem',
                 padding: padding.tiny,
                 borderRadius: borderRadius.tiny,
               }}
