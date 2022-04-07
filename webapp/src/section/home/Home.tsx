@@ -42,8 +42,8 @@ const Home = (): ReactElement => {
             fullWidth
             variant="outlined"
           >
-            <Button >Planera OPKoKo</Button>
-            <Button >Planera Kompetensdag</Button>
+            <Button href="/events/opkokos" >Planera OPKoKo</Button>
+            <Button href="/events/competencedays" sx={{textAlign:'center'}}>Planera Kompetensdag</Button>
           </ButtonGroup>
         )}
         <ToggleButtonGroup
