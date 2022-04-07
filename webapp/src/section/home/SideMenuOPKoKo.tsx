@@ -26,6 +26,7 @@ const SideMenuOPKoKo = (): ReactElement => {
       >
         {' '}
         <LatestLectures />
+        <Button variant="contained" href="/lecture/user">Hantera alla inskickade bidrag</Button>
       </SideCard>
     </>
   );
