@@ -2,7 +2,7 @@ import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
 import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
-import { isAdmin } from '../lib/Lib';
+import { checkAccess, ROLE } from '../lib/Lib';
 import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
 import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
@@ -20,7 +20,7 @@ export interface AppRoute {
   name: string;
   path: string;
   Component: FC;
-  admin?: boolean;
+  role?: ROLE[];
 }
 
 export const notFound: AppRoute = {
@@ -84,18 +84,25 @@ export const appRoutes: AppRoute[] = [
     name: 'Hantera Kompetensdag',
     path: '/events/competenceday/:id',
     Component: CompetencedayPlanner,
-    admin: true,
+    role: [ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER],
   },
   {
     name: 'Hantera Kompetensdagar',
     path: '/events/competencedays',
     Component: CompetenceDays,
-    admin: true,
+    role: [ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER],
   },
   {
     name: 'Hantera OPKoKos',
     path: '/events/opkokos',
     Component: OPKoKoPlanner,
+    role: [ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE],
+  },
+  {
+    name: 'Hantera OPKoKo',
+    path: '/events/opkoko/:id',
+    Component: OPKoKoPlanner,
+    role: [ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE],
   },
   {
     name: 'OPKoKoInfo',
@@ -108,7 +115,7 @@ export const appRoutes: AppRoute[] = [
 const Router = (): ReactElement => (
   <Routes>
     {appRoutes
-      .filter((route) => (route.admin && isAdmin()) || !route.admin)
+      .filter((route) => (route.role && checkAccess(route.role)) || !route.role)
       .map((route) => (
         <Route
           path={route.path}

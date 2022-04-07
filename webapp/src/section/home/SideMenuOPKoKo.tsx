@@ -5,6 +5,7 @@ import { listLectures } from '../../api/Api';
 import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
+import { checkAccess, ROLE } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
 const SideMenuOPKoKo = (): ReactElement => {
@@ -12,13 +13,13 @@ const SideMenuOPKoKo = (): ReactElement => {
   return (
     <>
       {' '}
-      {/* {isAdmin() && (
-        <SideCard headerText="Planera OPKoKo" bgColor={colors.blue} href="/events/opkokos" />
-      )} */}
-      {/* <SideCard
-        headerText="Skicka in bidrag till OPKoKo"
-        bgColor={colors.orange}
-        // href="/lecture/OPKoKo/create"
+      {/* {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
+        <SideCard hrefText="Planera OPKoKo" hrefBarColor={colors.blue} href="/events/opkokos" />
+      )}
+      <SideCard
+        hrefText="Skicka in bidrag till OPKoKo"
+        hrefBarColor={colors.orange}
+        href="/lecture/OPKoKo/create"
         title="Nästa OPKoKo"
       > */}
       <SideCard
