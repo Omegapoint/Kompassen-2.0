@@ -54,7 +54,6 @@ const SideMenuOPKoKo = (): ReactElement => {
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}
         headerText="Hantera mina inskickade bidrag"
-        bgColor={colors.blue}
         // href="/lecture/user"
       >
         {' '}
