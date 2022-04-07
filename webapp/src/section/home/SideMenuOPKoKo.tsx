@@ -5,7 +5,6 @@ import { listLectures } from '../../api/Api';
 import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
-import { checkAccess, ROLE } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
 const SideMenuOPKoKo = (): ReactElement => {
@@ -13,10 +12,7 @@ const SideMenuOPKoKo = (): ReactElement => {
   return (
     <>
       {' '}
-      <SideCard
-        headerText="Kommande OPKoKos"
-        bgColor={colors.blue}
-      >
+      <SideCard headerText="Kommande OPKoKos" bgColor={colors.blue}>
         <KoKoEvents />
       </SideCard>
       <SideCard
@@ -26,7 +22,9 @@ const SideMenuOPKoKo = (): ReactElement => {
       >
         {' '}
         <LatestLectures />
-        <Button variant="contained" href="/lecture/user">Hantera alla inskickade bidrag</Button>
+        <Button variant="contained" href="/lecture/user">
+          Hantera alla inskickade bidrag
+        </Button>
       </SideCard>
     </>
   );

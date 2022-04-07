@@ -37,16 +37,15 @@ const Home = (): ReactElement => {
           alignContent: 'start',
         }}
       >
-        { checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
-          <ButtonGroup
-            fullWidth
-            variant="outlined"
-          >
-            { checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
-              <Button href="/events/opkokos" >Planera OPKoKo</Button>
+        {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
+          <ButtonGroup fullWidth variant="outlined">
+            {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
+              <Button href="/events/opkokos">Planera OPKoKo</Button>
             )}
-            { checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER]) && (
-              <Button href="/events/competencedays" sx={{textAlign:'center'}}>Planera Kompetensdag</Button>
+            {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER]) && (
+              <Button href="/events/competencedays" sx={{ textAlign: 'center' }}>
+                Planera Kompetensdag
+              </Button>
             )}
           </ButtonGroup>
         )}

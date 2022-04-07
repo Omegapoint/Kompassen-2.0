@@ -28,10 +28,10 @@ const KoKoEvent = (): ReactElement => {
           <DayPicker />
           <DaysToGo />
           <Stack spacing={2}>
-            <Button 
-              variant="contained" 
-              color="secondary" 
-              sx={{ width:'100%'}}
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{ width: '100%' }}
               href="/lecture/OPKoKo/create"
             >
               Skicka in bidrag
@@ -59,7 +59,9 @@ const KoKoEvent = (): ReactElement => {
             Eventyr: <Link href="mailto:omegapoint@eventyr.se">omegapoint@eventyr.se</Link>
             <br />
           </Typography>
-          <Button size='small' variant='contained' href="OPKokoInfo">Mer info</Button>
+          <Button size="small" variant="contained" href="OPKokoInfo">
+            Mer info
+          </Button>
         </Box>
       )}
     </EventContext.Provider>
