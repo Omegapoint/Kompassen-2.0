@@ -20,10 +20,19 @@ const SideMenuOPKoKo = (): ReactElement => {
         bgColor={colors.orange}
         // href="/lecture/OPKoKo/create"
         title="Nästa OPKoKo"
+      > */}
+      <SideCard
+        headerText="Nästa OPKoKo"
+        bgColor={colors.blue}
       >
         <KoKoEvents />
       </SideCard>
-      <SideCard headerText="Information om OPKoKo" /* href="/opkokoinfo" */ title="Information">
+      <SideCard 
+        headerText="Information om OPKoKo" 
+        bgColor={colors.blue} 
+        /* href="/opkokoinfo" */ 
+        title="Information"
+      >
         <Typography variant="body1">
           <Link href="https://www.lyyti.fi/p/OPKoKo2022/se" target="_blank" rel="noopener">
             Anmäl dig som konferensdeltagare
@@ -45,6 +54,7 @@ const SideMenuOPKoKo = (): ReactElement => {
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}
         headerText="Hantera mina inskickade bidrag"
+        bgColor={colors.blue}
         // href="/lecture/user"
       >
         {' '}
