@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useQuery } from 'react-query';
 import { listEvents } from '../../api/Api';
@@ -27,6 +27,10 @@ const KoKoEvent = (): ReactElement => {
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
           <DaysToGo />
+          <Stack spacing={2}>
+            <Button variant="contained" color="primary" sx={{ width:'100%'}}>Anmäl dig till pass</Button>
+            <Button variant="contained" color="secondary" sx={{ width:'100%'}}>Skicka in bidrag</Button>
+          </Stack>
           <LectureStats />
         </Box>
       )}
