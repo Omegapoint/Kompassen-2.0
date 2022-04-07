@@ -48,10 +48,11 @@ const LecturerSelectBox = ({
         setOptions(
           value.filter(
             (user) =>
-              user.mail &&
-              (user.mail.includes('omegapoint.se') ||
-                user.mail.includes('integrationsbolaget.se') ||
-                user.mail.includes('molnbolaget.se'))
+              (user.mail &&
+                (user.mail.includes('omegapoint.se') ||
+                  user.mail.includes('integrationsbolaget.se') ||
+                  user.mail.includes('molnbolaget.se'))) ||
+              user.mail.includes('elicit.se')
           )
         );
       });
