@@ -5,20 +5,18 @@ import { listLectures } from '../../api/Api';
 import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
-import { colors } from '../../theme/Theme';
 
 const SideMenuOPKoKo = (): ReactElement => {
   const { data } = useQuery(`listMyLectures`, () => listLectures({ mine: 'true' }));
   return (
     <>
       {' '}
-      <SideCard headerText="Kommande OPKoKos" bgColor={colors.blue}>
+      <SideCard headerText="Kommande OPKoKos">
         <KoKoEvents />
       </SideCard>
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}
         headerText="Mina bidrag"
-        bgColor={colors.blue}
       >
         {' '}
         <LatestLectures />
