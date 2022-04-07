@@ -2,12 +2,12 @@ import { ReactElement } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
-import { isAdmin } from '../../lib/Lib';
+import { checkAccess, ROLE } from '../../lib/Lib';
 import { colors } from '../../theme/Theme';
 
 const SideMenuCompetenceDays = (): ReactElement => (
   <>
-    {isAdmin() && (
+    {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER]) && (
       <SideCard
         hrefText="Planera kompetensdagar"
         hrefBarColor={colors.blue}
