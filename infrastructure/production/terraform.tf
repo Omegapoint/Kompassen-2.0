@@ -57,6 +57,7 @@ resource "azurerm_app_service" "server" {
     OIDC_CLIENT_ID    = var.client_id
     OIDC_TENANT_ID_OP   = var.tenant_id_op
     OIDC_TENANT_ID_IBMB = var.tenant_id_ib_mb
+    OIDC_TENANT_ID_Elicit = var.tenant_id_elicit
     OIDC_REDIRECT_URL = "https://kompass.omegapoint.academy"
 
     PG_USERNAME = "${azurerm_postgresql_server.ps.administrator_login}@${var.name}"
