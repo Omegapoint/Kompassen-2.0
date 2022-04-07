@@ -10,7 +10,10 @@ import EventRow from './EventRow';
 import EventTitles from './EventTitles';
 
 const CompetenceDays = (): ReactElement => {
-  const events = useAppSelector((state) => state.events);
+  // Filter out events that are not competence days
+  const events = useAppSelector((state) => state.events).filter(
+    (c) => c.organisationID !== 'c1a06b4b-9013-4f77-874f-438df1174a8c'
+  );
   const today = new Date();
   const previous = events.filter((e) => e.endAt < today);
   const current = events.filter((e) => e.endAt >= today);
