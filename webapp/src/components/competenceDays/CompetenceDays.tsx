@@ -41,12 +41,11 @@ const CompetenceDays = (): ReactElement => {
           </Button>
           <Button
             type="button"
-            color="success"
+            sx={{ backgroundColor: colors.blue }}
             variant="contained"
-            size="large"
             onClick={() => navigate(`/events/competenceday/view/${data[ind].id}`)}
           >
-            Schema och anmälan
+            Schema och anmälan till pass
           </Button>
           <LectureStats />
         </Box>
