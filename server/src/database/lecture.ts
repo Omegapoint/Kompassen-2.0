@@ -41,6 +41,7 @@ export const SELECT_LECTURES = `
            l.format_id,
            l.lecture_status_id
     FROM lectures l
+    INNER JOIN lecture_lecturers ON l.id=lecture_lecturers.lecture_id
 `;
 
 const SELECT_EVENT_LECTURES = `
@@ -186,6 +187,7 @@ const lecturesDB: LecturesDB = {
       logger.error(`could not find lecture with id = '${id}'`);
       return null;
     }
+    console.log(rows);
     return snakeToCamel(rows[0]);
   },
 

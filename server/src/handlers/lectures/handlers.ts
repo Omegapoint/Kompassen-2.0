@@ -200,6 +200,7 @@ const lectures: Handlers = {
     }
     const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
     item.lecturers = lecturers;
+    console.log(item);
     res.send(item);
   },
   async list(req, res) {
