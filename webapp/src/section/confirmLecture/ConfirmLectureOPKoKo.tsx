@@ -31,7 +31,8 @@ const ConfirmLectureOPKoKo = (): ReactElement => {
             en
             <b>
               {' '}
-              digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00. Inbjudan kommer inom kort till din mail! 
+              digital föreläsning och workshop i presentationsteknik den 19/4 kl 17.00-19.00.
+              Inbjudan kommer inom kort till din mail!
             </b>{' '}
             <br />
             Beslut om bidragets acceptans kommer att meddelas den 26 april 2022.{' '}
