@@ -51,7 +51,6 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
-          // fontWeight: 300,
         },
       },
       defaultProps: {},
@@ -133,31 +132,25 @@ export const theme = createTheme({
     },
     h2: {
       fontSize: '1.2rem',
-      // fontWeight: 400,
       color: colors.primary,
     },
     h4: {
       fontSize: '1.4rem',
-      // fontWeight: 500,
     },
     h5: {
       fontSize: '1.1rem',
-      // fontWeight: 500,
     },
     h6: {
       fontSize: '0.9rem',
     },
     subtitle1: {
       fontSize: '0.9rem',
-      // fontWeight: 300,
       color: colors.grey,
     },
     body1: {
       fontSize: '0.86rem',
-      // fontWeight: 400,
     },
     body2: {
-      // fontWeight: 300,
       fontStyle: 'italic',
       color: colors.grey,
     },
