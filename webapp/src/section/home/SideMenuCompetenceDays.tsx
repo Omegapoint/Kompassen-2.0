@@ -2,15 +2,10 @@ import { ReactElement } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
 import SideCard from '../../components/sideCard/SideCard';
-import { colors } from '../../theme/Theme';
 
 const SideMenuCompetenceDays = (): ReactElement => (
   <>
-    <SideCard
-      title="Nästa kompetensdag"
-      headerText="Anmäl pass till kompetensdagar"
-      bgColor={colors.orange}
-    >
+    <SideCard headerText="Kommande Kompetensdagar">
       <CompetenceDays />
     </SideCard>
     <SideCard title="Mina senaste pass" headerText="Hantera mina anmälda pass ">

@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { useAppSelector } from '../../lib/Lib';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import DayPicker from './DayPicker';
 import DaysToGo from './DaysToGo';
@@ -32,6 +32,13 @@ const CompetenceDays = (): ReactElement => {
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
           <DaysToGo />
+          <Button
+            href="/lecture/create"
+            variant="contained"
+            sx={{ backgroundColor: colors.orange }}
+          >
+            Skicka in bidrag
+          </Button>
           <Button
             type="button"
             color="success"
