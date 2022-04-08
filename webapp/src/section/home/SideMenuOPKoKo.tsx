@@ -13,11 +13,10 @@ const SideMenuOPKoKo = (): ReactElement => (
     <SideCard headerText="Mina bidrag">
       {' '}
       <LatestLectures />
-      <Button variant="contained" href="/lecture/user">
+      <Button variant="outlined" href="/lecture/user">
         Hantera inskickade bidrag
       </Button>
     </SideCard>
   </>
 );
-
 export default SideMenuOPKoKo;

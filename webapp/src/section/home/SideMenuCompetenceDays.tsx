@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import { ReactElement } from 'react';
 import CompetenceDays from '../../components/competenceDays/CompetenceDays';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
@@ -8,8 +9,12 @@ const SideMenuCompetenceDays = (): ReactElement => (
     <SideCard headerText="Kommande Kompetensdagar">
       <CompetenceDays />
     </SideCard>
-    <SideCard title="Mina senaste pass" headerText="Hantera mina anmälda pass ">
+    <SideCard headerText="Mina bidrag">
+      {' '}
       <LatestLectures />
+      <Button variant="outlined" href="/lecture/user">
+        Hantera inskickade bidrag
+      </Button>
     </SideCard>
 
     {/* <SideCard title="Trendar just nu">
