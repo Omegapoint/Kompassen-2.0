@@ -39,9 +39,9 @@ export const SELECT_LECTURES = `
            l.internal_presentation,
            l.target_audience,
            l.format_id,
-           l.lecture_status_id
+           l.lecture_status_id,
+           (SELECT json_agg(json_build_object('user_id', user_id, 'first_time_presenting', first_time_presenting)) from lecture_lecturers where lecture_id = l.id) AS lecturers
     FROM lectures l
-    INNER JOIN lecture_lecturers ON l.id=lecture_lecturers.lecture_id
 `;
 
 const SELECT_EVENT_LECTURES = `

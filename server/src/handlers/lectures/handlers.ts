@@ -198,8 +198,6 @@ const lectures: Handlers = {
       httpError(res, 404, 'Lecture not found');
       return;
     }
-    const lecturers = await lectureLecturersDb.getByLectureID(item?.id);
-    item.lecturers = lecturers;
     console.log(item);
     res.send(item);
   },
