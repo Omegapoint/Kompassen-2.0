@@ -1,13 +1,13 @@
 import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import CompetenceDays from '../components/competenceDays/CompetenceDays';
 import Content from '../components/content/Content';
 import OPKoKoList from '../components/OPKoKoEvents/OPKoKosList';
-import OPKoKoPlanner from '../components/OPKoKoPlanner/OPKoKoPlanner';
+import OPKoKoPlanner from '../components/OPKoKoPlanner/opkokoPlanner';
 import { checkAccess, ROLE } from '../lib/Lib';
 import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
 import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
+import CompetenceDays from '../section/competenceDays/CompetenceDays';
 import CompetencedayViewer from '../section/competencedayViewer/CompetencedayViewer';
 import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
 import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';

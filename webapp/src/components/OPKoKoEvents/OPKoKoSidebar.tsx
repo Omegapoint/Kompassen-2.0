@@ -10,7 +10,7 @@ import EventContext from '../competenceDays/EventContext';
 import LectureStats from '../competenceDays/LectureStats';
 import SmallLoader from '../loader/SmallLoader';
 
-const KoKoEvent = (): ReactElement => {
+const OPKoKoEvent = (): ReactElement => {
   const organisations = useAppSelector((state) => state.organisations);
   const listNewEvents = () =>
     listEvents({ filter: 'new' }).then((events) =>
@@ -73,4 +73,4 @@ const KoKoEvent = (): ReactElement => {
   );
 };
 
-export default KoKoEvent;
+export default OPKoKoEvent;
