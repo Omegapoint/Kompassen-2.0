@@ -2,8 +2,8 @@ import { Button } from '@mui/material';
 import { ReactElement } from 'react';
 import { useQuery } from 'react-query';
 import { listLectures } from '../../api/Api';
-import KoKoEvents from '../../components/KoKoEvents/KoKoEvents';
 import LatestLectures from '../../components/latestLectures/LatestLectures';
+import OPKoKoEvents from '../../components/OPKoKoEvents/OPKoKoSidebar';
 import SideCard from '../../components/sideCard/SideCard';
 
 const SideMenuOPKoKo = (): ReactElement => {
@@ -12,7 +12,7 @@ const SideMenuOPKoKo = (): ReactElement => {
     <>
       {' '}
       <SideCard headerText="Kommande OPKoKos">
-        <KoKoEvents />
+        <OPKoKoEvents />
       </SideCard>
       <SideCard
         title={data === undefined || data.length > 0 ? 'Mina inskickade bidrag' : ''}

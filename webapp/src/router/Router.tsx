@@ -1,12 +1,13 @@
 import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import CompetenceDays from '../components/competenceDays/CompetenceDays';
 import Content from '../components/content/Content';
-import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
+import OPKoKoList from '../components/OPKoKoEvents/OPKoKosList';
+import OPKoKoPlanner from '../components/OPKoKoPlanner/OPKoKoPlanner';
 import { checkAccess, ROLE } from '../lib/Lib';
 import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
 import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
 import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayPlanner';
-import CompetenceDays from '../section/competenceDays/CompetenceDays';
 import CompetencedayViewer from '../section/competencedayViewer/CompetencedayViewer';
 import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
 import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
@@ -95,7 +96,7 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Hantera OPKoKos',
     path: '/events/opkokos',
-    Component: OPKoKoPlanner,
+    Component: OPKoKoList,
     role: [ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE],
   },
   {
