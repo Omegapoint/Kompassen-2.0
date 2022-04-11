@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { listEvents } from '../../api/Api';
 import { useAppSelector } from '../../lib/Lib';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 import SmallLoader from '../loader/SmallLoader';
 import DayPicker from './DayPicker';
 import DaysToGo from './DaysToGo';
@@ -33,13 +33,19 @@ const CompetenceDays = (): ReactElement => {
           <DayPicker />
           <DaysToGo />
           <Button
-            type="button"
-            color="success"
+            href="/lecture/create"
             variant="contained"
-            size="large"
+            sx={{ backgroundColor: colors.orange }}
+          >
+            Skicka in bidrag
+          </Button>
+          <Button
+            type="button"
+            sx={{ backgroundColor: colors.blue }}
+            variant="contained"
             onClick={() => navigate(`/events/competenceday/view/${data[ind].id}`)}
           >
-            Schema och anmälan
+            Schema och anmälan till pass
           </Button>
           <LectureStats />
         </Box>
