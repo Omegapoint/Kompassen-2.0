@@ -167,7 +167,6 @@ const lecturesDB: LecturesDB = {
 
   async listEventLectures(id) {
     const { rows } = await db.query(SELECT_EVENT_LECTURES, [id]);
-    console.log(rows);
     return snakeToCamel(rows) || [];
   },
 
@@ -187,7 +186,6 @@ const lecturesDB: LecturesDB = {
       logger.error(`could not find lecture with id = '${id}'`);
       return null;
     }
-    console.log(rows);
     return snakeToCamel(rows[0]);
   },
 
