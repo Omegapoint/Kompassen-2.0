@@ -29,7 +29,12 @@ const OPKoKoEvent = (): ReactElement => {
       {data && (
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
-          <Typography variant="body1" sx={{textAlign: 'center', fontSize: '8pt', color: colors.orange}}>DEADLINE FÖR ATT SKICKA IN BIDRAG:</Typography>
+          <Typography
+            variant="body1"
+            sx={{ textAlign: 'center', fontSize: '8pt', color: colors.orange }}
+          >
+            DEADLINE FÖR ATT SKICKA IN BIDRAG:
+          </Typography>
           <DaysToGo eventTime />
           <Stack spacing={2}>
             <Button

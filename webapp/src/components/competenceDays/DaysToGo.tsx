@@ -19,17 +19,14 @@ const getTime = (event: Event, eventTime?: boolean): Time => {
 };
 
 interface DaysToGoProps {
-  eventTime?: boolean,
+  eventTime?: boolean;
 }
 
-const DaysToGo = ({eventTime}: DaysToGoProps): ReactElement => {
+const DaysToGo = ({ eventTime }: DaysToGoProps): ReactElement => {
   const { events, ind } = useContext(EventContext);
-
-
 
   const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind], eventTime));
   const [isOngoing, ongoing] = useBoolean();
-
 
   useEffect(() => {
     setDates(getTime(events[ind], eventTime));
