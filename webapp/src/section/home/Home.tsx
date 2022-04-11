@@ -1,7 +1,6 @@
-import { Box, Button, ButtonGroup, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ReactElement, useState } from 'react';
-import { checkAccess, ROLE } from '../../lib/Lib';
-import { colors, padding } from '../../theme/Theme';
+import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
 import HomeOPKoKo from './HomeOPKoKo';
 import SideMenuCompetenceDays from './SideMenuCompetenceDays';
@@ -24,7 +23,7 @@ const Home = (): ReactElement => {
         gridTemplateColumns: '1fr max-content',
         gridTemplateRows: 'max-content auto auto auto auto',
         gridGap: `${padding.medium} ${padding.large}`,
-        padding: '0 20px',
+        padding: '0 20px'
       }}
     >
       {alignment === 'kompetensdag' && <HomeCompetenceDays />}
@@ -34,36 +33,9 @@ const Home = (): ReactElement => {
           display: 'grid',
           width: '320px',
           gridGap: padding.standard,
-          alignContent: 'start',
+          alignContent: 'start'
         }}
       >
-        {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
-          <ButtonGroup fullWidth variant="contained">
-            {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
-              <Button
-                href="/events/opkokos"
-                sx={{
-                  color: colors.white,
-                  backgroundColor: colors.darkGreen,
-                }}
-              >
-                Planera OPKoKo
-              </Button>
-            )}
-            {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER]) && (
-              <Button
-                href="/events/competencedays"
-                sx={{
-                  color: colors.white,
-                  backgroundColor: colors.darkGreen,
-                  textAlign: 'center',
-                }}
-              >
-                Planera Kompetensdag
-              </Button>
-            )}
-          </ButtonGroup>
-        )}
         <ToggleButtonGroup
           value={alignment}
           color="warning"

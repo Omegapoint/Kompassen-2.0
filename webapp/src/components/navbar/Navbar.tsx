@@ -2,8 +2,10 @@ import { Notifications } from '@mui/icons-material';
 import { Badge, Box, IconButton, Link } from '@mui/material';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
+import { checkAccess, ROLE } from '../../lib/Lib';
 import { colors, constants, fontFamilies, padding } from '../../theme/Theme';
 import Logo from './Logo';
+import PlannerMenu from './PlannerMenu';
 import User from './User';
 
 const Navbar = (): ReactElement => (
@@ -16,7 +18,7 @@ const Navbar = (): ReactElement => (
       background: colors.primary,
       justifyItems: 'right',
       gridAutoFlow: 'column',
-      height: constants.headerHeight,
+      height: constants.headerHeight
     }}
   >
     <Link
@@ -29,11 +31,17 @@ const Navbar = (): ReactElement => (
         fontFamily: fontFamilies.header,
         textDecoration: 'none',
         color: 'white',
-        display: 'flex',
+        display: 'flex'
       }}
     >
       <Logo />
     </Link>
+    {checkAccess([
+      ROLE.ADMIN,
+      ROLE.COMPETENCE_DAY_PLANNER,
+      ROLE.OPKOKO_PROGRAM_COMMITTEE,
+      ROLE.OPKOKO_PLANNER
+    ]) && <PlannerMenu />}
     <User />
 
     <IconButton size="large">
