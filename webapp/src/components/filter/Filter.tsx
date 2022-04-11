@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   SxProps,
-  TextField,
+  TextField
 } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import { Lecture } from '../../lib/Types';
@@ -16,11 +16,12 @@ import LectureIdea from '../lecture/Lecture';
 
 const formControlStyle: SxProps = {
   marginBottom: padding.standard,
-  minWidth: 120,
+  minWidth: 120
 };
 
 interface FilterProps {
   lectures: Lecture[];
+  opkoko?: boolean;
 }
 
 // Sort the "Sortera" - dropdown
@@ -56,13 +57,13 @@ const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
   });
 };
 
-const Filter = ({ lectures }: FilterProps): ReactElement => {
+const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
   const [filteredLectures, setLectures] = useState(lectures);
 
   const [options, setOptions] = useState({
     sort: '',
     filter: '',
-    search: '',
+    search: ''
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,37 +86,41 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
           gridAutoFlow: 'column',
           alignItems: 'top',
           gridTemplateColumns: 'initial initial auto',
-          columnGap: padding.standard,
+          columnGap: padding.standard
         }}
       >
-        <FormControl variant="filled" sx={formControlStyle}>
-          <InputLabel shrink>Sortera</InputLabel>
-          <Select
-            value={options.sort}
-            name="sort"
-            onChange={(e) => handleOptions(e)}
-            autoWidth
-            displayEmpty
-          >
-            <MenuItem value="">&nbsp;</MenuItem>
-            <MenuItem value="new">Nyast först</MenuItem>
-            <MenuItem value="old">Äldst först</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl variant="filled" sx={formControlStyle}>
-          <InputLabel shrink>Filter</InputLabel>
-          <Select
-            value={options.filter}
-            name="filter"
-            onChange={(e) => handleOptions(e)}
-            autoWidth
-            displayEmpty
-          >
-            <MenuItem value="">&nbsp;</MenuItem>
-            <MenuItem value="null">Öppen idé</MenuItem>
-            <MenuItem value="lecturer">Söker feedback</MenuItem>
-          </Select>
-        </FormControl>
+        {!opkoko && (
+          <>
+            <FormControl variant="filled" sx={formControlStyle}>
+              <InputLabel shrink>Sortera</InputLabel>
+              <Select
+                value={options.sort}
+                name="sort"
+                onChange={(e) => handleOptions(e)}
+                autoWidth
+                displayEmpty
+              >
+                <MenuItem value="">&nbsp;</MenuItem>
+                <MenuItem value="new">Nyast först</MenuItem>
+                <MenuItem value="old">Äldst först</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl variant="filled" sx={formControlStyle}>
+              <InputLabel shrink>Filter</InputLabel>
+              <Select
+                value={options.filter}
+                name="filter"
+                onChange={(e) => handleOptions(e)}
+                autoWidth
+                displayEmpty
+              >
+                <MenuItem value="">&nbsp;</MenuItem>
+                <MenuItem value="null">Öppen idé</MenuItem>
+                <MenuItem value="lecturer">Söker feedback</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        )}
         <TextField
           sx={formControlStyle}
           value={options.search}
@@ -128,7 +133,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
               <InputAdornment position="end">
                 <Search />
               </InputAdornment>
-            ),
+            )
           }}
         />
       </Box>
@@ -137,7 +142,7 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
         sx={{
           display: 'grid',
           gridGap: padding.standard,
-          alignContent: 'start',
+          alignContent: 'start'
         }}
       >
         {filteredLectures.map((lecture) => (
