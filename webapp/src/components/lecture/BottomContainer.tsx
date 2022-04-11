@@ -42,7 +42,7 @@ const BottomContainer = (): ReactElement => {
         sx={{ gridArea: 'info', maxWidth: '200px', textAlign: 'end' }}
         variant="subtitle1"
       >
-        {`Publicerat av ${name} ${date}`}
+        {/* {`Publicerat av ${name} ${date}`} */}
       </Typography>
       <Discussion />
     </Box>
