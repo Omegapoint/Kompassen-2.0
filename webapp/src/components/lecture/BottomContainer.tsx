@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { ReactElement, useContext } from 'react';
 import { ReactComponent as AlarmCircled } from '../../assets/alarmCircled.svg';
-import useAzureUser from '../../hooks/UseAzureUser';
 import { padding } from '../../theme/Theme';
 import Discussion from './Discussion';
 import LectureContext from './LectureContext';
@@ -16,8 +15,8 @@ const formatTime = (d: Date): string => {
 
 const BottomContainer = (): ReactElement => {
   const { lecture } = useContext(LectureContext);
-  const date = formatTime(lecture.createdAt);
-  const { name } = useAzureUser(lecture.createdBy);
+  // const date = formatTime(lecture.createdAt);
+  // const { name } = useAzureUser(lecture.createdBy);
 
   return (
     <Box
