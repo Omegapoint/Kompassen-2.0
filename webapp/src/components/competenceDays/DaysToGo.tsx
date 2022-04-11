@@ -12,22 +12,27 @@ interface Time {
   minutes: number;
 }
 
-const getTime = (event: Event): Time => {
-  const days = differenceInDays(event.startAt, new Date());
+const getTime = (event: Event, eventTime?: boolean): Time => {
+  const days = differenceInDays(eventTime ? event.registrationEnd : event.startAt, new Date());
   const { hours, minutes } = intervalToDuration({ start: event.startAt, end: new Date() });
   return { days, hours: hours || 0, minutes: minutes || 0 };
 };
 
-const DaysToGo = (): ReactElement => {
+interface DaysToGoProps {
+  eventTime?: boolean;
+}
+
+const DaysToGo = ({ eventTime }: DaysToGoProps): ReactElement => {
   const { events, ind } = useContext(EventContext);
-  const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind]));
+
+  const [{ days, hours, minutes }, setDates] = useState<Time>(getTime(events[ind], eventTime));
   const [isOngoing, ongoing] = useBoolean();
 
   useEffect(() => {
-    setDates(getTime(events[ind]));
-    const interval = setInterval(() => setDates(getTime(events[ind])), 5 * 1000);
+    setDates(getTime(events[ind], eventTime));
+    const interval = setInterval(() => setDates(getTime(events[ind], eventTime)), 5 * 1000);
     return () => clearInterval(interval);
-  }, [events, ind]);
+  }, [events, ind, eventTime]);
 
   const data = [
     { nr: days, desc: 'dagar' },
