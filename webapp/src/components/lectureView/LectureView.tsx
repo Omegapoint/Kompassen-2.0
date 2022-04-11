@@ -66,7 +66,6 @@ const LectureView = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(lecture);
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
   const [open, { on, off }] = useBoolean();
