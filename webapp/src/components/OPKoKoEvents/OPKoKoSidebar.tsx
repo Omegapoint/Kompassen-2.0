@@ -29,7 +29,8 @@ const OPKoKoEvent = (): ReactElement => {
       {data && (
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
-          <DaysToGo />
+          <Typography variant="body1" sx={{textAlign: 'center', fontSize: '8pt', color: colors.orange}}>DEADLINE FÖR ATT SKICKA IN BIDRAG:</Typography>
+          <DaysToGo eventTime />
           <Stack spacing={2}>
             <Button
               variant="contained"
@@ -38,6 +39,7 @@ const OPKoKoEvent = (): ReactElement => {
                 borderColor: colors.orange,
               }}
               href="/lecture/OPKoKo/create"
+              disabled={data[ind].registrationEnd < new Date()}
             >
               Skicka in bidrag
             </Button>
