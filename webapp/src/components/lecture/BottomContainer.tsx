@@ -10,6 +10,7 @@ import Discussion from './Discussion';
 //   return `${date} kl. ${time}`;
 // };
 
+// eslint-disable-next-line
 const BottomContainer = (): ReactElement => {
   // const { lecture } = useContext(LectureContext);
   // const date = formatTime(lecture.createdAt);
