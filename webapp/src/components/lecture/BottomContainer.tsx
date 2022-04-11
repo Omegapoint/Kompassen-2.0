@@ -1,20 +1,17 @@
 import { Box, IconButton, Typography } from '@mui/material';
-import { format } from 'date-fns';
-import { sv } from 'date-fns/locale';
-import { ReactElement, useContext } from 'react';
+import { ReactElement } from 'react';
 import { ReactComponent as AlarmCircled } from '../../assets/alarmCircled.svg';
 import { padding } from '../../theme/Theme';
 import Discussion from './Discussion';
-import LectureContext from './LectureContext';
 
-const formatTime = (d: Date): string => {
-  const date = format(d, 'dd MMMM', { locale: sv });
-  const time = format(d, 'HH:mm', { locale: sv });
-  return `${date} kl. ${time}`;
-};
+// const formatTime = (d: Date): string => {
+//   const date = format(d, 'dd MMMM', { locale: sv });
+//   const time = format(d, 'HH:mm', { locale: sv });
+//   return `${date} kl. ${time}`;
+// };
 
 const BottomContainer = (): ReactElement => {
-  const { lecture } = useContext(LectureContext);
+  // const { lecture } = useContext(LectureContext);
   // const date = formatTime(lecture.createdAt);
   // const { name } = useAzureUser(lecture.createdBy);
 
