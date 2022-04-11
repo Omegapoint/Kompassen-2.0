@@ -1,7 +1,8 @@
 import { FC, ReactElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Content from '../components/content/Content';
-import OPKoKoPlanner from '../components/opkokoPlanner/opkokoPlanner';
+import OPKoKoList from '../components/OPKoKoEvents/OPKoKosList';
+import OPKoKoPlanner from '../components/OPKoKoPlanner/opkokoPlanner';
 import { checkAccess, ROLE } from '../lib/Lib';
 import CompetencedayLecture from '../section/competencedayLecture/CompetencedayLecture';
 import OPKoKoLecture from '../section/competencedayLecture/OPKoKoLecture';
@@ -95,7 +96,7 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Hantera OPKoKos',
     path: '/events/opkokos',
-    Component: OPKoKoPlanner,
+    Component: OPKoKoList,
     role: [ROLE.ADMIN, ROLE.OPKOKO_PROGRAM_COMMITTEE],
   },
   {

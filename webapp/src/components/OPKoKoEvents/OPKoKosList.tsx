@@ -9,10 +9,12 @@ import EventRow from '../../section/competenceDays/EventRow';
 import EventTitles from '../../section/competenceDays/EventTitles';
 import { colors, padding } from '../../theme/Theme';
 
-const OPKoKoPlanner = (): ReactElement => {
+const OPKoKoList = (): ReactElement => {
+  const organisations = useAppSelector((state) => state.organisations);
+  const OPKoKoOrganisation = organisations.find((e) => e.name === 'OPKoKo');
   // Filter out events that are not opkokos
   const events = useAppSelector((state) => state.events).filter(
-    (c) => c.organisationID === 'c1a06b4b-9013-4f77-874f-438df1174a8c'
+    (c) => c.organisationID === OPKoKoOrganisation?.id
   );
   const today = new Date();
   const previous = events.filter((e) => e.endAt < today);
@@ -71,4 +73,4 @@ const OPKoKoPlanner = (): ReactElement => {
   );
 };
 
-export default OPKoKoPlanner;
+export default OPKoKoList;

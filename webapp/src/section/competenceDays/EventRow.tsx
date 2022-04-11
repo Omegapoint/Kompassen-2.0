@@ -59,22 +59,45 @@ const EventRow = ({
         alignItems: 'center',
       }}
     >
-      <Link
-        component={NavLink}
-        to={`/events/competenceday/${event.id}`}
-        variant="body1"
-        sx={{ color: colors.black }}
-      >
-        {organisation}
-      </Link>
-      <Link
-        component={NavLink}
-        to={`/events/competenceday/${event.id}`}
-        variant="body1"
-        sx={{ color: colors.black }}
-      >
-        {time}
-      </Link>
+      {organisation === 'OPKoKo' ? (
+        <>
+          <Link
+            component={NavLink}
+            to={`/events/opkoko/${event.id}`}
+            variant="body1"
+            sx={{ color: colors.black }}
+          >
+            {organisation}
+          </Link>
+          <Link
+            component={NavLink}
+            to={`/events/opkoko/${event.id}`}
+            variant="body1"
+            sx={{ color: colors.black }}
+          >
+            {time}
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            component={NavLink}
+            to={`/events/competenceday/${event.id}`}
+            variant="body1"
+            sx={{ color: colors.black }}
+          >
+            {organisation}
+          </Link>
+          <Link
+            component={NavLink}
+            to={`/events/competenceday/${event.id}`}
+            variant="body1"
+            sx={{ color: colors.black }}
+          >
+            {time}
+          </Link>
+        </>
+      )}
       <Box sx={cellStyle}>{showStats && <Typography sx={ringNumberStyle}>{draft}</Typography>}</Box>
       <Box sx={cellStyle}>
         {showStats && <Typography sx={ringNumberStyle}>{published}</Typography>}
