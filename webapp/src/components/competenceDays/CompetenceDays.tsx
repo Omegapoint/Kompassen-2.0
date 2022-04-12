@@ -33,7 +33,7 @@ const CompetenceDays = (): ReactElement => {
           <DayPicker />
           <DaysToGo />
           <Button
-            href="/lecture/create"
+            href="/lecture/competenceday/create"
             variant="contained"
             sx={{ backgroundColor: colors.orange }}
           >
