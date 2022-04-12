@@ -22,7 +22,7 @@ const PlannerMenu = (): ReactElement => {
           marginRight: '20px',
           gridAutoFlow: 'column',
           alignItems: 'center',
-          padding: 0,
+          padding: 0
         }}
         onClick={handleClick}
         size="large"
@@ -31,7 +31,7 @@ const PlannerMenu = (): ReactElement => {
         <ArrowDropDown htmlColor={colors.white} />
       </IconButton>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        {checkAccess([ROLE.ADMIN, ROLE.COMPETENCE_DAY_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
+        {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
               <Edit fontSize="small" />
