@@ -22,7 +22,7 @@ const PlannerMenu = (): ReactElement => {
           marginRight: '20px',
           gridAutoFlow: 'column',
           alignItems: 'center',
-          padding: 0
+          padding: 0,
         }}
         onClick={handleClick}
         size="large"

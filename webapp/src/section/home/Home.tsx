@@ -23,7 +23,7 @@ const Home = (): ReactElement => {
         gridTemplateColumns: '1fr max-content',
         gridTemplateRows: 'max-content auto auto auto auto',
         gridGap: `${padding.medium} ${padding.large}`,
-        padding: '0 20px'
+        padding: '0 20px',
       }}
     >
       {alignment === 'kompetensdag' && <HomeCompetenceDays />}
@@ -33,7 +33,7 @@ const Home = (): ReactElement => {
           display: 'grid',
           width: '320px',
           gridGap: padding.standard,
-          alignContent: 'start'
+          alignContent: 'start',
         }}
       >
         <ToggleButtonGroup

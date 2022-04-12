@@ -18,7 +18,7 @@ const Navbar = (): ReactElement => (
       background: colors.primary,
       justifyItems: 'right',
       gridAutoFlow: 'column',
-      height: constants.headerHeight
+      height: constants.headerHeight,
     }}
   >
     <Link
@@ -31,7 +31,7 @@ const Navbar = (): ReactElement => (
         fontFamily: fontFamilies.header,
         textDecoration: 'none',
         color: 'white',
-        display: 'flex'
+        display: 'flex',
       }}
     >
       <Logo />
@@ -40,7 +40,7 @@ const Navbar = (): ReactElement => (
       ROLE.ADMIN,
       ROLE.COMPETENCE_DAY_PLANNER,
       ROLE.OPKOKO_PROGRAM_COMMITTEE,
-      ROLE.OPKOKO_PLANNER
+      ROLE.OPKOKO_PLANNER,
     ]) && <PlannerMenu />}
     <User />
 
