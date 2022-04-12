@@ -21,6 +21,7 @@ const formControlStyle: SxProps = {
 
 interface FilterProps {
   lectures: Lecture[];
+  opkoko?: boolean;
 }
 
 // Sort the "Sortera" - dropdown
@@ -56,7 +57,7 @@ const handleSearch = (value: string, filtered: Lecture[]): Lecture[] => {
   });
 };
 
-const Filter = ({ lectures }: FilterProps): ReactElement => {
+const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
   const [filteredLectures, setLectures] = useState(lectures);
 
   const [options, setOptions] = useState({
@@ -88,34 +89,38 @@ const Filter = ({ lectures }: FilterProps): ReactElement => {
           columnGap: padding.standard,
         }}
       >
-        <FormControl variant="filled" sx={formControlStyle}>
-          <InputLabel shrink>Sortera</InputLabel>
-          <Select
-            value={options.sort}
-            name="sort"
-            onChange={(e) => handleOptions(e)}
-            autoWidth
-            displayEmpty
-          >
-            <MenuItem value="">&nbsp;</MenuItem>
-            <MenuItem value="new">Nyast först</MenuItem>
-            <MenuItem value="old">Äldst först</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl variant="filled" sx={formControlStyle}>
-          <InputLabel shrink>Filter</InputLabel>
-          <Select
-            value={options.filter}
-            name="filter"
-            onChange={(e) => handleOptions(e)}
-            autoWidth
-            displayEmpty
-          >
-            <MenuItem value="">&nbsp;</MenuItem>
-            <MenuItem value="null">Öppen idé</MenuItem>
-            <MenuItem value="lecturer">Söker feedback</MenuItem>
-          </Select>
-        </FormControl>
+        {!opkoko && (
+          <>
+            <FormControl variant="filled" sx={formControlStyle}>
+              <InputLabel shrink>Sortera</InputLabel>
+              <Select
+                value={options.sort}
+                name="sort"
+                onChange={(e) => handleOptions(e)}
+                autoWidth
+                displayEmpty
+              >
+                <MenuItem value="">&nbsp;</MenuItem>
+                <MenuItem value="new">Nyast först</MenuItem>
+                <MenuItem value="old">Äldst först</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl variant="filled" sx={formControlStyle}>
+              <InputLabel shrink>Filter</InputLabel>
+              <Select
+                value={options.filter}
+                name="filter"
+                onChange={(e) => handleOptions(e)}
+                autoWidth
+                displayEmpty
+              >
+                <MenuItem value="">&nbsp;</MenuItem>
+                <MenuItem value="null">Öppen idé</MenuItem>
+                <MenuItem value="lecturer">Söker feedback</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        )}
         <TextField
           sx={formControlStyle}
           value={options.search}

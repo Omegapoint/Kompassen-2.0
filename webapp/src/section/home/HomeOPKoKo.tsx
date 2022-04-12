@@ -87,7 +87,7 @@ const HomeOPKoKo = (): ReactElement => {
           </>
         )}
         {lectureIdeas?.length ? (
-          <Filter lectures={lectureIdeas} />
+          <Filter opkoko lectures={lectureIdeas} />
         ) : (
           <Box
             sx={{
