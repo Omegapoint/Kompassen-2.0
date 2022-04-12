@@ -1,11 +1,14 @@
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { addSeconds, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getAzureUser } from '../../api/GraphApi';
 import LectureView from '../../components/lectureView/LectureView';
 import useBoolean from '../../hooks/UseBoolean';
+import { useEvent } from '../../hooks/UseReduxState';
 import { useAppSelector } from '../../lib/Lib';
-import { Category, Lecture } from '../../lib/Types';
+import { Category, Format, Lecture } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 
 export const cellHeight = 150;
@@ -23,8 +26,14 @@ const LectureCard = ({
   startAt,
   admin = false,
 }: LectureCardProps): ReactElement => {
+  const { id } = useParams<'id'>();
+  const event = useEvent(id!)!;
+  const organisations = useAppSelector((state) => state.organisations);
+  const organisation = organisations.find((e) => e.id === event.organisationID);
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
+  const formats = useAppSelector((state) => state.formats);
+  const formatType = formats.find((e) => e.id === lecture.formatID) as Format;
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
@@ -41,6 +50,23 @@ const LectureCard = ({
     if (location === 'hybrid') return 'Både på plats och distans';
     return '';
   };
+
+  const [lecturers, setLecturers] = useState(['']);
+  useEffect(() => {
+    const lecturersName: string[] = [];
+
+    async function fetchMyAPI(userID: string) {
+      return getAzureUser(userID).then((azureU) => azureU.displayName);
+    }
+
+    if (lecture.lecturers) {
+      lecture.lecturers.map((lecturer) =>
+        fetchMyAPI(lecturer.userID).then((value) => lecturersName.push(value))
+      );
+      setLecturers(lecturersName);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
@@ -76,13 +102,15 @@ const LectureCard = ({
             <Typography variant="h6">{lecture.title}</Typography>
           </Box>
 
-          <Typography>{setLocation(lecture.remote)}</Typography>
-
           <Typography>
-            {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
+            {organisation?.name !== 'OPKoKo' ? setLocation(lecture.remote) : formatType?.name}
           </Typography>
-
-          <Typography>{lecture.lecturer}</Typography>
+          {organisation?.name !== 'OPKoKo' && (
+            <Typography>
+              {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
+            </Typography>
+          )}
+          <Typography>{lecturers[0] !== '' ? lecturers.join(', ') : lecture.lecturer}</Typography>
           {lecture.approved && admin && (
             <Typography variant="subtitle2" sx={{ fontStyle: 'italic' }}>
               Godkänt pass
