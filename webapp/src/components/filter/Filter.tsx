@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   SxProps,
-  TextField
+  TextField,
 } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import { Lecture } from '../../lib/Types';
@@ -16,7 +16,7 @@ import LectureIdea from '../lecture/Lecture';
 
 const formControlStyle: SxProps = {
   marginBottom: padding.standard,
-  minWidth: 120
+  minWidth: 120,
 };
 
 interface FilterProps {
@@ -63,7 +63,7 @@ const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
   const [options, setOptions] = useState({
     sort: '',
     filter: '',
-    search: ''
+    search: '',
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,7 +86,7 @@ const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
           gridAutoFlow: 'column',
           alignItems: 'top',
           gridTemplateColumns: 'initial initial auto',
-          columnGap: padding.standard
+          columnGap: padding.standard,
         }}
       >
         {!opkoko && (
@@ -133,7 +133,7 @@ const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
               <InputAdornment position="end">
                 <Search />
               </InputAdornment>
-            )
+            ),
           }}
         />
       </Box>
@@ -142,7 +142,7 @@ const Filter = ({ lectures, opkoko }: FilterProps): ReactElement => {
         sx={{
           display: 'grid',
           gridGap: padding.standard,
-          alignContent: 'start'
+          alignContent: 'start',
         }}
       >
         {filteredLectures.map((lecture) => (

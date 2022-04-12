@@ -64,7 +64,7 @@ const HomeOPKoKo = (): ReactElement => {
         sx={{
           display: 'grid',
           gridGap: padding.standard,
-          alignContent: 'start'
+          alignContent: 'start',
         }}
       >
         {active && <PublishIdea cancel={off} opkoko />}
@@ -94,7 +94,7 @@ const HomeOPKoKo = (): ReactElement => {
               display: 'grid',
               justifyContent: 'center',
               alignContent: 'center',
-              minHeight: '300px'
+              minHeight: '300px',
             }}
           >
             <Typography variant="h5">Här var det tomt.</Typography>
