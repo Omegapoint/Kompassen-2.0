@@ -262,7 +262,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
         />
 
         <TextField
-          {...validate.description}
+          {...validate.keyTakeAway}
           fullWidth
           multiline
           minRows={1}
