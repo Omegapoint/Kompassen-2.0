@@ -79,6 +79,7 @@
     "emoji-picker-react": "^3.4.8",
     "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
+    "react-csv": "^2.2.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
     "react-minimal-pie-chart": "^8.2.0",
@@ -90,6 +91,7 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.37",
+    "@types/react-csv": "^1.1.2",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.20",
     "@types/react-router-dom": "^5.3.2",

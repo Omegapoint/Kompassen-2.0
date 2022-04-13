@@ -88,6 +88,7 @@ function apiURLParamsBuilder<Res, Req>(url: string): URLAPI<Res, Req> {
 
 export const userExists = apiBuilder<IOK>('/user/exists').get;
 export const getUser = apiBuilder<User>('/user').get;
+export const getUserByID = apiURLParamsBuilder<User, IDParam>('/user/:id').get;
 export const createUser = apiBuilder<User, NewUser>('/user').post;
 export const updateUser = apiBuilder<User, UpdatedUser>('/user').put;
 
