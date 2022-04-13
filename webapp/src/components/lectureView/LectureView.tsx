@@ -3,7 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { Fragment, ReactElement, useEffect, useState } from 'react';
+import { Fragment, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink } from 'react-router-dom';
 import { approveLecture } from '../../api/Api';
@@ -11,10 +11,13 @@ import { getAzureUser } from '../../api/GraphApi';
 import useAzureUser from '../../hooks/UseAzureUser';
 import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
-import { useAppSelector } from '../../lib/Lib';
-import { Lecture } from '../../lib/Types';
+import useUnmount from '../../hooks/UseUnmount';
+import { formatDates, useAppSelector } from '../../lib/Lib';
+import { Lecture, LectureMessage } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
+import Discussion from '../lecture/Discussion';
+import LectureContext from '../lecture/LectureContext';
 import UpdateLectureIdea from '../updateLectureIdea/UpdateLectureIdea';
 import LectureAttendanceList from './LectureAttendanceList';
 
@@ -39,6 +42,39 @@ const LectureView = ({
   close,
   onSuccess,
 }: LectureViewProps): ReactElement => {
+  const useLectureWS = (lectureID: string) => {
+    const socket = useAppSelector((state) => state.session.socket);
+    const [chat, setChat] = useState<LectureMessage[]>([]);
+    const mounted = useUnmount();
+
+    useEffect(() => {
+      if (socket) {
+        socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
+          if (mounted.current) {
+            setChat(formatDates(messages));
+          }
+        });
+        socket.on(`lectureChat/${lectureID}/message`, (message) => {
+          if (mounted.current) {
+            setChat((m) => [...m, formatDates(message)]);
+          }
+        });
+        socket.emit('lectureChat/join', lectureID);
+
+        return () => {
+          socket.emit('lectureChat/leave', lectureID);
+        };
+      }
+      return () => {};
+    }, [lectureID, mounted, socket]);
+
+    const sendWSMessage = useCallback(
+      (message: string) => socket.emit('lectureChat/message', lectureID, message),
+      [lectureID, socket]
+    );
+
+    return { chat, sendWSMessage };
+  };
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID);
   const formats = useAppSelector((state) => state.formats);
@@ -49,6 +85,7 @@ const LectureView = ({
   const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink =
     organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
+  const { chat, sendWSMessage } = useLectureWS(lecture.id);
 
   const [lecturers, setLecturers] = useState(['']);
   useEffect(() => {
@@ -110,7 +147,7 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <>
+    <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
       <Box
         sx={{
           display: 'grid',
@@ -251,6 +288,7 @@ const LectureView = ({
                     <Typography sx={{ gridColumn: 'span 2' }}>{e.value}</Typography>
                   </Fragment>
                 ))}
+
             <Box sx={{ gridColumn: 'span 2' }} />
             {!isUnpublishedIdea && !admin && (
               <Typography sx={{ gridColumn: 'span 1' }}>
@@ -268,10 +306,25 @@ const LectureView = ({
               </Button>
             )}
           </Box>
+          <Box
+            sx={{
+              display: 'grid',
+              minWidth: '100%',
+              maxWidth: '100%',
+              gridTemplateColumns: 'max-content max-content 1fr max-content',
+              gridTemplateAreas: `"title icon . info"
+                            "content content content content"`,
+              padding: padding.small,
+              paddingLeft: padding.xlarge,
+              gridGap: `${padding.minimal}`,
+            }}
+          >
+            <Discussion opkoko={organisation?.name === 'OPKoKo'} />
+          </Box>
           {showAttendance && <LectureAttendanceList lecture={lecture} />}
         </Paper>
       </Box>
-    </>
+    </LectureContext.Provider>
   );
 };
 

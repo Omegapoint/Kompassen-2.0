@@ -12,7 +12,11 @@ const defaultFormValue = {
   message: '',
 };
 
-const Discussion = (): ReactElement => {
+interface DiscussionProps {
+  opkoko?: boolean;
+}
+
+const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
   const { chat, sendWSMessage } = useContext(LectureContext);
   const { values, handleChange, appendChange, updateValues } = useForm(defaultFormValue);
 
@@ -77,7 +81,7 @@ const Discussion = (): ReactElement => {
             onKeyPress={(e) => handleKeyPress(e)}
             required
             name="message"
-            label="Skriv en kommentar"
+            label={opkoko ? 'Skriv hellre i Slack för snabb återkoppling' : 'Skriv en kommentar'}
             variant="outlined"
           />
           <Box sx={{ display: 'grid', alignSelf: 'center', gridArea: 'panel' }}>
