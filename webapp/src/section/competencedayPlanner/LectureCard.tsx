@@ -195,26 +195,91 @@ const LectureCard = ({
               )}
             </Box>
           )}
+          {opkoko ? (
+            <>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'max-content max-content max-content',
+                  alignItems: 'center',
+                  width: '100%',
+                  minWidth: '800px',
+                  maxWidth: '800px',
+                  paddingX: padding.small,
+                }}
+              >
+                {edit &&
+                  checkAccess([
+                    ROLE.ADMIN,
+                    ROLE.COMPETENCE_DAY_PLANNER,
+                    ROLE.OPKOKO_PROGRAM_COMMITTEE,
+                    ROLE.OPKOKO_PLANNER,
+                  ]) && (
+                    <Box sx={{ minWidth: '100px', display: 'grid', gridGap: padding.small }}>
+                      <Button
+                        variant={lecture.approved ? undefined : 'contained'}
+                        color={lecture.approved ? undefined : 'primary'}
+                        onClick={on}
+                      >
+                        Hantera
+                      </Button>
+                      <StatusChanger />
+                    </Box>
+                  )}
+                {lecture.likes?.includes(azureUser.id) ? (
+                  <IconButton sx={iconStyle} onClick={unlike} size="large">
+                    <Favorite sx={iconStyle} color="primary" />
+                    {likes}
+                  </IconButton>
+                ) : (
+                  <IconButton sx={iconStyle} onClick={like} size="large">
+                    <FavoriteBorder sx={iconStyle} color="primary" />
+                    {likes}
+                  </IconButton>
+                )}
+                {!edit && (
+                  <Button variant="contained" color="primary" onClick={on}>
+                    Visa
+                  </Button>
+                )}
+                <Box
+                  sx={{
+                    display: 'grid',
+                    minWidth: '770px',
+                    maxWidth: '770px',
+                    gridTemplateColumns: 'max-content max-content 1fr max-content',
+                    gridTemplateAreas: `"title icon . info"
+                            "content content content content"`,
+                    padding: padding.small,
+                    paddingLeft: padding.xlarge,
+                    gridGap: `${padding.minimal}`,
+                  }}
+                >
+                  <Discussion opkoko={opkoko} />
+                </Box>
+              </Box>
 
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'max-content max-content max-content',
-              alignItems: 'center',
-              width: '100%',
-              minWidth: '800px',
-              maxWidth: '800px',
-              paddingX: padding.small,
-            }}
-          >
-            {edit &&
-              checkAccess([
-                ROLE.ADMIN,
-                ROLE.COMPETENCE_DAY_PLANNER,
-                ROLE.OPKOKO_PROGRAM_COMMITTEE,
-                ROLE.OPKOKO_PLANNER,
-              ]) && (
-                <Box sx={{ minWidth: '100px', display: 'grid', gridGap: padding.small }}>
+              <Modal
+                open={open}
+                onClose={off}
+                sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
+                style={{ overflow: 'scroll' }}
+              >
+                <Box sx={{ width: '800px' }}>
+                  <LectureView
+                    lecture={lecture}
+                    admin={admin}
+                    close={off}
+                    editIcon={isOwner || admin}
+                    showAttendance={isOwner || admin}
+                  />
+                </Box>
+              </Modal>
+            </>
+          ) : (
+            <>
+              <Box sx={{ display: 'grid', alignItems: 'end' }}>
+                {edit && admin && (
                   <Button
                     variant={lecture.approved ? undefined : 'contained'}
                     color={lecture.approved ? undefined : 'primary'}
@@ -222,58 +287,30 @@ const LectureCard = ({
                   >
                     Hantera
                   </Button>
-                  <StatusChanger />
+                )}
+                {!edit && (
+                  <Button variant="contained" color="primary" onClick={on}>
+                    Visa
+                  </Button>
+                )}
+              </Box>
+              <Modal
+                open={open}
+                onClose={off}
+                sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
+              >
+                <Box sx={{ width: '800px' }}>
+                  <LectureView
+                    lecture={lecture}
+                    admin={admin}
+                    close={off}
+                    editIcon={isOwner || admin}
+                    showAttendance={isOwner || admin}
+                  />
                 </Box>
-              )}
-            {lecture.likes?.includes(azureUser.id) ? (
-              <IconButton sx={iconStyle} onClick={unlike} size="large">
-                <Favorite sx={iconStyle} color="primary" />
-                {likes}
-              </IconButton>
-            ) : (
-              <IconButton sx={iconStyle} onClick={like} size="large">
-                <FavoriteBorder sx={iconStyle} color="primary" />
-                {likes}
-              </IconButton>
-            )}
-            {!edit && (
-              <Button variant="contained" color="primary" onClick={on}>
-                Visa
-              </Button>
-            )}
-            <Box
-              sx={{
-                display: 'grid',
-                minWidth: '770px',
-                maxWidth: '770px',
-                gridTemplateColumns: 'max-content max-content 1fr max-content',
-                gridTemplateAreas: `"title icon . info"
-                            "content content content content"`,
-                padding: padding.small,
-                paddingLeft: padding.xlarge,
-                gridGap: `${padding.minimal}`,
-              }}
-            >
-              <Discussion opkoko={opkoko} />
-            </Box>
-          </Box>
-
-          <Modal
-            open={open}
-            onClose={off}
-            sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
-            style={{ overflow: 'scroll' }}
-          >
-            <Box sx={{ width: '800px' }}>
-              <LectureView
-                lecture={lecture}
-                admin={admin}
-                close={off}
-                editIcon={isOwner || admin}
-                showAttendance={isOwner || admin}
-              />
-            </Box>
-          </Modal>
+              </Modal>
+            </>
+          )}
         </Box>
       </Box>
     </LectureContext.Provider>
