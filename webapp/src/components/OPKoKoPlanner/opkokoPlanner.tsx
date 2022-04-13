@@ -9,8 +9,8 @@ const OPKoKoPlanner = (): ReactElement => {
   const lectures = useEventLecturesWS(id!);
 
   return (
-    <Box sx={{ display: 'grid', justifyItems: 'center' }}>
-      <RegisteredLectures lectures={lectures} admin />
+    <Box sx={{ display: 'flex', justifyItems: 'center' }}>
+      <RegisteredLectures lectures={lectures} admin opkoko />
     </Box>
   );
 };
