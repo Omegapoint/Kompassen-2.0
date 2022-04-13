@@ -1,6 +1,6 @@
-import { getUserByID } from '../../api/Api';
+import { getUserByID, listOffices } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
-import { Lecture } from '../Types';
+import { Lecture, User } from '../Types';
 
 const csvHeader = [
   'Name',
@@ -39,17 +39,19 @@ const filterLecturers = (lectures: Lecture[]) => {
 const exportLectures = async (
   lectures: Lecture[]
 ): Promise<(string | boolean | string[] | null)[][]> => {
+  const offices = await listOffices();
   const filteredLecturers = filterLecturers(lectures);
 
   const csvData = await Promise.all(
     filteredLecturers.map(async (lecturer) => {
       const azureUser = await getAzureUser(lecturer!.userID);
-      let kompassenUser = null;
+      let kompassenUser: User | null;
       try {
         kompassenUser = await getUserByID({ id: lecturer!.userID });
       } catch (ex) {
         // eslint-disable-next-line
         console.error(ex);
+        kompassenUser = null;
       }
 
       const lecturerLectures = lectures.filter(
@@ -60,13 +62,20 @@ const exportLectures = async (
       const lecturerLecturesNames = lecturerLectures.map((k) => k.title);
 
       const speakerBio = kompassenUser !== null ? kompassenUser!.speakerBio : '';
-
+      let office;
+      if (kompassenUser !== null && kompassenUser.officeID !== null) {
+        const { officeID } = kompassenUser;
+        const officeResult = offices.find((o) => o.id === officeID)?.name;
+        office = officeResult || 'Office not set';
+      } else {
+        office = 'Office not set';
+      }
       return [
         azureUser.displayName,
         azureUser.mail,
         lecturer!.firstTimePresenting,
         speakerBio,
-        azureUser.officeLocation,
+        office,
         lecturerLecturesNames,
         'image-file',
       ];

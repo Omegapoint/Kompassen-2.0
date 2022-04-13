@@ -13,7 +13,8 @@ const OPKoKoPlanner = (): ReactElement => {
     useState<Array<Array<string | null | boolean | Array<string>>>>();
 
   const fetchData = async () => {
-    const CSVData = await exportLectures(lectures.filter((lecture) => lecture.approved));
+    const CSVData = await exportLectures(lectures);
+    console.log(CSVData);
     setLecturerData(CSVData);
   };
 
