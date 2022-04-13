@@ -41,7 +41,7 @@ const users = {
     res.send(user);
   },
 
-  async getUserByID({ params }:GetUserByIDReq, res: Response) {
+  async getUserByID({ params }: GetUserByIDReq, res: Response) {
     const item = await usersDB.getByID(params.id);
     if (!item) {
       httpError(res, 404, 'User not found');
