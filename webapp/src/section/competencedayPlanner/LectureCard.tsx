@@ -2,15 +2,19 @@ import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
 import { addSeconds, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import React, { Fragment, ReactElement, useEffect, useState } from 'react';
+import React, { Fragment, ReactElement, useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { likeLecture, unlikeLecture } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
+import Discussion from '../../components/lecture/Discussion';
+import LectureContext from '../../components/lecture/LectureContext';
 import LectureView from '../../components/lectureView/LectureView';
 import useBoolean from '../../hooks/UseBoolean';
-import { checkAccess, ROLE, useAppSelector } from '../../lib/Lib';
-import { Category, Format, Lecture } from '../../lib/Types';
+import useUnmount from '../../hooks/UseUnmount';
+import { checkAccess, formatDates, ROLE, useAppSelector } from '../../lib/Lib';
+import { Category, Format, Lecture, LectureMessage } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
+import StatusChanger from './StatusChanger';
 
 export const cellHeight = 150;
 
@@ -29,6 +33,39 @@ const LectureCard = ({
   admin = false,
   opkoko = false,
 }: LectureCardProps): ReactElement => {
+  const useLectureWS = (lectureID: string) => {
+    const socket = useAppSelector((state) => state.session.socket);
+    const [chat, setChat] = useState<LectureMessage[]>([]);
+    const mounted = useUnmount();
+
+    useEffect(() => {
+      if (socket) {
+        socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
+          if (mounted.current) {
+            setChat(formatDates(messages));
+          }
+        });
+        socket.on(`lectureChat/${lectureID}/message`, (message) => {
+          if (mounted.current) {
+            setChat((m) => [...m, formatDates(message)]);
+          }
+        });
+        socket.emit('lectureChat/join', lectureID);
+
+        return () => {
+          socket.emit('lectureChat/leave', lectureID);
+        };
+      }
+      return () => {};
+    }, [lectureID, mounted, socket]);
+
+    const sendWSMessage = useCallback(
+      (message: string) => socket.emit('lectureChat/message', lectureID, message),
+      [lectureID, socket]
+    );
+
+    return { chat, sendWSMessage };
+  };
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
   const formats = useAppSelector((state) => state.formats);
@@ -41,6 +78,7 @@ const LectureCard = ({
   const unlikeMutation = useMutation(unlikeLecture);
   const like = () => likeMutation.mutate({ id: lecture.id });
   const unlike = () => unlikeMutation.mutate({ id: lecture.id });
+  const { chat, sendWSMessage } = useLectureWS(lecture.id);
   const iconStyle = { width: '60px', height: '40px' };
 
   const genTime = (time: Date) => {
@@ -87,131 +125,158 @@ const LectureCard = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (
-    <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: opkoko ? 'max-content' : '1fr max-content',
-          gridTemplateRows: opkoko ? 'max-content' : 'max-content 1fr max-content',
-          border: `${category.color} 1px solid`,
-          background: `${category.color}20`,
-          borderRadius: borderRadius.small,
-          padding: padding.small,
-          width: opkoko ? '1000px' : '100%',
-          maxWidth: '100%',
-          height: opkoko
-            ? '100%'
-            : `${((edit ? 3600 : lecture.duration || 3600) / 3600) * cellHeight}px`,
-        }}
-      >
-        {opkoko ? (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'max-content 1fr max-content',
-              gridGap: padding.minimal,
-            }}
-          >
-            {opkokoTable.map((e) => (
-              <Fragment key={e.name}>
-                <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
-                <Typography sx={{ gridColumn: 'span 2', maxWidth: '800px' }}>{e.value}</Typography>
-              </Fragment>
-            ))}
-          </Box>
-        ) : (
-          <Box sx={{ display: 'grid', gridGap: padding.tiny }}>
-            <Box
-              sx={{
-                display: 'grid',
-                gridGap: padding.minimal,
-                gridTemplateColumns: 'max-content 1fr',
-              }}
-            >
-              <Box
-                sx={{
-                  width: '20px',
-                  height: '20px',
-                  '& path': { fill: colors.black },
-                }}
-                dangerouslySetInnerHTML={{ __html: category.icon }}
-              />
-              <Typography variant="h6">{lecture.title}</Typography>
-            </Box>
-
-            <Typography>{setLocation(lecture.remote)}</Typography>
-
-            <Typography>
-              {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
-            </Typography>
-
-            <Typography>{lecturers[0] !== '' ? lecturers.join(', ') : lecture.lecturer}</Typography>
-            {lecture.approved && admin && (
-              <Typography variant="subtitle2" sx={{ fontStyle: 'italic' }}>
-                Godkänt pass
-              </Typography>
-            )}
-          </Box>
-        )}
-
+    <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
+      <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'max-content max-content',
-            alignItems: 'end',
-            width: opkoko ? '900px' : '100%',
-            paddingTop: padding.medium,
+            gridTemplateColumns: opkoko ? 'max-content' : '1fr max-content',
+            gridTemplateRows: opkoko ? 'max-content' : 'max-content 1fr max-content',
+            border: `${category.color} 1px solid`,
+            background: `${category.color}20`,
+            borderRadius: borderRadius.small,
+            padding: padding.small,
+            width: '100%',
+            height: opkoko
+              ? '100%'
+              : `${((edit ? 3600 : lecture.duration || 3600) / 3600) * cellHeight}px`,
           }}
         >
-          {edit &&
-            checkAccess([
-              ROLE.ADMIN,
-              ROLE.COMPETENCE_DAY_PLANNER,
-              ROLE.OPKOKO_PROGRAM_COMMITTEE,
-              ROLE.OPKOKO_PLANNER,
-            ]) && (
-              <Button
-                variant={lecture.approved ? undefined : 'contained'}
-                color={lecture.approved ? undefined : 'primary'}
-                onClick={on}
-                sx={{ minWidth: '880px' }}
+          {opkoko ? (
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'max-content 1fr max-content',
+                gridGap: padding.minimal,
+              }}
+            >
+              {opkokoTable.map((e) => (
+                <Fragment key={e.name}>
+                  <Typography sx={{ gridColumn: 'span 1' }}>{e.name}:</Typography>
+                  <Typography sx={{ gridColumn: 'span 2', minWidth: '800px', maxWidth: '800px' }}>
+                    {e.value}
+                  </Typography>
+                </Fragment>
+              ))}
+            </Box>
+          ) : (
+            <Box sx={{ display: 'grid', gridGap: padding.tiny }}>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridGap: padding.minimal,
+                  gridTemplateColumns: 'max-content 1fr',
+                }}
               >
-                Hantera
+                <Box
+                  sx={{
+                    width: '20px',
+                    height: '20px',
+                    '& path': { fill: colors.black },
+                  }}
+                  dangerouslySetInnerHTML={{ __html: category.icon }}
+                />
+                <Typography variant="h6">{lecture.title}</Typography>
+              </Box>
+
+              <Typography>{setLocation(lecture.remote)}</Typography>
+
+              <Typography>
+                {startAt ? genTime(startAt) : `${(lecture.duration || 0) / 60} min`}
+              </Typography>
+
+              <Typography>
+                {lecturers[0] !== '' ? lecturers.join(', ') : lecture.lecturer}
+              </Typography>
+              {lecture.approved && admin && (
+                <Typography variant="subtitle2" sx={{ fontStyle: 'italic' }}>
+                  Godkänt pass
+                </Typography>
+              )}
+            </Box>
+          )}
+
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'max-content max-content max-content',
+              alignItems: 'center',
+              width: '100%',
+              minWidth: '800px',
+              maxWidth: '800px',
+              paddingX: padding.small,
+            }}
+          >
+            {edit &&
+              checkAccess([
+                ROLE.ADMIN,
+                ROLE.COMPETENCE_DAY_PLANNER,
+                ROLE.OPKOKO_PROGRAM_COMMITTEE,
+                ROLE.OPKOKO_PLANNER,
+              ]) && (
+                <Box sx={{ minWidth: '100px', display: 'grid', gridGap: padding.small }}>
+                  <Button
+                    variant={lecture.approved ? undefined : 'contained'}
+                    color={lecture.approved ? undefined : 'primary'}
+                    onClick={on}
+                  >
+                    Hantera
+                  </Button>
+                  <StatusChanger />
+                </Box>
+              )}
+            {lecture.likes?.includes(azureUser.id) ? (
+              <IconButton sx={iconStyle} onClick={unlike} size="large">
+                <Favorite sx={iconStyle} color="primary" />
+                {likes}
+              </IconButton>
+            ) : (
+              <IconButton sx={iconStyle} onClick={like} size="large">
+                <FavoriteBorder sx={iconStyle} color="primary" />
+                {likes}
+              </IconButton>
+            )}
+            {!edit && (
+              <Button variant="contained" color="primary" onClick={on}>
+                Visa
               </Button>
             )}
-          {lecture.likes?.includes(azureUser.id) ? (
-            <IconButton sx={iconStyle} onClick={unlike} size="large">
-              <Favorite sx={iconStyle} color="primary" />
-            </IconButton>
-          ) : (
-            <IconButton sx={iconStyle} onClick={like} size="large">
-              <FavoriteBorder sx={iconStyle} color="primary" />
-            </IconButton>
-          )}
-          {!edit && (
-            <Button variant="contained" color="primary" onClick={on}>
-              Visa
-            </Button>
-          )}
-        </Box>
-
-        <Modal
-          open={open}
-          onClose={off}
-          sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
-        >
-          <Box sx={{ width: '800px' }}>
-            <LectureView
-              lecture={lecture}
-              admin={admin}
-              close={off}
-              editIcon={isOwner || admin}
-              showAttendance={isOwner || admin}
-            />
+            <Box
+              sx={{
+                display: 'grid',
+                minWidth: '770px',
+                maxWidth: '770px',
+                gridTemplateColumns: 'max-content max-content 1fr max-content',
+                gridTemplateAreas: `"title icon . info"
+                            "content content content content"`,
+                padding: padding.small,
+                paddingLeft: padding.xlarge,
+                gridGap: `${padding.minimal}`,
+              }}
+            >
+              <Discussion opkoko={opkoko} />
+            </Box>
           </Box>
-        </Modal>
+
+          <Modal
+            open={open}
+            onClose={off}
+            sx={{ display: 'grid', alignItems: 'center', justifyItems: 'center' }}
+            style={{ overflow: 'scroll' }}
+          >
+            <Box sx={{ width: '800px' }}>
+              <LectureView
+                lecture={lecture}
+                admin={admin}
+                close={off}
+                editIcon={isOwner || admin}
+                showAttendance={isOwner || admin}
+              />
+            </Box>
+          </Modal>
+        </Box>
       </Box>
-    </Box>
+    </LectureContext.Provider>
   );
 };
 

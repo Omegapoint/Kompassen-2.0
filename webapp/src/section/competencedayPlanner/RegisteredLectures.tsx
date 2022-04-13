@@ -19,7 +19,7 @@ const RegisteredLectures = ({
     sx={{
       display: 'grid',
       gridTemplateColumns: opkoko ? 'max-content' : '1fr 1fr 1fr',
-      gridTemplateRows: 'max-content auto auto auto auto',
+      gridTemplateRows: 'max-content',
       gridGap: padding.standard,
     }}
   >
