@@ -1,8 +1,10 @@
 import {
   Approved,
   Attendant,
+  Category,
   CategoryStats,
   Event,
+  Format,
   IDParam,
   IOK,
   Lecture,
@@ -131,3 +133,7 @@ export const getEvent = apiURLParamsBuilder<Event, IDParam>('/event/:id').get;
 
 export const listOffices = apiQueryBuilder<Office[], ListEventParams>('/office').get;
 export const getOffice = apiURLParamsBuilder<Office, IDParam>('/office/:id').get;
+
+export const listCategories = apiQueryBuilder<Category[], ListEventParams>('/category').get;
+
+export const listFormats = apiQueryBuilder<Format[], ListEventParams>('/format').get;
