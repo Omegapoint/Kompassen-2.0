@@ -8,6 +8,7 @@ const userRoutes = (app: Express): void => {
   app.put('/user', locked, validate(schema.users.updateUser), users.updateUser);
   app.get('/user', locked, users.getUser);
   app.get('/user/exists', locked, users.existsByID);
+  app.get('/user/:id', locked, validate(schema.uuidParam, 'params'), users.getUserByID);
 };
 
 export default userRoutes;
