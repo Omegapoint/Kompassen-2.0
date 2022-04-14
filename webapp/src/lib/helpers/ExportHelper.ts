@@ -1,5 +1,6 @@
 import { getUserByID, listOffices } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
+import { AzureUser } from '../../reducers/session/actions';
 import { Lecture, User } from '../Types';
 
 const csvHeader = [
@@ -36,7 +37,7 @@ const filterLecturers = (lectures: Lecture[]) => {
   return filteredArr;
 };
 
-const exportLectures = async (
+const exportLecturers = async (
   lectures: Lecture[]
 ): Promise<(string | boolean | string[] | null)[][]> => {
   const offices = await listOffices();
@@ -44,13 +45,21 @@ const exportLectures = async (
 
   const csvData = await Promise.all(
     filteredLecturers.map(async (lecturer) => {
-      const azureUser = await getAzureUser(lecturer!.userID);
+      let azureUser: AzureUser | null;
+      try {
+        azureUser = await getAzureUser(lecturer!.userID);
+      } catch (error) {
+        // eslint-disable-next-line
+        console.error(error);
+        azureUser = null;
+      }
+
       let kompassenUser: User | null;
       try {
         kompassenUser = await getUserByID({ id: lecturer!.userID });
-      } catch (ex) {
+      } catch (error) {
         // eslint-disable-next-line
-        console.error(ex);
+        console.error(error);
         kompassenUser = null;
       }
 
@@ -61,7 +70,6 @@ const exportLectures = async (
       );
       const lecturerLecturesNames = lecturerLectures.map((k) => k.title);
 
-      const speakerBio = kompassenUser !== null ? kompassenUser!.speakerBio : '';
       let office;
       if (kompassenUser !== null && kompassenUser.officeID !== null) {
         const { officeID } = kompassenUser;
@@ -71,10 +79,10 @@ const exportLectures = async (
         office = 'Office not set';
       }
       return [
-        azureUser.displayName,
-        azureUser.mail,
-        lecturer!.firstTimePresenting,
-        speakerBio,
+        azureUser && azureUser.displayName ? azureUser.displayName : 'Azure user not found',
+        azureUser && azureUser.mail ? azureUser.mail : 'Azure user not found',
+        lecturer && lecturer.firstTimePresenting ? 'Yes' : 'No',
+        kompassenUser && kompassenUser.speakerBio ? kompassenUser.speakerBio : 'No speaker bio',
         office,
         lecturerLecturesNames,
         'image-file',
@@ -85,4 +93,4 @@ const exportLectures = async (
   return [csvHeader, ...csvData];
 };
 
-export default exportLectures;
+export default exportLecturers;

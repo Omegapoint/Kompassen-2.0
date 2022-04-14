@@ -2,7 +2,7 @@ import { Box, Button } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { CSVDownload } from 'react-csv';
 import { useParams } from 'react-router-dom';
-import exportLectures from '../../lib/helpers/ExportHelper';
+import exportLecturers from '../../lib/helpers/ExportHelper';
 import RegisteredLectures from '../../section/competencedayPlanner/RegisteredLectures';
 import useEventLecturesWS from '../../section/competencedayPlanner/UseEventLecturesWS';
 
@@ -13,7 +13,7 @@ const OPKoKoPlanner = (): ReactElement => {
     useState<Array<Array<string | null | boolean | Array<string>>>>();
 
   const fetchData = async () => {
-    const CSVData = await exportLectures(lectures);
+    const CSVData = await exportLecturers(lectures);
     setLecturerData(CSVData);
   };
 
