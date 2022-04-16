@@ -66,6 +66,8 @@ resource "azurerm_app_service" "server" {
     PG_PORT     = "5432"
     PG_DATABASE = var.name
     PG_SSL      = "1"
+
+    KV_APP_REGISTRATION_SECRET = "@Microsoft.KeyVault(VaultName=kv-kompassen2;SecretName=kompassen-app-registration-secret)"
   }
 }
 
