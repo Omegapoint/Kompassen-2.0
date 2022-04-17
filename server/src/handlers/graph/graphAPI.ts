@@ -32,11 +32,13 @@ async function getAzureGraphSingleUser(
     })
     .catch((error: any) => {
       const err = error as AxiosError;
+      // eslint-disable-next-line no-console
       console.log(err.response?.data);
     });
 
   if (axios.isAxiosError(response)) {
     const err = response as AxiosError;
+    // eslint-disable-next-line no-console
     console.log(err.response?.data);
   } else if (response !== undefined) {
     return response.data;
@@ -71,11 +73,13 @@ async function getAccessToken(tentantID: string): Promise<string | null> {
     .post(`https://login.microsoftonline.com/${tentantID}/oauth2/v2.0/token`, params)
     .catch((error: any) => {
       const err = error as AxiosError;
+      // eslint-disable-next-line no-console
       console.log(err.response?.data);
     });
 
   if (axios.isAxiosError(response)) {
     const err = response as AxiosError;
+    // eslint-disable-next-line no-console
     console.log(err.response?.data);
   } else {
     return response.data.access_token;
