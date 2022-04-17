@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-var-requires: "off" */
 import { AxiosError } from 'axios';
 import config from '../../config/config';
 import { AzureUserBasic } from '../../lib/types';
@@ -78,6 +79,7 @@ export async function getAzureUser(userID: string): Promise<AzureUserBasic | nul
   const tenantIDList = [tenantIDOP, tenantIDIBMB, tenantIDElicit];
   let result: AzureUserBasic | null = null;
   /* eslint-disable no-await-in-loop */
+  // eslint-disable-next-line no-restricted-syntax
   for (const tenantID of tenantIDList) {
     const accessToken = await getAccessToken(tenantID);
     if (accessToken !== null) {
