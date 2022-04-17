@@ -1,6 +1,7 @@
 import {
   Approved,
   Attendant,
+  AzureUserBasic,
   Category,
   CategoryStats,
   Event,
@@ -137,3 +138,6 @@ export const getOffice = apiURLParamsBuilder<Office, IDParam>('/office/:id').get
 export const listCategories = apiQueryBuilder<Category[], ListEventParams>('/category').get;
 
 export const listFormats = apiQueryBuilder<Format[], ListEventParams>('/format').get;
+
+export const getGraphUser = apiURLParamsBuilder<AzureUserBasic, IDParam>('/graph/:id').get;
+export const getGraphUserPicture = apiURLParamsBuilder<IDParam, IDParam>('/graph/picture/:id').get;
