@@ -77,6 +77,7 @@ async function getAccessToken(tentantID: string): Promise<string | null> {
 export async function getAzureUser(userID: string): Promise<AzureUserBasic | null> {
   const tenantIDList = [tenantIDOP, tenantIDIBMB, tenantIDElicit];
   let result: AzureUserBasic | null = null;
+  /* eslint-disable no-await-in-loop */
   for (const tenantID of tenantIDList) {
     const accessToken = await getAccessToken(tenantID);
     if (accessToken !== null) {
@@ -87,5 +88,6 @@ export async function getAzureUser(userID: string): Promise<AzureUserBasic | nul
       }
     }
   }
+  /* eslint-enable no-await-in-loop */
   return result;
 }
