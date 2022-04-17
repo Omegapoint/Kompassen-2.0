@@ -5,7 +5,6 @@ import { listEvents } from '../../api/Api';
 import { useAppSelector } from '../../lib/Lib';
 import { colors, padding } from '../../theme/Theme';
 import DayPicker from '../competenceDays/DayPicker';
-import DaysToGo from '../competenceDays/DaysToGo';
 import EventContext from '../competenceDays/EventContext';
 import LectureStats from '../competenceDays/LectureStats';
 import SmallLoader from '../loader/SmallLoader';
@@ -29,13 +28,13 @@ const OPKoKoEvent = (): ReactElement => {
       {data && (
         <Box sx={{ display: 'grid', gridGap: padding.standard }}>
           <DayPicker />
-          <Typography
+          {/* <Typography
             variant="body1"
             sx={{ textAlign: 'center', fontSize: '8pt', color: colors.orange }}
           >
             DEADLINE FÖR ATT SKICKA IN BIDRAG:
           </Typography>
-          <DaysToGo eventTime />
+          <DaysToGo eventTime /> */}
           <Stack spacing={2}>
             <Button
               variant="contained"
