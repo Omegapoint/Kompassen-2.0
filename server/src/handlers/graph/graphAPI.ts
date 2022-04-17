@@ -1,9 +1,10 @@
-const axios = require('axios').default;
 import { AxiosError } from 'axios';
 import config from '../../config/config';
 import { AzureUserBasic } from '../../lib/types';
 
-export interface AzureUser {
+const axios = require('axios').default;
+
+interface AzureUser {
   '@odata.context': string;
   '@odata.id': string;
   businessPhones: string[];
@@ -30,6 +31,7 @@ async function getAzureGraphSingleUser(
     .get(`https://graph.microsoft.com/v1.0${path}`, {
       headers: { Authorization: `Bearer ${bearerToken}` },
     })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .catch((error: any) => {
       const err = error as AxiosError;
       // eslint-disable-next-line no-console
@@ -46,22 +48,6 @@ async function getAzureGraphSingleUser(
   return null;
 }
 
-export async function getAzureUser(userID: string): Promise<AzureUserBasic | null> {
-  const tenantIDList = [tenantIDOP, tenantIDIBMB, tenantIDElicit];
-  let result: AzureUserBasic | null = null;
-  for (let tenantID of tenantIDList) {
-    const accessToken = await getAccessToken(tenantID);
-    if (accessToken !== null) {
-      const azureUserResult = await getAzureGraphSingleUser(`/users/${userID}`, accessToken);
-      if (azureUserResult !== null) {
-        result = { name: azureUserResult.displayName, email: azureUserResult.mail };
-        break;
-      }
-    }
-  }
-  return result;
-}
-
 async function getAccessToken(tentantID: string): Promise<string | null> {
   const params = new URLSearchParams();
   params.append('client_id', clientID);
@@ -71,6 +57,7 @@ async function getAccessToken(tentantID: string): Promise<string | null> {
 
   const response = await axios
     .post(`https://login.microsoftonline.com/${tentantID}/oauth2/v2.0/token`, params)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .catch((error: any) => {
       const err = error as AxiosError;
       // eslint-disable-next-line no-console
@@ -85,4 +72,20 @@ async function getAccessToken(tentantID: string): Promise<string | null> {
     return response.data.access_token;
   }
   return null;
+}
+
+export async function getAzureUser(userID: string): Promise<AzureUserBasic | null> {
+  const tenantIDList = [tenantIDOP, tenantIDIBMB, tenantIDElicit];
+  let result: AzureUserBasic | null = null;
+  for (const tenantID of tenantIDList) {
+    const accessToken = await getAccessToken(tenantID);
+    if (accessToken !== null) {
+      const azureUserResult = await getAzureGraphSingleUser(`/users/${userID}`, accessToken);
+      if (azureUserResult !== null) {
+        result = { name: azureUserResult.displayName, email: azureUserResult.mail };
+        break;
+      }
+    }
+  }
+  return result;
 }
