@@ -61,6 +61,11 @@ export interface Notifications {
   adminRead: boolean;
   lectureTaken: boolean;
 }
+// Azure User
+export interface AzureUserBasic {
+  name: string;
+  email: string;
+}
 
 // User
 interface BaseUser {
@@ -236,6 +241,7 @@ export interface DBLecture extends BaseNewLecture, DefaultTime {
 }
 
 export interface Lecture extends DLecture, DefaultTime {
+  lecture: Promise<LectureLecturer[] | null>;
   id: string;
   categoryID: string | null;
   likes: string[];

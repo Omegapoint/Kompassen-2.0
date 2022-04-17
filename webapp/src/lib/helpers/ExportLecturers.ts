@@ -1,7 +1,5 @@
-import { getUserByID, listOffices } from '../../api/Api';
-import { getAzureUser } from '../../api/GraphApi';
-import { AzureUser } from '../../reducers/session/actions';
-import { Lecture, User } from '../Types';
+import { getGraphUser, getUserByID, listOffices } from '../../api/Api';
+import { AzureUserBasic, Lecture, User } from '../Types';
 
 const csvHeader = [
   'Name',
@@ -45,9 +43,9 @@ const exportLecturers = async (
 
   const csvData = await Promise.all(
     filteredLecturers.map(async (lecturer) => {
-      let azureUser: AzureUser | null;
+      let azureUser: AzureUserBasic | null;
       try {
-        azureUser = await getAzureUser(lecturer!.userID);
+        azureUser = await getGraphUser({ id: lecturer!.userID });
       } catch (error) {
         // eslint-disable-next-line
         console.error(error);
@@ -79,8 +77,8 @@ const exportLecturers = async (
         office = 'Office not set';
       }
       return [
-        azureUser && azureUser.displayName ? azureUser.displayName : 'Azure user not found',
-        azureUser && azureUser.mail ? azureUser.mail : 'Azure user not found',
+        azureUser && azureUser.name ? azureUser.name : 'Azure user not found',
+        azureUser && azureUser.email ? azureUser.email : 'Azure user not found',
         lecturer && lecturer.firstTimePresenting ? 'Yes' : 'No',
         kompassenUser && kompassenUser.speakerBio ? kompassenUser.speakerBio : 'No speaker bio',
         office,

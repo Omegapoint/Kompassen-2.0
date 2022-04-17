@@ -26,8 +26,17 @@ const OPKoKoPlanner = (): ReactElement => {
     setLecturesData(CSVData);
   };
 
+  // const test = async () => {
+  //   getGraphUser({ id: 'e7d343d4-c655-4164-a50b-e6d97498c879' });
+  // };
+
   return (
     <>
+      {/* <Box sx={{ display: 'grid', justifyItems: 'right' }}>
+        <Button color="primary" variant="contained" onClick={test}>
+          Test
+        </Button>
+      </Box> */}
       <Box sx={{ display: 'grid', justifyItems: 'center' }}>
         <RegisteredLectures lectures={lectures} admin />
       </Box>

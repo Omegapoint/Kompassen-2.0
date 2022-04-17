@@ -61,6 +61,11 @@ export interface Notifications {
   adminRead: boolean;
   lectureTaken: boolean;
 }
+// Azure User
+export interface AzureUserBasic {
+  name: string;
+  email: string;
+}
 
 // User
 interface BaseUser {
