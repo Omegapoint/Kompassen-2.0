@@ -1,10 +1,7 @@
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { Box, Button, IconButton, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, Typography } from '@mui/material';
 import { addSeconds, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import React, { Fragment, ReactElement, useCallback, useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
-import { likeLecture, unlikeLecture } from '../../api/Api';
 import { getAzureUser } from '../../api/GraphApi';
 import Discussion from '../../components/lecture/Discussion';
 import LectureContext from '../../components/lecture/LectureContext';
@@ -73,13 +70,7 @@ const LectureCard = ({
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
-  const likes = lecture.likes?.length || 0;
-  const likeMutation = useMutation(likeLecture);
-  const unlikeMutation = useMutation(unlikeLecture);
-  const like = () => likeMutation.mutate({ id: lecture.id });
-  const unlike = () => unlikeMutation.mutate({ id: lecture.id });
   const { chat, sendWSMessage } = useLectureWS(lecture.id);
-  const iconStyle = { width: '60px', height: '40px' };
 
   const genTime = (time: Date) => {
     const s = format(time, 'HH:mm', { locale: sv });
@@ -203,8 +194,8 @@ const LectureCard = ({
                   gridTemplateColumns: 'max-content max-content max-content',
                   alignItems: 'center',
                   width: '100%',
-                  minWidth: '800px',
-                  maxWidth: '800px',
+                  minWidth: '850px',
+                  maxWidth: '850px',
                   paddingX: padding.small,
                 }}
               >
@@ -226,17 +217,6 @@ const LectureCard = ({
                       <StatusChanger />
                     </Box>
                   )}
-                {lecture.likes?.includes(azureUser.id) ? (
-                  <IconButton sx={iconStyle} onClick={unlike} size="large">
-                    <Favorite sx={iconStyle} color="primary" />
-                    {likes}
-                  </IconButton>
-                ) : (
-                  <IconButton sx={iconStyle} onClick={like} size="large">
-                    <FavoriteBorder sx={iconStyle} color="primary" />
-                    {likes}
-                  </IconButton>
-                )}
                 {!edit && (
                   <Button variant="contained" color="primary" onClick={on}>
                     Visa
@@ -245,8 +225,8 @@ const LectureCard = ({
                 <Box
                   sx={{
                     display: 'grid',
-                    minWidth: '770px',
-                    maxWidth: '770px',
+                    minWidth: '840px',
+                    maxWidth: '840px',
                     gridTemplateColumns: 'max-content max-content 1fr max-content',
                     gridTemplateAreas: `"title icon . info"
                             "content content content content"`,

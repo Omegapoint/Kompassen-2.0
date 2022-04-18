@@ -1,8 +1,9 @@
-import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactElement } from 'react';
 import useAzureUser from '../../hooks/UseAzureUser';
 import { useAppSelector } from '../../lib/Lib';
 import { LectureMessage } from '../../lib/Types';
+import ProfileImage from '../../section/Profile/Image';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 
 const monthNames = ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'nov', 'dec'];
@@ -35,7 +36,7 @@ interface RowProps {
 const Row = ({ message }: RowProps): ReactElement => {
   const user = useAppSelector((state) => state.user);
   const isSender = message.userID === user.id;
-  const { initials, name } = useAzureUser(message.userID);
+  const { name } = useAzureUser(message.userID);
 
   return (
     <Box
@@ -45,24 +46,12 @@ const Row = ({ message }: RowProps): ReactElement => {
         gridGap: padding.minimal,
         gridAutoFlow: 'column',
         alignItems: 'start',
-        maxWidth: '80%',
+        maxWidth: '90%',
         direction: isSender ? 'rtl' : 'ltr',
         padding: 0,
       }}
     >
-      <IconButton sx={{ padding: 0, width: '36px', height: '36px' }} size="large">
-        <Avatar
-          sx={{
-            backgroundColor: colors.grey,
-            color: colors.white,
-            fontSize: '1rem',
-            width: '34px',
-            height: '34px',
-          }}
-        >
-          {initials}
-        </Avatar>
-      </IconButton>
+      <ProfileImage commenter={message.userID} width="36px" height="36px" />
       <div>
         <Typography variant="subtitle1">{name}</Typography>
         <Typography

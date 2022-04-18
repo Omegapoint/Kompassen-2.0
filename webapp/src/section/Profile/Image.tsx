@@ -1,13 +1,36 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
+import { getAzureUser } from '../../api/GraphApi';
 import { useAppSelector } from '../../lib/Lib';
 import store from '../../reducers';
+import { AzureUser } from '../../reducers/session/actions';
 
-const ProfileImage = (): ReactElement => {
-  const [profileImgLink, setProfileImgLink] = useState('/broken-image.jpg');
+interface ProfileImageProps {
+  height?: string;
+  width?: string;
+  commenter?: string;
+}
+
+const ProfileImage = ({
+  height = '150px',
+  width = '150px',
+  commenter,
+}: ProfileImageProps): ReactElement => {
   const { azureUser } = useAppSelector((state) => state.session);
+  const [user, setUser] = useState<AzureUser>(azureUser);
+  const [profileImgLink, setProfileImgLink] = useState('/broken-image.jpg');
 
   useEffect(() => {
+    if (commenter) {
+      getAzureUser(commenter).then((usr) => {
+        setUser(usr);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // HERE WE WANT THE SYSTEMTOKEN IF(COMMENTER)
     const getPhoto = async () => {
       const accessToken = store.getState().session.graphToken;
       const options = {
@@ -17,7 +40,7 @@ const ProfileImage = (): ReactElement => {
         },
       };
       const result = await fetch(
-        `https://graph.microsoft.com/v1.0/users/${azureUser.id}/photo/$value`,
+        `https://graph.microsoft.com/v1.0/users/${user.id}/photo/$value`,
         options
       )
         // eslint-disable-next-line no-console
@@ -41,11 +64,11 @@ const ProfileImage = (): ReactElement => {
   return (
     <Box sx={{ marginLeft: '20px' }}>
       {profileImgLink !== '/broken-image.jpg' && (
-        <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }} />
+        <Avatar src={`${profileImgLink}`} sx={{ width, height }} />
       )}
       {profileImgLink === '/broken-image.jpg' && (
         <Box sx={{ flexDirection: 'column' }}>
-          <Avatar src={`${profileImgLink}`} sx={{ width: 150, height: 150 }}>
+          <Avatar src={`${profileImgLink}`} sx={{ width, height }}>
             <Typography sx={{ fontWeight: 400, fontSize: 60 }}>
               {azureUser.givenName[0] + azureUser.surname[0]}
             </Typography>

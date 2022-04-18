@@ -306,21 +306,23 @@ const LectureView = ({
               </Button>
             )}
           </Box>
-          <Box
-            sx={{
-              display: 'grid',
-              minWidth: '100%',
-              maxWidth: '100%',
-              gridTemplateColumns: 'max-content max-content 1fr max-content',
-              gridTemplateAreas: `"title icon . info"
+          {organisation?.name === 'OPKoKo' && (
+            <Box
+              sx={{
+                display: 'grid',
+                minWidth: '100%',
+                maxWidth: '100%',
+                gridTemplateColumns: 'max-content max-content 1fr max-content',
+                gridTemplateAreas: `"title icon . info"
                             "content content content content"`,
-              padding: padding.small,
-              paddingLeft: padding.xlarge,
-              gridGap: `${padding.minimal}`,
-            }}
-          >
-            <Discussion opkoko={organisation?.name === 'OPKoKo'} />
-          </Box>
+                padding: padding.small,
+                paddingLeft: padding.xlarge,
+                gridGap: `${padding.minimal}`,
+              }}
+            >
+              <Discussion opkoko={organisation?.name === 'OPKoKo'} />
+            </Box>
+          )}
           {showAttendance && <LectureAttendanceList lecture={lecture} />}
         </Paper>
       </Box>
