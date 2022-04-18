@@ -49,15 +49,15 @@ const exportLectures = async (
       const format = formats.find((form) => form.id === lecture.formatID)?.name;
       const category = categories.find((cat) => cat.id === lecture.categoryID)?.name;
       return [
-        lecture.title,
-        lecture.description,
-        lecture.keyTakeaway,
+        lecture.title.trim(),
+        lecture.description.trim(),
+        lecture.keyTakeaway ? lecture.keyTakeaway.trim() : '',
         format || '',
         category || '',
         lecture.internalPresentation ? 'Yes' : 'No',
-        lecture.targetAudience,
-        lecture.requirements,
-        lecture.message,
+        lecture.targetAudience ? lecture.targetAudience.trim() : '',
+        lecture.requirements ? lecture.requirements.trim() : '',
+        lecture.message ? lecture.message.trim() : '',
       ];
     })
   );
