@@ -78,9 +78,7 @@ const exportLectures = async (
         if (l.kompassenUser === null) {
           return 'Office not set';
         }
-        console.log(l.kompassenUser);
         const office = offices.find((o) => o.id === l.kompassenUser?.officeID)?.name;
-        console.log(offices);
         if (office !== undefined) {
           return office;
         }
@@ -92,14 +90,14 @@ const exportLectures = async (
         lecturersOffices,
         // eslint-disable-next-line
         lecture.lecturers!.some((lecturer) => lecturer.firstTimePresenting) ? 'Rookie' : '',
-        lecture.description,
-        lecture.keyTakeaway ? lecture.keyTakeaway : '',
+        lecture.description.trim().replaceAll('\n', ' '),
+        lecture.keyTakeaway ? lecture.keyTakeaway.trim() : '',
         format || '',
         category || '',
         lecture.internalPresentation ? 'Yes' : 'No',
-        lecture.targetAudience ? lecture.targetAudience : '',
-        lecture.requirements ? lecture.requirements : '',
-        lecture.message ? lecture.message : '',
+        lecture.targetAudience ? lecture.targetAudience.trim() : '',
+        lecture.requirements ? lecture.requirements.trim() : '',
+        lecture.message ? lecture.message.trim() : '',
       ];
     })
   );
