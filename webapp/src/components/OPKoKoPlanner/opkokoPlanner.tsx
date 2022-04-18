@@ -44,13 +44,18 @@ const OPKoKoPlanner = (): ReactElement => {
         <Button color="primary" variant="contained" onClick={fetchLecturersData}>
           Exportera talare
         </Button>
-        {lecturersData != null ? <CSVDownload data={lecturersData} target="_blank" /> : null}
+        {lecturersData != null ? (
+          <CSVDownload data={lecturersData} separator=";" target="_blank" />
+        ) : null}
       </Box>
       <Box sx={{ display: 'grid', justifyItems: 'right' }}>
         <Button color="primary" variant="contained" onClick={fetchLecturesData}>
           Exportera pass
         </Button>
-        {lecturesData != null ? <CSVDownload data={lecturesData} target="_blank" /> : null}
+        {console.log(lecturersData)}
+        {lecturesData != null ? (
+          <CSVDownload data={lecturesData} separator=";" target="_blank" />
+        ) : null}
       </Box>
     </>
   );
