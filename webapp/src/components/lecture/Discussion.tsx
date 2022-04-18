@@ -1,5 +1,4 @@
-import { AccountCircle } from '@mui/icons-material';
-import { Box, Button, IconButton, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
 import { KeyboardEvent, MouseEvent, ReactElement, useContext } from 'react';
 import useForm from '../../hooks/UseForm';
@@ -67,9 +66,6 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
             gridGap: padding.minimal,
           }}
         >
-          <IconButton sx={{ gridArea: 'icon', padding: 0 }} size="large">
-            <AccountCircle />
-          </IconButton>
           <TextField
             sx={{ gridArea: 'text', backgroundColor: colors.white }}
             fullWidth
