@@ -23,6 +23,7 @@ const OPKoKoPlanner = (): ReactElement => {
 
   const fetchLecturesData = async () => {
     const CSVData = await exportLectures(lectures);
+    console.log(CSVData);
     setLecturesData(CSVData);
   };
 
@@ -45,16 +46,20 @@ const OPKoKoPlanner = (): ReactElement => {
           Exportera talare
         </Button>
         {lecturersData != null ? (
-          <CSVDownload data={lecturersData} separator=";" target="_blank" />
+          <CSVDownload
+            data={lecturersData}
+            separator=";"
+            enclosingCharacter={`'`}
+            target="_blank"
+          />
         ) : null}
       </Box>
       <Box sx={{ display: 'grid', justifyItems: 'right' }}>
         <Button color="primary" variant="contained" onClick={fetchLecturesData}>
           Exportera pass
         </Button>
-        {console.log(lecturersData)}
         {lecturesData != null ? (
-          <CSVDownload data={lecturesData} separator=";" target="_blank" />
+          <CSVDownload data={lecturesData} separator=";" enclosingCharacter={`'`} target="_blank" />
         ) : null}
       </Box>
     </>
