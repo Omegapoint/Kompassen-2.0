@@ -39,9 +39,15 @@ const MyLectures = (): ReactElement => {
   const [active, setActive] = useState<INavItemKind>('ideas');
   const [cacheKey, updateCache] = useCacheUpdater();
   const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () => listLectures());
-  const myData = data?.filter((lecture) =>
-    lecture.lecturers?.map((lecturer) => lecturer.userID === user.id)
-  );
+  const [myData, setMyData] = useState<Lecture[]>();
+
+  useEffect(() => {
+    if (data) {
+      setMyData(
+        data.filter((lecture) => lecture.lecturers?.some((lecturer) => lecturer.userID === user.id))
+      );
+    }
+  }, [data, user.id]);
   const deleteLectureRequest = useMutation(deleteLecture);
   const items = useMyLectures(myData);
 
