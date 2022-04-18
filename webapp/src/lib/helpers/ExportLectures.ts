@@ -54,6 +54,7 @@ const exportLectures = async (
         lecture.lecturers!.map(async (lecturer) => {
           let azureUser: AzureUserBasic | null;
           try {
+            console.log(lecturer!.userID);
             azureUser = await getGraphUser({ id: lecturer!.userID });
           } catch (error) {
             // eslint-disable-next-line
@@ -85,7 +86,7 @@ const exportLectures = async (
         lecturersOffices === undefined ? lecturersOffices : 'Office not set',
         // eslint-disable-next-line
         lecture.lecturers!.some((lecturer) => lecturer.firstTimePresenting) ? 'Rookie' : '',
-        lecture.description.trim(),
+        lecture.description.trim().replaceAll('\n', ''),
         lecture.keyTakeaway ? lecture.keyTakeaway.trim() : '',
         format || '',
         category || '',
