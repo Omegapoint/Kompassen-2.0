@@ -48,6 +48,8 @@ const exportLectures = async (
     lectures.map(async (lecture) => {
       const format = formats.find((form) => form.id === lecture.formatID)?.name;
       const category = categories.find((cat) => cat.id === lecture.categoryID)?.name;
+      console.log(format);
+      console.log(category);
       return [
         lecture.title,
         lecture.description,
@@ -61,7 +63,8 @@ const exportLectures = async (
       ];
     })
   );
-
+  console.log(csvHeader);
+  console.log(csvData);
   return [csvHeader, ...csvData];
 };
 
