@@ -1,5 +1,4 @@
-import { AccountCircle } from '@mui/icons-material';
-import { Box, Button, IconButton, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
 import { KeyboardEvent, MouseEvent, ReactElement, useContext } from 'react';
 import useForm from '../../hooks/UseForm';
@@ -12,7 +11,11 @@ const defaultFormValue = {
   message: '',
 };
 
-const Discussion = (): ReactElement => {
+interface DiscussionProps {
+  opkoko?: boolean;
+}
+
+const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
   const { chat, sendWSMessage } = useContext(LectureContext);
   const { values, handleChange, appendChange, updateValues } = useForm(defaultFormValue);
 
@@ -63,9 +66,6 @@ const Discussion = (): ReactElement => {
             gridGap: padding.minimal,
           }}
         >
-          <IconButton sx={{ gridArea: 'icon', padding: 0 }} size="large">
-            <AccountCircle />
-          </IconButton>
           <TextField
             sx={{ gridArea: 'text', backgroundColor: colors.white }}
             fullWidth
@@ -77,7 +77,7 @@ const Discussion = (): ReactElement => {
             onKeyPress={(e) => handleKeyPress(e)}
             required
             name="message"
-            label="Skriv en kommentar"
+            label={opkoko ? 'Skriv hellre i Slack för snabb återkoppling' : 'Skriv en kommentar'}
             variant="outlined"
           />
           <Box sx={{ display: 'grid', alignSelf: 'center', gridArea: 'panel' }}>

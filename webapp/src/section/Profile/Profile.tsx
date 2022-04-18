@@ -26,6 +26,7 @@ const Profile = ({
         }}
       >
         <ProfileImage />
+
         <Box sx={{ flexDirection: 'column', marginTop: '40px' }}>
           <Typography>NAMN</Typography>
           <Typography sx={{ fontWeight: 400 }}>{azureUser.displayName}</Typography>

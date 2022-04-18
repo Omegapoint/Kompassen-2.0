@@ -29,7 +29,7 @@ const OPKoKoPlanner = (): ReactElement => {
   return (
     <>
       <Box sx={{ display: 'grid', justifyItems: 'center' }}>
-        <RegisteredLectures lectures={lectures} admin />
+        <RegisteredLectures lectures={lectures} admin opkoko />
       </Box>
       <Box sx={{ display: 'grid', justifyItems: 'right' }}>
         <Button color="primary" variant="contained" onClick={fetchLecturersData}>

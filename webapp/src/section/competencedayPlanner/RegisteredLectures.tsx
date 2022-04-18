@@ -7,18 +7,24 @@ import LectureCard from './LectureCard';
 interface RegisteredLecturesProps {
   lectures: Lecture[];
   admin?: boolean;
+  opkoko?: boolean;
 }
 
-const RegisteredLectures = ({ lectures, admin = false }: RegisteredLecturesProps): ReactElement => (
+const RegisteredLectures = ({
+  lectures,
+  admin = false,
+  opkoko = false,
+}: RegisteredLecturesProps): ReactElement => (
   <Box
     sx={{
       display: 'grid',
+      gridTemplateColumns: opkoko ? 'max-content' : '1fr 1fr 1fr',
+      gridTemplateRows: 'max-content',
       gridGap: padding.standard,
-      gridTemplateColumns: '1fr 1fr 1fr',
     }}
   >
     {lectures.map((e) => (
-      <LectureCard key={e.id} lecture={e} edit admin={admin} />
+      <LectureCard key={e.id} lecture={e} edit admin={admin} opkoko={opkoko} />
     ))}
   </Box>
 );
