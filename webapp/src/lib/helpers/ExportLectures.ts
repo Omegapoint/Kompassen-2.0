@@ -1,8 +1,11 @@
-import { listCategories, listFormats } from '../../api/Api';
-import { Lecture } from '../Types';
+import { getGraphUser, getUserByID, listCategories, listFormats, listOffices } from '../../api/Api';
+import { AzureUserBasic, Lecture, User } from '../Types';
 
 const csvHeader = [
   'Title',
+  'Speakers',
+  'Office(s)',
+  'Rookie',
   'Description',
   'Key Take Away',
   'Format',
@@ -40,16 +43,46 @@ const csvHeader = [
 const exportLectures = async (
   lectures: Lecture[]
 ): Promise<(string | boolean | string[] | null)[][]> => {
-  // const offices = await listOffices();
+  const offices = await listOffices();
   const formats = await listFormats();
   const categories = await listCategories();
 
   const csvData = await Promise.all(
     lectures.map(async (lecture) => {
+      // eslint-disable-next-line
+      const lecturers = await Promise.all(
+        lecture.lecturers!.map(async (lecturer) => {
+          let azureUser: AzureUserBasic | null;
+          try {
+            azureUser = await getGraphUser({ id: lecturer!.userID });
+          } catch (error) {
+            // eslint-disable-next-line
+            console.error(error);
+            azureUser = null;
+          }
+
+          let kompassenUser: User | null;
+          try {
+            kompassenUser = await getUserByID({ id: lecturer!.userID });
+          } catch (error) {
+            // eslint-disable-next-line
+            console.error(error);
+            kompassenUser = null;
+          }
+          return { azureUser, kompassenUser };
+        })
+      );
       const format = formats.find((form) => form.id === lecture.formatID)?.name;
       const category = categories.find((cat) => cat.id === lecture.categoryID)?.name;
+      const lecturersOffices = offices.filter((office) =>
+        lecturers.some((l) => l.kompassenUser!.officeID === office.id)
+      );
       return [
         lecture.title.trim(),
+        lecturers.map((lecturer) => (lecturer.azureUser ? lecturer.azureUser.name : '')),
+        lecturersOffices.map((o) => o.name),
+        // eslint-disable-next-line
+        lecture.lecturers!.some((lecturer) => lecturer.firstTimePresenting) ? 'Rookie' : '',
         lecture.description.trim(),
         lecture.keyTakeaway ? lecture.keyTakeaway.trim() : '',
         format || '',

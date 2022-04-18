@@ -23,6 +23,8 @@ const OPKoKoPlanner = (): ReactElement => {
 
   const fetchLecturesData = async () => {
     const CSVData = await exportLectures(lectures);
+    console.log(CSVData);
+    console.log(JSON.stringify(CSVData));
     setLecturesData(CSVData);
   };
 
