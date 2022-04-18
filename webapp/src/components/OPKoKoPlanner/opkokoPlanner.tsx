@@ -44,7 +44,7 @@ const OPKoKoPlanner = (): ReactElement => {
           Exportera pass
         </Button>
         {lecturesData != null ? (
-          <CSVDownload data={lecturesData} separator=";" target="_blank" />
+          <CSVDownload data={lecturesData} separator=";" enclosingCharacter="" target="_blank" />
         ) : null}
       </Box>
     </>
