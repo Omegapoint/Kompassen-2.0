@@ -74,13 +74,15 @@ const exportLectures = async (
       );
       const format = formats.find((form) => form.id === lecture.formatID)?.name;
       const category = categories.find((cat) => cat.id === lecture.categoryID)?.name;
-      const lecturersOffices = offices.filter((office) =>
-        lecturers.some((l) => l.kompassenUser!.officeID === office.id)
+      const lecturersOffices = lecturers.map((l) =>
+        l.kompassenUser
+          ? offices.find((o) => o.id === l.kompassenUser?.officeID)?.name
+          : 'Office not set'
       );
       return [
         lecture.title.trim(),
         lecturers.map((lecturer) => (lecturer.azureUser ? lecturer.azureUser.name : '')),
-        lecturersOffices.map((o) => o.name),
+        lecturersOffices === undefined ? lecturersOffices : 'Office not set',
         // eslint-disable-next-line
         lecture.lecturers!.some((lecturer) => lecturer.firstTimePresenting) ? 'Rookie' : '',
         lecture.description.trim(),
