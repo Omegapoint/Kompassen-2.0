@@ -74,25 +74,32 @@ const exportLectures = async (
       );
       const format = formats.find((form) => form.id === lecture.formatID)?.name;
       const category = categories.find((cat) => cat.id === lecture.categoryID)?.name;
-      const lecturersOffices = lecturers.map((l) =>
-        l.kompassenUser
-          ? offices.find((o) => o.id === l.kompassenUser?.officeID)?.name
-          : 'Office not set'
-      );
+      const lecturersOffices = lecturers.map((l) => {
+        if (l.kompassenUser === null) {
+          return 'Office not set';
+        }
+        console.log(l.kompassenUser);
+        const office = offices.find((o) => o.id === l.kompassenUser?.officeID)?.name;
+        console.log(offices);
+        if (office !== undefined) {
+          return office;
+        }
+        return 'Office not set';
+      });
       return [
         lecture.title.trim(),
         lecturers.map((lecturer) => (lecturer.azureUser ? lecturer.azureUser.name : '')),
-        lecturersOffices === undefined ? lecturersOffices : 'Office not set',
+        lecturersOffices,
         // eslint-disable-next-line
         lecture.lecturers!.some((lecturer) => lecturer.firstTimePresenting) ? 'Rookie' : '',
-        lecture.description.trim().replaceAll('\n', ' '),
-        lecture.keyTakeaway ? lecture.keyTakeaway.trim() : '',
+        lecture.description,
+        lecture.keyTakeaway ? lecture.keyTakeaway : '',
         format || '',
         category || '',
         lecture.internalPresentation ? 'Yes' : 'No',
-        lecture.targetAudience ? lecture.targetAudience.trim() : '',
-        lecture.requirements ? lecture.requirements.trim() : '',
-        lecture.message ? lecture.message.trim() : '',
+        lecture.targetAudience ? lecture.targetAudience : '',
+        lecture.requirements ? lecture.requirements : '',
+        lecture.message ? lecture.message : '',
       ];
     })
   );
