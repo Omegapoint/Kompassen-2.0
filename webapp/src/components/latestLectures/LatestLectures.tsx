@@ -15,9 +15,15 @@ const LatestLectures = (): ReactElement => {
 
   useEffect(() => {
     if (data) {
-      setMyData(
-        data.filter((lecture) => lecture.lecturers?.some((lecturer) => lecturer.userID === user.id))
+      const contributions = data.filter((lecture) =>
+        lecture.lecturers?.some((lecturer) => lecturer.userID === user.id)
       );
+      const contributionsWithoutADConnectionOnLecturers = data.filter(
+        (lecture) => lecture.lecturerID === user.id
+      );
+      const allMyContributions = new Set(contributions);
+      contributionsWithoutADConnectionOnLecturers.map((e) => allMyContributions.add(e));
+      setMyData([...allMyContributions]);
     }
   }, [data, user.id]);
 
