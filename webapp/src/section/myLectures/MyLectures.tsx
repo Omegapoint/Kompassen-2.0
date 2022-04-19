@@ -35,14 +35,21 @@ const useMyLectures = (data?: Lecture[]) => {
 };
 
 const MyLectures = (): ReactElement => {
+  const user = useAppSelector((state) => state.user);
   const [active, setActive] = useState<INavItemKind>('ideas');
   const [cacheKey, updateCache] = useCacheUpdater();
-  const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () =>
-    listLectures({ mine: 'true' })
-  );
+  const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () => listLectures());
+  const [myData, setMyData] = useState<Lecture[]>();
 
+  useEffect(() => {
+    if (data) {
+      setMyData(
+        data.filter((lecture) => lecture.lecturers?.some((lecturer) => lecturer.userID === user.id))
+      );
+    }
+  }, [data, user.id]);
   const deleteLectureRequest = useMutation(deleteLecture);
-  const items = useMyLectures(data);
+  const items = useMyLectures(myData);
 
   const handleDelete = async (cardID: string) => {
     await deleteLectureRequest.mutateAsync({ id: cardID });
