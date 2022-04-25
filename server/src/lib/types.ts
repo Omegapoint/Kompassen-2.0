@@ -353,6 +353,11 @@ export interface Approved {
   id: string;
 }
 
+export interface SetStatus {
+  statusID: string;
+  lectureID: string;
+}
+
 export interface LectureFeedback {
   lectureId: string;
   userID: string;

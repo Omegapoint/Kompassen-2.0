@@ -113,6 +113,7 @@ const LectureCard = ({
     { name: 'Målgrupp', value: lecture.targetAudience },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
+    { name: 'Status', value: lecture.lectureStatusID },
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (

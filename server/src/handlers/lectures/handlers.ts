@@ -11,6 +11,7 @@ import {
   ListLecturesParams,
   NewLecture,
   NewLectureIdea,
+  SetStatus,
   UpdatedLecture,
   UpdatedLectureIdea,
 } from '../../lib/types';
@@ -25,6 +26,7 @@ interface Handlers {
   create: (req: Request<null, null, NewLecture>, res: Response) => Promise<void>;
   createIdea: (req: Request<null, null, NewLectureIdea>, res: Response) => Promise<void>;
   updateIdea: (req: Request<null, null, UpdatedLectureIdea>, res: Response) => Promise<void>;
+  setStatus: (req: Request<null, null, SetStatus>, res: Response) => Promise<void>;
   update: (req: Request<null, null, UpdatedLecture>, res: Response) => Promise<void>;
   approve: (req: Request<null, null, Approved>, res: Response) => Promise<void>;
   getByID: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
@@ -110,6 +112,10 @@ const lectures: Handlers = {
     lectureIdeasWS.onCreated(lecture as Lecture);
     onEventLectureCreate(lecture as Lecture);
 
+    res.send(item);
+  },
+  async setStatus({ body }, res) {
+    const item = await lecturesDB.setStatus(body.statusID, body.lectureID);
     res.send(item);
   },
   async update({ body }, res) {

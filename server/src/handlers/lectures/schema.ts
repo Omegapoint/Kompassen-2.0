@@ -5,6 +5,7 @@ import {
   ListLecturesParams,
   NewLecture,
   NewLectureIdea,
+  SetStatus,
   UpdatedLecture,
   UpdatedLectureIdea,
 } from '../../lib/types';
@@ -43,6 +44,11 @@ const approve = Joi.object<Approved>({
   approved: Joi.boolean(),
 }).options({ presence: 'required' });
 
+const setStatus = Joi.object<SetStatus>({
+  statusID: Joi.string().uuid(),
+  lectureID: Joi.string().uuid(),
+}).options({ presence: 'required' });
+
 const newIdea = Joi.object<NewLectureIdea>({
   ...defaultSchema,
 });
@@ -67,6 +73,14 @@ const listLectures = Joi.object<ListLecturesParams>({
   mine: Joi.string().valid('true', 'false'),
 });
 
-const lectures = { newLecture, updateLecture, newIdea, listLectures, approve, updatedIdea };
+const lectures = {
+  newLecture,
+  updateLecture,
+  newIdea,
+  listLectures,
+  approve,
+  updatedIdea,
+  setStatus,
+};
 
 export default lectures;
