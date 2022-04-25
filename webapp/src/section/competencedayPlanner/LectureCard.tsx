@@ -116,6 +116,7 @@ const LectureCard = ({
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
     { name: 'Status', value: status?.name },
+    { name: 'Pitch', value: lecture.videoLink },
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (

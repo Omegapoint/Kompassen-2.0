@@ -19,7 +19,7 @@ import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
 import { checkAccess, ROLE, useAppSelector } from '../../lib/Lib';
-import { Category, Format, Lecture, NewLectureLecturer } from '../../lib/Types';
+import { Category, Format, Lecture, NewLectureLecturer, Status } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
 import LecturerSelectBox from '../lecturerSelectBox/LecturerSelectBox';
@@ -35,6 +35,7 @@ const keyTakeawayText = `Key take away måste vara mellan 1-${SHORT_STRING_LEN} 
 const targetAudienceyText = `Målgrupp måste vara mellan 1-${SHORT_STRING_LEN} tecken långt`;
 const requirementsText = `Förkunskapskrav måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
 const messageText = `Meddelandet måste vara mellan 1-${LARGE_STRING_LEN} tecken långt`;
+const videoLinkText = `Videolänken kan bara vara mellan 0-${LARGE_STRING_LEN} tecken lång`;
 
 const invalidShortString = (str: string) => str.length < 1 || str.length > SHORT_STRING_LEN;
 const invalidLongString = (str: string) => str.length < 1 || str.length > LARGE_STRING_LEN;
@@ -52,6 +53,7 @@ interface FormValues {
   requirements: string;
   tags: string;
   message: string;
+  videoLink: string;
 }
 
 const useValidate = (values: FormValues): FormValidation<FormValues> => {
@@ -70,6 +72,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
       invalidNullableLongString
     ),
     message: useFormValidation(values.message, messageText, invalidNullableLongString),
+    videoLink: useFormValidation(values.videoLink, videoLinkText, invalidNullableLongString),
   };
 
   return {
@@ -87,6 +90,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const createLectureRequest = useMutation(createLecture);
   const updateLectureRequest = useMutation(updateLecture);
   const navigate = useNavigate();
+  const statuses = useAppSelector((state) => state.statuses);
+  const status = statuses.find((e) => e.id === data?.status?.statusID) as Status;
 
   const defaultFormValue = {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
@@ -100,6 +105,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     description: data?.description || '',
     requirements: data?.requirements || '',
     message: data?.message || '',
+    videoLink: data?.videoLink || '',
   };
 
   const { values, handleChange } = useForm(defaultFormValue);
@@ -180,7 +186,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       lecturer: azureUser.displayName,
       lecturerID: azureUser.id,
       lectureStatusID: null,
-      videoLink: null,
+      videoLink: values.videoLink || null,
       // Not applicable for OPKoKo lectures
       remote: 'local',
       tags: [],
@@ -223,16 +229,30 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
             variant="h1"
           >
-            {data ? 'Redigera pass till OPKoKo' : 'OPKoKo Call for Proposals'}
+            {status?.name === 'Unhandled' && 'ACCEPTERAT BIDRAG TILL OPKOKO: '}
+            {data ? 'Redigera bidrag till OPKoKo' : 'OPKoKo Call for Proposals'}
           </Typography>
+          {/* THIS NEEDS TO BE ADJUSTED WITH THE ACTUAL REGISTEREND_DATE
           <Typography
             sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
             variant="subtitle1"
           >
             Anmälan stänger kl 23.59 17 april 2022
-          </Typography>
+          </Typography> */}
         </div>
-        <InfoText />
+        {status?.name !== 'Accepted' && status?.name !== 'Feedback' ? (
+          <InfoText />
+        ) : (
+          <TextField
+            fullWidth
+            onChange={handleChange}
+            value={values.videoLink}
+            name="videoLink"
+            label="Pitch - skapa en videopitch för just ert bidrag, som kommer att publiceras tillsammans med programmet"
+            variant="outlined"
+            {...validate.videoLink}
+          />
+        )}
 
         <LecturerSelectBox
           onLecturerChange={onLecturerChange}
