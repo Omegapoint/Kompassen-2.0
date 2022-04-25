@@ -230,7 +230,7 @@ const LectureCard = ({
                       >
                         Hantera
                       </Button>
-                      <StatusChanger />
+                      <StatusChanger lectureID={lecture.id} />
                     </Box>
                   )}
                 {!edit && (

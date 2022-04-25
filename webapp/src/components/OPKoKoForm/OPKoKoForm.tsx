@@ -233,7 +233,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             sx={{ display: 'grid', justifySelf: 'center', color: colors.orange }}
             variant="h1"
           >
-            {status?.name === 'Unhandled' && 'ACCEPTERAT BIDRAG TILL OPKOKO: '}
+            {status?.name === 'Accepterad' && 'ACCEPTERAT BIDRAG TILL OPKOKO: '}
             {data ? 'Redigera bidrag till OPKoKo' : 'OPKoKo Call for Proposals'}
           </Typography>
           {/* THIS NEEDS TO BE ADJUSTED WITH THE ACTUAL REGISTEREND_DATE
@@ -244,7 +244,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Anmälan stänger kl 23.59 17 april 2022
           </Typography> */}
         </div>
-        {status?.name !== 'Accepted' && status?.name !== 'Feedback' ? (
+        {status?.name !== 'Accepterad' && status?.name !== 'Feedback' ? (
           <InfoText />
         ) : (
           <TextField
