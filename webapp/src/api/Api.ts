@@ -18,6 +18,7 @@ import {
   NewLectureRoom,
   NewUser,
   Office,
+  SetStatus,
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
@@ -116,6 +117,7 @@ export const isAttending = apiURLParamsBuilder<IOK, IDParam>('/attendant/:id/att
 export const deleteAttendance = apiURLParamsBuilder<IDParam, IDParam>('/attendant/:id').delete;
 
 export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
+export const setLectureStatus = apiBuilder<IDParam, SetStatus>('/lecture/setStatus').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
 export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;
