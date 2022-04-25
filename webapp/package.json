@@ -67,7 +67,6 @@
   "dependencies": {
     "@azure/msal-browser": "^2.19.0",
     "@azure/msal-react": "^1.1.1",
-    "@babel/helper-get-function-arity": "^7.16.7",
     "@emotion/css": "^11.5.0",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
