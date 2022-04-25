@@ -40,6 +40,7 @@ export const SELECT_LECTURES = `
            l.target_audience,
            l.format_id,
            l.lecture_status_id,
+           (SELECT jsonb_object_agg('status_id', status_id) from lecture_status where id = l.lecture_status_id) AS status,
            (SELECT json_agg(json_build_object('user_id', user_id, 'first_time_presenting', first_time_presenting)) from lecture_lecturers where lecture_id = l.id) AS lecturers
     FROM lectures l
 `;

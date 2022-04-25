@@ -4,12 +4,7 @@ import { snakeToCamel } from '../lib/lib';
 import { IDParam, NewStatus, Status } from '../lib/types';
 
 const SELECT_STATUS = `
-    SELECT id, 
-    name, 
-    created_at,
-    updated_at,
-    created_by,
-    updated_by
+    SELECT id, name
     FROM status
 `;
 

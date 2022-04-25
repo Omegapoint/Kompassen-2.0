@@ -6,6 +6,7 @@ import loginInfo from './loginInfo';
 import offices from './offices';
 import organisations from './organisations';
 import session from './session';
+import statuses from './statuses';
 import user from './user';
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   loginInfo,
   offices,
   formats,
+  statuses,
 });
 
 const store = createStore(rootReducer);

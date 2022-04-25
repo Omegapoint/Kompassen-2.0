@@ -13,7 +13,7 @@ import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
 import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, useAppSelector } from '../../lib/Lib';
-import { Lecture, LectureMessage } from '../../lib/Types';
+import { Lecture, LectureMessage, Status } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
 import Discussion from '../lecture/Discussion';
@@ -81,6 +81,8 @@ const LectureView = ({
   const formatName = formats.find((e) => e.id === lecture.formatID);
   const events = useAppSelector((state) => state.events);
   const event = events.find((e) => e.id === lecture.eventID);
+  const statuses = useAppSelector((state) => state.statuses);
+  const status = statuses.find((e) => e.id === lecture.status?.statusID) as Status;
   const organisations = useAppSelector((state) => state.organisations);
   const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink =
@@ -138,7 +140,7 @@ const LectureView = ({
     { name: 'Målgrupp', value: lecture.targetAudience },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
-    { name: 'Status', value: lecture.lectureStatusID },
+    { name: 'Status', value: status?.name },
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   const handleApprove = async () => {

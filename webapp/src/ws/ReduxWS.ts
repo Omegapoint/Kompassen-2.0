@@ -61,3 +61,4 @@ export const useEventsWS = genUseReduxWS('events', actions.events);
 export const useOrganisationsWS = genUseReduxWS('organisations', actions.organisations);
 export const useOfficesWS = genUseReduxWS('offices', actions.offices);
 export const useFormatsWS = genUseReduxWS('formats', actions.formats);
+export const useStatusWS = genUseReduxWS('status', actions.status);

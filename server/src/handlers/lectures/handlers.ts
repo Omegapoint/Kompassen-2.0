@@ -47,7 +47,12 @@ const lectures: Handlers = {
     const { userID } = res.locals;
 
     const item = await lecturesDB.insert(
-      { ...body, lecturerID: userID, approved: false, idea: false },
+      {
+        ...body,
+        lecturerID: userID,
+        approved: false,
+        idea: false,
+      },
       userID
     );
     const newLectureStatus = await lectureStatusDb.insert(

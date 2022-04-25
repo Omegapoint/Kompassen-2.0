@@ -245,7 +245,7 @@ export interface Lecture extends DLecture, DefaultTime {
   id: string;
   categoryID: string | null;
   likes: string[];
-  lecturelecturers: string[] | null;
+  status: LectureStatus | null;
 }
 
 // LectureLike

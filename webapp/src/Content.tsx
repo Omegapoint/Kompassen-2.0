@@ -19,6 +19,7 @@ import {
   useFormatsWS,
   useOfficesWS,
   useOrganisationsWS,
+  useStatusWS,
 } from './ws/ReduxWS';
 
 function useFetchDispatch<Res>(
@@ -46,6 +47,7 @@ const useInit = () => {
   const organisationsReady = useOrganisationsWS();
   const officesReady = useOfficesWS();
   const formatsReady = useFormatsWS();
+  const statusReady = useStatusWS();
   const user = useFetchDispatch('user', getUser, setUser);
 
   const dispatch = useAppDispatch();
@@ -67,6 +69,7 @@ const useInit = () => {
     eventsReady &&
     organisationsReady &&
     officesReady &&
+    statusReady &&
     formatsReady;
 
   return { error: user.error, loading: !finished };
