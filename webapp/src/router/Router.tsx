@@ -10,7 +10,6 @@ import CompetencedayPlanner from '../section/competencedayPlanner/CompetencedayP
 import CompetenceDays from '../section/competenceDays/CompetenceDays';
 import CompetencedayViewer from '../section/competencedayViewer/CompetencedayViewer';
 import ConfirmLectureCompetenceday from '../section/confirmLecture/ConfirmLectureCompetenceday';
-import ConfirmLectureOPKoKo from '../section/confirmLecture/ConfirmLectureOPKoKo';
 import Home from '../section/home/Home';
 import MyLectures from '../section/myLectures/MyLectures';
 import OPKoKoInfo from '../section/OPKoKoInfo/OPKoKoInfo';
@@ -64,7 +63,7 @@ export const appRoutes: AppRoute[] = [
   {
     name: 'Inskickat bidrag till OPKoKo',
     path: '/lecture/OPKoKo/:id/confirm',
-    Component: ConfirmLectureOPKoKo,
+    Component: MyLectures,
   },
   {
     name: 'Mina inskickade bidrag',
