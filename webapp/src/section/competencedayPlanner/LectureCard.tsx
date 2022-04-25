@@ -37,16 +37,22 @@ const LectureCard = ({
 
     useEffect(() => {
       if (socket) {
-        socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
-          if (mounted.current) {
-            setChat(formatDates(messages));
+        socket.on(
+          `lectureChat/${lectureID}/initial`,
+          (messages: Record<any, any> | Record<any, any>[]) => {
+            if (mounted.current) {
+              setChat(formatDates(messages));
+            }
           }
-        });
-        socket.on(`lectureChat/${lectureID}/message`, (message) => {
-          if (mounted.current) {
-            setChat((m) => [...m, formatDates(message)]);
+        );
+        socket.on(
+          `lectureChat/${lectureID}/message`,
+          (message: Record<any, any> | Record<any, any>[]) => {
+            if (mounted.current) {
+              setChat((m) => [...m, formatDates(message)]);
+            }
           }
-        });
+        );
         socket.emit('lectureChat/join', lectureID);
 
         return () => {
@@ -64,11 +70,17 @@ const LectureCard = ({
     return { chat, sendWSMessage };
   };
   const categories = useAppSelector((state) => state.categories);
-  const category = categories.find((e) => e.id === lecture.categoryID) as Category;
+  const category = categories.find(
+    (e: { id: string | null }) => e.id === lecture.categoryID
+  ) as Category;
   const formats = useAppSelector((state) => state.formats);
-  const formatType = formats.find((e) => e.id === lecture.formatID) as Format;
+  const formatType = formats.find(
+    (e: { id: string | null }) => e.id === lecture.formatID
+  ) as Format;
   const statuses = useAppSelector((state) => state.statuses);
-  const status = statuses.find((e) => e.id === lecture.status?.statusID) as Status;
+  const status = statuses.find(
+    (e: { id: string | undefined }) => e.id === lecture.status?.statusID
+  ) as Status;
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();

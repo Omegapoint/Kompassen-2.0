@@ -24,7 +24,7 @@ function genUseReduxWS<T>(name: string, reduxActions: Action<T>): () => boolean 
 
     useEffect(() => {
       if (socket) {
-        socket.on(name, (lectures) => {
+        socket.on(name, (lectures: Record<any, any> | Record<any, any>[]) => {
           if (mounted.current) {
             dispatch(reduxActions.set(formatDates(lectures)));
             setReady(true);

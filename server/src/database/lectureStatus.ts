@@ -46,8 +46,8 @@ const lectureStatusDb: LectureStatusDb = {
   },
   async insert(lectureStatus, userId): Promise<IDParam> {
     const { rows } = await db.query(INSERT_LECTURESTATUS, [
-      lectureStatus.lecture_id,
-      lectureStatus.status_id,
+      lectureStatus.lectureID,
+      lectureStatus.statusID,
       userId,
     ]);
     return rows[0];

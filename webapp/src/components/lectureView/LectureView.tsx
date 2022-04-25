@@ -49,16 +49,22 @@ const LectureView = ({
 
     useEffect(() => {
       if (socket) {
-        socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
-          if (mounted.current) {
-            setChat(formatDates(messages));
+        socket.on(
+          `lectureChat/${lectureID}/initial`,
+          (messages: Record<any, any> | Record<any, any>[]) => {
+            if (mounted.current) {
+              setChat(formatDates(messages));
+            }
           }
-        });
-        socket.on(`lectureChat/${lectureID}/message`, (message) => {
-          if (mounted.current) {
-            setChat((m) => [...m, formatDates(message)]);
+        );
+        socket.on(
+          `lectureChat/${lectureID}/message`,
+          (message: Record<any, any> | Record<any, any>[]) => {
+            if (mounted.current) {
+              setChat((m) => [...m, formatDates(message)]);
+            }
           }
-        });
+        );
         socket.emit('lectureChat/join', lectureID);
 
         return () => {
@@ -76,15 +82,17 @@ const LectureView = ({
     return { chat, sendWSMessage };
   };
   const categories = useAppSelector((state) => state.categories);
-  const category = categories.find((e) => e.id === lecture.categoryID);
+  const category = categories.find((e: { id: string | null }) => e.id === lecture.categoryID);
   const formats = useAppSelector((state) => state.formats);
-  const formatName = formats.find((e) => e.id === lecture.formatID);
+  const formatName = formats.find((e: { id: string | null }) => e.id === lecture.formatID);
   const events = useAppSelector((state) => state.events);
-  const event = events.find((e) => e.id === lecture.eventID);
+  const event = events.find((e: { id: string | null }) => e.id === lecture.eventID);
   const statuses = useAppSelector((state) => state.statuses);
-  const status = statuses.find((e) => e.id === lecture.status?.statusID) as Status;
+  const status = statuses.find(
+    (e: { id: string | undefined }) => e.id === lecture.status?.statusID
+  ) as Status;
   const organisations = useAppSelector((state) => state.organisations);
-  const organisation = organisations.find((e) => e.id === event?.organisationID);
+  const organisation = organisations.find((e: { id: any }) => e.id === event?.organisationID);
   const editLink =
     organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
   const { chat, sendWSMessage } = useLectureWS(lecture.id);

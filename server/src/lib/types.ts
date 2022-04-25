@@ -134,8 +134,8 @@ export interface Status extends BaseStatus, DefaultTime {
 
 // LectureStatus
 interface BaseLectureStatus {
-  lecture_id: string;
-  status_id: string;
+  lectureID: string;
+  statusID: string;
 }
 
 export type NewLectureStatus = BaseLectureStatus;

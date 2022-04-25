@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { FormEvent, ReactElement, useEffect, useState } from 'react';
+import React, { FormEvent, Key, ReactElement, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { createLecture, updateLecture } from '../../api/Api';
@@ -81,7 +81,7 @@ const useValidate = (values: FormValues): FormValidation<FormValues> => {
 // The more complex form to create a new lecture
 const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const allCategories = useAppSelector((state) => state.categories);
-  const categories = allCategories.filter((e) => e.name !== 'Information');
+  const categories = allCategories.filter((e: { name: string }) => e.name !== 'Information');
   const { azureUser } = useAppSelector((state) => state.session);
   const formats = useAppSelector((state) => state.formats);
   const createLectureRequest = useMutation(createLecture);
@@ -92,8 +92,12 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
     title: data?.title || '',
     keyTakeAway: data?.keyTakeaway || '',
-    categoryID: categories.find((cat) => cat.id === data?.categoryID)?.id || categories[0].id,
-    formatID: formats.find((format) => format.id === data?.formatID)?.id || formats[0].id,
+    categoryID:
+      categories.find((cat: { id: string | null | undefined }) => cat.id === data?.categoryID)
+        ?.id || categories[0].id,
+    formatID:
+      formats.find((format: { id: string | null | undefined }) => format.id === data?.formatID)
+        ?.id || formats[0].id,
     targetAudience: data?.targetAudience || '',
     internal: data?.internalPresentation?.toString() || 'false',
     tags: data?.tags?.toString() || '',
@@ -159,8 +163,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
-    const category = categories.find((e) => e.id === values.categoryID) as Category;
-    const format = formats.find((e) => e.id === values.formatID) as Format;
+    const category = categories.find((e: { id: any }) => e.id === values.categoryID) as Category;
+    const format = formats.find((e: { id: any }) => e.id === values.formatID) as Format;
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
       userID: lecturer.id,
       lectureID: null,
@@ -286,18 +290,30 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Format (för speciellt önskemål om längd på formatet, ange i sista rutan i formuläret)
           </FormLabel>
           <RadioGroup name="formatID" onChange={handleChange} value={values.formatID}>
-            {formats.map((e) =>
-              e.name === 'Blixtföreläsning ' ? (
-                <FormControlLabel
-                  key={e.id}
-                  value={e.id}
-                  control={<Radio />}
-                  // eslint-disable-next-line
-                  label={e.name + ' (15min)'}
-                />
-              ) : (
-                <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
-              )
+            {formats.map(
+              (e: {
+                name:
+                  | string
+                  | number
+                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+                id: unknown;
+              }) =>
+                e.name === 'Blixtföreläsning ' ? (
+                  <FormControlLabel
+                    key={e.id as Key}
+                    value={e.id}
+                    control={<Radio />}
+                    // eslint-disable-next-line
+                    label={e.name + ' (15min)'}
+                  />
+                ) : (
+                  <FormControlLabel
+                    key={e.id as Key}
+                    value={e.id}
+                    control={<Radio />}
+                    label={e.name}
+                  />
+                )
             )}
           </RadioGroup>
         </div>
@@ -306,9 +322,22 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Kategori
           </FormLabel>
           <RadioGroup name="categoryID" onChange={handleChange} value={values.categoryID}>
-            {categories.map((e) => (
-              <FormControlLabel key={e.id} value={e.id} control={<Radio />} label={e.name} />
-            ))}
+            {categories.map(
+              (e: {
+                id: unknown;
+                name:
+                  | string
+                  | number
+                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+              }) => (
+                <FormControlLabel
+                  key={e.id as Key}
+                  value={e.id}
+                  control={<Radio />}
+                  label={e.name}
+                />
+              )
+            )}
           </RadioGroup>
         </div>
         <div>

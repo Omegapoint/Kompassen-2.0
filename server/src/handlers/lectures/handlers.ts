@@ -57,8 +57,8 @@ const lectures: Handlers = {
     );
     const newLectureStatus = await lectureStatusDb.insert(
       {
-        lecture_id: item.id,
-        status_id: unhandledStatus.id,
+        lectureID: item.id,
+        statusID: unhandledStatus.id,
       },
       userID
     );
@@ -120,7 +120,12 @@ const lectures: Handlers = {
     res.send(item);
   },
   async setStatus({ body }, res) {
-    const item = await lecturesDB.setStatus(body.statusID, body.lectureID);
+    const { userID } = res.locals;
+    const result = await lectureStatusDb.insert(
+      { lectureID: body.lectureID, statusID: body.statusID },
+      userID
+    );
+    const item = await lecturesDB.setStatus(result.id, body.lectureID);
     res.send(item);
   },
   async update({ body }, res) {
