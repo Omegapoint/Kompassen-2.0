@@ -18,7 +18,7 @@ import { getAzureUser } from '../../api/GraphApi';
 import useForm from '../../hooks/UseForm';
 import { formIsInvalid, FormValidation, useFormValidation } from '../../hooks/UseFormValidation';
 import { LARGE_STRING_LEN, SHORT_STRING_LEN } from '../../lib/Constants';
-import { useAppSelector } from '../../lib/Lib';
+import { checkAccess, ROLE, useAppSelector } from '../../lib/Lib';
 import { Category, Format, Lecture, NewLectureLecturer } from '../../lib/Types';
 import { AzureUser } from '../../reducers/session/actions';
 import { colors, padding } from '../../theme/Theme';
@@ -106,7 +106,13 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const { validate, invalid } = useValidate(values);
 
   // Set/load lecturers
-  const fixedLecturers: AzureUser[] = [azureUser];
+  const fixedLecturers: AzureUser[] = checkAccess([
+    ROLE.ADMIN,
+    ROLE.OPKOKO_PLANNER,
+    ROLE.OPKOKO_PROGRAM_COMMITTEE,
+  ])
+    ? []
+    : [azureUser];
   const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
   const previouslySetLecturers: NewLectureLecturer[] | null | undefined = data?.lecturers;
 
