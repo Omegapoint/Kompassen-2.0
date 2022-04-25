@@ -115,18 +115,19 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
     : [azureUser];
   const [lecturers, setLecturers] = useState<AzureUser[]>([...fixedLecturers]);
   const previouslySetLecturers: NewLectureLecturer[] | null | undefined = data?.lecturers;
+  const [rookies, setRookies] = useState<AzureUser[]>([]);
 
   useEffect(() => {
     if (previouslySetLecturers && !data?.idea) {
       const alreadyLecturers: AzureUser | AzureUser[] = [];
-      previouslySetLecturers.map((usr) =>
+      previouslySetLecturers.map(async (usr) =>
         getAzureUser(usr.userID).then((lecturer) => {
-          if (lecturer !== azureUser) {
+          if (lecturer.id !== azureUser.id) {
             alreadyLecturers.push(lecturer);
+            setLecturers((oldLecturers) => [...oldLecturers, lecturer]);
           }
         })
       );
-      setLecturers(alreadyLecturers);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -134,16 +135,16 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   // Set/load rookies
   const priorRookies: AzureUser[] = [];
   useEffect(() => {
-    previouslySetLecturers?.forEach((lecturer) => {
+    previouslySetLecturers?.forEach(async (lecturer) => {
       if (lecturer.firstTimePresenting) {
         getAzureUser(lecturer.userID).then((user) => {
           priorRookies.push(user);
+          setRookies((oldRookies) => [...oldRookies, user]);
         });
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const [rookies, setRookies] = useState<AzureUser[]>(priorRookies);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onLecturerChange = (event: any, newValue: AzureUser[]) => {
