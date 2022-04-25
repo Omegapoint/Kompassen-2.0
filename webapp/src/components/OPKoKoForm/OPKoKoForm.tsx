@@ -244,7 +244,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
             Anmälan stänger kl 23.59 17 april 2022
           </Typography> */}
         </div>
-        {status?.name !== 'Accepted' && status?.name !== 'Feedback' ? (
+        {status?.name !== 'Accepterad' && status?.name !== 'Feedback' ? (
           <InfoText />
         ) : (
           <TextField
