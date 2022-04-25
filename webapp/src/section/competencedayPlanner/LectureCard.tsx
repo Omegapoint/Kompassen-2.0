@@ -9,7 +9,7 @@ import LectureView from '../../components/lectureView/LectureView';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
 import { checkAccess, formatDates, ROLE, useAppSelector } from '../../lib/Lib';
-import { Category, Format, Lecture, LectureMessage } from '../../lib/Types';
+import { Category, Format, Lecture, LectureMessage, Status } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import StatusChanger from './StatusChanger';
 
@@ -67,6 +67,8 @@ const LectureCard = ({
   const category = categories.find((e) => e.id === lecture.categoryID) as Category;
   const formats = useAppSelector((state) => state.formats);
   const formatType = formats.find((e) => e.id === lecture.formatID) as Format;
+  const statuses = useAppSelector((state) => state.statuses);
+  const status = statuses.find((e) => e.id === lecture.status?.statusID) as Status;
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
@@ -113,6 +115,7 @@ const LectureCard = ({
     { name: 'Målgrupp', value: lecture.targetAudience },
     { name: 'Förkunskapskrav', value: lecture.requirements },
     { name: 'Meddelande', value: lecture.message },
+    { name: 'Status', value: status?.name },
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (

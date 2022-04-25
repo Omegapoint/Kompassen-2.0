@@ -10,6 +10,7 @@ import {
   updateOrganisation,
 } from './organisations/actions';
 import { setAPIToken, setAzureUser, setGraphToken, setRole, setSocket } from './session/actions';
+import { createStatus, deleteStatus, setStatuses, updateStatus } from './statuses';
 import { setUser } from './user/actions';
 
 const actions = {
@@ -30,6 +31,12 @@ const actions = {
     update: updateFormat,
     delete: deleteFormat,
     create: createFormat,
+  },
+  status: {
+    set: setStatuses,
+    update: updateStatus,
+    delete: deleteStatus,
+    create: createStatus,
   },
   events: {
     set: setEvents,

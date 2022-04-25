@@ -8,6 +8,7 @@ import {
   lectureIdeasWS,
   officesWS,
   organisationsWS,
+  statusesWS,
 } from './defaultWS';
 import { disconnectEventLectures, setupEventLectures } from './eventLectures';
 import { disconnectEventRoomsLectures, setupEventLectureRooms } from './lectureRooms';
@@ -43,6 +44,7 @@ export const setupWebSocket = (io: Server): void => {
     organisationsWS.setup(socket);
     officesWS.setup(socket);
     formatsWS.setup(socket);
+    statusesWS.setup(socket);
 
     socket.on('disconnect', () => {
       const ind = users.findIndex((e) => e.socket !== socket);

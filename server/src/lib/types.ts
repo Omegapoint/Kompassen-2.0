@@ -245,7 +245,7 @@ export interface Lecture extends DLecture, DefaultTime {
   id: string;
   categoryID: string | null;
   likes: string[];
-  lecturelecturers: string[] | null;
+  status: LectureStatus | null;
 }
 
 // LectureLike
@@ -351,6 +351,11 @@ export interface IOK {
 export interface Approved {
   approved: boolean;
   id: string;
+}
+
+export interface SetStatus {
+  statusID: string;
+  lectureID: string;
 }
 
 export interface LectureFeedback {
