@@ -37,17 +37,16 @@ const LectureCard = ({
 
     useEffect(() => {
       if (socket) {
-        socket.on(
-          `lectureChat/${lectureID}/initial`,
-          (messages: Record<any, any> | Record<any, any>[]) => {
-            if (mounted.current) {
-              setChat(formatDates(messages));
-            }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        socket.on(`lectureChat/${lectureID}/initial`, (messages) => {
+          if (mounted.current) {
+            setChat(formatDates(messages));
           }
-        );
+        });
         socket.on(
           `lectureChat/${lectureID}/message`,
-          (message: Record<any, any> | Record<any, any>[]) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (message) => {
             if (mounted.current) {
               setChat((m) => [...m, formatDates(message)]);
             }

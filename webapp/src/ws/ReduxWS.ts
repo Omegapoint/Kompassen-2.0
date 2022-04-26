@@ -24,7 +24,8 @@ function genUseReduxWS<T>(name: string, reduxActions: Action<T>): () => boolean 
 
     useEffect(() => {
       if (socket) {
-        socket.on(name, (lectures: Record<any, any> | Record<any, any>[]) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        socket.on(name, (lectures) => {
           if (mounted.current) {
             dispatch(reduxActions.set(formatDates(lectures)));
             setReady(true);

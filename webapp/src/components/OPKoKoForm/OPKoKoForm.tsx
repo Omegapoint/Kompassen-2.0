@@ -169,8 +169,10 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   // ----- Handle Form Submit ----
   const handleSubmit = (evt: FormEvent, draft: boolean) => {
     evt.preventDefault();
-    const category = categories.find((e: { id: any }) => e.id === values.categoryID) as Category;
-    const format = formats.find((e: { id: any }) => e.id === values.formatID) as Format;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const category = categories.find((e) => e.id === values.categoryID) as Category;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const format = formats.find((e) => e.id === values.formatID) as Format;
     const submitLecturers: NewLectureLecturer[] = lecturers.map((lecturer) => ({
       userID: lecturer.id,
       lectureID: null,
@@ -311,13 +313,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           </FormLabel>
           <RadioGroup name="formatID" onChange={handleChange} value={values.formatID}>
             {formats.map(
-              (e: {
-                name:
-                  | string
-                  | number
-                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-                id: unknown;
-              }) =>
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (e) =>
                 e.name === 'Blixtföreläsning ' ? (
                   <FormControlLabel
                     key={e.id as Key}
@@ -343,13 +340,8 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
           </FormLabel>
           <RadioGroup name="categoryID" onChange={handleChange} value={values.categoryID}>
             {categories.map(
-              (e: {
-                id: unknown;
-                name:
-                  | string
-                  | number
-                  | React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-              }) => (
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (e) => (
                 <FormControlLabel
                   key={e.id as Key}
                   value={e.id}
