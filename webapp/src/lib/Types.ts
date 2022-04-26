@@ -358,6 +358,11 @@ export interface SetStatus {
   lectureID: string;
 }
 
+export interface SetVideoLink {
+  lectureLink: string;
+  lectureID: string;
+}
+
 export interface LectureFeedback {
   lectureId: string;
   userID: string;

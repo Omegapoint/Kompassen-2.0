@@ -19,6 +19,7 @@ import {
   NewUser,
   Office,
   SetStatus,
+  SetVideoLink,
   TagStats,
   UpdatedEvent,
   UpdatedLecture,
@@ -118,6 +119,7 @@ export const deleteAttendance = apiURLParamsBuilder<IDParam, IDParam>('/attendan
 
 export const approveLecture = apiBuilder<IDParam, Approved>('/lecture/approve').post;
 export const setLectureStatus = apiBuilder<IDParam, SetStatus>('/lecture/setStatus').post;
+export const setLectureVideoLink = apiBuilder<IDParam, SetVideoLink>('/lecture/setVideoLink').post;
 export const updateLecture = apiBuilder<IDParam, UpdatedLecture>('/lecture').put;
 export const createLecture = apiBuilder<IDParam, NewLecture>('/lecture').post;
 export const deleteLecture = apiURLParamsBuilder<IDParam, IDParam>('/lecture/:id').delete;

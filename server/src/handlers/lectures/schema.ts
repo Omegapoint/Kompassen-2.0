@@ -6,6 +6,7 @@ import {
   NewLecture,
   NewLectureIdea,
   SetStatus,
+  SetVideoLink,
   UpdatedLecture,
   UpdatedLectureIdea,
 } from '../../lib/types';
@@ -49,6 +50,11 @@ const setStatus = Joi.object<SetStatus>({
   lectureID: Joi.string().uuid(),
 }).options({ presence: 'required' });
 
+const setVideoLink = Joi.object<SetVideoLink>({
+  lectureLink: Joi.string().uuid(),
+  lectureID: Joi.string().uuid(),
+}).options({ presence: 'required' });
+
 const newIdea = Joi.object<NewLectureIdea>({
   ...defaultSchema,
 });
@@ -81,6 +87,7 @@ const lectures = {
   approve,
   updatedIdea,
   setStatus,
+  setVideoLink,
 };
 
 export default lectures;
