@@ -97,7 +97,7 @@ const MyLectures = (): ReactElement => {
           statuses.some(
             (status) =>
               status.id === lecture.status?.statusID &&
-              (status.name === 'Accepterad' || status.name === 'Feedback')
+              (status?.name === 'Accepterad' || status?.name === 'Feedback')
           ) || active === 'past';
         return (
           <LectureView
