@@ -51,7 +51,8 @@ const LectureView = ({
       if (socket) {
         socket.on(
           `lectureChat/${lectureID}/initial`,
-          (messages: Record<any, any> | Record<any, any>[]) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (messages) => {
             if (mounted.current) {
               setChat(formatDates(messages));
             }
@@ -59,7 +60,8 @@ const LectureView = ({
         );
         socket.on(
           `lectureChat/${lectureID}/message`,
-          (message: Record<any, any> | Record<any, any>[]) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (message) => {
             if (mounted.current) {
               setChat((m) => [...m, formatDates(message)]);
             }
@@ -92,7 +94,8 @@ const LectureView = ({
     (e: { id: string | undefined }) => e.id === lecture.status?.statusID
   ) as Status;
   const organisations = useAppSelector((state) => state.organisations);
-  const organisation = organisations.find((e: { id: any }) => e.id === event?.organisationID);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink =
     organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
   const { chat, sendWSMessage } = useLectureWS(lecture.id);

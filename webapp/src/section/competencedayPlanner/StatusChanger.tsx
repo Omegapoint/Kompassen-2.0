@@ -10,7 +10,6 @@ interface StatusChangerProps {
 }
 
 const StatusChanger = ({ lectureID }: StatusChangerProps): ReactElement => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const statuses = useAppSelector((state) => state.statuses);
   const [status, setStatus] = useState('');
   useEffect(() => {
@@ -20,7 +19,6 @@ const StatusChanger = ({ lectureID }: StatusChangerProps): ReactElement => {
   const handleChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
   };
-  const handleClose = () => setAnchorEl(null);
   return (
     <>
       {checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE]) && (

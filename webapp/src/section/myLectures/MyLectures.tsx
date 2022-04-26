@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactElement, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { deleteLecture, listLectures } from '../../api/Api';
@@ -8,7 +8,7 @@ import PageNav, { ILectureItems, INavItem } from '../../components/pageNav/PageN
 import useCacheUpdater from '../../hooks/useCacheUpdater';
 import { useAppSelector } from '../../lib/Lib';
 import { Lecture } from '../../lib/Types';
-import { padding } from '../../theme/Theme';
+import { colors, padding } from '../../theme/Theme';
 
 export type INavItemKind = 'ideas' | 'future' | 'draft' | 'past';
 
@@ -36,7 +36,7 @@ const useMyLectures = (data?: Lecture[]) => {
 
 const MyLectures = (): ReactElement => {
   const user = useAppSelector((state) => state.user);
-  const [active, setActive] = useState<INavItemKind>('ideas');
+  const [active, setActive] = useState<INavItemKind>('future');
   const [cacheKey, updateCache] = useCacheUpdater();
   const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () => listLectures());
   const [myData, setMyData] = useState<Lecture[]>();
@@ -75,6 +75,21 @@ const MyLectures = (): ReactElement => {
 
   return (
     <Box sx={{ display: 'grid', gridGap: padding.medium }}>
+      <Box
+        sx={{
+          display: 'flex',
+          background: colors.primary,
+          width: '100%',
+          padding: padding.small,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="h5" color={colors.white}>
+          Fyll i din talarbio! Det gör du i menyn under din profil. Skicka också gärna in en pitch
+          (video) om ditt bidrag genom att här nedan editera bidraget!
+        </Typography>
+      </Box>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
       {currentItems.map((e: Lecture) => (
         <LectureView
