@@ -77,7 +77,11 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
             onKeyPress={(e) => handleKeyPress(e)}
             required
             name="message"
-            label={opkoko ? 'Skriv hellre i Slack för snabb återkoppling' : 'Skriv en kommentar'}
+            label={
+              opkoko
+                ? 'Skriv gärna på slack om du vill ha snabb återkoppling på en fråga. Önskar du ändra ditt bidrag, skriv ändringen här'
+                : 'Skriv en kommentar'
+            }
             variant="outlined"
           />
           <Box sx={{ display: 'grid', alignSelf: 'center', gridArea: 'panel' }}>

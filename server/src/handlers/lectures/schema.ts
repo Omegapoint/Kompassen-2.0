@@ -51,7 +51,7 @@ const setStatus = Joi.object<SetStatus>({
 }).options({ presence: 'required' });
 
 const setVideoLink = Joi.object<SetVideoLink>({
-  lectureLink: Joi.string().uuid(),
+  lectureLink: Joi.string(),
   lectureID: Joi.string().uuid(),
 }).options({ presence: 'required' });
 

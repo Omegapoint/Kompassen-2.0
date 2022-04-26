@@ -87,8 +87,8 @@ const MyLectures = (): ReactElement => {
         }}
       >
         <Typography variant="h5" color={colors.white}>
-          Fyll i din talarbio! Det gör du i menyn under din profil. Skicka också gärna in en pitch
-          (video) om ditt bidrag genom att här nedan editera bidraget!
+          Kom ihåg att fylla i din talarbio! Det gör du i menyn under din profil. Skicka också gärna
+          in en pitch (video) för ditt bidrag här nedan!
         </Typography>
       </Box>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
