@@ -19,6 +19,7 @@ import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
 import Discussion from '../lecture/Discussion';
 import LectureContext from '../lecture/LectureContext';
+import { VideoLinkForm } from '../OPKoKoForm/VideoLinkForm';
 import UpdateLectureIdea from '../updateLectureIdea/UpdateLectureIdea';
 import LectureAttendanceList from './LectureAttendanceList';
 
@@ -120,6 +121,7 @@ const LectureView = ({
   const isUnpublishedIdea = lecture.idea && !lecture.eventID;
   const eventDay = useEvent(lecture.eventID!);
   const [open, { on, off }] = useBoolean();
+  const [openVideoLinkForm, setOpenVideoLinkForm] = useState(false);
   const { name: createdBy } = useAzureUser(lecture.createdBy);
 
   const setLocation = (location: string | null): string => {
@@ -170,14 +172,24 @@ const LectureView = ({
           borderRadius: `${borderRadius.small} ${borderRadius.small} 0 0`,
         }}
       >
-        <UpdateLectureIdea
-          open={open}
-          close={() => {
-            if (onSuccess) onSuccess();
-            off();
-          }}
-          lecture={lecture}
-        />
+        {!admin ? (
+          <VideoLinkForm
+            open={openVideoLinkForm}
+            close={() => {
+              setOpenVideoLinkForm(false);
+            }}
+            lecture={lecture}
+          />
+        ) : (
+          <UpdateLectureIdea
+            open={open}
+            close={() => {
+              if (onSuccess) onSuccess();
+              off();
+            }}
+            lecture={lecture}
+          />
+        )}
         <Box
           sx={{
             display: 'grid',
@@ -262,12 +274,18 @@ const LectureView = ({
           >
             <Typography variant="h5">{lecture.title}</Typography>
             <div>
-              {organisation?.name === 'OPKoKo' && (
-                <IconButton onClick={() => {}} size="large" disabled={status.name === 'Nekad'}>
+              {organisation?.name === 'OPKoKo' ? (
+                <IconButton
+                  onClick={() => {
+                    setOpenVideoLinkForm(true);
+                  }}
+                  size="large"
+                  disabled={status.name === 'Nekad'}
+                >
                   <VideoCameraFront />
                 </IconButton>
-              )}
-              {editIcon &&
+              ) : (
+                editIcon &&
                 (isUnpublishedIdea ? (
                   <IconButton onClick={on} size="large">
                     <EditIcon />
@@ -276,7 +294,8 @@ const LectureView = ({
                   <IconButton component={NavLink} to={`${editLink}${lecture.id}`} size="large">
                     <EditIcon />
                   </IconButton>
-                ))}
+                ))
+              )}
               {deleteIcon && (
                 <IconButton onClick={handleDelete} size="large">
                   <DeleteIcon />
