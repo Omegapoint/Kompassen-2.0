@@ -1,3 +1,4 @@
+import { VideoCameraFront } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, IconButton, Paper, Typography } from '@mui/material';
@@ -261,6 +262,11 @@ const LectureView = ({
           >
             <Typography variant="h5">{lecture.title}</Typography>
             <div>
+              {organisation?.name === 'OPKoKo' && (
+                <IconButton onClick={() => {}} size="large" disabled={status.name === 'Nekad'}>
+                  <VideoCameraFront />
+                </IconButton>
+              )}
               {editIcon &&
                 (isUnpublishedIdea ? (
                   <IconButton onClick={on} size="large">
