@@ -127,6 +127,13 @@ const UPDATE_LECTURE_STATUS = `
     RETURNING id
 `;
 
+const UPDATE_LECTURE_VIDEO_LINK = `
+    UPDATE lectures
+    SET video_link = $1
+    WHERE id = $2
+    RETURNING id
+`;
+
 const APPROVE_LECTURE = `
     UPDATE lectures
     SET approved = $1
@@ -152,6 +159,7 @@ interface LecturesDB {
   updateIdea: (lecture: UpdatedLectureIdea) => Promise<IDParam>;
   approve: (approved: boolean, id: string) => Promise<IDParam>;
   setStatus: (lectureStatusID: string, lectureId: string) => Promise<IDParam>;
+  setVideoLink: (videoLink: string, lectureId: string) => Promise<IDParam>;
   delete: (id: string) => Promise<IDParam>;
 }
 
@@ -260,6 +268,11 @@ const lecturesDB: LecturesDB = {
 
   async setStatus(lectureStatusID, lectureId): Promise<IDParam> {
     const { rows } = await db.query(UPDATE_LECTURE_STATUS, [lectureStatusID, lectureId]);
+    return rows[0];
+  },
+
+  async setVideoLink(videoLink, lectureId): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_LECTURE_VIDEO_LINK, [videoLink, lectureId]);
     return rows[0];
   },
 

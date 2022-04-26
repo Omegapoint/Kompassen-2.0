@@ -12,6 +12,7 @@ import {
   NewLecture,
   NewLectureIdea,
   SetStatus,
+  SetVideoLink,
   UpdatedLecture,
   UpdatedLectureIdea,
 } from '../../lib/types';
@@ -27,6 +28,7 @@ interface Handlers {
   createIdea: (req: Request<null, null, NewLectureIdea>, res: Response) => Promise<void>;
   updateIdea: (req: Request<null, null, UpdatedLectureIdea>, res: Response) => Promise<void>;
   setStatus: (req: Request<null, null, SetStatus>, res: Response) => Promise<void>;
+  setLectureLink: (req: Request<null, null, SetVideoLink>, res: Response) => Promise<void>;
   update: (req: Request<null, null, UpdatedLecture>, res: Response) => Promise<void>;
   approve: (req: Request<null, null, Approved>, res: Response) => Promise<void>;
   getByID: (req: Request<IDParam, null, null>, res: Response) => Promise<void>;
@@ -126,6 +128,10 @@ const lectures: Handlers = {
       userID
     );
     const item = await lecturesDB.setStatus(result.id, body.lectureID);
+    res.send(item);
+  },
+  async setLectureLink({ body }, res) {
+    const item = await lecturesDB.setVideoLink(body.lectureLink, body.lectureID);
     res.send(item);
   },
   async update({ body }, res) {
