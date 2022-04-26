@@ -6,7 +6,7 @@ const date = new Date();
 const statuses: Status[] = [
   {
     id: 'ea399f36-1c38-4fd7-b838-c89fb663f818',
-    name: 'Unhandled',
+    name: 'Ohanterad',
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,
@@ -14,7 +14,7 @@ const statuses: Status[] = [
   },
   {
     id: 'd55d094a-f582-467d-bc83-9da6f891343b',
-    name: 'Denied',
+    name: 'Nekad',
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,
@@ -22,7 +22,7 @@ const statuses: Status[] = [
   },
   {
     id: '3e0be5ad-1768-48a3-b2b9-b6b10a079be1',
-    name: 'Accepted',
+    name: 'Accepterad',
     createdAt: date,
     createdBy: users[0].id,
     updatedAt: date,

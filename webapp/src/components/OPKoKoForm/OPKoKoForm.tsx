@@ -132,7 +132,10 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       const alreadyLecturers: AzureUser | AzureUser[] = [];
       previouslySetLecturers.map(async (usr) =>
         getAzureUser(usr.userID).then((lecturer) => {
-          if (lecturer.id !== azureUser.id) {
+          if (
+            lecturer.id !== azureUser.id ||
+            checkAccess([ROLE.ADMIN, ROLE.OPKOKO_PLANNER, ROLE.OPKOKO_PROGRAM_COMMITTEE])
+          ) {
             alreadyLecturers.push(lecturer);
             setLecturers((oldLecturers) => [...oldLecturers, lecturer]);
           }
@@ -191,7 +194,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
       formatID: format.id,
       lecturer: azureUser.displayName,
       lecturerID: azureUser.id,
-      lectureStatusID: null,
+      lectureStatusID: data ? data.lectureStatusID : null,
       videoLink: values.videoLink || null,
       // Not applicable for OPKoKo lectures
       remote: 'local',
