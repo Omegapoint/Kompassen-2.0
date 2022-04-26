@@ -99,7 +99,6 @@ const MyLectures = (): ReactElement => {
               status.id === lecture.status?.statusID &&
               (status.name === 'Accepterad' || status.name === 'Feedback')
           ) || active === 'past';
-        console.log(lecture.status?.statusID);
         return (
           <LectureView
             key={lecture.id}
