@@ -40,6 +40,7 @@ const MyLectures = (): ReactElement => {
   const [cacheKey, updateCache] = useCacheUpdater();
   const { data, isLoading } = useQuery(`listMyLectures-${cacheKey}`, () => listLectures());
   const [myData, setMyData] = useState<Lecture[]>();
+  const statuses = useAppSelector((state) => state.statuses);
 
   useEffect(() => {
     if (data) {
@@ -91,16 +92,24 @@ const MyLectures = (): ReactElement => {
         </Typography>
       </Box>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
-      {currentItems.map((e: Lecture) => (
-        <LectureView
-          key={e.id}
-          lecture={e}
-          editIcon={active !== 'past'}
-          deleteIcon
-          onSuccess={updateCache}
-          handleDelete={() => handleDelete(e.id)}
-        />
-      ))}
+      {currentItems.map((lecture: Lecture) => {
+        const immutable =
+          statuses.some(
+            (status) =>
+              status.id === lecture.status?.statusID &&
+              (status.name === 'Accepterad' || status.name === 'Feedback')
+          ) || active === 'past';
+        return (
+          <LectureView
+            key={lecture.id}
+            lecture={lecture}
+            editIcon={!immutable}
+            deleteIcon={!immutable}
+            onSuccess={updateCache}
+            handleDelete={() => handleDelete(lecture.id)}
+          />
+        );
+      })}
     </Box>
   );
 };

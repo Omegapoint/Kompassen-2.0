@@ -40,7 +40,7 @@ interface Handlers {
 
 const lectures: Handlers = {
   async create({ body }, res) {
-    const unhandledStatus = await statusDb.getByName('Unhandled');
+    const unhandledStatus = await statusDb.getByName('Ohanterad');
     if (unhandledStatus === null) {
       httpError(res, 500, 'No status with that name exists');
       return;
