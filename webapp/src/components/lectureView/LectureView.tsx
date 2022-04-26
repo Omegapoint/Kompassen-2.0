@@ -280,7 +280,7 @@ const LectureView = ({
                     setOpenVideoLinkForm(true);
                   }}
                   size="large"
-                  disabled={status.name === 'Nekad'}
+                  disabled={status?.name === 'Nekad'}
                 >
                   <VideoCameraFront />
                 </IconButton>
