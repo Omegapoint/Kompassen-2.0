@@ -93,14 +93,12 @@ const MyLectures = (): ReactElement => {
       </Box>
       <PageNav active={active} setActive={setActive} navItems={navItems} />
       {currentItems.map((lecture: Lecture) => {
-        // const immutable =
-        //   statuses.some(
-        //     (status) =>
-        //       status.id === lecture.status?.statusID &&
-        //       (status?.name === 'Accepterad' || status?.name === 'Feedback')
-        //   ) || active === 'past';
         const immutable =
-          lecture.eventID === '2a752f77-c5d7-4e1a-9c8b-d232282d6d2b' || active === 'past';
+          statuses.some(
+            (status) =>
+              status.id === lecture.status?.statusID &&
+              (status?.name === 'Accepterad' || status?.name === 'Feedback')
+          ) || active === 'past';
         return (
           <LectureView
             key={lecture.id}
