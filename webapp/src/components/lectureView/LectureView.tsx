@@ -275,15 +275,18 @@ const LectureView = ({
             <Typography variant="h5">{lecture.title}</Typography>
             <div>
               {organisation?.name === 'OPKoKo' ? (
-                <IconButton
+                <Button
                   onClick={() => {
                     setOpenVideoLinkForm(true);
                   }}
+                  variant="contained"
                   size="large"
                   disabled={status?.name === 'Nekad'}
+                  sx={{ display: 'row', gridGap: padding.tiny }}
                 >
+                  <Typography>SKICKA IN VIDEOPITCH </Typography>
                   <VideoCameraFront />
-                </IconButton>
+                </Button>
               ) : (
                 editIcon &&
                 (isUnpublishedIdea ? (
