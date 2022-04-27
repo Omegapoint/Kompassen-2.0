@@ -338,7 +338,7 @@ const LectureView = ({
                 {lecture.approved ? 'Godkänd' : 'Bidraget är inskickat till urval'}
               </Typography>
             )}
-            {admin && (
+            {admin && organisation?.name !== 'OPKoKo' && (
               <Button
                 sx={{ gridColumn: 'span 1' }}
                 variant={lecture.approved ? undefined : 'contained'}
