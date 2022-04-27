@@ -34,10 +34,10 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      submit();
-    }
+    // if (e.key === 'Enter') {
+    //   e.preventDefault();
+    //   submit();
+    // }
   };
 
   return (
