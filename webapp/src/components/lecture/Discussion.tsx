@@ -33,6 +33,7 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
     submit();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleKeyPress = (e: KeyboardEvent) => {
     // if (e.key === 'Enter') {
     //   e.preventDefault();
