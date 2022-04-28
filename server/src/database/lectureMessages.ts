@@ -15,19 +15,44 @@ const INSERT_LECTURE_MESSAGE = `
     RETURNING *
 `;
 
+const UPDATE_LECTURE_MESSAGE = `
+    UPDATE lecture_messages
+    SET message = $2,
+        updated_by = $3
+    WHERE id = $1
+    RETURNING id
+`;
+
+const DELETE_LECTURE_MESSAGE = `
+    DELETE
+    FROM lecture_messages
+    WHERE id = $1
+    RETURNING id
+`;
+
 interface LectureMessagesDB {
   list: (id: string) => Promise<LectureMessage[]>;
-  insert: (msg: NewDBLectureMessage, id: string) => Promise<IDParam>;
+  insert: (msg: NewDBLectureMessage, userID: string) => Promise<IDParam>;
+  update: (commentID: string, msg: NewDBLectureMessage, userID: string) => Promise<IDParam>;
+  delete: (id: string) => Promise<IDParam>;
 }
 
 const lectureMessagesDB: LectureMessagesDB = {
-  async list(id) {
+  async list(id: string) {
     const { rows } = await db.query(LIST_LECTURE_MESSAGES, [id]);
     return snakeToCamel(rows) || [];
   },
-  async insert(msg, userID): Promise<IDParam> {
+  async insert(msg: NewDBLectureMessage, userID: string): Promise<IDParam> {
     const { rows } = await db.query(INSERT_LECTURE_MESSAGE, [msg.lectureID, userID, msg.message]);
     return snakeToCamel(rows[0]);
+  },
+  async update(commentID: string, msg: NewDBLectureMessage, userID: string): Promise<IDParam> {
+    const { rows } = await db.query(UPDATE_LECTURE_MESSAGE, [commentID, msg.message, userID]);
+    return rows[0];
+  },
+  async delete(id: string): Promise<IDParam> {
+    const { rows } = await db.query(DELETE_LECTURE_MESSAGE, [id]);
+    return rows[0];
   },
 };
 
