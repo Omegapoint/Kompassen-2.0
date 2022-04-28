@@ -94,7 +94,7 @@ const OPKoKoForm = ({ data }: LectureFormProps): ReactElement => {
   const status = statuses.find((e) => e.id === data?.status?.statusID) as Status;
 
   const defaultFormValue = {
-    eventID: '334de9fb-058d-4eaa-a698-ca58aa2d2ab0',
+    eventID: '',
     title: data?.title || '',
     keyTakeAway: data?.keyTakeaway || '',
     categoryID:
