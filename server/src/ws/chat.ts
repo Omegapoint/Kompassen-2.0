@@ -3,7 +3,7 @@ import { Socket } from 'socket.io';
 import { logger } from '../config/config';
 import lectureMessagesDB from '../database/lectureMessages';
 import { LARGE_STRING_LEN, STRING_MIN_LEN } from '../lib/constants';
-import { NewLectureMessage } from '../lib/types';
+import { NewDBLectureMessage, NewLectureMessage } from '../lib/types';
 import { Join } from './types';
 
 const joined: Join = {};
@@ -25,6 +25,18 @@ export const setupChat = (socket: Socket, userID: string): void => {
     }
     const resp = await lectureMessagesDB.insert({ lectureID, message }, userID);
     joined[lectureID]?.forEach((e) => e.socket.emit(`lectureChat/${lectureID}/message`, resp));
+  });
+
+  socket.on('lectureChat/update', async (messageID: string, message: NewDBLectureMessage) => {
+    const { error } = newMessage.validate({ message });
+    if (error) {
+      logger.error('invalid message');
+      return;
+    }
+    const resp = await lectureMessagesDB.update(messageID, message, userID);
+    joined[message.lectureID]?.forEach((e) =>
+      e.socket.emit(`lectureChat/${message.lectureID}/message`, resp)
+    );
   });
 
   // for a new user joining the room
