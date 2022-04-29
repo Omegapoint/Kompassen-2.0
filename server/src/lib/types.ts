@@ -287,12 +287,12 @@ export interface NewDBLectureMessage extends NewLectureMessage {
 export interface UpdatedLectureMessage extends NewLectureMessage {
   id: string;
   lectureID: string;
-  userID: string;
 }
 
 export interface DBLectureMessage extends UpdatedLectureMessage {
   updatedAt: Date;
   createdAt: Date;
+  userID: string;
 }
 
 export interface LectureMessage extends DBLectureMessage {

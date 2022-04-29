@@ -14,7 +14,7 @@ import useBoolean from '../../hooks/UseBoolean';
 import { useEvent } from '../../hooks/UseReduxState';
 import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, useAppSelector } from '../../lib/Lib';
-import { Lecture, LectureMessage, Status } from '../../lib/Types';
+import { Lecture, LectureMessage, Status, UpdatedLectureMessage } from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import { formatDayTime } from '../competenceDays/DayPicker';
 import Discussion from '../lecture/Discussion';
@@ -83,7 +83,14 @@ const LectureView = ({
       [lectureID, socket]
     );
 
-    return { chat, sendWSMessage };
+    const updateWSMessage = useCallback(
+      (msg: UpdatedLectureMessage) => {
+        socket.emit('lectureChat/message/update', msg);
+      },
+      [socket]
+    );
+
+    return { chat, sendWSMessage, updateWSMessage };
   };
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find((e: { id: string | null }) => e.id === lecture.categoryID);
@@ -100,7 +107,7 @@ const LectureView = ({
   const organisation = organisations.find((e) => e.id === event?.organisationID);
   const editLink =
     organisation?.name === 'OPKoKo' ? '/lecture/OPKoKo/edit/' : '/lecture/competenceday/edit/';
-  const { chat, sendWSMessage } = useLectureWS(lecture.id);
+  const { chat, sendWSMessage, updateWSMessage } = useLectureWS(lecture.id);
 
   const [lecturers, setLecturers] = useState(['']);
   useEffect(() => {
@@ -165,7 +172,7 @@ const LectureView = ({
 
   const time = format(lecture.createdAt, 'd LLLLLL', { locale: sv });
   return (
-    <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
+    <LectureContext.Provider value={{ lecture, chat, sendWSMessage, updateWSMessage }}>
       <Box
         sx={{
           display: 'grid',

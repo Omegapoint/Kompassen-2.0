@@ -9,7 +9,14 @@ import LectureView from '../../components/lectureView/LectureView';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
 import { checkAccess, formatDates, ROLE, useAppSelector } from '../../lib/Lib';
-import { Category, Format, Lecture, LectureMessage, Status } from '../../lib/Types';
+import {
+  Category,
+  Format,
+  Lecture,
+  LectureMessage,
+  Status,
+  UpdatedLectureMessage,
+} from '../../lib/Types';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import StatusChanger from './StatusChanger';
 
@@ -66,7 +73,13 @@ const LectureCard = ({
       [lectureID, socket]
     );
 
-    return { chat, sendWSMessage };
+    const updateWSMessage = useCallback(
+      (msg: UpdatedLectureMessage) =>
+        socket.emit('lectureChat/message/update', msg.id, msg.message),
+      [socket]
+    );
+
+    return { chat, sendWSMessage, updateWSMessage };
   };
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find(
@@ -83,7 +96,7 @@ const LectureCard = ({
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
-  const { chat, sendWSMessage } = useLectureWS(lecture.id);
+  const { chat, sendWSMessage, updateWSMessage } = useLectureWS(lecture.id);
 
   const genTime = (time: Date) => {
     const s = format(time, 'HH:mm', { locale: sv });
@@ -131,7 +144,7 @@ const LectureCard = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (
-    <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
+    <LectureContext.Provider value={{ lecture, chat, sendWSMessage, updateWSMessage }}>
       <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
         <Box
           sx={{

@@ -3,7 +3,7 @@ import { ReactElement, useCallback, useEffect, useState } from 'react';
 import useBoolean from '../../hooks/UseBoolean';
 import useUnmount from '../../hooks/UseUnmount';
 import { formatDates, useAppSelector } from '../../lib/Lib';
-import { Lecture as LectureTP, LectureMessage } from '../../lib/Types';
+import { Lecture as LectureTP, LectureMessage, UpdatedLectureMessage } from '../../lib/Types';
 import RowPaper from '../rowPaper/RowPaper';
 import BottomContainer from './BottomContainer';
 import LectureContext from './LectureContext';
@@ -44,15 +44,20 @@ const useLectureWS = (lectureID: string) => {
     [lectureID, socket]
   );
 
-  return { chat, sendWSMessage };
+  const updateWSMessage = useCallback(
+    (msg: UpdatedLectureMessage) => socket.emit('lectureChat/message/update', msg.id, msg.message),
+    [socket]
+  );
+
+  return { chat, sendWSMessage, updateWSMessage };
 };
 
 const Lecture = ({ lecture }: LectureProps): ReactElement => {
   const [isExpanded, expand] = useBoolean();
-  const { chat, sendWSMessage } = useLectureWS(lecture.id);
+  const { chat, sendWSMessage, updateWSMessage } = useLectureWS(lecture.id);
 
   return (
-    <LectureContext.Provider value={{ lecture, chat, sendWSMessage }}>
+    <LectureContext.Provider value={{ lecture, chat, sendWSMessage, updateWSMessage }}>
       <RowPaper>
         <TopContainer isExpanded={isExpanded} expand={expand.toggle} />
         {isExpanded && <Divider />}

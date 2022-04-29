@@ -16,7 +16,7 @@ interface DiscussionProps {
 }
 
 const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
-  const { chat, sendWSMessage } = useContext(LectureContext);
+  const { chat, sendWSMessage, updateWSMessage } = useContext(LectureContext);
   const { values, handleChange, appendChange, updateValues } = useForm(defaultFormValue);
 
   const handleSmiley = (_: MouseEvent, data: IEmojiData) => {

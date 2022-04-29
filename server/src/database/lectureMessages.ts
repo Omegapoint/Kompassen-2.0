@@ -1,6 +1,12 @@
 import db from '../lib/database';
 import { snakeToCamel } from '../lib/lib';
-import { IDParam, LectureMessage, NewDBLectureMessage } from '../lib/types';
+import {
+  DBLectureMessage,
+  IDParam,
+  LectureMessage,
+  NewDBLectureMessage,
+  UpdatedLectureMessage,
+} from '../lib/types';
 
 const LIST_LECTURE_MESSAGES = `
     SELECT id, lecture_id, user_id, message, created_at, updated_at
@@ -17,10 +23,9 @@ const INSERT_LECTURE_MESSAGE = `
 
 const UPDATE_LECTURE_MESSAGE = `
     UPDATE lecture_messages
-    SET message = $2,
-        updated_by = $3
+    SET message = $2
     WHERE id = $1
-    RETURNING id
+    RETURNING *
 `;
 
 const DELETE_LECTURE_MESSAGE = `
@@ -32,8 +37,8 @@ const DELETE_LECTURE_MESSAGE = `
 
 interface LectureMessagesDB {
   list: (id: string) => Promise<LectureMessage[]>;
-  insert: (msg: NewDBLectureMessage, userID: string) => Promise<IDParam>;
-  update: (commentID: string, msg: NewDBLectureMessage, userID: string) => Promise<IDParam>;
+  insert: (msg: NewDBLectureMessage, userID: string) => Promise<DBLectureMessage>;
+  update: (msg: UpdatedLectureMessage) => Promise<DBLectureMessage>;
   delete: (id: string) => Promise<IDParam>;
 }
 
@@ -42,12 +47,12 @@ const lectureMessagesDB: LectureMessagesDB = {
     const { rows } = await db.query(LIST_LECTURE_MESSAGES, [id]);
     return snakeToCamel(rows) || [];
   },
-  async insert(msg: NewDBLectureMessage, userID: string): Promise<IDParam> {
+  async insert(msg: NewDBLectureMessage, userID: string): Promise<DBLectureMessage> {
     const { rows } = await db.query(INSERT_LECTURE_MESSAGE, [msg.lectureID, userID, msg.message]);
     return snakeToCamel(rows[0]);
   },
-  async update(commentID: string, msg: NewDBLectureMessage, userID: string): Promise<IDParam> {
-    const { rows } = await db.query(UPDATE_LECTURE_MESSAGE, [commentID, msg.message, userID]);
+  async update(msg: UpdatedLectureMessage): Promise<DBLectureMessage> {
+    const { rows } = await db.query(UPDATE_LECTURE_MESSAGE, [msg.id, msg.message]);
     return rows[0];
   },
   async delete(id: string): Promise<IDParam> {
