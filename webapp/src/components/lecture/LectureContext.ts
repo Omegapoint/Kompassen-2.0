@@ -6,6 +6,7 @@ interface LectureCtx {
   chat: LectureMessage[];
   sendWSMessage: (message: string) => void;
   updateWSMessage: (message: UpdatedLectureMessage) => void;
+  deleteWSMessage: (message: UpdatedLectureMessage) => void;
 }
 
 const LectureContext = createContext<LectureCtx>({} as LectureCtx);

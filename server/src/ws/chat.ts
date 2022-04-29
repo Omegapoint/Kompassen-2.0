@@ -41,6 +41,10 @@ export const setupChat = (socket: Socket, userID: string): void => {
     await lectureMessagesDB.update(msg);
   });
 
+  socket.on('lectureChat/message/delete', async (msg: UpdatedLectureMessage) => {
+    await lectureMessagesDB.delete(msg.id);
+  });
+
   // for a new user joining the room
   socket.on('lectureChat/join', async (lectureId) => {
     if (!joined[lectureId]) joined[lectureId] = [];

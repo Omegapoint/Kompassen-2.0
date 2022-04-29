@@ -49,15 +49,24 @@ const useLectureWS = (lectureID: string) => {
     [socket]
   );
 
-  return { chat, sendWSMessage, updateWSMessage };
+  const deleteWSMessage = useCallback(
+    (msg: UpdatedLectureMessage) => {
+      socket.emit('lectureChat/message/delete', msg);
+    },
+    [socket]
+  );
+
+  return { chat, sendWSMessage, updateWSMessage, deleteWSMessage };
 };
 
 const Lecture = ({ lecture }: LectureProps): ReactElement => {
   const [isExpanded, expand] = useBoolean();
-  const { chat, sendWSMessage, updateWSMessage } = useLectureWS(lecture.id);
+  const { chat, sendWSMessage, updateWSMessage, deleteWSMessage } = useLectureWS(lecture.id);
 
   return (
-    <LectureContext.Provider value={{ lecture, chat, sendWSMessage, updateWSMessage }}>
+    <LectureContext.Provider
+      value={{ lecture, chat, sendWSMessage, updateWSMessage, deleteWSMessage }}
+    >
       <RowPaper>
         <TopContainer isExpanded={isExpanded} expand={expand.toggle} />
         {isExpanded && <Divider />}

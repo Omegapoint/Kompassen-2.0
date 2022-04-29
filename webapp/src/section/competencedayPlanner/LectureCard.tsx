@@ -79,7 +79,14 @@ const LectureCard = ({
       [socket]
     );
 
-    return { chat, sendWSMessage, updateWSMessage };
+    const deleteWSMessage = useCallback(
+      (msg: UpdatedLectureMessage) => {
+        socket.emit('lectureChat/message/delete', msg);
+      },
+      [socket]
+    );
+
+    return { chat, sendWSMessage, updateWSMessage, deleteWSMessage };
   };
   const categories = useAppSelector((state) => state.categories);
   const category = categories.find(
@@ -96,7 +103,7 @@ const LectureCard = ({
   const { azureUser } = useAppSelector((state) => state.session);
   const isOwner = lecture.lecturerID === azureUser.id;
   const [open, { on, off }] = useBoolean();
-  const { chat, sendWSMessage, updateWSMessage } = useLectureWS(lecture.id);
+  const { chat, sendWSMessage, updateWSMessage, deleteWSMessage } = useLectureWS(lecture.id);
 
   const genTime = (time: Date) => {
     const s = format(time, 'HH:mm', { locale: sv });
@@ -144,7 +151,9 @@ const LectureCard = ({
   ].map((e) => ({ ...e, value: e.value || '-' }));
 
   return (
-    <LectureContext.Provider value={{ lecture, chat, sendWSMessage, updateWSMessage }}>
+    <LectureContext.Provider
+      value={{ lecture, chat, sendWSMessage, updateWSMessage, deleteWSMessage }}
+    >
       <Box sx={{ background: `${colors.white}dd`, borderRadius: borderRadius.small }}>
         <Box
           sx={{
