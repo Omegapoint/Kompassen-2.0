@@ -38,11 +38,17 @@ export const setupChat = (socket: Socket, userID: string): void => {
       logger.error('invalid message');
       return;
     }
-    await lectureMessagesDB.update(msg);
+    const resp = await lectureMessagesDB.update(msg);
+    // joined[msg.lectureID]?.forEach((e) =>
+    //   e.socket.emit(`lectureChat/${msg.lectureID}/message/update`, resp)
+    // );
   });
 
   socket.on('lectureChat/message/delete', async (msg: UpdatedLectureMessage) => {
-    await lectureMessagesDB.delete(msg.id);
+    const resp = await lectureMessagesDB.delete(msg.id);
+    joined[msg.lectureID]?.forEach((e) =>
+      e.socket.emit(`lectureChat/${msg.lectureID}/message/delete`, resp)
+    );
   });
 
   // for a new user joining the room

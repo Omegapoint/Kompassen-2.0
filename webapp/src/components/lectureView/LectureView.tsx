@@ -69,6 +69,14 @@ const LectureView = ({
             }
           }
         );
+
+        socket.on(`lectureChat/${lectureID}/message/delete`, (id: string) => {
+          if (mounted.current) {
+            console.log('Entered LectureView socket');
+            const index: number = chat.findIndex((msg) => msg.id === id);
+            setChat(chat.splice(index, 1));
+          }
+        });
         socket.emit('lectureChat/join', lectureID);
 
         return () => {
@@ -76,6 +84,7 @@ const LectureView = ({
         };
       }
       return () => {};
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lectureID, mounted, socket]);
 
     const sendWSMessage = useCallback(
