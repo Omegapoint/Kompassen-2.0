@@ -1,8 +1,8 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { ReactElement, useState } from 'react';
+import OPKoKoModeratorView from '../../components/OPKoKoEvents/OPKoKoModeratorView';
 import { padding } from '../../theme/Theme';
 import HomeCompetenceDays from './HomeCompetenceDays';
-import HomeOPKoKo from './HomeOPKoKo';
 import SideMenuCompetenceDays from './SideMenuCompetenceDays';
 import SideMenuOPKoKo from './SideMenuOPKoKo';
 
@@ -27,7 +27,7 @@ const Home = (): ReactElement => {
       }}
     >
       {alignment === 'kompetensdag' && <HomeCompetenceDays />}
-      {alignment === 'opkoko' && <HomeOPKoKo />}
+      {alignment === 'opkoko' && <OPKoKoModeratorView />}
       <Box
         sx={{
           display: 'grid',
