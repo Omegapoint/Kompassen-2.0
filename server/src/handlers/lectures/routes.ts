@@ -11,7 +11,7 @@ const lecturesRoutes = (app: Express): void => {
   app.post('/lecture/setStatus', admin, validate(schema.lectures.setStatus), lectures.setStatus);
   app.post(
     '/lecture/setVideoLink',
-    admin,
+    locked,
     validate(schema.lectures.setVideoLink),
     lectures.setLectureLink
   );
