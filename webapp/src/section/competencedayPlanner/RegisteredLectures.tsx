@@ -1,6 +1,6 @@
-import { Box } from '@mui/material';
-import { ReactElement } from 'react';
-import { useAppSelector } from '../../lib/Lib';
+import { Box, Pagination } from '@mui/material';
+import { ReactElement, useState } from 'react';
+import { usePagination } from '../../hooks/UsePagination';
 import { Lecture } from '../../lib/Types';
 import { padding } from '../../theme/Theme';
 import LectureCard from './LectureCard';
@@ -16,40 +16,40 @@ const RegisteredLectures = ({
   admin = false,
   opkoko = false,
 }: RegisteredLecturesProps): ReactElement => {
-  const statuses = useAppSelector((state) => state.statuses);
+  const [totalPages, changeTotalPages] = useState(Math.ceil(lectures.length));
+  const [page, changePage] = useState(1);
+
+  const paginationRange = usePagination({
+    totalCount: lectures.length,
+    pageSize: 10,
+    siblingCount: 5,
+    currentPage: page,
+  });
+
+  // const statuses = useAppSelector((state) => state.statuses);
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: opkoko ? 'max-content' : '1fr 1fr 1fr',
-        gridTemplateRows: 'max-content',
-        gridGap: padding.standard,
-      }}
-    >
-      {lectures
-        .filter((lecture) =>
-          statuses.some(
-            (status) =>
-              status.id === lecture.status?.statusID &&
-              (status.name === 'Accepterad' || status.name === 'Feedback')
-          )
-        )
-        .map((e) => (
+    <>
+      {console.log(paginationRange)}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: opkoko ? 'max-content' : '1fr 1fr 1fr',
+          gridTemplateRows: 'max-content',
+          gridGap: padding.standard,
+        }}
+      >
+        {lectures.map((e) => (
           <LectureCard key={e.id} lecture={e} edit admin={admin} opkoko={opkoko} />
         ))}
-      {lectures
-        .filter(
-          (lecture) =>
-            !statuses.some(
-              (status) =>
-                status.id === lecture.status?.statusID &&
-                (status.name === 'Accepterad' || status.name === 'Feedback')
-            )
-        )
-        .map((e) => (
-          <LectureCard key={e.id} lecture={e} edit admin={admin} opkoko={opkoko} />
-        ))}
-    </Box>
+      </Box>
+      <Pagination
+        count={10}
+        page={page}
+        onChange={(event) =>
+          changePage(Number((event.currentTarget as HTMLTextAreaElement).textContent))
+        }
+      />
+    </>
   );
 };
 
