@@ -31,7 +31,6 @@ const filterLecturers = (lectures: Lecture[]) => {
     seen.add(user!.userID);
     return !duplicate;
   });
-
   return filteredArr;
 };
 
@@ -83,7 +82,7 @@ const exportLecturers = async (
         kompassenUser && kompassenUser.speakerBio ? kompassenUser.speakerBio : 'No speaker bio',
         office,
         lecturerLecturesNames,
-        'image-file',
+        lecturer && lecturer.userID ? lecturer.userID : 'No id',
       ];
     })
   );
