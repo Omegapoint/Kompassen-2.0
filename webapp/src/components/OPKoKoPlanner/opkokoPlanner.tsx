@@ -17,7 +17,12 @@ const OPKoKoPlanner = (): ReactElement => {
     useState<Array<Array<string | null | boolean | Array<string>>>>();
 
   const fetchLecturersData = async () => {
-    const CSVData = await exportLecturers(lectures);
+    const onlyAcceptedLectures = lectures.filter(
+      (lecture) =>
+        lecture.status?.statusID === '0c1140aa-c623-4ae1-9b91-c3e4bcfd255b' ||
+        lecture.status?.statusID === 'b941b42c-f76d-44a3-9fc5-ffce17edef39'
+    );
+    const CSVData = await exportLecturers(onlyAcceptedLectures);
     setLecturersData(CSVData);
   };
 
