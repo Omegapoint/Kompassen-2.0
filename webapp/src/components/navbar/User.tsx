@@ -76,12 +76,12 @@ const User = (): ReactElement => {
 
       if (result instanceof Object && result.status === 200 && result.body !== null) {
         const reader = result.body.getReader();
-        const test2 = await reader.read();
-        if (test2.value !== undefined) {
-          const test3 = new Blob([test2.value], { type: 'image/png' } /* (1) */);
+        const readableStream = await reader.read();
+        if (readableStream.value !== undefined) {
+          const blob = new Blob([readableStream.value], { type: 'image/png' } /* (1) */);
 
           const url = window.URL || window.webkitURL;
-          const blobUrl = url.createObjectURL(test3);
+          const blobUrl = url.createObjectURL(blob);
           setProfileImgLink(blobUrl);
         }
       }

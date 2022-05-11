@@ -39,7 +39,8 @@ const config = {
       tenantIDIBMB: OIDC_TENANT_ID_IBMB || '2db9b5b0-add1-47fc-a0ca-147745edf2f9',
       tenantIDElicit: OIDC_TENANT_ID_ELICIT || '4fcbc51c-c557-40e7-9c63-e30aad02408b',
       redirectUrl: OIDC_REDIRECT_URL || 'http://localhost:3000/',
-      appRegistrationSecret: KV_APP_REGISTRATION_SECRET || '',
+      appRegistrationSecret:
+        KV_APP_REGISTRATION_SECRET || '9d.8Q~3NAI1HJtLT_Y3t~P3c~30L6M5Kat~NGaPX',
     },
   },
 };

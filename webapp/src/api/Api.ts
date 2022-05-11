@@ -144,4 +144,4 @@ export const listCategories = apiQueryBuilder<Category[], ListEventParams>('/cat
 export const listFormats = apiQueryBuilder<Format[], ListEventParams>('/format').get;
 
 export const getGraphUser = apiURLParamsBuilder<AzureUserBasic, IDParam>('/graph/:id').get;
-export const getGraphUserPicture = apiURLParamsBuilder<IDParam, IDParam>('/graph/picture/:id').get;
+export const getGraphUserPicture = apiURLParamsBuilder<Buffer, IDParam>('/graph/picture/:id').get;

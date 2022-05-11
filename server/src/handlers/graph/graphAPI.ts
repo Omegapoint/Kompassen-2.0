@@ -93,3 +93,40 @@ export async function getAzureUser(userID: string): Promise<AzureUserBasic | nul
   /* eslint-enable no-await-in-loop */
   return result;
 }
+
+export async function getAzureUserPhoto(userID: string): Promise<string | null> {
+  const tenantIDList = [tenantIDOP, tenantIDIBMB, tenantIDElicit];
+  let result: string | null = null;
+  /* eslint-disable no-await-in-loop */
+  // eslint-disable-next-line no-restricted-syntax
+  for (const tenantID of tenantIDList) {
+    const accessToken = await getAccessToken(tenantID);
+    if (accessToken !== null) {
+      const queryResult = await getAzureGraphPhoto(`/users/${userID}`, accessToken);
+      if (queryResult !== null) {
+        result = queryResult;
+      }
+      break;
+    }
+  }
+  /* eslint-enable no-await-in-loop */
+  return result;
+}
+
+async function getAzureGraphPhoto(path: string, bearerToken: string): Promise<string | null> {
+  const response: any = await axios
+    .get(`https://graph.microsoft.com/v1.0${path}/photo/$value`, {
+      headers: { Authorization: `Bearer ${bearerToken}` },
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .catch((error: any) => {
+      const err = error as AxiosError;
+      // eslint-disable-next-line no-console
+      console.log(err.response?.data);
+      return null;
+    });
+  if (response !== undefined && response.data) {
+    return response.data;
+  }
+  return null;
+}

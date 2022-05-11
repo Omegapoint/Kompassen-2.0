@@ -1,4 +1,4 @@
-import { getGraphUser, getUserByID, listOffices } from '../../api/Api';
+import { getGraphUser, getGraphUserPicture, getUserByID, listOffices } from '../../api/Api';
 import { AzureUserBasic, Lecture, User } from '../Types';
 
 const csvHeader = [
@@ -76,6 +76,9 @@ const exportLecturers = async (
       } else {
         office = 'Office not set';
       }
+      const image = await getGraphUserPicture({ id: lecturer!.userID });
+      console.log('hej');
+      console.log(image);
       return [
         azureUser && azureUser.name ? azureUser.name : 'Azure user not found',
         azureUser && azureUser.email ? azureUser.email : 'Azure user not found',
@@ -83,7 +86,7 @@ const exportLecturers = async (
         kompassenUser && kompassenUser.speakerBio ? kompassenUser.speakerBio : 'No speaker bio',
         office,
         lecturerLecturesNames,
-        'image-file',
+        image.toString(),
       ];
     })
   );
