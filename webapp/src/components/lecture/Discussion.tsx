@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { IEmojiData } from 'emoji-picker-react';
-import { KeyboardEvent, MouseEvent, ReactElement, useContext } from 'react';
+import { MouseEvent, ReactElement, useContext } from 'react';
 import useForm from '../../hooks/UseForm';
 import { borderRadius, colors, padding } from '../../theme/Theme';
 import TextPanel from '../textPanel/TextPanel';
@@ -33,12 +33,12 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
     submit();
   };
 
-  const handleKeyPress = (e: KeyboardEvent) => {
-    // if (e.key === 'Enter') {
-    //   e.preventDefault();
-    //   submit();
-    // }
-  };
+  // const handleKeyPress = (e: KeyboardEvent) => {
+  // if (e.key === 'Enter') {
+  //   e.preventDefault();
+  //   submit();
+  // }
+  // };
 
   return (
     <Box
@@ -74,7 +74,7 @@ const Discussion = ({ opkoko }: DiscussionProps): ReactElement => {
             maxRows={5}
             value={values.message}
             onChange={handleChange}
-            onKeyPress={(e) => handleKeyPress(e)}
+            // onKeyPress={(e) => handleKeyPress(e)}
             required
             name="message"
             label={
