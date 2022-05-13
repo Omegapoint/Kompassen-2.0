@@ -41,9 +41,10 @@ const checkAuth = async (req: Request, res: Response, next: NextFunction, onlyAd
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const locked: any = async (req: Request, res: Response, next: NextFunction) =>
-  checkAuth(req, res, next, false);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const admin: any = async (req: Request, res: Response, next: NextFunction) =>
   checkAuth(req, res, next, true);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const locked: any = async (req: Request, res: Response, next: NextFunction) =>
+  admin(req, res, next);
+// TODO: worker access is disabled. To enable, turn line 49 into this: checkAuth(req, res, next, false);
